@@ -1,0 +1,14 @@
+{
+  "name": "tslib",
+  "version": "1.0.0",
+  "description": "rewrite of jslib",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Beeno Tung",
+  "license": "ISC",
+  "dependencies": {
+    "ramda": "^0.22.1"
+  }
+}
