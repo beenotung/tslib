@@ -15,3 +15,6 @@ export function first_non_null(...args: any[]) {
   for (let arg of args)
     if (arg) return arg;
 }
+export function bindFunction(f: Function) {
+  return f.bind(f);
+}
