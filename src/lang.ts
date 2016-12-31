@@ -17,7 +17,7 @@ export function first_non_null(...args: any[]) {
   for (let arg of args)
     if (arg) return arg;
 }
-export function bindFunction(f: Function) {
+export function bindFunction(f: Function):Function {
   return f.bind(f);
 }
 export async function translateAsync(translate: TranslateService, key: string): Promise<string> {
