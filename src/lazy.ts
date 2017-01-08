@@ -1,27 +1,24 @@
 import {createDefer, Defer} from "./async";
-/**
- * Created by beenotung on 1/2/17.
- */
-export function createLazy<A>(f: () => A): () => Promise<A> {
-  let defer: Defer<A,any>;
+
+export function createLazy<A>(f: () => A): () => A {
+  let a: A;
+  let done = false;
   return () => {
-    if (defer == void 0) {
-      defer = createDefer();
-      try {
-        defer.resolve(f());
-      } catch (e) {
-        defer.reject(e);
-      }
+    if (!done) {
+      a = f();
+      done = true;
     }
-    return defer.promise;
+    return a;
   };
 }
 
 export function createAsyncLazy<A>(f: () => Promise<A>): () => Promise<A> {
   let promise: Promise<A>;
+  let done = false;
   return () => {
-    if (promise == void 0) {
+    if (!done) {
       promise = f();
+      done = true;
     }
     return promise;
   };

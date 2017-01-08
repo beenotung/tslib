@@ -36,3 +36,9 @@ export function compareString(a: string, b: string): -1|0|1 {
     return 0;
   return a < b ? -1 : 1;
 }
+
+export function deepCall(f: Function) {
+  while (typeof f === 'function')
+    f = f();
+  return f;
+}
