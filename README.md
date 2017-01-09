@@ -1,6 +1,6 @@
 # tslib
 rewrite of jslib:
-more lightweight, on top of [ramda.js](https://github.com/ramda/ramda)
+more lightweight and modular
 
 ## Why tslib
 My original lib [jslib](https://github.com/beenotung/jslib) was build before ES6 was popular, it has a number of ES6-like classes and polyfill which is not following the standard.
@@ -14,5 +14,15 @@ Just import the ts files directly.
 
 Do not plan to support usage from javascript directly.
 
-## Remind
+## Remark
 This lib will not depends on jslib, instead it'll re-implement the features.
+
+## Unsure Remark
+This lib is on top of [ramda.js](https://github.com/ramda/ramda)
+
+~~This lib is kind of rewrite of ramda.js in pure ts, but w & w/o something~~
+
+## Todo
+ - remove dependency on ramdajs / provide wrapper with type
+   - the package in @types/npm-ramda is out dated
+   - I failed to update that package
