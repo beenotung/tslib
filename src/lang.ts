@@ -89,3 +89,33 @@ export function objToArray<A>(o: Obj<A>): [A, ObjKey][] {
   xs.forEach((x, i) => res[i] = [o[x], x]);
   return res;
 }
+
+export function argsToArray<A>(args: IArguments): A[] {
+  const len = args.length;
+  const res = new Array<A>(len);
+  for (let i = 0; i < len; i++)
+    res[i] = args[i];
+  return res;
+}
+/**
+ * take all from as ++ take some from args
+ * */
+export function concatArgs<A>(as: ArrayLike<A>, args: ArrayLike<A>, offsetArgs = 0, nArgs = args.length): A[] {
+  let na = as.length;
+  let res = new Array<A>(na + nArgs);
+  let offset = 0;
+  for (; offset < na; offset++) {
+    res[offset] = as[offset];
+  }
+  for (let i = 0; i < nArgs; i++) {
+    res[offset + offsetArgs + i] = args[i];
+  }
+  return res;
+}
+
+export function copyArray<A>(xs: ArrayLike<A>, offset: number = 0, count: number = xs.length): A[] {
+  let res = new Array(count);
+  for (let i = 0; i < count; i++)
+    res[i] = xs[offset + i];
+  return res;
+}

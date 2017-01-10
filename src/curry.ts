@@ -3,14 +3,10 @@
  */
 
 import {copyArray, concatArgs} from "./lang";
-export type Consumer<A> = (a: A) => void;
-export type Supplier<A> = () => A;
-
-
 
 /* reference : http://stackoverflow.com/questions/27996544/how-to-correctly-curry-a-function-in-javascript */
 
-export function curry(f: Function): Function {
+export function curry<A extends Function>(f: Function): A {
   let arity = f.length;
   return arity == 0 ? f : partial(f, arity, []);
   // return typeof f === 'function' && f.length > 0
@@ -18,10 +14,10 @@ export function curry(f: Function): Function {
   //   : f;
 }
 
-export let id: Function = curry(x => x);
+export let id = curry(x => x);
 
-/** internal func, use id instead */
-function autoCurry(f: Function): Function {
+/** internal func, use id() instead */
+function autoCurry<A extends Function>(f: Function): A {
   return (typeof f === 'function' && f.length > 0)
     ? partial(f, f.length, [])
     : f;
@@ -36,7 +32,7 @@ function autoCurry(f: Function): Function {
  *       then apply them to the result of f
  *   else take all param, wait for extra param
  * */
-function partial<A>(f: Function, arity: number, acc: A[]|IArguments): Function {
+function partial<A extends Function,R>(f: Function, arity: number, acc: A[]|IArguments): A|R {
   let next = function partialNext() {
     let args = arguments;
     let m = args.length;
@@ -48,21 +44,5 @@ function partial<A>(f: Function, arity: number, acc: A[]|IArguments): Function {
     }
     return result;
   };
-  return next;
+  return <A|R><any> next;
 }
-
-/** take all args (ignore arity) */
-export let apply = curry(f => function () {
-  return autoCurry(f.apply(null, arguments));
-});
-
-export let prop = curry((name, o) => o[name]);
-export let length = curry(x => x.length);
-export let filter = curry((f, xs) => xs.filter(f));
-export let compose = curry((f, g, x) => f(g(x)));
-export let flip = curry((f, a, b) => f(b, a));
-export let lift = curry(a => b => a);
-export let compose2 = compose(compose, compose);
-export let odd = curry(x => x % 2 == 1);
-export let even = curry(x => x % 2 == 0);
-export let countWhere = curry(compose2(length, filter));

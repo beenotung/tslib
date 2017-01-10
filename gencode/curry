@@ -1,0 +1,10 @@
+#!/bin/bash
+if [ ! -f "../node_modules/.bin/tsc" ]; then
+  echo "install compiler..."
+  npm i typescript
+fi
+echo "compile..."
+../node_modules/.bin/tsc curry.ts
+echo "run..."
+node curry.js | tee output.ts
+echo "saved to ./output.ts"
