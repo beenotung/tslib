@@ -21,13 +21,13 @@ function gen(deep: number) {
     for (let i = 2; i <= n; i++) {
       vs += ', t' + i + ': T' + i;
     }
-    out(`type F${n}<${ts},R> = (${vs}) => R;`)
+    out(`export type F${n}<${ts},R> = (${vs}) => R;`)
   }
 
   function genCurryF(n: number) {
     let ts = genTs(n);
     let name = `CurryF${n}`;
-    out(`type ${name}<${ts},R> =`);
+    out(`export type ${name}<${ts},R> =`);
     out(`  () => ${name}<${ts},R>`);
     for (let i = 1; i < n; i++) {
       let tsH = genTs(i);

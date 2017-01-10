@@ -17,7 +17,7 @@ export function curry<A extends Function>(f: Function): A {
 export let id = curry(x => x);
 
 /** internal func, use id() instead */
-function autoCurry<A extends Function>(f: Function): A {
+export function autoCurry<A extends Function>(f: Function): A {
   return (typeof f === 'function' && f.length > 0)
     ? partial(f, f.length, [])
     : f;

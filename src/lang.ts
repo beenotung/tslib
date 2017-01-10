@@ -119,3 +119,9 @@ export function copyArray<A>(xs: ArrayLike<A>, offset: number = 0, count: number
     res[i] = xs[offset + i];
   return res;
 }
+export function copyToArray<A>(dest: Array<A>, destOffset = 0, src: ArrayLike<A>, srcOffset = 0, count = src.length) {
+  for (let i = 0; i < count; i++) {
+    dest[destOffset + i] = src[srcOffset + i];
+  }
+  return dest;
+}
