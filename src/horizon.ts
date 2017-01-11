@@ -1,4 +1,4 @@
-import {Horizon, TableObject, OldRecord, DataType, CreatedObject} from "../../typeStub-horizon-client/index";
+import {Horizon, TableObject, OldRecord, DataType} from "../../typeStub-horizon-client/index";
 import {Observable} from "rxjs";
 
 /**
@@ -31,7 +31,7 @@ export abstract class Table<A> {
 
   all(): Observable<A[]> {
     return this.tableObject
-      .findAll({
+      .findAll(<A><any>{
         deleted: false
       })
       .fetch();
@@ -45,7 +45,7 @@ export abstract class Table<A> {
       o.id = keyOrDoc.id;
     }
     o.deleted = true;
-    return this.tableObject.update(o);
+    return this.tableObject.update(<any><Document<A>>o);
   }
 }
 export async function newHorizonUUID(hz: Horizon, tableName: string = 'uuid'): Promise<string> {

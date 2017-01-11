@@ -4,6 +4,7 @@
 import * as R from "ramda";
 import {Supplier} from "./functional";
 import {createDefer} from "./async";
+import {F1} from "./typeStub-curry";
 
 export let getProp: ((name: string, o: any) => any)|((name: string) => (o: any) => any) = R.curry((name: string, o: any) => {
   if (o[name])
@@ -13,24 +14,25 @@ export let getProp: ((name: string, o: any) => any)|((name: string) => (o: any) 
   }
 });
 
-export function first_non_null<A>(...args: A[]) {
+export function first_non_null<A>(...args: A[]): A|null {
   for (let arg of args)
     if (arg) return arg;
+  return null;
 }
 
 /* return b if a is null or undefined (or false) */
-export function ifNull<A>(a: A, b: A) {
+export function ifNull<A>(a: A, b: A): A {
   return a ? a : b;
 }
 
-export function ifNullF<A>(a: A, f: Supplier<A>) {
+export function ifNullF<A>(a: A, f: Supplier<A>): A {
   return a ? a : f();
 }
 
 /**
  * @remark won't flatten a
  * */
-export async function ifNullFAsync<A>(a: A, f: Supplier<Promise<A>>) {
+export async function ifNullFAsync<A>(a: A, f: Supplier<Promise<A>>): Promise<A> {
   /* not using Promise.resolve(a) directly to avoid flattening a when a is a promise */
   let defer = createDefer<A,any>();
   if (a) {
@@ -127,7 +129,7 @@ export function copyToArray<A>(dest: Array<A>, destOffset = 0, src: ArrayLike<A>
   return dest;
 }
 
-let nFuncs = [];
+let nFuncs = <F1<Function,Function>[]> [];
 
 export function genFunction(n: number, f: Function): Function {
   if (n < 1)
