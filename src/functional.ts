@@ -4,7 +4,7 @@
 
 import {copyToArray, ObjKey, Obj} from "./lang";
 import {id} from "./curry";
-import {CurryF1, CurryF2} from "./curry.d";
+import {CurryF1, CurryF2} from "./typeStub-curry";
 import {curry} from "./curry";
 
 export type Consumer<A> = (a: A) => void;
