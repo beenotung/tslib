@@ -15,25 +15,37 @@ function gen(deep: number) {
     return ts;
   }
 
-  function genF(n: number) {
-    let ts = genTs(n);
-    let vs = 't1: T1';
-    for (let i = 2; i <= n; i++) {
+  function genVs(n: number, offset = 1) {
+    if (n < offset)
+      return '';
+    let vs = 't' + offset + ': T' + offset;
+    for (let i = offset + 1; i <= n; i++) {
       vs += ', t' + i + ': T' + i;
     }
+    return vs;
+  }
+
+  function genF(n: number) {
+    let ts = genTs(n);
+    let vs = genVs(n);
     out(`export type F${n}<${ts},R> = (${vs}) => R;`)
   }
 
   function genCurryF(n: number) {
     let ts = genTs(n);
     let name = `CurryF${n}`;
-    out(`export type ${name}<${ts},R> = F${n}<${ts},R>`);
-    for (let i = 1; i < n; i++) {
-      let tsH = genTs(i);
-      let tsT = genTs(n, i + 1);
-      out(`    | F${i}<${tsH},CurryF${n - i}<${tsT}, R>>`);
+    out(`export interface ${name}<${ts},R> extends Function {`);
+    out(`  apply(thisArg:any, argArray:[${ts}]):R;`);
+    for (let i = 0; i <= n; i++) {
+      let vs = genVs(i);
+      if (i < n) {
+        let tsr = genTs(n, i + 1) + ',R';
+        out(`  (${vs}):CurryF${n - i}<${tsr}>;`);
+      } else {
+        out(`  (${vs}):R;`);
+      }
     }
-    out(`  ;`)
+    out(`}`);
   }
 
   function genCurry(n: number) {
