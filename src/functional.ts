@@ -4,7 +4,7 @@
 
 import {copyToArray, ObjKey, Obj} from "./lang";
 import {id} from "./curry";
-import {CurryF1, CurryF2} from "./typeStub-curry";
+import {CurryF1, CurryF2, F2, F1} from "./typeStub-curry";
 import {curry} from "./curry";
 
 export type Consumer<A> = (a: A) => void;
@@ -17,6 +17,16 @@ export let apply = curry((f: Function) => function () {
 
 /* reference : http://stackoverflow.com/questions/27996544/how-to-correctly-curry-a-function-in-javascript */
 export let prop = curry(<A>(name: ObjKey, o: Obj<A>): A => o[name]);
+/**
+ * @remark side effect
+ * @return original object
+ *
+ * setProp :: a -> k -> {k:a} -> {k:a}
+ * */
+export let setProp = curry(<A>(a: A, k: ObjKey, o: Obj<A>): Obj<A> => {
+  o[k] = a;
+  return o;
+});
 export let length = curry(<A>(x: ArrayLike<A>): number => x.length);
 export let filter = curry(<A>(f: CurryF1<A,boolean>, xs: A[]): A[] => xs.filter(f));
 export let compose = curry(<A,B,C>(f: CurryF1<B,C>, g: CurryF1<A,B>, a: A): C => f(g(a)));
@@ -134,4 +144,122 @@ export let doAll = curry(<A>(f: Consumer<A>, args: A[]) => {
   for (let arg of args) {
     f(arg);
   }
+});
+
+/**
+ * flatten the iterators as a single array
+ * */
+export function iteratorsToArray <A>(itrs: IterableIterator<A>[]): A[] {
+  let xs = <A[]> [];
+  for (let itr of itrs)
+    for (let x of itr)
+      xs.push(x);
+  return xs;
+}
+
+export let concatWithoutDup = curry(<A>(as: A[], bs: A[]): A[] => {
+  let acc = new Set<A>();
+  doAll(
+    (as: A[]) => doAll(
+      (a: A) => acc.add(a)
+      , as
+    )
+    , [as, bs]
+  );
+  return iteratorsToArray<A>([acc.values()]);
+});
+
+export let map = curry(<A,B>(f: CurryF1<A,B>, as: A[]): B[] => as.map(f));
+
+let getOrSetDefault = curry(<K,V>(v: V, k: K, m: Map<K,V>): V => {
+  if (m.has(k))
+    return m.get(k);
+  m.set(k, v);
+  return v;
+});
+
+/**
+ * groupBy :: (a->k) -> [a] -> Map k [a]
+ * */
+export let groupBy = curry(<A,K>(f: F1<A,K>, xs: A[]): Map<K,A[]> => {
+  let res = new Map<K,A[]>();
+  for (let x of xs) {
+    getOrSetDefault([], f(x), res).push(x);
+  }
+  return res;
+});
+
+/**
+ * foldl :: (b->a->b) -> b -> [a] -> b
+ * */
+export let foldl = curry(<A,B>(f: F2<B,A,B>, acc: B, xs: A[]): B => {
+  for (let i = 0, n = xs.length; i < n; i++) {
+    acc = f(acc, xs[i]);
+  }
+  return acc;
+});
+export let foldl1 = curry(<A>(f: F2<A,A,A>, xs: A[]): A => {
+  let n = xs.length;
+  if (n == 0)
+    throw new TypeError('xs should be non-empty ArrayLike<*>');
+  let acc = xs[0];
+  for (let i = 1; i < n; i++) {
+    acc = f(acc, xs[i]);
+  }
+  return acc;
+});
+/**
+ * concat :: [a] -> [a] -> [a]
+ * */
+export let concat = curry(<A>(as: A[], bs: A[]): A[] => as.concat(bs));
+/**
+ * concatAll :: [[a]] -> [a]
+ * */
+export let concatAll = foldl(concat, []);
+/**
+ * @remark side effect to as
+ * as -> bs -> __update as__
+ * */
+export let pushAll = curry(<A>(as: A[], bs: A[]) => as.push(...bs));
+/**
+ * merge array of plain objects
+ *   do not support merging functions
+ *   do not support instant object (e.g. Map instance)
+ * merge :: [a|b] -> a & b
+ * */
+export let mergeObjs = curry(<A>(xs: A[]): A => Object.assign({}, ...xs));
+// /**
+//  * mergeAll :: (a=>) -> [a] -> [a] -> [a]
+//  * */
+// export let mergeAll = curry((f, as, bs) => {
+//   as = groupBy(f, as);
+//   bs = groupBy(f, bs);
+//   let res = [];
+//   forEach(xs => pushAll(res), as);
+//   forEach(xs => pushAll(res), bs);
+//   return res;
+// });
+/**
+ * groupByAll :: (a->k) -> [[a]] -> Map k [a]
+ * */
+export let groupByAll = curry(<A,K>(f: F1<A,K>, xss: A[][]): Map<K,A[]> => {
+  let res = new Map<K,A[]>();
+  for (let xs of xss) {
+    for (let x of xs) {
+      getOrSetDefault([], f(x), res).push(x);
+    }
+  }
+  return res;
+});
+
+/**
+ * @remark side effect
+ * update :: (a->__update a__) -> [a] -> [a]
+ * @return original array
+ *
+ * more effective then using map if the original array is going to be discarded anyway
+ * */
+export let update = curry(<A>(f: Consumer<A>, as: A[]) => {
+  as.forEach(f);
+  return as;
 });

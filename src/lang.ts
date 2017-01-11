@@ -85,6 +85,10 @@ export function objMap<A,B>(f: (a?: A, k?: ObjKey, o?: Obj<A>) => B): (o: Obj<A>
   return o => Object.keys(o).map(x => f(o[x], x, o));
 }
 
+export function objFilter<A>(f: (a?: A, k?: ObjKey, o?: Obj<A>) => boolean): (o: Obj<A>) => A[] {
+  return o => Object.keys(o).filter(x => f(o[x], x, o)).map(x => o[x]);
+}
+
 export function objToArray<A>(o: Obj<A>): [A, ObjKey][] {
   let xs = Object.keys(o);
   let res = new Array<[A, ObjKey]>(xs.length);
