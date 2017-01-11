@@ -38,6 +38,12 @@ function gen(deep: number) {
     out(`  ;`)
   }
 
+  function genCurry(n: number) {
+    let ts = genTs(n);
+    let t = `<${ts},R>`;
+    out(`declare function curry${t}(f${n}:F${n}${t}):CurryF${n}${t};`);
+  }
+
   out('/* F<N> */');
   for (let i = 1; i <= deep; i++) {
     genF(i);
@@ -46,6 +52,11 @@ function gen(deep: number) {
   out('/* CurryF<> */');
   for (let i = 1; i <= deep; i++) {
     genCurryF(i);
+  }
+  out();
+  out('/* curry() annotation */');
+  for (let i = 1; i <= deep; i++) {
+    genCurry(i);
   }
   console.log(ss.join(''));
 }
