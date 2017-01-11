@@ -15,7 +15,10 @@ Just import the ts files directly.
 Do not plan to support usage from javascript directly.
 
 ## Remark
-This lib will not depends on jslib, instead it'll re-implement the features.
+ - This lib will not depends on jslib, instead it'll re-implement the features.
+ - curry only work for function of length > 0
+   - does not work (breaking) for variety function (those who expect to accept variant length of arguments)
+   - does not work for function of length 0
 
 ## Unsure Remark
 This lib is on top of [ramda.js](https://github.com/ramda/ramda)

@@ -27,14 +27,12 @@ function gen(deep: number) {
   function genCurryF(n: number) {
     let ts = genTs(n);
     let name = `CurryF${n}`;
-    out(`export type ${name}<${ts},R> =`);
-    out(`  () => ${name}<${ts},R>`);
+    out(`export type ${name}<${ts},R> = F${n}<${ts},R>`);
     for (let i = 1; i < n; i++) {
       let tsH = genTs(i);
       let tsT = genTs(n, i + 1);
       out(`    | F${i}<${tsH},CurryF${n - i}<${tsT}, R>>`);
     }
-    out(`    | F${n}<${ts},R>`);
     out(`  ;`)
   }
 
