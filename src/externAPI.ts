@@ -15,6 +15,7 @@ export namespace externalAPI {
   export async function getHostList(): Promise<HostRecord[]> {
     let text = await (fetch(hostListUrl).then(x => x.text()));
     return text.split('\n')
+      .filter(x => x.length != 0)
       .map(line => {
         let record = <HostRecord>{};
         let xs = line.split(' ');
@@ -35,7 +36,7 @@ export namespace externalAPI {
     let defer = createDefer<HostRecord,any>();
     try {
       text.split('\n')
-        .filter(x => x.length == 0)
+        .filter(x => x.length != 0)
         .forEach(line => {
           let xs = line.split(' ');
           if (xs[1] == name) {
