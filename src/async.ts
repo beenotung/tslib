@@ -1,5 +1,6 @@
 import {Consumer} from "./functional";
 import {TranslateService} from "ng2-translate";
+import {Observable, Subscription} from "rxjs";
 /**
  * Created by beenotung on 12/26/16.
  */

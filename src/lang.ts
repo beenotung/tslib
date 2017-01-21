@@ -96,6 +96,10 @@ export function objToArray<A>(o: Obj<A>): [A, ObjKey][] {
   return res;
 }
 
+export function objValues<A>(o: Obj<A>): A[] {
+  return Object.keys(o).map(x => o[x]);
+}
+
 export function argsToArray<A>(args: IArguments): A[] {
   const len = args.length;
   const res = new Array<A>(len);
@@ -166,4 +170,13 @@ export function enum_s2i(e: any, s: string): number {
 }
 export function enum_has_s(e: any, s: string): boolean {
   return e[s] !== void 0;
+}
+
+export function isNumber(i: any): boolean {
+  return Number.isFinite(+i);
+}
+export function toNumber(i: any): number {
+  if (!isNumber(i))
+    throw new TypeError("i is not a number: " + i);
+  return +i;
 }
