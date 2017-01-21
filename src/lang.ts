@@ -154,3 +154,16 @@ export function genFunction(n: number, f: Function): Function {
   }
   return nFuncs[n](f);
 }
+
+/**
+ * for the sake of implicit any in object index
+ * */
+export function enum_i2s(e: any, i: number): string {
+  return e[i];
+}
+export function enum_s2i(e: any, s: string): number {
+  return e[s];
+}
+export function enum_has_s(e: any, s: string): boolean {
+  return e[s] !== void 0;
+}
