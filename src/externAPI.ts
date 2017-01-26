@@ -50,7 +50,7 @@ export namespace externalAPI {
             throw new Error('found');
           }
         });
-      defer.reject('not found');
+      defer.reject(`no host record named '${name}'`);
     } catch (e) {
       if (found)
         defer.resolve(found);
