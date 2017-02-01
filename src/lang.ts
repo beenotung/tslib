@@ -180,3 +180,14 @@ export function toNumber(i: any): number {
     throw new TypeError("i is not a number: " + i);
   return +i;
 }
+
+export function fori(n: number, f: (i: number) => void) {
+  for (let i = 0; i < n; i++) {
+    f(i);
+  }
+}
+export function foriWithOffset(offset: number, count: number, f: (i: number) => void) {
+  for (let i = 0; i < count; i++) {
+    f(i + offset);
+  }
+}
