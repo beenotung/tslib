@@ -51,3 +51,7 @@ export abstract class Table<A> {
 export async function newHorizonUUID(hz: Horizon, tableName: string = 'uuid'): Promise<string> {
   return hz(tableName).store({}).toPromise().then(x => x.id);
 }
+export function removeAll(hz: Horizon, tableName: string): Observable<string> {
+  let table = hz<{ id: string }>(tableName);
+  return table.fetch().mergeMap(xs => table.removeAll(xs).map(x => x.id));
+}
