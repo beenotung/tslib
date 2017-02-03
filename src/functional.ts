@@ -263,3 +263,7 @@ export let update = curry(<A>(f: Consumer<A>, as: A[]) => {
   as.forEach(f);
   return as;
 });
+
+export let map2 = curry(<A,B>(f: (a: A) => B, xss: A[][]): B[][] => {
+  return xss.map(xs => xs.map(f));
+});
