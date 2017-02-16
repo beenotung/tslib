@@ -75,8 +75,8 @@ export let just = curry(<A>(x: A) => [x]);
 export let none = lift(<A>(x: A): any[] => []);
 export let eq = curry(<A>(a: A, b: A): boolean => b === a);
 export let neq = curry(<A>(a: A, b: A): boolean => b !== a);
-export let gt = curry((a: number|string, b: number|string): boolean => b > a);
-export let lt = curry((a: number|string, b: number|string): boolean => b < a);
+export let gt = curry((a: number | string, b: number | string): boolean => b > a);
+export let lt = curry((a: number | string, b: number | string): boolean => b < a);
 /**
  * first :: (a->Bool) -> [a] -> Maybe a
  * */
