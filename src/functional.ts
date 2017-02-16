@@ -15,8 +15,17 @@ export let apply = curry((f: Function) => function () {
   return id(f.apply(null, arguments));
 });
 
-/* reference : http://stackoverflow.com/questions/27996544/how-to-correctly-curry-a-function-in-javascript */
 export let prop = curry(<A>(name: ObjKey, o: Obj<A>): A => o[name]);
+
+/** cannot represent recursive type, o must eventually contains type A */
+export let deepProp = curry(<A>(name: ObjKey, o: Obj<A> | any): A => {
+  if (o[name] !== void 0) {
+    return o[name];
+  } else {
+    (<string>name).split('.')
+      .reduce((acc, c) => acc[c], <any>o);
+  }
+});
 /**
  * @remark side effect
  * @return original object
@@ -75,8 +84,8 @@ export let just = curry(<A>(x: A) => [x]);
 export let none = lift(<A>(x: A): any[] => []);
 export let eq = curry(<A>(a: A, b: A): boolean => b === a);
 export let neq = curry(<A>(a: A, b: A): boolean => b !== a);
-export let gt = curry((a: number|string, b: number|string): boolean => b > a);
-export let lt = curry((a: number|string, b: number|string): boolean => b < a);
+export let gt = curry((a: number | string, b: number | string): boolean => b > a);
+export let lt = curry((a: number | string, b: number | string): boolean => b < a);
 /**
  * first :: (a->Bool) -> [a] -> Maybe a
  * */

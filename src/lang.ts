@@ -6,6 +6,9 @@ import {Supplier} from "./functional";
 import {createDefer} from "./async";
 import {F1} from "./typeStub-curry";
 
+/**
+ * @deprecated
+ * */
 export let getProp: ((name: string, o: any) => any)|((name: string) => (o: any) => any) = R.curry((name: string, o: any) => {
   if (o[name])
     return o[name];
@@ -179,15 +182,4 @@ export function toNumber(i: any): number {
   if (!isNumber(i))
     throw new TypeError("i is not a number: " + i);
   return +i;
-}
-
-export function fori(n: number, f: (i: number) => void) {
-  for (let i = 0; i < n; i++) {
-    f(i);
-  }
-}
-export function foriWithOffset(offset: number, count: number, f: (i: number) => void) {
-  for (let i = 0; i < count; i++) {
-    f(i + offset);
-  }
 }
