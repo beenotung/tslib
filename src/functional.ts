@@ -22,7 +22,7 @@ export let deepProp = curry(<A>(name: ObjKey, o: Obj<A> | any): A => {
   if (o[name] !== void 0) {
     return o[name];
   } else {
-    (<string>name).split('.')
+    return (<string>name).split('.')
       .reduce((acc, c) => acc[c], <any>o);
   }
 });
