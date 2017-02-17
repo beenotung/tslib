@@ -2,7 +2,7 @@
  * Created by beenotung on 12/26/16.
  */
 
-import {copyToArray, ObjKey, Obj} from "./lang";
+import {ObjKey, Obj} from "./lang";
 import {id} from "./curry";
 import {CurryF1, CurryF2, F2, F1} from "./typeStub-curry";
 import {curry} from "./curry";
@@ -26,6 +26,7 @@ export let deepProp = curry(<A>(name: ObjKey, o: Obj<A> | any): A => {
       .reduce((acc, c) => acc[c], <any>o);
   }
 });
+
 /**
  * @remark side effect
  * @return original object

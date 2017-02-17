@@ -9,7 +9,8 @@ import {F1} from "./typeStub-curry";
 /**
  * @deprecated
  * */
-export let getProp: ((name: string, o: any) => any)|((name: string) => (o: any) => any) = R.curry((name: string, o: any) => {
+export let getProp: ((name: string, o: any) => any)
+  | ((name: string) => (o: any) => any) = R.curry((name: string, o: any) => {
   if (o[name])
     return o[name];
   else {
@@ -17,7 +18,23 @@ export let getProp: ((name: string, o: any) => any)|((name: string) => (o: any) 
   }
 });
 
-export function first_non_null<A>(...args: A[]): A|null {
+export function checkedGetProp<A>(k: ObjKey, o: Obj<A>): A {
+  if (o[k] || Object.keys(o).indexOf(<string>k) != -1) {
+    return o[k];
+  }
+  else {
+    throw new TypeError(`property '${k}' does not exist in the object.`);
+  }
+}
+export function getPropWithDefault<A>(v: A, k: ObjKey, o: Obj<A>): A {
+  try {
+    return checkedGetProp(k, o);
+  } catch (e) {
+    return v;
+  }
+}
+
+export function first_non_null<A>(...args: A[]): A | null {
   for (let arg of args)
     if (arg) return arg;
   return null;
@@ -61,7 +78,7 @@ export function caseFunctionLookup<A,B>(cases: Array<[A, () => B]>, target: A): 
   return caseLookup(cases, target)();
 }
 
-export function compareString(a: string, b: string): -1|0|1 {
+export function compareString(a: string, b: string): -1 | 0 | 1 {
   if (a == b)
     return 0;
   return a < b ? -1 : 1;
@@ -78,7 +95,7 @@ export interface Obj<A> {
   [k: number]: A;
 }
 
-export type ObjKey = string|number;
+export type ObjKey = string | number;
 
 export function objForEach<A>(f: (a?: A, k?: ObjKey, o?: Obj<A>) => void): (o: Obj<A>) => void {
   return o => Object.keys(o).forEach(x => f(o[x], x, o));
