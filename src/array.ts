@@ -1,3 +1,4 @@
+import {forI} from "./lang";
 /**
  * inplace delete all element from the array
  * @return old elements
@@ -22,4 +23,28 @@ export function unique<A>(xs: A[]): A[] {
       res.push(x);
   });
   return res;
+}
+
+export function rightMost<A>(n: number, xs: A[]): A[] {
+  return xs.slice(xs.length - n, xs.length);
+}
+export function leftMost<A>(n: number, xs: A[]): A[] {
+  return xs.slice(0, n);
+}
+
+/** inplace update */
+export function popN(n: number, xs: any[]): void {
+  forI(_ => xs.pop(), n);
+}
+/** inplace update */
+export function popUntilN(n: number, xs: any[]): void {
+  forI(_ => xs.pop(), xs.length - n);
+}
+/** inplace update */
+export function shiftN(n: number, xs: any[]): void {
+  forI(_ => xs.shift(), n);
+}
+/** inplace update */
+export function shiftUntilN(n: number, xs: any[]): void {
+  forI(_ => xs.shift(), xs.length - n);
 }

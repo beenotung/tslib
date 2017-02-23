@@ -212,3 +212,29 @@ export function toNumber(i: any): number {
     throw new TypeError("i is not a number: " + i);
   return +i;
 }
+
+/**
+ * @param end: number (exclusive)
+ * */
+export function forI(f: (i: number) => void, end: number, start = 0) {
+  for (let i = start; i < end; i++) {
+    f(i);
+  }
+}
+
+/** apply the function without throwing exception */
+export function tryApply(f: Function, args: any[]) {
+  try {
+    return f(...args)
+  } catch (e) {
+    console.error(e);
+  }
+}
+/** call the function without throwing exception */
+export function tryCall(f: Function, ...args: any[]) {
+  try {
+    return f(...args);
+  } catch (e) {
+    console.error(e);
+  }
+}
