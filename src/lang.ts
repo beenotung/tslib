@@ -1,21 +1,22 @@
 /**
  * Created by beenotung on 12/26/16.
  */
-import * as R from "ramda";
 import {Supplier} from "./functional";
 import {createDefer} from "./async";
 import {F1} from "./typeStub-curry";
+import {curry} from "./curry";
 
-/**
- * @deprecated
- * */
-export let getProp: ((name: string, o: any) => any)
-  | ((name: string) => (o: any) => any) = R.curry((name: string, o: any) => {
+export let getProp = curry(<A>(name: string, o: any): A => {
   if (o[name])
     return o[name];
-  else {
-    return name.split('.').reduce((acc, c) => acc[c], o);
+  let xs = name.split('.');
+  if (xs.length == 1) {
+    console.warn('key not found in object', {name: name, o: o});
+    return;
   }
+  let topLevelName = xs.shift();
+  let nextLevelName = xs.join('.');
+  return getProp(nextLevelName, o[topLevelName]);
 });
 
 export function checkedGetProp<A>(k: ObjKey, o: Obj<A>): A {
@@ -54,7 +55,7 @@ export function ifNullF<A>(a: A, f: Supplier<A>): A {
  * */
 export async function ifNullFAsync<A>(a: A, f: Supplier<Promise<A>>): Promise<A> {
   /* not using Promise.resolve(a) directly to avoid flattening a when a is a promise */
-  let defer = createDefer<A,any>();
+  let defer = createDefer<A, any>();
   if (a) {
     defer.resolve(a);
   } else {
@@ -67,14 +68,14 @@ export function bindFunction(f: Function): Function {
   return f.bind(f);
 }
 
-export function caseLookup<A,B>(cases: Array<[A, B]>, target: A): B {
+export function caseLookup<A, B>(cases: Array<[A, B]>, target: A): B {
   let xss = cases.filter(xs => xs[0] == target);
   if (xss.length == 1) {
     return xss[0][1];
   } else throw new Error('expect only 1 match, number of match:' + xss.length);
 }
 
-export function caseFunctionLookup<A,B>(cases: Array<[A, () => B]>, target: A): B {
+export function caseFunctionLookup<A, B>(cases: Array<[A, () => B]>, target: A): B {
   return caseLookup(cases, target)();
 }
 
@@ -101,7 +102,7 @@ export function objForEach<A>(f: (a?: A, k?: ObjKey, o?: Obj<A>) => void): (o: O
   return o => Object.keys(o).forEach(x => f(o[x], x, o));
 }
 
-export function objMap<A,B>(f: (a?: A, k?: ObjKey, o?: Obj<A>) => B): (o: Obj<A>) => B[] {
+export function objMap<A, B>(f: (a?: A, k?: ObjKey, o?: Obj<A>) => B): (o: Obj<A>) => B[] {
   return o => Object.keys(o).map(x => f(o[x], x, o));
 }
 
@@ -157,7 +158,7 @@ export function copyToArray<A>(dest: Array<A>, destOffset = 0, src: ArrayLike<A>
   return dest;
 }
 
-let nFuncs = <F1<Function,Function>[]> [];
+let nFuncs = <F1<Function, Function>[]> [];
 
 export function genFunction(n: number, f: Function): Function {
   if (n < 1)

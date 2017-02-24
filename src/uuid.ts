@@ -1,5 +1,5 @@
 /**
- * Created by beenotung on 1/21/17.
+ * https://en.wikipedia.org/wiki/Universally_unique_identifier
  */
 export function is_uuid(s: string): boolean {
   let ss = s.split('-');
