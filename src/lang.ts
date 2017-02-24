@@ -6,33 +6,38 @@ import {createDefer} from "./async";
 import {F1} from "./typeStub-curry";
 import {curry} from "./curry";
 
-export let getProp = curry(<A>(name: string, o: any): A => {
+export let deepGetProp = curry(<A>(name: string, o: any): A => {
   if (o[name])
     return o[name];
   let xs = name.split('.');
   if (xs.length == 1) {
-    console.warn('key not found in object', {name: name, o: o});
-    return;
+    let message = `key '${name}' not found in object`;
+    console.warn(message, {name: name, o: o});
+    throw new TypeError(message);
   }
   let topLevelName = xs.shift();
   let nextLevelName = xs.join('.');
-  return getProp(nextLevelName, o[topLevelName]);
+  return deepGetProp(nextLevelName, o[topLevelName]);
 });
-
+export function hasProp<A>(k: ObjKey, o: Obj<A>): boolean {
+  if (o[k])
+    return true;
+  if (Array.isArray(o)) {
+    return (<any[]>o).indexOf(k) != -1;
+  }
+  return Object.keys(o).filter(x => x == k).length != 0;
+}
 export function checkedGetProp<A>(k: ObjKey, o: Obj<A>): A {
-  if (o[k] || Object.keys(o).indexOf(<string>k) != -1) {
+  if (hasProp(k, o))
     return o[k];
-  }
-  else {
+  else
     throw new TypeError(`property '${k}' does not exist in the object.`);
-  }
 }
 export function getPropWithDefault<A>(v: A, k: ObjKey, o: Obj<A>): A {
-  try {
-    return checkedGetProp(k, o);
-  } catch (e) {
+  if (hasProp(k, o))
+    return o[k];
+  else
     return v;
-  }
 }
 
 export function first_non_null<A>(...args: A[]): A | null {
@@ -237,5 +242,12 @@ export function tryCall(f: Function, ...args: any[]) {
     return f(...args);
   } catch (e) {
     console.error(e);
+  }
+}
+export function tryWithDefault<A>(f: Function, defaultValue: A, args: any[]): A {
+  try {
+    return f(...args)
+  } catch (e) {
+    return defaultValue;
   }
 }
