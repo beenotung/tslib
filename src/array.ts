@@ -7,6 +7,16 @@ export function clear<A>(xs: A[]): A[] {
   return xs.splice(0, xs.length);
 }
 
+/**
+ * inplace replace all element in the array
+ * @return the old elements
+ * */
+export function replace<A>(dest: A[], src: A[]): A[] {
+  let old = clear(dest);
+  dest.push(...src);
+  return old;
+}
+
 export function includes<A>(x: A, xs: A[]): boolean {
   return xs.indexOf(x) !== -1;
 }
