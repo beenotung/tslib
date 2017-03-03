@@ -13,10 +13,9 @@ export namespace Random {
     return xs[nextInt(xs.length, 0)];
   }
 
-  export function nextDate(after?: Date): Date {
-    if (after) {
-      return new Date(nextInt(Number.MAX_SAFE_INTEGER, after.getTime()));
-    }
-    return new Date(nextInt());
+  export function nextDate(after = new Date('2016-12-12'), before = new Date('2018-12-12')): Date {
+    let diff = before.getTime() - after.getTime();
+    let time = Random.nextInt(after.getTime() + diff, after.getTime());
+    return new Date(time);
   }
 }
