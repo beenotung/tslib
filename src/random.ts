@@ -12,4 +12,11 @@ export namespace Random {
   export function element<A>(xs: A[]): A {
     return xs[nextInt(xs.length, 0)];
   }
+
+  export function nextDate(after?: Date): Date {
+    if (after) {
+      return new Date(nextInt(Number.MAX_SAFE_INTEGER, after.getTime()));
+    }
+    return new Date(nextInt());
+  }
 }
