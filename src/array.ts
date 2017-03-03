@@ -58,3 +58,7 @@ export function shiftN(n: number, xs: any[]): void {
 export function shiftUntilN(n: number, xs: any[]): void {
   forI(_ => xs.shift(), xs.length - n);
 }
+
+export function last<A>(xs: A[]): A {
+  return xs[xs.length - 1];
+}
