@@ -251,3 +251,12 @@ export function tryWithDefault<A>(f: Function, defaultValue: A, args: any[]): A 
     return defaultValue;
   }
 }
+
+export type ChainObject<A> = (f: (a: A) => void) => ChainObject<A>;
+export function chainObject<A>(a: A): ChainObject<A> {
+  let res = (f: (a: A) => void) => {
+    f(a);
+    return res;
+  };
+  return res;
+}
