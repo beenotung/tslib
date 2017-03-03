@@ -228,6 +228,12 @@ export function forI(f: (i: number) => void, end: number, start = 0) {
   }
 }
 
+export function mapI<A>(f: (i: number) => A, size: number): A[] {
+  let res = new Array<A>(size);
+  forI(i => res[i] = f(i), size, 0);
+  return res;
+}
+
 /** apply the function without throwing exception */
 export function tryApply(f: Function, args: any[]) {
   try {

@@ -8,4 +8,8 @@ export namespace Random {
   export function nextNP1() {
     return Math.random() * 2 - 1;
   }
+
+  export function element<A>(xs: A[]): A {
+    return xs[nextInt(xs.length, 0)];
+  }
 }
