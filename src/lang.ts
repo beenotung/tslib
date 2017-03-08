@@ -266,3 +266,10 @@ export function chainObject<A>(a: A): ChainObject<A> {
   };
   return res;
 }
+
+export interface EmptyConstructor<A> {
+  new(): A;
+}
+export interface AnyConstructor<A> {
+  new(...args: any[]): A;
+}
