@@ -210,6 +210,10 @@ export function ensure_enum_has_s(e: any, s: string): void {
   }
 }
 
+export function isDefined(a: any): boolean {
+  return a !== null && a !== void 0;
+}
+
 export function isNumber(i: any): boolean {
   return Number.isFinite(+i);
 }
