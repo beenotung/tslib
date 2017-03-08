@@ -32,7 +32,7 @@ export function autoCurry<A extends Function>(f: Function): A {
  *       then apply them to the result of f
  *   else take all param, wait for extra param
  * */
-function partial<A extends Function,R>(f: Function, arity: number, acc: A[]|IArguments): A|R {
+function partial<A extends Function, R>(f: Function, arity: number, acc: A[] | IArguments): A | R {
   let next = function partialNext() {
     let args = arguments;
     let m = args.length;
@@ -44,5 +44,5 @@ function partial<A extends Function,R>(f: Function, arity: number, acc: A[]|IArg
     }
     return result;
   };
-  return <A|R><any> next;
+  return <A | R><any> next;
 }

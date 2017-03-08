@@ -277,3 +277,11 @@ export interface EmptyConstructor<A> {
 export interface AnyConstructor<A> {
   new(...args: any[]): A;
 }
+
+export function _if(f: Function): (b: boolean) => void {
+  return b => {
+    if (b) {
+      f()
+    }
+  }
+}

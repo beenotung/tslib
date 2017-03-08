@@ -38,9 +38,9 @@ export let setProp = curry(<A>(a: A, k: ObjKey, o: Obj<A>): Obj<A> => {
   return o;
 });
 export let length = curry(<A>(x: ArrayLike<A>): number => x.length);
-export let filter = curry(<A>(f: CurryF1<A,boolean>, xs: A[]): A[] => xs.filter(f));
-export let compose = curry(<A,B,C>(f: CurryF1<B,C>, g: CurryF1<A,B>, a: A): C => f(g(a)));
-export let flip = curry(<A,B,C>(f: CurryF2<A,B,C>) => (b: B) => (a: A): C => f(a, b));
+export let filter = curry(<A>(f: CurryF1<A, boolean>, xs: A[]): A[] => xs.filter(f));
+export let compose = curry(<A, B, C>(f: CurryF1<B, C>, g: CurryF1<A, B>, a: A): C => f(g(a)));
+export let flip = curry(<A, B, C>(f: CurryF2<A, B, C>) => (b: B) => (a: A): C => f(a, b));
 export let lift = curry(<A>(a: A) => (b: any) => a);
 export let compose2 = compose(compose, compose);
 export let odd = curry((x: number) => x % 2 == 1);
@@ -50,7 +50,7 @@ export let countWhere = curry(compose2(length, filter));
  * @remark side effect
  * apply2 :: (*->a) -> (a->b) -> a -> b
  * */
-export let apply2 = curry(<A,B>(f: Function, g: CurryF1<A,B>, x: A): B => {
+export let apply2 = curry(<A, B>(f: Function, g: CurryF1<A, B>, x: A): B => {
   f(x);
   return g(x)
 });
@@ -58,7 +58,7 @@ export let apply2 = curry(<A,B>(f: Function, g: CurryF1<A,B>, x: A): B => {
  * @example echoF (console.log) (1) ~> console.log(1) +> return 1
  * */
 export let echoF = flip(apply2)(id);
-export let symbolFs = new Map<string,CurryF2<any,any,any>>();
+export let symbolFs = new Map<string, CurryF2<any, any, any>>();
 export let isFunction = (x: any) => typeof x === 'function';
 export let isNumber = (x: any) => typeof x === 'number';
 export let isString = (x: any) => typeof x === 'string';
@@ -90,7 +90,7 @@ export let lt = curry((a: number | string, b: number | string): boolean => b < a
 /**
  * first :: (a->Bool) -> [a] -> Maybe a
  * */
-export let first = curry(<A>(f: CurryF1<A,boolean>, xs: A[]): Maybe<A> => {
+export let first = curry(<A>(f: CurryF1<A, boolean>, xs: A[]): Maybe<A> => {
   for (let x of xs) {
     if (f(x))
       return just(x);
@@ -100,7 +100,7 @@ export let first = curry(<A>(f: CurryF1<A,boolean>, xs: A[]): Maybe<A> => {
 /**
  * any :: (a->Bool) -> [a] -> Bool
  * */
-export let any = curry(<A>(f: CurryF1<A,boolean>, xs: A[]) => {
+export let any = curry(<A>(f: CurryF1<A, boolean>, xs: A[]) => {
   for (let x of xs) {
     if (f(x))
       return true;
@@ -112,7 +112,7 @@ export let any = curry(<A>(f: CurryF1<A,boolean>, xs: A[]) => {
  * @remark side effect
  * define infix operator (binary function)
  * */
-export let defineSymbolF = curry(<A,B,C>(name: string, f: CurryF2<A,B,C>): CurryF2<A,B,C> => {
+export let defineSymbolF = curry(<A, B, C>(name: string, f: CurryF2<A, B, C>): CurryF2<A, B, C> => {
   symbolFs.set(name, f);
   return f;
 });
@@ -132,14 +132,14 @@ export let divMod = curry((a: number, b: number): [number, number] => {
   let d = Math.floor((b / a));
   return [d, b - d * a];
 });
-export let symbolF = curry(<A,B,C>(name: string): CurryF2<A,B,C> => symbolFs.get(name));
-export let composeFs = curry(<A>(fs: CurryF1<A,A>[], acc: A) => {
+export let symbolF = curry(<A, B, C>(name: string): CurryF2<A, B, C> => symbolFs.get(name));
+export let composeFs = curry(<A>(fs: CurryF1<A, A>[], acc: A) => {
   for (let i = fs.length - 1; i >= 0; i--) {
     acc = fs[i](acc);
   }
   return acc;
 });
-export let chainFs = curry(<A>(fs: CurryF1<A,A>[], acc: A) => {
+export let chainFs = curry(<A>(fs: CurryF1<A, A>[], acc: A) => {
   for (let f of fs) {
     acc = f(acc);
   }
@@ -159,7 +159,7 @@ export let doAll = curry(<A>(f: Consumer<A>, args: A[]) => {
 /**
  * flatten the iterators as a single array
  * */
-export function iteratorsToArray <A>(itrs: IterableIterator<A>[]): A[] {
+export function iteratorsToArray<A>(itrs: IterableIterator<A>[]): A[] {
   let xs = <A[]> [];
   for (let itr of itrs)
     for (let x of itr)
@@ -179,9 +179,9 @@ export let concatWithoutDup = curry(<A>(as: A[], bs: A[]): A[] => {
   return iteratorsToArray<A>([acc.values()]);
 });
 
-export let map = curry(<A,B>(f: CurryF1<A,B>, as: A[]): B[] => as.map(f));
+export let map = curry(<A, B>(f: CurryF1<A, B>, as: A[]): B[] => as.map(f));
 
-let getOrSetDefault = curry(<K,V>(v: V, k: K, m: Map<K,V>): V => {
+let getOrSetDefault = curry(<K, V>(v: V, k: K, m: Map<K, V>): V => {
   if (m.has(k))
     return m.get(k);
   m.set(k, v);
@@ -191,8 +191,8 @@ let getOrSetDefault = curry(<K,V>(v: V, k: K, m: Map<K,V>): V => {
 /**
  * groupBy :: (a->k) -> [a] -> Map k [a]
  * */
-export let groupBy = curry(<A,K>(f: F1<A,K>, xs: A[]): Map<K,A[]> => {
-  let res = new Map<K,A[]>();
+export let groupBy = curry(<A, K>(f: F1<A, K>, xs: A[]): Map<K, A[]> => {
+  let res = new Map<K, A[]>();
   for (let x of xs) {
     getOrSetDefault([], f(x), res).push(x);
   }
@@ -202,13 +202,13 @@ export let groupBy = curry(<A,K>(f: F1<A,K>, xs: A[]): Map<K,A[]> => {
 /**
  * foldl :: (b->a->b) -> b -> [a] -> b
  * */
-export let foldl = curry(<A,B>(f: F2<B,A,B>, acc: B, xs: A[]): B => {
+export let foldl = curry(<A, B>(f: F2<B, A, B>, acc: B, xs: A[]): B => {
   for (let i = 0, n = xs.length; i < n; i++) {
     acc = f(acc, xs[i]);
   }
   return acc;
 });
-export let foldl1 = curry(<A>(f: F2<A,A,A>, xs: A[]): A => {
+export let foldl1 = curry(<A>(f: F2<A, A, A>, xs: A[]): A => {
   let n = xs.length;
   if (n == 0)
     throw new TypeError('xs should be non-empty ArrayLike<*>');
@@ -252,8 +252,8 @@ export let mergeObjs = curry(<A>(xs: A[]): A => Object.assign({}, ...xs));
 /**
  * groupByAll :: (a->k) -> [[a]] -> Map k [a]
  * */
-export let groupByAll = curry(<A,K>(f: F1<A,K>, xss: A[][]): Map<K,A[]> => {
-  let res = new Map<K,A[]>();
+export let groupByAll = curry(<A, K>(f: F1<A, K>, xss: A[][]): Map<K, A[]> => {
+  let res = new Map<K, A[]>();
   for (let xs of xss) {
     for (let x of xs) {
       getOrSetDefault([], f(x), res).push(x);
@@ -274,6 +274,6 @@ export let update = curry(<A>(f: Consumer<A>, as: A[]) => {
   return as;
 });
 
-export let map2 = curry(<A,B>(f: (a: A) => B, xss: A[][]): B[][] => {
+export let map2 = curry(<A, B>(f: (a: A) => B, xss: A[][]): B[][] => {
   return xss.map(xs => xs.map(f));
 });

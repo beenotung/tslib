@@ -1,4 +1,5 @@
 import {forI} from "./lang";
+import {Maybe} from "./maybe";
 /**
  * inplace delete all element from the array
  * @return old elements
@@ -59,6 +60,6 @@ export function shiftUntilN(n: number, xs: any[]): void {
   forI(_ => xs.shift(), xs.length - n);
 }
 
-export function last<A>(xs: A[]): A {
-  return xs[xs.length - 1];
+export function last<A>(xs: A[]): Maybe<A> {
+  return Maybe.fromNullable(xs[xs.length - 1]);
 }
