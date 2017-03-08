@@ -9,6 +9,9 @@ export namespace Random {
     return Math.random() * 2 - 1;
   }
 
+  /**
+   * Nullable
+   * */
   export function element<A>(xs: A[]): A {
     return xs[nextInt(xs.length, 0)];
   }
