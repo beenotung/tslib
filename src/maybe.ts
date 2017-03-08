@@ -1,5 +1,4 @@
 import {isDefined} from "./lang";
-import fromNullable = Maybe.fromNullable;
 import {Either, left, right} from "./either";
 /**
  * Created by beenotung on 2/16/17.
@@ -21,7 +20,7 @@ export const Nothing: Maybe<any> = {
   , isJust: false
   , isNothing: true
   , map: () => Nothing
-  , withDefault: a => fromNullable(a)
+  , withDefault: a => Maybe.fromNullable(a)
   , then: () => {
     return Nothing;
   }
