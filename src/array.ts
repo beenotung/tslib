@@ -1,4 +1,4 @@
-import {forI} from "./lang";
+import {forI, mapI} from "./lang";
 import {Maybe} from "./maybe";
 /**
  * inplace delete all element from the array
@@ -60,6 +60,16 @@ export function shiftUntilN(n: number, xs: any[]): void {
   forI(_ => xs.shift(), xs.length - n);
 }
 
-export function last<A>(xs: A[]): Maybe<A> {
+export function last<A>(xs: A[], skipCheck = false): A {
+  if (skipCheck || xs.length == 0)
+    throw new TypeError("xs is not non-empty array");
+  return xs[xs.length - 1];
+}
+
+export function maybeLast<A>(xs: A[]): Maybe<A> {
   return Maybe.fromNullable(xs[xs.length - 1]);
+}
+
+export function fromFileList(files: FileList): File[] {
+  return mapI(i => files.item(i), files.length);
 }
