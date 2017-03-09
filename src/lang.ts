@@ -271,10 +271,7 @@ export function chainObject<A>(a: A): ChainObject<A> {
   return res;
 }
 
-export interface EmptyConstructor<A> {
-  new(): A;
-}
-export interface AnyConstructor<A> {
+export interface Type<A>extends Function {
   new(...args: any[]): A;
 }
 

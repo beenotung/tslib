@@ -1,14 +1,14 @@
 import {Component} from "@angular/core";
 import {NavController, NavParams} from "ionic-angular";
-import {AnyConstructor} from "./lang";
+import {Type} from "./lang";
 
 /**
  * for the sake of type check on the param
  * */
-export interface ParabledPage<IParam>  extends Component {
+export interface ParabledPage<IParam> extends Component {
   paramData: IParam;
 }
-export function navPushPage<IParam>(navCtrl: NavController, page: AnyConstructor<ParabledPage<IParam>>, param?: IParam) {
+export function navPushPage<IParam>(navCtrl: NavController, page: Type<ParabledPage<IParam>>, param?: IParam) {
   if (param === void 0) {
     return navCtrl.push(page)
   } else {
