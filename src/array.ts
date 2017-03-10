@@ -73,3 +73,7 @@ export function maybeLast<A>(xs: A[]): Maybe<A> {
 export function fromFileList(files: FileList): File[] {
   return mapI(i => files.item(i), files.length);
 }
+
+export function array_contains<A>(xs: A[], x: A) {
+  return xs.indexOf(x) != -1;
+}
