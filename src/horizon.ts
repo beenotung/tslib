@@ -1,5 +1,10 @@
-import {Horizon, TableObject, OldRecord, DataType} from "../../typeStub-horizon-client/index";
 import {Observable} from "rxjs";
+import {Http} from "@angular/http";
+import {createDefer} from "./async";
+import {CustomBrowserXhr} from "./angular";
+import * as typeStubHorizon from "../../typeStub-horizon-client/index";
+import {DataType, OldRecord, TableObject} from "../../typeStub-horizon-client/index";
+declare let Horizon: typeStubHorizon.HorizonFunc;
 
 /**
  * @remark Hbase style operation should be deprecated, since horizon support partial update
@@ -24,7 +29,7 @@ export abstract class Document<A> implements OldRecord {
 export abstract class Table<A> {
   tableObject: TableObject<A>;
 
-  constructor(hz: Horizon,
+  constructor(hz: typeStubHorizon.Horizon,
               public name: string,) {
     this.tableObject = hz<A>(name);
   }
@@ -37,7 +42,7 @@ export abstract class Table<A> {
       .fetch();
   }
 
-  deletes(keyOrDoc: string|Document<A>): Observable<any> {
+  deletes(keyOrDoc: string | Document<A>): Observable<any> {
     let o = <Document<A>>{};
     if (typeof keyOrDoc == 'string') {
       o.id = keyOrDoc;
@@ -48,10 +53,66 @@ export abstract class Table<A> {
     return this.tableObject.update(<any><Document<A>>o);
   }
 }
-export async function newHorizonUUID(hz: Horizon, tableName: string = 'uuid'): Promise<string> {
+
+export async function newHorizonUUID(hz: typeStubHorizon.Horizon, tableName: string = 'uuid'): Promise<string> {
   return hz(tableName).store({}).toPromise().then(x => x.id);
 }
-export function removeAll(hz: Horizon, tableName: string): Observable<string> {
+
+export function removeAll(hz: typeStubHorizon.Horizon, tableName: string): Observable<string> {
   let table = hz<{ id: string }>(tableName);
   return table.fetch().mergeMap(xs => table.removeAll(xs).map(x => x.id));
+}
+
+/**
+ * load horizon using angular http
+ * will not auto retry
+ * */
+export let horizon_api_size = 266826;
+export let is_debug_load_horizon = false;
+export async function load_horizon_ng(http: Http, url: string = "http://localhost:8181/horizon/horizon.js", preF?: Function): Promise<void> {
+  if (typeof preF === 'function') {
+    preF();
+  }
+
+  /* as demo to monitor the progress */
+  let sub = CustomBrowserXhr.progressEventEmitter.subscribe((event: any) => {
+    if (is_debug_load_horizon)
+      console.log(event.loaded, event.loaded / horizon_api_size * 100 + '%');
+  });
+
+  let defer = createDefer<void, string>();
+  http.get(url)
+    .map(res => res.text())
+    .subscribe(
+      data => {
+        let script = document.createElement('script');
+        script.innerText = data;
+        document.head.appendChild(script);
+        if (typeof Horizon != 'function') {
+          defer.reject('failed to inject horizon script, loaded Horizon is not function');
+        } else {
+          horizon_api_size = data.length;
+          defer.resolve(void 0);
+        }
+      }
+      , defer.reject
+      , () => sub.unsubscribe()
+    );
+  return defer.promise;
+}
+
+/**
+ * load horizon without angular
+ * will not auto retry
+ * */
+export async function load_horizon(url: string) {
+  let data = await fetch(url).then(x => x.text());
+  let script = document.createElement('script');
+  script.innerText = data;
+  document.head.appendChild(script);
+  if (typeof Horizon != 'function') {
+    throw new Error('failed to inject horizon script');
+  }
+  horizon_api_size = data.length;
+  return 'ok';
 }

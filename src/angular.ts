@@ -1,7 +1,8 @@
-import {Component} from "@angular/core";
+import {Component, EventEmitter, Injectable} from "@angular/core";
 import {NavController, NavParams} from "ionic-angular";
 import {Type} from "./lang";
 import {ControlValueAccessor} from "@angular/forms";
+import {BrowserXhr} from "@angular/http";
 
 /**
  * for the sake of type check on the param
@@ -66,5 +67,22 @@ export class CommonControlValueAccessor<T> implements ControlValueAccessor {
 
   registerOnTouched(fn: any): void {
     this.onTouchedCallback = fn;
+  }
+}
+
+@Injectable()
+export class CustomBrowserXhr extends BrowserXhr {
+  static progressEventEmitter = new EventEmitter<ProgressEvent>();
+
+  constructor() {
+    super()
+  }
+
+  build(): any {
+    let xhr = super.build();
+    xhr.onprogress = (event: any) => {
+      CustomBrowserXhr.progressEventEmitter.emit(event);
+    };
+    return <any>(xhr);
   }
 }
