@@ -4,7 +4,7 @@ import {createDefer} from "./async";
 import {CustomBrowserXhr} from "./angular";
 import * as typeStubHorizon from "../../typeStub-horizon-client/index";
 import {DataType, OldRecord, TableObject} from "../../typeStub-horizon-client/index";
-declare let Horizon: typeStubHorizon.HorizonFunc;
+declare let Horizon: typeStubHorizon.Horizon;
 
 /**
  * @remark Hbase style operation should be deprecated, since horizon support partial update
