@@ -282,3 +282,8 @@ export function _if(f: Function): (b: boolean) => void {
     }
   }
 }
+export function applyIf<A, B>(a: A | false | 0 | null | void, f: F1<A, B>): B | void {
+  if (a) {
+    return f(a);
+  }
+}
