@@ -8,5 +8,8 @@
   },
   "author": "Beeno Tung",
   "license": "ISC",
-  "dependencies": {}
+  "dependencies": {},
+  "devDependencies": {
+    "tslint-eslint-rules": "^4.0.0"
+  }
 }

@@ -2,10 +2,10 @@
  * Created by beenotung on 12/26/16.
  */
 
-import {ObjKey, Obj} from "./lang";
-import {id} from "./curry";
-import {CurryF1, CurryF2, F2, F1} from "./typeStub-curry";
-import {curry} from "./curry";
+import {ObjKey, Obj} from './lang';
+import {id} from './curry';
+import {CurryF1, CurryF2, F2, F1} from './typeStub-curry';
+import {curry} from './curry';
 
 export type Consumer<A> = (a: A) => void;
 export type Supplier<A> = () => A;
@@ -156,14 +156,14 @@ export let doAll = curry(<A>(f: Consumer<A>, args: A[]) => {
   }
 });
 
+
 /**
  * flatten the iterators as a single array
  * */
 export function iteratorsToArray<A>(itrs: IterableIterator<A>[]): A[] {
   let xs = <A[]> [];
   for (let itr of itrs)
-    for (let x of itr)
-      xs.push(x);
+    xs.push(...Array.from(itr));
   return xs;
 }
 
