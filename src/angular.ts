@@ -10,12 +10,8 @@ import {BrowserXhr} from "@angular/http";
 export interface ParabledPage<IParam> extends Component {
   paramData: IParam;
 }
-export function navPushPage<IParam>(navCtrl: NavController, page: Type<ParabledPage<IParam>>, param?: IParam) {
-  if (param === void 0) {
-    return navCtrl.push(page)
-  } else {
-    return navCtrl.push(page, param)
-  }
+export function navPushPage<IParam>(navCtrl: NavController, page: Type<ParabledPage<IParam>>, param?: IParam, done?: Function) {
+  return navCtrl.push(page, param, {}, done);
 }
 
 export declare class TypedNavParams<A> extends NavParams {
