@@ -26,3 +26,8 @@ export function strToCapWords(s: string): string {
   }, s.length);
   return res;
 }
+export function string_to_chars(s: string): string[] {
+  let res: string[] = [];
+  forI(i => res.push(s[i]), s.length);
+  return res;
+}

@@ -287,11 +287,6 @@ export function applyIf<A, B>(a: A | false | 0 | null | void, f: F1<A, B>): B | 
     return f(a);
   }
 }
-export function string_to_chars(s: string): string[] {
-  let res: string[] = [];
-  forI(i => res.push(s[i]), s.length);
-  return res;
-}
 export function nodup<A>(xs: A[]): A[] {
   let s = new Set();
   xs.forEach(x => s.add(x));
