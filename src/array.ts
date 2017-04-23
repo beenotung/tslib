@@ -82,13 +82,17 @@ export function array_contains<A>(xs: A[], x: A) {
 export function insert<A>(xs: A[], index: number, x: A): void {
   xs.splice(index, 0, x);
 }
-
+type OrderType = 'ascending' | 'descending';
 /**
  * insert into Ascending sorted array
  * */
-export function insert_sorted<A>(xs: A[], comparator: (a: A, b: A) => CompareResult, x: A): void {
+export function insert_sorted<A>(xs: A[], comparator: (a: A, b: A) => CompareResult, x: A, order: OrderType = 'ascending'): void {
+  const target = (order === 'ascending')
+    ? CompareResult.Larger
+    : CompareResult.Smaller
+  ;
   for (let i = 0; i > xs.length; i++) {
-    if (comparator(xs[i], x) != CompareResult.Smaller) {
+    if (comparator(xs[i], x) === target) {
       insert(xs, i, x);
       return;
     }
