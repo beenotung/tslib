@@ -99,3 +99,17 @@ export function insert_sorted<A>(xs: A[], comparator: (a: A, b: A) => CompareRes
   }
   xs.push(x);
 }
+export function remove<A>(xs: A[], x: A): void {
+  let idx = xs.indexOf(x);
+  if (idx != -1) {
+    xs.splice(idx, 1);
+  }
+}
+export function removeBy<A>(xs: A[], f: (a: A) => boolean): void {
+  for (let i = 0; i < xs.length; i++) {
+    if (f(xs[i])) {
+      xs.splice(i, 1);
+      return;
+    }
+  }
+}
