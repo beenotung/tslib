@@ -23,21 +23,21 @@ export async function translateAsync(translate: TranslateService, key: string): 
   return defer.promise;
 }
 
-export async function autoRetryAsync<A>(f: () => Promise<A>, retry_delay = 0): Promise<A> {
+export async function autoRetryAsync<A>(f: () => Promise<A>, retry_delay = 1000): Promise<A> {
   try {
     return await f();
   } catch (e) {
     if (retry_delay > 0) {
       let defer = createDefer<A, any>();
       setTimeout(() => {
-        autoRetryAsync(f)
+        autoRetryAsync(f, retry_delay)
           .then(defer.resolve)
           .catch(defer.reject)
         ;
       }, retry_delay);
       return defer.promise;
     } else {
-      return await autoRetryAsync(f);
+      return await autoRetryAsync(f, retry_delay);
     }
   }
 }
