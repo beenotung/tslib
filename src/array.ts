@@ -91,7 +91,7 @@ export function insert_sorted<A>(xs: A[], comparator: (a: A, b: A) => CompareRes
     ? CompareResult.Larger
     : CompareResult.Smaller
   ;
-  for (let i = 0; i > xs.length; i++) {
+  for (let i = 0; i < xs.length; i++) {
     if (comparator(xs[i], x) === target) {
       insert(xs, i, x);
       return;
