@@ -2,13 +2,14 @@
  * Created by beenotung on 12/26/16.
  */
 
-import {ObjKey, Obj} from './lang';
-import {id} from './curry';
-import {CurryF1, CurryF2, F2, F1} from './typeStub-curry';
-import {curry} from './curry';
+import {Obj, ObjKey} from "./lang";
+import {curry, id} from "./curry";
+import {CurryF1, CurryF2, F1, F2} from "./typeStub-curry";
 
 export type Consumer<A> = (a: A) => void;
 export type Supplier<A> = () => A;
+
+export type AsyncSupplier<A> = () => Promise<A>;
 
 /** take all args (ignore arity) */
 export let apply = curry((f: Function) => function () {

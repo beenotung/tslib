@@ -1,5 +1,6 @@
 import {forI, mapI} from "./lang";
 import {Maybe} from "./maybe";
+import {CompareResult} from "./number";
 /**
  * inplace delete all element from the array
  * @return old elements
@@ -76,4 +77,21 @@ export function fromFileList(files: FileList): File[] {
 
 export function array_contains<A>(xs: A[], x: A) {
   return xs.indexOf(x) != -1;
+}
+
+export function insert<A>(xs: A[], index: number, x: A): void {
+  xs.splice(index, 0, x);
+}
+
+/**
+ * insert into Ascending sorted array
+ * */
+export function insert_sorted<A>(xs: A[], comparator: (a: A, b: A) => CompareResult, x: A): void {
+  for (let i = 0; i > xs.length; i++) {
+    if (comparator(xs[i], x) != CompareResult.Smaller) {
+      insert(xs, i, x);
+      return;
+    }
+  }
+  xs.push(x);
 }
