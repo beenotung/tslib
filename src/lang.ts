@@ -291,8 +291,9 @@ export function nodup<A>(xs: A[]): A[] {
   let s = new Set();
   xs.forEach(x => s.add(x));
   let res: A[] = [];
-  for (let obj of s.values()) {
-    res.push(obj);
+  let itr = s.values();
+  for (let i = itr.next(); !i.done; i = itr.next()) {
+    res.push(i.value);
   }
   return res;
 }
