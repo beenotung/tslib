@@ -1,10 +1,10 @@
 /**
  * Created by beenotung on 12/26/16.
  */
-import {Supplier} from "./functional";
-import {createDefer} from "./async";
-import {F1} from "./typeStub-curry";
-import {curry} from "./curry";
+import {Supplier} from './functional';
+import {createDefer} from './async';
+import {F1} from './typeStub-curry';
+import {curry} from './curry';
 
 export let deepGetProp = curry(<A>(name: string, o: any): A => {
   if (o[name])
@@ -200,7 +200,7 @@ export function enum_has_s(e: any, s: string): boolean {
 }
 export function ensure_enum_has_s(e: any, s: string): void {
   if (!enum_has_s(e, s)) {
-    let err = new TypeError("invalid value in enum");
+    let err = new TypeError('invalid value in enum');
     console.error({
       error: err
       , enum: e
@@ -219,7 +219,7 @@ export function isNumber(i: any): boolean {
 }
 export function toNumber(i: any): number {
   if (!isNumber(i))
-    throw new TypeError("i is not a number: " + i);
+    throw new TypeError('i is not a number: ' + i);
   return +i;
 }
 
@@ -296,4 +296,8 @@ export function nodup<A>(xs: A[]): A[] {
     res.push(i.value);
   }
   return res;
+}
+export function gen_noop<A>(): (a: A) => void {
+  return () => {
+  };
 }
