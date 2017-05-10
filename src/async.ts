@@ -1,5 +1,5 @@
-import {Consumer} from "./functional";
-import {TranslateService} from "ng2-translate";
+import {Consumer} from './functional';
+import {TranslateService} from 'ng2-translate';
 /**
  * Created by beenotung on 12/26/16.
  */
@@ -40,4 +40,17 @@ export async function autoRetryAsync<A>(f: () => Promise<A>, retry_delay = 1000)
       return await autoRetryAsync(f, retry_delay);
     }
   }
+}
+
+export async function waitFor<A>(pred: () => boolean | any, f: () => A): Promise<A> {
+  const defer = createDefer<A, any>();
+  const check = () => {
+    if (pred()) {
+      defer.resolve(f());
+    } else {
+      setTimeout(check)
+    }
+  };
+  check();
+  return defer.promise;
 }
