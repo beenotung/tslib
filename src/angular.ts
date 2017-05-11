@@ -1,8 +1,8 @@
-import {Component, EventEmitter, Injectable} from "@angular/core";
-import {NavController, NavParams} from "ionic-angular";
-import {Type} from "./lang";
-import {ControlValueAccessor} from "@angular/forms";
-import {BrowserXhr} from "@angular/http";
+import {Component, EventEmitter, Injectable} from '@angular/core';
+import {NavController, NavParams} from 'ionic-angular';
+import {Type} from './lang';
+import {ControlValueAccessor} from '@angular/forms';
+import {BrowserXhr} from '@angular/http';
 
 /**
  * for the sake of type check on the param
@@ -81,4 +81,8 @@ export class CustomBrowserXhr extends BrowserXhr {
     };
     return <any>(xhr);
   }
+}
+
+export function ngRunLater(ngZone: NgZone, f: () => void) {
+  setTimeout(() => ngZone.run(f));
 }
