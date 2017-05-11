@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Injectable} from '@angular/core';
+import {Component, EventEmitter, Injectable, NgZone} from '@angular/core';
 import {NavController, NavParams} from 'ionic-angular';
 import {Type} from './lang';
 import {ControlValueAccessor} from '@angular/forms';
