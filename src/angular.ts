@@ -1,27 +1,6 @@
-import {Component, EventEmitter, Injectable, NgZone} from '@angular/core';
-import {NavController, NavParams} from 'ionic-angular';
-import {Type} from './lang';
+import {EventEmitter, Injectable, NgZone} from '@angular/core';
 import {ControlValueAccessor} from '@angular/forms';
 import {BrowserXhr} from '@angular/http';
-
-/**
- * for the sake of type check on the param
- * */
-export interface ParabledPage<IParam> extends Component {
-  paramData: IParam;
-}
-export function navPushPage<IParam>(navCtrl: NavController, page: Type<ParabledPage<IParam>>, param?: IParam, done?: Function) {
-  return navCtrl.push(page, param, {}, done);
-}
-
-export declare class TypedNavParams<A> extends NavParams {
-  data: A;
-
-  get<B>(param: string): B;
-}
-export function typedNavParams<A>(navParams: NavParams): TypedNavParams<A> {
-  return navParams;
-}
 
 /**
  * to usage [(ngModel)] directly
