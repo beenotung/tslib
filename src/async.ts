@@ -51,6 +51,6 @@ export async function waitFor<A>(pred: () => boolean | any, f: () => A): Promise
       setTimeout(check)
     }
   };
-  check();
+  setTimeout(check);
   return defer.promise;
 }

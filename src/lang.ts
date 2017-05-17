@@ -237,6 +237,9 @@ export function mapI<A>(f: (i: number) => A, size: number): A[] {
   forI(i => res[i] = f(i), size, 0);
   return res;
 }
+export function repeatI<A>(f: () => A, size: number): A[] {
+  return mapI(f, size);
+}
 
 /** apply the function without throwing exception */
 export function tryApply(f: Function, args: any[]) {
