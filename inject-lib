@@ -2,5 +2,5 @@
 ## be called from client directly
 cat lib/tslib/README.md | grep '<dep>' | awk -F '"' '{print $2}' | xargs npm i -S --save-peers
 npm i -S --save-peers isomorphic-fetch ng2-charts
-npm i -D --save-dev-peers @types/isomorphic-fetch
+npm i -D --save-dev-peers @types/isomorphic-fetch tslint-eslint-rules
 npm i
