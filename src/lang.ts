@@ -304,3 +304,6 @@ export function gen_noop<A>(): (a: A) => void {
   return () => {
   };
 }
+export function cast(o: any): any {
+  return o;
+}
