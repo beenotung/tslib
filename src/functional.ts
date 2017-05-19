@@ -6,10 +6,10 @@ import {Obj, ObjKey} from "./lang";
 import {curry, id} from "./curry";
 import {CurryF1, CurryF2, F1, F2} from "./typeStub-curry";
 
-export type Consumer<A> = (a: A) => void;
-export type Supplier<A> = () => A;
+export declare type Consumer<A> = (a: A) => void;
+export declare type Supplier<A> = () => A;
 
-export type AsyncSupplier<A> = () => Promise<A>;
+export declare type AsyncSupplier<A> = () => Promise<A>;
 
 /** take all args (ignore arity) */
 export let apply = curry((f: Function) => function () {
