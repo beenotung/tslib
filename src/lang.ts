@@ -185,31 +185,6 @@ export function genFunction(n: number, f: Function): Function {
   return nFuncs[n](f);
 }
 
-/**
- * for the sake of implicit any in object index
- * */
-export function enum_i2s(e: any, i: number): string {
-  return e[i];
-}
-export function enum_s2i(e: any, s: string): number {
-  ensure_enum_has_s(e, s);
-  return e[s];
-}
-export function enum_has_s(e: any, s: string): boolean {
-  return e[s] !== void 0;
-}
-export function ensure_enum_has_s(e: any, s: string): void {
-  if (!enum_has_s(e, s)) {
-    let err = new TypeError('invalid value in enum');
-    console.error({
-      error: err
-      , enum: e
-      , value: s
-    });
-    throw err;
-  }
-}
-
 export function isDefined(a: any): boolean {
   return a !== null && a !== void 0;
 }
