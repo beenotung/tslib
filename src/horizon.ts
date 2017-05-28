@@ -2,9 +2,7 @@ import {Observable} from "rxjs";
 import {Http} from "@angular/http";
 import {createDefer} from "./async";
 import {CustomBrowserXhr} from "./angular";
-import * as typeStubHorizon from "../../typeStub-horizon-client/index";
-import {DataType, OldRecord, TableObject} from "../../typeStub-horizon-client/index";
-declare let Horizon: typeStubHorizon.Horizon;
+import {DataType, Horizon, OldRecord, TableObject} from "../../typestub-horizon-client/index";
 
 /**
  * @remark Hbase style operation should be deprecated, since horizon support partial update
@@ -26,10 +24,11 @@ export abstract class Document<A> implements OldRecord {
     Object.assign(this, o);
   }
 }
+
 export abstract class Table<A> {
   tableObject: TableObject<A>;
 
-  constructor(hz: typeStubHorizon.Horizon,
+  constructor(hz: Horizon,
               public name: string,) {
     this.tableObject = hz<A>(name);
   }
@@ -54,13 +53,17 @@ export abstract class Table<A> {
   }
 }
 
-export async function newHorizonUUID(hz: typeStubHorizon.Horizon, tableName: string = 'uuid'): Promise<string> {
+export async function newHorizonUUID(hz: Horizon, tableName: string = 'uuid'): Promise<string> {
   return hz(tableName).store({}).toPromise().then(x => x.id);
 }
 
-export function removeAll(hz: typeStubHorizon.Horizon, tableName: string): Observable<string> {
+export function removeAll(hz: Horizon, tableName: string): Observable<string> {
   let table = hz<{ id: string }>(tableName);
   return table.fetch().mergeMap(xs => table.removeAll(xs).map(x => x.id));
+}
+
+export function getHorizon(): Horizon {
+  return window['Horizon'];
 }
 
 /**
@@ -88,7 +91,7 @@ export async function load_horizon_ng(http: Http, url: string = "http://localhos
         let script = document.createElement('script');
         script.innerText = data;
         document.head.appendChild(script);
-        if (typeof Horizon != 'function') {
+        if (typeof getHorizon() != 'function') {
           defer.reject('failed to inject horizon script, loaded Horizon is not function');
         } else {
           horizon_api_size = data.length;
