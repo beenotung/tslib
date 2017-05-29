@@ -1,4 +1,5 @@
-import {forI} from "./lang";
+import {forI} from './lang';
+
 export function str_contains(pattern: string, target: string, ignore_case = false): boolean {
   if (ignore_case)
     return str_contains(pattern.toLowerCase(), target.toLowerCase());
@@ -30,4 +31,13 @@ export function string_to_chars(s: string): string[] {
   let res: string[] = [];
   forI(i => res.push(s[i]), s.length);
   return res;
+}
+
+
+/* source: https://stackoverflow.com/questions/1144783/how-to-replace-all-occurrences-of-a-string-in-javascript */
+export function escapeRegExp(str: string): string {
+  return str.replace(/([.*+?^=!:${}()|\[\]\/\\])/g, '\\$1');
+}
+export function strReplaceAll(str: string, find: string, replace: string): string {
+  return str.replace(new RegExp(escapeRegExp(find), 'g'), replace);
 }

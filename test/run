@@ -1,0 +1,3 @@
+#!/bin/bash
+../../../node_modules/typescript/bin/tsc ./encode-test.ts 
+node encode-test
