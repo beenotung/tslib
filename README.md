@@ -19,7 +19,6 @@ Do not plan to support usage from javascript directly.
 <dep> "rxjs"
 <dep> "@angular/core"
 <dep> "@angular/forms"
-<dep> "ng2-translate"
 <dep> "ionic-angular"
 
 ## Remark
