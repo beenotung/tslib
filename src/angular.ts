@@ -1,6 +1,6 @@
 import {EventEmitter, Injectable, NgZone} from '@angular/core';
 import {ControlValueAccessor} from '@angular/forms';
-import {BrowserXhr, Response} from '@angular/http';
+import {BrowserXhr} from '@angular/http';
 import {Observable} from 'rxjs/Observable';
 import {createDefer} from './async';
 
@@ -8,7 +8,7 @@ import {createDefer} from './async';
  * to usage [(ngModel)] directly
  * */
 export class CommonControlValueAccessor<T> implements ControlValueAccessor {
-  private innerValue: T;
+  protected innerValue: T;
 
   get value(): T {
     return this.innerValue
@@ -64,8 +64,19 @@ export class CustomBrowserXhr extends BrowserXhr {
   }
 }
 
-export function ngRunLater(ngZone: NgZone, f: () => void) {
-  setTimeout(() => ngZone.run(f));
+export async function ngRunLater(ngZone: NgZone, f?: () => void) {
+  const defer = createDefer();
+  setTimeout(() => {
+    if (f) {
+      ngZone.run(() => {
+        f();
+        defer.resolve(void 0);
+      });
+    } else {
+      ngZone.run(() => defer.resolve(void 0));
+    }
+  });
+  return defer.promise;
 }
 
 export async function ngObsToAsync<A>(o: Observable<A>): Promise<A> {

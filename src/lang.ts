@@ -98,6 +98,7 @@ export function deepCall(f: Function) {
 
 export interface Obj<A> {
   [k: string]: A;
+
   [k: number]: A;
 }
 
@@ -187,6 +188,9 @@ export function genFunction(n: number, f: Function): Function {
 
 export function isDefined(a: any): boolean {
   return a !== null && a !== void 0;
+}
+export function notDefined(a: any): boolean {
+  return !isDefined(a);
 }
 
 export function isNumber(i: any): boolean {

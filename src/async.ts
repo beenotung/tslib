@@ -1,4 +1,5 @@
 import {Consumer} from './functional';
+
 /**
  * Created by beenotung on 12/26/16.
  */
@@ -7,6 +8,7 @@ export class Defer<A, E> {
   resolve: Consumer<A>;
   reject: Consumer<E>
 }
+
 export function createDefer<A, E>(): Defer<A, E> {
   let res = new Defer<A, E>();
   res.promise = new Promise<A>((resolve, reject) => {
@@ -45,5 +47,11 @@ export async function waitFor<A>(pred: () => boolean | any, f: () => A): Promise
     }
   };
   setTimeout(check);
+  return defer.promise;
+}
+
+export async function later(duration = 0) {
+  const defer = createDefer();
+  setTimeout(defer.resolve, duration);
   return defer.promise;
 }
