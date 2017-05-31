@@ -6,7 +6,7 @@ import {Consumer} from './functional';
 export class Defer<A, E> {
   promise: Promise<A>;
   resolve: Consumer<A>;
-  reject: Consumer<E>
+  reject: Consumer<E>;
 }
 
 export function createDefer<A, E>(): Defer<A, E> {
@@ -43,7 +43,7 @@ export async function waitFor<A>(pred: () => boolean | any, f: () => A): Promise
     if (pred()) {
       defer.resolve(f());
     } else {
-      setTimeout(check)
+      setTimeout(check);
     }
   };
   setTimeout(check);
@@ -53,5 +53,23 @@ export async function waitFor<A>(pred: () => boolean | any, f: () => A): Promise
 export async function later(duration = 0) {
   const defer = createDefer();
   setTimeout(defer.resolve, duration);
+  return defer.promise;
+}
+
+export async function parallel_map<A, B>(as: A[], f: (a: A) => Promise<B>): Promise<B[]> {
+  const defer = createDefer<B[], any>();
+  let acc = 0;
+  let bs = [];
+  as.forEach((a, i) => {
+    f(a)
+      .then(b => {
+        bs[i] = b;
+        acc++;
+        if (acc == as.length) {
+          defer.resolve(bs);
+        }
+      })
+      .catch(defer.reject);
+  });
   return defer.promise;
 }
