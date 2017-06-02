@@ -67,15 +67,14 @@ export namespace ParallelArray {
   export function wrap<A>(xs: A[]): ParallelArray<A> {
     const res: ParallelArray<A> = <any>{};
     res.map = f => wrapPromise(parallel_map(xs, f));
-    res.unwrap = Promise.resolve(xs);
+    res.unwrap = () => Promise.resolve(xs);
     return res;
   }
 
   export function wrapPromise<A>(xs: Promise<A[]>): ParallelArray<A> {
-    Promise.isPrototypeOf()
     const res: ParallelArray<A> = <any>{};
-    res.map = f => xs.then(xs => parallel_map(xs, f));
-    res.unwrap = xs;
+    res.map = f => wrapPromise(xs.then(xs => parallel_map(xs, f)));
+    res.unwrap = () => xs;
     return res;
   }
 }
