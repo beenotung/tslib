@@ -56,20 +56,6 @@ export async function later(duration = 0) {
   return defer.promise;
 }
 
-export async function parallel_map<A, B>(as: A[], f: (a: A) => Promise<B>): Promise<B[]> {
-  const defer = createDefer<B[], any>();
-  let acc = 0;
-  let bs = [];
-  as.forEach((a, i) => {
-    f(a)
-      .then(b => {
-        bs[i] = b;
-        acc++;
-        if (acc == as.length) {
-          defer.resolve(bs);
-        }
-      })
-      .catch(defer.reject);
-  });
-  return defer.promise;
+export async function parallel_map<A, B>(xs: A[], f: (a: A) => Promise<B>): Promise<B[]> {
+  return Promise.all(xs.map(f));
 }
