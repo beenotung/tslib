@@ -38,3 +38,27 @@ export async function fileToArrayBuffer(file: File) {
     return res;
   });
 }
+
+/* reference: https://ausdemmaschinenraum.wordpress.com/2012/12/06/how-to-save-a-file-from-a-url-with-javascript/ */
+export async function saveFile(url: string, filename?: string) {
+  const defer = createDefer();
+  if (!filename) {
+    // Get file name from url.
+    filename = url.substring(url.lastIndexOf('/') + 1).split('?')[0];
+  }
+  const xhr = new XMLHttpRequest();
+  xhr.responseType = 'blob';
+  xhr.onload = function () {
+    const a = document.createElement('a');
+    a.href = window.URL.createObjectURL(xhr.response); // xhr.response is a blob
+    a.download = filename; // Set the file name.
+    a.style.display = 'none';
+    document.body.appendChild(a);
+    a.click();
+    defer.resolve(true);
+  };
+  xhr.onerror = e => defer.resolve(e);
+  xhr.open('GET', url);
+  xhr.send();
+  return defer.promise;
+}
