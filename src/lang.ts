@@ -269,20 +269,15 @@ export function applyIf<A, B>(a: A | false | 0 | null | void, f: F1<A, B>): B | 
     return f(a);
   }
 }
-export function nodup<A>(xs: A[]): A[] {
-  let s = new Set();
-  xs.forEach(x => s.add(x));
-  let res: A[] = [];
-  let itr = s.values();
-  for (let i = itr.next(); !i.done; i = itr.next()) {
-    res.push(i.value);
-  }
-  return res;
-}
+
 export function gen_noop<A>(): (a: A) => void {
   return () => {
   };
 }
 export function cast(o: any): any {
   return o;
+}
+
+export function equals<A>(a: A, b: A): boolean {
+  return a === b;
 }

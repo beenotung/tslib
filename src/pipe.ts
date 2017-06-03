@@ -8,10 +8,10 @@ export type PipeArg <A> = [Function, A[]] | [Function]
  *   - must return type B
  *
  * @example
- *   pipe(
+ *   pipe([
  *     [ x=>x+2 ]
  *   , [ (x,y)=>x*2+y, [5] ]
- *   ) (2) ~> 13
+ *   ]) (2) ~> 13
  * */
 /**
  * auto curried Elixir style pipe
