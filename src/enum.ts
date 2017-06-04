@@ -1,3 +1,5 @@
+import {range} from "./array";
+
 export type Enum = { [index: number]: string } & { [key: string]: number } | Object;
 
 /**
@@ -31,4 +33,31 @@ export function enum_next_s<E extends Enum>(e: E, s: string): keyof E {
     throw new TypeError(`Enum of key '${s}' don't have next value`);
   }
   return res;
+}
+
+export function enum_keys<E extends Enum>(e: E): string[] {
+  return Object.keys(e).filter(x => typeof x !== 'number');
+}
+export function enum_values<E extends Enum>(e: E): number[] {
+  return range(0, Object.keys(e).length / 2 - 1);
+}
+
+export function enum_last_i<E extends Enum>(e: E): number {
+  return Object.keys(e).length / 2 - 1;
+}
+export function enum_last_s<E extends Enum>(e: E): string {
+  return e[enum_last_i(e)];
+}
+export function enum_is_last_i<E extends Enum>(e: E, i: number): boolean {
+  return i === enum_last_i(e);
+}
+export function enum_is_last_s<E extends Enum>(e: E, s: string): boolean {
+  return s === enum_last_s(e);
+}
+export function enum_is_last<E extends Enum>(e: E, v: keyof E): boolean {
+  if (typeof v === 'number') {
+    return enum_is_last_i(e, <any>v);
+  } else {
+    return enum_is_last_s(e, v);
+  }
 }
