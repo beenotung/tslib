@@ -1,6 +1,6 @@
-import {forI, mapI, Obj, objValues} from './lang';
-import {Maybe} from './maybe';
-import {CompareResult} from './number';
+import {forI, mapI, Obj, objValues} from "./lang";
+import {Maybe} from "./maybe";
+import {CompareResult} from "./number";
 
 /**
  * inplace delete all element from the array
@@ -157,4 +157,15 @@ export function removeDupByKey<A>(xs: A[], key: string | number): A[] {
  * */
 export function removeByKey<A>(xs: A[], key: string | number, keys: Array<string | number>): A[] {
   return replace(xs, xs.filter(x => !array_contains(keys, x[key])));
+}
+
+/**
+ * including end
+ * */
+export function range(start: number, end: number, step = 1): number[] {
+  const res = [];
+  for (let i = start; i <= end; i += step) {
+    res.push(i);
+  }
+  return res;
 }
