@@ -78,3 +78,12 @@ export namespace ParallelArray {
     return res;
   }
 }
+
+export function clearAllTimer() {
+  let i = setInterval(() => {
+  });
+  for (i > 0; ; i--) {
+    clearTimeout(i);
+    clearInterval(i);
+  }
+}
