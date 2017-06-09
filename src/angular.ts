@@ -1,8 +1,8 @@
-import {EventEmitter, Injectable, NgZone} from '@angular/core';
-import {ControlValueAccessor} from '@angular/forms';
-import {BrowserXhr} from '@angular/http';
-import {Observable} from 'rxjs/Observable';
-import {createDefer} from './async';
+import {EventEmitter, Injectable, NgZone} from "@angular/core";
+import {ControlValueAccessor} from "@angular/forms";
+import {BrowserXhr} from "@angular/http";
+import {Observable} from "rxjs/Observable";
+import {createDefer} from "./async";
 
 /**
  * to usage [(ngModel)] directly
@@ -64,7 +64,7 @@ export class CustomBrowserXhr extends BrowserXhr {
   }
 }
 
-export async function ngRunLater(ngZone: NgZone, f?: () => void) {
+export async function ngRunLater(ngZone: NgZone, f?: () => void, delay = 0) {
   const defer = createDefer();
   setTimeout(() => {
     if (f) {
@@ -75,7 +75,7 @@ export async function ngRunLater(ngZone: NgZone, f?: () => void) {
     } else {
       ngZone.run(() => defer.resolve(void 0));
     }
-  });
+  }, delay);
   return defer.promise;
 }
 
