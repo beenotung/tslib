@@ -1,6 +1,6 @@
-import {forI, mapI, Obj, objValues} from "./lang";
-import {Maybe} from "./maybe";
-import {CompareResult} from "./number";
+import {forI, mapI, Obj, objValues} from './lang';
+import {Maybe} from './maybe';
+import {CompareResult} from './number';
 
 /**
  * inplace delete all element from the array
@@ -168,4 +168,8 @@ export function range(start: number, end: number, step = 1): number[] {
     res.push(i);
   }
   return res;
+}
+
+export function filterByKey<A>(src: A[], key: string, keys: string[]): A[] {
+  return src.filter(x => keys.indexOf(x[key]) !== -1);
 }
