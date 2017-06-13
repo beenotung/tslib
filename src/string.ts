@@ -27,6 +27,7 @@ export function strToCapWords(s: string): string {
   }, s.length);
   return res;
 }
+
 export function string_to_chars(s: string): string[] {
   let res: string[] = [];
   forI(i => res.push(s[i]), s.length);
@@ -38,6 +39,11 @@ export function string_to_chars(s: string): string[] {
 export function escapeRegExp(str: string): string {
   return str.replace(/([.*+?^=!:${}()|\[\]\/\\])/g, '\\$1');
 }
+
 export function strReplaceAll(str: string, find: string, replace: string): string {
   return str.replace(new RegExp(escapeRegExp(find), 'g'), replace);
+}
+
+export function string_nbyte(s: string): number {
+  return encodeURI(s).split(/%..|./).length - 1;
 }
