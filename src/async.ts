@@ -59,10 +59,13 @@ export async function later(duration = 0) {
 export async function parallel_map<A, B>(xs: A[], f: (a: A) => Promise<B>): Promise<B[]> {
   return Promise.all(xs.map(f));
 }
+
 export interface ParallelArray<A> {
   map<B>(f: (a: A) => Promise<B>): ParallelArray<B>;
+
   unwrap(): Promise<A[]>;
 }
+
 export namespace ParallelArray {
   export function wrap<A>(xs: A[]): ParallelArray<A> {
     const res: ParallelArray<A> = <any>{};
@@ -86,4 +89,16 @@ export function clearAllTimer() {
     clearTimeout(i);
     clearInterval(i);
   }
+}
+
+export function fetch_no_cache(url: string, method = 'GET'): Promise<Response> {
+  const req = new Request(url);
+  const headers = new Headers();
+  headers.append('pragma', 'no-cache');
+  headers.append('cache-control', 'no-cache');
+  const init = {
+    method: method
+    , headers: headers
+  };
+  return fetch(req, init);
 }
