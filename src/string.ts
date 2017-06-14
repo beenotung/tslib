@@ -1,4 +1,4 @@
-import {forI} from './lang';
+import {forI} from "./lang";
 
 export function str_contains(pattern: string, target: string, ignore_case = false): boolean {
   if (ignore_case)
@@ -27,6 +27,7 @@ export function strToCapWords(s: string): string {
   }, s.length);
   return res;
 }
+
 export function string_to_chars(s: string): string[] {
   let res: string[] = [];
   forI(i => res.push(s[i]), s.length);
@@ -38,6 +39,15 @@ export function string_to_chars(s: string): string[] {
 export function escapeRegExp(str: string): string {
   return str.replace(/([.*+?^=!:${}()|\[\]\/\\])/g, '\\$1');
 }
+
 export function strReplaceAll(str: string, find: string, replace: string): string {
   return str.replace(new RegExp(escapeRegExp(find), 'g'), replace);
+}
+
+export function str_like(a: string, b: string, ignore_case = true) {
+  if (ignore_case) {
+    return str_like(a.toUpperCase(), b.toUpperCase(), false)
+  } else {
+    return a.includes(b) || b.includes(a);
+  }
 }
