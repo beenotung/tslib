@@ -92,7 +92,7 @@ export function clearAllTimer() {
 }
 
 export function fetch_no_cache(url: string, method = 'GET'): Promise<Response> {
-  const req = new Request(url);
+  const req: Request | string = typeof Request === 'function' ? new Request(url) : url;
   const headers = new Headers();
   headers.append('pragma', 'no-cache');
   headers.append('cache-control', 'no-cache');
