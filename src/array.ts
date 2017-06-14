@@ -1,6 +1,6 @@
-import {forI, mapI, Obj, objValues} from "./lang";
-import {Maybe} from "./maybe";
-import {CompareResult} from "./number";
+import {forI, mapI, Obj, objValues} from './lang';
+import {Maybe} from './maybe';
+import {CompareResult} from './number';
 
 /**
  * inplace delete all element from the array
@@ -41,6 +41,7 @@ export function unique<A>(xs: A[]): A[] {
 export function rightMost<A>(n: number, xs: A[]): A[] {
   return xs.slice(xs.length - n, xs.length);
 }
+
 export function leftMost<A>(n: number, xs: A[]): A[] {
   return xs.slice(0, n);
 }
@@ -49,14 +50,17 @@ export function leftMost<A>(n: number, xs: A[]): A[] {
 export function popN(n: number, xs: any[]): void {
   forI(_ => xs.pop(), n);
 }
+
 /** inplace update */
 export function popUntilN(n: number, xs: any[]): void {
   forI(_ => xs.pop(), xs.length - n);
 }
+
 /** inplace update */
 export function shiftN(n: number, xs: any[]): void {
   forI(_ => xs.shift(), n);
 }
+
 /** inplace update */
 export function shiftUntilN(n: number, xs: any[]): void {
   forI(_ => xs.shift(), xs.length - n);
@@ -83,7 +87,9 @@ export function array_contains<A>(xs: A[], x: A) {
 export function insert<A>(xs: A[], index: number, x: A): void {
   xs.splice(index, 0, x);
 }
+
 type OrderType = 'ascending' | 'descending';
+
 /**
  * insert into Ascending sorted array
  * */
@@ -100,19 +106,39 @@ export function insert_sorted<A>(xs: A[], comparator: (a: A, b: A) => CompareRes
   }
   xs.push(x);
 }
+
+/**
+ * @remark inplace update
+ * @return original array
+ * */
+export function removeByIdx<A>(xs: A[], i: number) {
+  xs.splice(i, 1);
+  return xs;
+}
+
+/**
+ * @remark inplace update
+ * @return original array
+ * */
 export function remove<A>(xs: A[], x: A): void {
   let idx = xs.indexOf(x);
   if (idx != -1) {
     xs.splice(idx, 1);
   }
 }
-export function removeBy<A>(xs: A[], f: (a: A) => boolean): void {
+
+/**
+ * @remark inplace update
+ * @return original array
+ * */
+export function removeBy<A>(xs: A[], f: (a: A) => boolean): A[] {
   for (let i = 0; i < xs.length; i++) {
     if (f(xs[i])) {
       xs.splice(i, 1);
-      return;
+      return xs;
     }
   }
+  return xs;
 }
 
 export function nodup<A>(xs: A[]): A[] {
@@ -168,4 +194,8 @@ export function range(start: number, end: number, step = 1): number[] {
     res.push(i);
   }
   return res;
+}
+
+export function filterByKey<A>(src: A[], key: string, keys: string[]): A[] {
+  return src.filter(x => keys.indexOf(x[key]) !== -1);
 }

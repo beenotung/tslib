@@ -1,4 +1,4 @@
-import {forI} from "./lang";
+import {forI} from './lang';
 
 export function str_contains(pattern: string, target: string, ignore_case = false): boolean {
   if (ignore_case)
@@ -42,6 +42,10 @@ export function escapeRegExp(str: string): string {
 
 export function strReplaceAll(str: string, find: string, replace: string): string {
   return str.replace(new RegExp(escapeRegExp(find), 'g'), replace);
+}
+
+export function string_nbyte(s: string): number {
+  return encodeURI(s).split(/%..|./).length - 1;
 }
 
 export function str_like(a: string, b: string, ignore_case = true) {
