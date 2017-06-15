@@ -1,11 +1,3 @@
-import {mapI} from './lang';
-/**
- * Created by beenotung on 5/26/17.
- */
-export function nodeListToArray<A extends Element>(nodes: NodeListOf<A>): A[] {
-  return mapI(i => nodes[i], nodes.length);
-}
-
 export function removeNode(node: Node) {
   if (!node) {
     return;
@@ -14,4 +6,14 @@ export function removeNode(node: Node) {
     return node['remove']();
   }
   return node.parentNode.removeChild(node);
+}
+
+/**
+ * auto remove, then append to {parent}
+ * */
+export function appendNode(node: Node, parent: Node) {
+  if (node.parentNode) {
+    node.parentNode.removeChild(node);
+  }
+  parent.appendChild(node);
 }

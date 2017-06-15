@@ -199,3 +199,7 @@ export function range(start: number, end: number, step = 1): number[] {
 export function filterByKey<A>(src: A[], key: string, keys: string[]): A[] {
   return src.filter(x => keys.indexOf(x[key]) !== -1);
 }
+
+export function toArray<A>(xs: ArrayLike<A>): A[] {
+  return mapI(i => xs[i], xs.length);
+}
