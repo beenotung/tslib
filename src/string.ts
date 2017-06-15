@@ -47,3 +47,11 @@ export function strReplaceAll(str: string, find: string, replace: string): strin
 export function string_nbyte(s: string): number {
   return encodeURI(s).split(/%..|./).length - 1;
 }
+
+export function str_like(a: string, b: string, ignore_case = true) {
+  if (ignore_case) {
+    return str_like(a.toUpperCase(), b.toUpperCase(), false)
+  } else {
+    return a.includes(b) || b.includes(a);
+  }
+}
