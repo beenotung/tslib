@@ -5,3 +5,7 @@ export function toggleSet<A>(s: Set<A>, a: A) {
     s.add(a);
   }
 }
+
+export function setToArray<A>(s: Set<A>): A[] {
+  return Array.from(s.values());
+}
