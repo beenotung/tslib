@@ -1,4 +1,6 @@
 import {Consumer} from './functional';
+import * as fetch from 'isomorphic-fetch';
+import {noop} from './lang';
 
 /**
  * Created by beenotung on 12/26/16.
@@ -83,8 +85,7 @@ export namespace ParallelArray {
 }
 
 export function clearAllTimer() {
-  let i = setInterval(() => {
-  });
+  let i = setInterval(noop);
   for (; i > 0; i--) {
     clearTimeout(i);
     clearInterval(i);
@@ -93,12 +94,12 @@ export function clearAllTimer() {
 
 export function fetch_no_cache(url: string, method = 'GET'): Promise<Response> {
   const req: Request | string = typeof Request === 'function' ? new Request(url) : url;
-  const headers = new Headers();
-  headers.append('pragma', 'no-cache');
-  headers.append('cache-control', 'no-cache');
   const init = {
     method: method
-    , headers: headers
+    , headers: {
+      'pragma': 'no-cache'
+      , 'cache-control': 'no-cache'
+    }
   };
   return fetch(req, init);
 }

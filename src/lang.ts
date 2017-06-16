@@ -223,7 +223,7 @@ export function repeatI<A>(f: () => A, size: number): A[] {
 /** apply the function without throwing exception */
 export function tryApply(f: Function, args: any[]) {
   try {
-    return f(...args)
+    return f(...args);
   } catch (e) {
     console.error(e);
   }
@@ -238,7 +238,7 @@ export function tryCall(f: Function, ...args: any[]) {
 }
 export function tryWithDefault<A>(f: Function, defaultValue: A, args: any[]): A {
   try {
-    return f(...args)
+    return f(...args);
   } catch (e) {
     return defaultValue;
   }
@@ -260,9 +260,9 @@ export interface Type<A>extends Function {
 export function _if(f: Function): (b: boolean) => void {
   return b => {
     if (b) {
-      f()
+      f();
     }
-  }
+  };
 }
 export function applyIf<A, B>(a: A | false | 0 | null | void, f: F1<A, B>): B | void {
   if (a) {
@@ -274,6 +274,8 @@ export function gen_noop<A>(): (a: A) => void {
   return () => {
   };
 }
+export const noop: Function = () => {
+};
 export function cast(o: any): any {
   return o;
 }
