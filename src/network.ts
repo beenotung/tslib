@@ -1,4 +1,5 @@
 import {createDefer} from './async';
+import {Obj} from './lang';
 /**
  * Created by beenotung on 6/2/17.
  */
@@ -9,4 +10,17 @@ export function checkFetch(url: string): Promise<boolean> {
     .catch(x => defer.resolve(false))
   ;
   return defer.promise;
+}
+
+export function toFormData(o: Obj<string | number | Blob>): FormData {
+  const formData = new FormData();
+  Object.keys(o)
+    .forEach(x => {
+      if (typeof o[x] === 'number') {
+        formData.append(x, o[x] + '');
+      } else {
+        formData.append(x, <string | Blob>o[x]);
+      }
+    });
+  return formData;
 }
