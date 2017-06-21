@@ -226,7 +226,8 @@ export let concat = curry(<A>(as: A[], bs: A[]): A[] => as.concat(bs));
 /**
  * concatAll :: [[a]] -> [a]
  * */
-export let concatAll = foldl(concat, []);
+export let concatAll: <A>(ass: A[][]) => A[]
+  = foldl(concat, []);
 /**
  * @remark side effect to as
  * as -> bs -> __update as__

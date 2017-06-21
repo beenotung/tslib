@@ -168,6 +168,19 @@ export function insertNoDup<A>(acc: A[], newXs: A[]): A[] {
 }
 
 /**
+ * inplace insert elements into the array
+ * @return old array
+ * */
+export function insertNoDupWithKey<A>(acc: A[], newXs: A[], key: string): A[] {
+  newXs.forEach(newX => {
+    if (!acc.find(x => x[key] === newX[key])) {
+      acc.push(newX);
+    }
+  });
+  return acc;
+}
+
+/**
  * inplace operation
  * @return old array
  * */
