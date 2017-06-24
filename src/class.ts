@@ -1,4 +1,5 @@
-import {Obj} from './lang';
+import {Obj, Type} from "./lang";
+
 /**
  * Created by beenotung on 6/21/17.
  */
@@ -16,4 +17,11 @@ export function bindMethods<A extends Obj<Function | any>>(o: A): A {
       }
     });
   return o;
+}
+
+/**
+ * cast object to class with class methods
+ * */
+export function withMethod<A>(c: Type<A>, o: A): A {
+  return Object.assign(new c(), o);
 }
