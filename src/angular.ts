@@ -1,6 +1,5 @@
-import {EventEmitter, Injectable, NgZone} from "@angular/core";
+import {NgZone} from "@angular/core";
 import {ControlValueAccessor} from "@angular/forms";
-import {BrowserXhr} from "@angular/http";
 import {Observable} from "rxjs/Observable";
 import {createDefer} from "./async";
 
@@ -44,23 +43,6 @@ export class CommonControlValueAccessor<T> implements ControlValueAccessor {
 
   registerOnTouched(fn: any): void {
     this.onTouchedCallback = fn;
-  }
-}
-
-@Injectable()
-export class CustomBrowserXhr extends BrowserXhr {
-  static progressEventEmitter = new EventEmitter<ProgressEvent>();
-
-  constructor() {
-    super()
-  }
-
-  build(): any {
-    let xhr = super.build();
-    xhr.onprogress = (event: any) => {
-      CustomBrowserXhr.progressEventEmitter.emit(event);
-    };
-    return <any>(xhr);
   }
 }
 
