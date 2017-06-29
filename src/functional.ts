@@ -42,7 +42,10 @@ export let length = curry(<A>(x: ArrayLike<A>): number => x.length);
 export let filter = curry(<A>(f: CurryF1<A, boolean>, xs: A[]): A[] => xs.filter(f));
 export let compose = curry(<A, B, C>(f: CurryF1<B, C>, g: CurryF1<A, B>, a: A): C => f(g(a)));
 export let flip = curry(<A, B, C>(f: CurryF2<A, B, C>) => (b: B) => (a: A): C => f(a, b));
-export let lift = curry(<A>(a: A) => (b: any) => a);
+export let lift: <A, B>(a: A) => (b?: B) => A = curry(<A>(a: A) => (b: any) => a);
+export let liftError: <E extends Error, A, B>(e: E) => (b?: B) => A = curry(e => _ => {
+  throw e
+});
 export let compose2 = compose(compose, compose);
 export let odd = curry((x: number) => x % 2 == 1);
 export let even = curry((x: number) => x % 2 == 0);
@@ -83,7 +86,7 @@ export let just = curry(<A>(x: A) => [x]);
 /**
  * none :: * -> []
  * */
-export let none = lift(<A>(x: A): any[] => []);
+export let none = curry(<A>(x: A): any[] => []);
 export let eq = curry(<A>(a: A, b: A): boolean => b === a);
 export let neq = curry(<A>(a: A, b: A): boolean => b !== a);
 export let gt = curry((a: number | string, b: number | string): boolean => b > a);
