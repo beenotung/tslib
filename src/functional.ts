@@ -42,8 +42,12 @@ export let length = curry(<A>(x: ArrayLike<A>): number => x.length);
 export let filter = curry(<A>(f: CurryF1<A, boolean>, xs: A[]): A[] => xs.filter(f));
 export let compose = curry(<A, B, C>(f: CurryF1<B, C>, g: CurryF1<A, B>, a: A): C => f(g(a)));
 export let flip = curry(<A, B, C>(f: CurryF2<A, B, C>) => (b: B) => (a: A): C => f(a, b));
-export let lift: <A, B>(a: A) => (b?: B) => A = curry(<A>(a: A) => (b: any) => a);
-export let liftError: <E extends Error, A, B>(e: E) => (b?: B) => A = curry(e => _ => {
+export let lift = curry(<A, B>(a: A, b?: B): A => a);
+export let lift_noarg = curry(<A>(a: A) => (): A => a);
+export let liftError = curry(<E extends Error, A, B>(e: E, b: B): A => {
+  throw e;
+});
+export let liftError_noarg = curry(<E extends Error, A>(e: E) => (): A => {
   throw e
 });
 export let compose2 = compose(compose, compose);

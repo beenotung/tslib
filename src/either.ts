@@ -1,4 +1,5 @@
-import {lift, liftError} from "./functional";
+import {lift} from "./functional";
+
 /**
  * Created by beenotung on 3/8/17.
  */
@@ -7,21 +8,27 @@ export interface Either<L, R> {
   isRight: boolean;
 
   getLeft(): L;
+
   getRight(): R;
 
   mmap<L2, R2>(fl: (l: L) => L2, fr: (r: R) => R2): Either<L2, R2>;
 
   mapLeft<L2>(f: (l: L) => L2): Either<L2, R>;
+
   mapRight<R2>(f: (r: R) => R2): Either<L, R2>;
 
   bindLeft<L2>(f: (l: L) => Either<L2, R>): Either<L2, R>;
+
   bindRight<R2>(f: (r: R) => Either<L, R2>): Either<L, R2>;
 }
+
 export function right<L, R>(r: R): Either<L, R> {
   const res: Either<L, R> = {
     isLeft: false
     , isRight: true
-    , getLeft: liftError<TypeError, any, L>(new TypeError("get left on right Either"))
+    , getLeft: () => {
+      throw new TypeError("get left on right Either")
+    }
     , getRight: lift(r)
     , mmap: <L2, R2>(fl: (l: L) => L2, fr: (r: R) => R2): Either<L2, R2> => right<L2, R2>(fr(r))
     , mapLeft: <L2>(f: (L: L) => L2) => <Either<L2, R>><Either<any, R>>res
@@ -31,6 +38,7 @@ export function right<L, R>(r: R): Either<L, R> {
   };
   return res;
 }
+
 export function left<L, R>(l: L): Either<L, R> {
   const res: Either<L, R> = {
     isLeft: true
@@ -47,6 +55,7 @@ export function left<L, R>(l: L): Either<L, R> {
   };
   return res;
 }
+
 export namespace Either {
   export function get<A>(either: Either<A, A>): A {
     if (either.isLeft)
