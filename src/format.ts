@@ -12,6 +12,7 @@ const size_units = [
   , 'ZB'
   , 'YB'
 ];
+
 export function format_byte(n_byte: number, n_decimal = 2): string {
   let acc = n_byte;
   for (let size_unit of size_units) {

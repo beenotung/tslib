@@ -1,21 +1,28 @@
-import {isDefined} from "./lang";
-import {Either, left, right} from "./either";
+import {isDefined} from './lang';
+import {Either, left, right} from './either';
+
 /**
  * Created by beenotung on 2/16/17.
  */
 export interface Maybe<A> {
   get(): A;
+
   isJust: boolean;
   isNothing: boolean;
   map: <B>(f: (a: A) => B) => Maybe<B>;
+
   withDefault(a: A): Maybe<A>;
+
   then(f: (a: A) => void): Maybe<A>;
+
   otherwise(f: () => void): Maybe<A>;
+
   toEither<E>(e: E): Either<E, A>;
 }
+
 export const Nothing: Maybe<any> = {
   get: function () {
-    throw new Error("Cannot get value from Nothing.");
+    throw new Error('Cannot get value from Nothing.');
   }
   , isJust: false
   , isNothing: true

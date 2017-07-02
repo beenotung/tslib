@@ -1,8 +1,8 @@
-import {Observable} from "rxjs";
-import {Http} from "@angular/http";
-import {createDefer} from "./async";
-import {DataType, Horizon, OldRecord, TableObject} from "../../typestub-horizon-client/index";
-import {ProgressService} from "./angular/progress";
+import {Observable} from 'rxjs';
+import {Http} from '@angular/http';
+import {createDefer} from './async';
+import {DataType, Horizon, OldRecord, TableObject} from '../../typestub-horizon-client/index';
+import {ProgressService} from './angular/progress';
 
 /**
  * @remark Hbase style operation should be deprecated, since horizon support partial update
@@ -73,7 +73,7 @@ export function getHorizon(): Horizon {
 export let horizon_api_size = 266826;
 export let is_debug_load_horizon = false;
 
-export async function load_horizon_ng(http: Http, progressService: ProgressService, url: string = "http://localhost:8181/horizon/horizon.js", preF?: Function): Promise<void> {
+export async function load_horizon_ng(http: Http, progressService: ProgressService, url: string = 'http://localhost:8181/horizon/horizon.js', preF?: Function): Promise<void> {
   if (typeof preF === 'function') {
     preF();
   }

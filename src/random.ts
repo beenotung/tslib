@@ -3,8 +3,9 @@ export namespace Random {
   export function nextInt(upper: number = Number.MAX_SAFE_INTEGER, lower: number = 0): number {
     return Math.floor(Math.random() * (upper - lower) + lower);
   }
-  export function nextBool(prob=0.5):boolean{
-    return Math.random()<prob;
+
+  export function nextBool(prob = 0.5): boolean {
+    return Math.random() < prob;
   }
 
   /** @return real number : -1 .. 1 */

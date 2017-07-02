@@ -50,7 +50,7 @@ export function string_nbyte(s: string): number {
 
 export function str_like(a: string, b: string, ignore_case = true) {
   if (ignore_case) {
-    return str_like(a.toUpperCase(), b.toUpperCase(), false)
+    return str_like(a.toUpperCase(), b.toUpperCase(), false);
   } else {
     return a.includes(b) || b.includes(a);
   }

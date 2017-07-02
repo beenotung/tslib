@@ -1,7 +1,7 @@
 /** source : http://restlet.com/company/blog/2016/08/29/whats-new-in-the-http-module-of-angular-2/ */
-import {Injectable} from "@angular/core";
-import {Subject} from "rxjs/Subject";
-import {BrowserXhr} from "@angular/http";
+import {Injectable} from '@angular/core';
+import {Subject} from 'rxjs/Subject';
+import {BrowserXhr} from '@angular/http';
 
 @Injectable()
 export class ProgressService {

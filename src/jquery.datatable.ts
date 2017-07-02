@@ -9,6 +9,7 @@ const defaultOption: DataTableOption = {
   , searchPlaceholder: 'Search records'
   , allText: 'All'
 };
+
 export function initDatatable(e: HTMLTableElement, option?: DataTableOption) {
   option = Object.assign({}, defaultOption, option);
   $(e).DataTable({
@@ -27,5 +28,5 @@ export function initDatatable(e: HTMLTableElement, option?: DataTableOption) {
       search: '_INPUT_'
       , searchPlaceholder: option.searchPlaceholder
     }
-  })
+  });
 }

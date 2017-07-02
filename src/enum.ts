@@ -1,5 +1,5 @@
-import {range} from "./array";
-import {isDefined} from "./lang";
+import {range} from './array';
+import {isDefined} from './lang';
 
 export type Enum = { [index: number]: string } & { [key: string]: number } | Object;
 

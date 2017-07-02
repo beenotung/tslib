@@ -1,14 +1,17 @@
-import {createDefer} from "./async";
+import {createDefer} from './async';
+
 /**
  * external API powered by surge.sh
  */
 export namespace externalAPI {
   const hostListUrl = 'http://host-list.surge.sh/list';
+
   interface HostRecord {
     name: string;
     ip: string;
     port: number;
   }
+
   /**
    * @example line : 192.168.1.2:8181 freedom-coin-server
    * */
@@ -26,14 +29,14 @@ export namespace externalAPI {
         }
         record.ip = xs[0];
         return record;
-      })
+      });
   }
 
   export async function getHostByName(name: string): Promise<HostRecord> {
     let text = (await fetch(hostListUrl).then(x => x.text()));
     /* not using `getHostList().filter()` for speed */
     let found: HostRecord;
-    let defer = createDefer<HostRecord,any>();
+    let defer = createDefer<HostRecord, any>();
     try {
       text.split('\n')
         .filter(x => x.length != 0)

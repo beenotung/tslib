@@ -1,4 +1,4 @@
-import {Obj, Type} from "./lang";
+import {Obj, Type} from './lang';
 
 /**
  * Created by beenotung on 6/21/17.

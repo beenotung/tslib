@@ -2,9 +2,9 @@
  * Created by beenotung on 12/26/16.
  */
 
-import {Obj, ObjKey} from "./lang";
-import {curry, id} from "./curry";
-import {CurryF1, CurryF2, F1, F2} from "./typeStub-curry";
+import {Obj, ObjKey} from './lang';
+import {curry, id} from './curry';
+import {CurryF1, CurryF2, F1, F2} from './typeStub-curry';
 
 export declare type Consumer<A> = (a: A) => void;
 export declare type Supplier<A> = () => A;
@@ -48,7 +48,7 @@ export let liftError = curry(<E extends Error, A, B>(e: E, b: B): A => {
   throw e;
 });
 export let liftError_noarg = curry(<E extends Error, A>(e: E) => (): A => {
-  throw e
+  throw e;
 });
 export let compose2 = compose(compose, compose);
 export let odd = curry((x: number) => x % 2 == 1);
@@ -60,7 +60,7 @@ export let countWhere = curry(compose2(length, filter));
  * */
 export let apply2 = curry(<A, B>(f: Function, g: CurryF1<A, B>, x: A): B => {
   f(x);
-  return g(x)
+  return g(x);
 });
 /**
  * @example echoF (console.log) (1) ~> console.log(1) +> return 1
@@ -100,8 +100,9 @@ export let lt = curry((a: number | string, b: number | string): boolean => b < a
  * */
 export let first = curry(<A>(f: CurryF1<A, boolean>, xs: A[]): Maybe<A> => {
   for (let x of xs) {
-    if (f(x))
+    if (f(x)) {
       return just(x);
+    }
   }
   return none();
 });
@@ -110,8 +111,9 @@ export let first = curry(<A>(f: CurryF1<A, boolean>, xs: A[]): Maybe<A> => {
  * */
 export let any = curry(<A>(f: CurryF1<A, boolean>, xs: A[]) => {
   for (let x of xs) {
-    if (f(x))
+    if (f(x)) {
       return true;
+    }
   }
   return false;
 });
@@ -170,8 +172,9 @@ export let doAll = curry(<A>(f: Consumer<A>, args: A[]) => {
  * */
 export function iteratorsToArray<A>(itrs: IterableIterator<A>[]): A[] {
   let xs = <A[]> [];
-  for (let itr of itrs)
+  for (let itr of itrs) {
     xs.push(...Array.from(itr));
+  }
   return xs;
 }
 
@@ -217,9 +220,10 @@ export let foldl = curry(<A, B>(f: F2<B, A, B>, acc: B, xs: A[]): B => {
   return acc;
 });
 export let foldl1 = curry(<A>(f: F2<A, A, A>, xs: A[]): A => {
-  let n = xs.length;
-  if (n == 0)
+  const n = xs.length;
+  if (n == 0) {
     throw new TypeError('xs should be non-empty ArrayLike<*>');
+  }
   let acc = xs[0];
   for (let i = 1; i < n; i++) {
     acc = f(acc, xs[i]);

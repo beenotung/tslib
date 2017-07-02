@@ -19,6 +19,7 @@ export let deepGetProp = curry(<A>(name: string, o: any): A => {
   let nextLevelName = xs.join('.');
   return deepGetProp(nextLevelName, o[topLevelName]);
 });
+
 export function hasProp<A>(k: ObjKey, o: Obj<A>): boolean {
   if (o[k])
     return true;
@@ -27,12 +28,14 @@ export function hasProp<A>(k: ObjKey, o: Obj<A>): boolean {
   }
   return Object.keys(o).filter(x => x == k).length != 0;
 }
+
 export function checkedGetProp<A>(k: ObjKey, o: Obj<A>): A {
   if (hasProp(k, o))
     return o[k];
   else
     throw new TypeError(`property '${k}' does not exist in the object.`);
 }
+
 export function getPropWithDefault<A>(v: A, k: ObjKey, o: Obj<A>): A {
   if (hasProp(k, o))
     return o[k];
@@ -134,6 +137,7 @@ export function argsToArray<A>(args: IArguments): A[] {
     res[i] = args[i];
   return res;
 }
+
 /**
  * take all from as ++ take some from args
  * */
@@ -189,6 +193,7 @@ export function genFunction(n: number, f: Function): Function {
 export function isDefined(a: any): boolean {
   return a !== null && a !== void 0;
 }
+
 export function notDefined(a: any): boolean {
   return !isDefined(a);
 }
@@ -196,6 +201,7 @@ export function notDefined(a: any): boolean {
 export function isNumber(i: any): boolean {
   return Number.isFinite(+i);
 }
+
 export function toNumber(i: any): number {
   if (!isNumber(i))
     throw new TypeError('i is not a number: ' + i);
@@ -216,6 +222,7 @@ export function mapI<A>(f: (i: number) => A, size: number): A[] {
   forI(i => res[i] = f(i), size, 0);
   return res;
 }
+
 export function repeatI<A>(f: () => A, size: number): A[] {
   return mapI(f, size);
 }
@@ -228,6 +235,7 @@ export function tryApply(f: Function, args: any[]) {
     console.error(e);
   }
 }
+
 /** call the function without throwing exception */
 export function tryCall(f: Function, ...args: any[]) {
   try {
@@ -236,6 +244,7 @@ export function tryCall(f: Function, ...args: any[]) {
     console.error(e);
   }
 }
+
 export function tryWithDefault<A>(f: Function, defaultValue: A, args: any[]): A {
   try {
     return f(...args);
@@ -245,6 +254,7 @@ export function tryWithDefault<A>(f: Function, defaultValue: A, args: any[]): A 
 }
 
 export type ChainObject<A> = (f: (a: A) => void) => ChainObject<A>;
+
 export function chainObject<A>(a: A): ChainObject<A> {
   let res = (f: (a: A) => void) => {
     f(a);
@@ -264,6 +274,7 @@ export function _if(f: Function): (b: boolean) => void {
     }
   };
 }
+
 export function applyIf<A, B>(a: A | false | 0 | null | void, f: F1<A, B>): B | void {
   if (a) {
     return f(a);
@@ -274,8 +285,10 @@ export function gen_noop<A>(): (a: A) => void {
   return () => {
   };
 }
+
 export const noop: Function = () => {
 };
+
 export function cast(o: any): any {
   return o;
 }

@@ -4,6 +4,7 @@
 export interface PolyfillArray<A>extends Array<A> {
   peek(f: (element: A, index?: number) => void);
 }
+
 export namespace PolyfillArray {
   const _prototype = {
     peek: function <A>(f: (element: A, index?: number) => void) {
@@ -19,7 +20,7 @@ export namespace PolyfillArray {
       Object.assign(xs['__proto__'], _prototype);
       return <PolyfillArray<A>> xs;
     } else {
-      return Object.assign(xs, _prototype)
+      return Object.assign(xs, _prototype);
     }
   }
 }

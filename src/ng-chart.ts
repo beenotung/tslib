@@ -10,6 +10,7 @@ export type NgChartColor = {
   pointHoverBackgroundColor: string,
   pointHoverBorderColor: string
 }
+
 /**
  * @param r : number [0..255]
  * @param g : number [0..255]
@@ -28,10 +29,12 @@ export function mkChartColor(r: number, g: number, b: number, a: number = 0): Ng
     pointHoverBorderColor: `rgba(${rgb},0.8)`
   };
 }
+
 export class LineChartData {
   data: number[];
   label: string;
 }
+
 export class NgChartParams {
   lineChartData: LineChartData[];
   lineChartLabels: String[];
@@ -51,4 +54,5 @@ export class NgChartParams {
     this.lineChartType = type;
   }
 }
+
 export type LineChartType = 'line' | 'pie' | string;
