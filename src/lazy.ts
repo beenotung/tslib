@@ -1,5 +1,3 @@
-import {createDefer, Defer} from "./async";
-
 export function createLazy<A>(f: () => A): () => A {
   let a: A;
   let done = false;
