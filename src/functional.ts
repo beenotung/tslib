@@ -4,7 +4,7 @@
 
 import {Obj, ObjKey} from './lang';
 import {curry, id} from './curry';
-import {CurryF1, CurryF2, F1, F2} from './typeStub-curry';
+import {CurryF1, CurryF2, F1, F2} from './typestub-curry';
 
 export declare type Consumer<A> = (a: A) => void;
 export declare type Supplier<A> = () => A;

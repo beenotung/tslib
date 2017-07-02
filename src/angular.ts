@@ -36,12 +36,12 @@ export class CommonControlValueAccessor<T> implements ControlValueAccessor {
     this.onTouchedCallback();
   }
 
-  registerOnChange(fn: any): void {
+  registerOnChange(fn: (event: any) => void): void {
     this.onChangeCallback = fn;
     fn(this.innerValue);
   }
 
-  registerOnTouched(fn: any): void {
+  registerOnTouched(fn: () => void): void {
     this.onTouchedCallback = fn;
   }
 }
@@ -62,7 +62,7 @@ export async function ngRunLater(ngZone: NgZone, f?: () => void, delay = 0) {
 }
 
 export async function ngObsToAsync<A>(o: Observable<A>): Promise<A> {
-  let defer = createDefer<any, A>();
-  o.subscribe(a => defer.resolve(a), err => defer.reject(err));
+  const defer = createDefer<any, A>();
+  o.subscribe(a => defer.resolve(a), (err: any) => defer.reject(err));
   return defer.promise;
 }

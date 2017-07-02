@@ -3,7 +3,7 @@
  */
 import {Supplier} from './functional';
 import {createDefer} from './async';
-import {F1} from './typeStub-curry';
+import {F1} from './typestub-curry';
 import {curry} from './curry';
 
 export let deepGetProp = curry(<A>(name: string, o: any): A => {

@@ -1,6 +1,7 @@
 import {curry} from './curry';
 
-export type PipeArg <A> = [Function, A[]] | [Function]
+export type PipeArg <A> = [Function, A[]] | [Function];
+
 /**
  * the function<A,B> :: A,...* -> B
  *   - first argument must be type A
