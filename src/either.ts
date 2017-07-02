@@ -58,8 +58,6 @@ export function left<L, R>(l: L): Either<L, R> {
 
 export namespace Either {
   export function get<A>(either: Either<A, A>): A {
-    if (either.isLeft)
-      return either.getLeft();
-    return either.getRight();
+    return either.isLeft ? either.getLeft() : either.getRight();
   }
 }

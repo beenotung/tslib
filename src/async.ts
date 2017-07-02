@@ -12,7 +12,7 @@ export class Defer<A, E> {
 }
 
 export function createDefer<A, E>(): Defer<A, E> {
-  let res = new Defer<A, E>();
+  const res = new Defer<A, E>();
   res.promise = new Promise<A>((resolve, reject) => {
     res.resolve = resolve;
     res.reject = reject;
@@ -25,7 +25,7 @@ export async function autoRetryAsync<A>(f: () => Promise<A>, retry_delay = 1000)
     return await f();
   } catch (e) {
     if (retry_delay > 0) {
-      let defer = createDefer<A, any>();
+      const defer = createDefer<A, any>();
       setTimeout(() => {
         autoRetryAsync(f, retry_delay)
           .then(defer.resolve)

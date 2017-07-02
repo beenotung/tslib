@@ -1,8 +1,9 @@
 import {forI} from './lang';
 
 export function str_contains(pattern: string, target: string, ignore_case = false): boolean {
-  if (ignore_case)
+  if (ignore_case) {
     return str_contains(pattern.toLowerCase(), target.toLowerCase());
+  }
   return target.indexOf(pattern) != -1;
 }
 
@@ -29,7 +30,7 @@ export function strToCapWords(s: string): string {
 }
 
 export function string_to_chars(s: string): string[] {
-  let res: string[] = [];
+  const res: string[] = [];
   forI(i => res.push(s[i]), s.length);
   return res;
 }

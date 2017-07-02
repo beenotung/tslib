@@ -7,8 +7,9 @@ import {F1} from './typestub-curry';
 import {curry} from './curry';
 
 export let deepGetProp = curry(<A>(name: string, o: any): A => {
-  if (o[name])
+  if (o[name]) {
     return o[name];
+  }
   let xs = name.split('.');
   if (xs.length == 1) {
     let message = `key '${name}' not found in object`;
@@ -21,8 +22,9 @@ export let deepGetProp = curry(<A>(name: string, o: any): A => {
 });
 
 export function hasProp<A>(k: ObjKey, o: Obj<A>): boolean {
-  if (o[k])
+  if (o[k]) {
     return true;
+  }
   if (Array.isArray(o)) {
     return (<any[]>o).indexOf(k) != -1;
   }
@@ -30,22 +32,25 @@ export function hasProp<A>(k: ObjKey, o: Obj<A>): boolean {
 }
 
 export function checkedGetProp<A>(k: ObjKey, o: Obj<A>): A {
-  if (hasProp(k, o))
+  if (hasProp(k, o)) {
     return o[k];
+  }
   else
     throw new TypeError(`property '${k}' does not exist in the object.`);
 }
 
 export function getPropWithDefault<A>(v: A, k: ObjKey, o: Obj<A>): A {
-  if (hasProp(k, o))
+  if (hasProp(k, o)) {
     return o[k];
+  }
   else
     return v;
 }
 
 export function first_non_null<A>(...args: A[]): A | null {
-  for (let arg of args)
+  for (let arg of args) {
     if (arg) return arg;
+  }
   return null;
 }
 
@@ -63,7 +68,7 @@ export function ifNullF<A>(a: A, f: Supplier<A>): A {
  * */
 export async function ifNullFAsync<A>(a: A, f: Supplier<Promise<A>>): Promise<A> {
   /* not using Promise.resolve(a) directly to avoid flattening a when a is a promise */
-  let defer = createDefer<A, any>();
+  const defer = createDefer<A, any>();
   if (a) {
     defer.resolve(a);
   } else {
@@ -77,7 +82,7 @@ export function bindFunction(f: Function): Function {
 }
 
 export function caseLookup<A, B>(cases: Array<[A, B]>, target: A): B {
-  let xss = cases.filter(xs => xs[0] == target);
+  const xss = cases.filter(xs => xs[0] == target);
   if (xss.length == 1) {
     return xss[0][1];
   } else throw new Error('expect only 1 match, number of match:' + xss.length);
@@ -120,8 +125,8 @@ export function objFilter<A>(f: (a?: A, k?: ObjKey, o?: Obj<A>) => boolean): (o:
 }
 
 export function objToArray<A>(o: Obj<A>): [A, ObjKey][] {
-  let xs = Object.keys(o);
-  let res = new Array<[A, ObjKey]>(xs.length);
+  const xs = Object.keys(o);
+  const res = new Array<[A, ObjKey]>(xs.length);
   xs.forEach((x, i) => res[i] = [o[x], x]);
   return res;
 }
@@ -142,8 +147,8 @@ export function argsToArray<A>(args: IArguments): A[] {
  * take all from as ++ take some from args
  * */
 export function concatArgs<A>(as: ArrayLike<A>, args: ArrayLike<A>, offsetArgs = 0, nArgs = args.length): A[] {
-  let na = as.length;
-  let res = new Array<A>(na + nArgs);
+  const na = as.length;
+  const res = new Array<A>(na + nArgs);
   let offset = 0;
   for (; offset < na; offset++) {
     res[offset] = as[offset];
@@ -155,7 +160,7 @@ export function concatArgs<A>(as: ArrayLike<A>, args: ArrayLike<A>, offsetArgs =
 }
 
 export function copyArray<A>(xs: ArrayLike<A>, offset: number = 0, count: number = xs.length): A[] {
-  let res = new Array(count);
+  const res = new Array(count);
   for (let i = 0; i < count; i++)
     res[i] = xs[offset + i];
   return res;
@@ -168,7 +173,7 @@ export function copyToArray<A>(dest: Array<A>, destOffset = 0, src: ArrayLike<A>
   return dest;
 }
 
-let nFuncs = <F1<Function, Function>[]> [];
+const nFuncs = <F1<Function, Function>[]> [];
 
 export function genFunction(n: number, f: Function): Function {
   if (n < 1)

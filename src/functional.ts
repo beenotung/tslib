@@ -76,7 +76,7 @@ export let isString = (x: any) => typeof x === 'string';
 /**@remark side effect */
 export let forEach = curry(<A>(f: Function, xs: ArrayLike<A>) => {
   /* xs is ArrayLike, might not has forEach */
-  let n = xs.length;
+  const n = xs.length;
   for (let i = 0; i < n; i++) {
     f(xs[i]);
   }
@@ -139,7 +139,7 @@ export let quot = curry((a: number, b: number): number => (b / a) | 0);
 export let quotMod = curry((a: number, b: number): [number, number] => [(b / a) | 0, b % a]);
 /* slower */
 export let divMod = curry((a: number, b: number): [number, number] => {
-  let d = Math.floor((b / a));
+  const d = Math.floor((b / a));
   return [d, b - d * a];
 });
 export let symbolF = curry(<A, B, C>(name: string): CurryF2<A, B, C> => symbolFs.get(name));
@@ -171,7 +171,7 @@ export let doAll = curry(<A>(f: Consumer<A>, args: A[]) => {
  * flatten the iterators as a single array
  * */
 export function iteratorsToArray<A>(itrs: IterableIterator<A>[]): A[] {
-  let xs = <A[]> [];
+  const xs = <A[]> [];
   for (let itr of itrs) {
     xs.push(...Array.from(itr));
   }
@@ -179,7 +179,7 @@ export function iteratorsToArray<A>(itrs: IterableIterator<A>[]): A[] {
 }
 
 export let concatWithoutDup = curry(<A>(as: A[], bs: A[]): A[] => {
-  let acc = new Set<A>();
+  const acc = new Set<A>();
   doAll(
     (as: A[]) => doAll(
       (a: A) => acc.add(a)
@@ -192,9 +192,10 @@ export let concatWithoutDup = curry(<A>(as: A[], bs: A[]): A[] => {
 
 export let map = curry(<A, B>(f: CurryF1<A, B>, as: A[]): B[] => as.map(f));
 
-let getOrSetDefault = curry(<K, V>(v: V, k: K, m: Map<K, V>): V => {
-  if (m.has(k))
+export let getOrSetDefault = curry(<K, V>(v: V, k: K, m: Map<K, V>): V => {
+  if (m.has(k)) {
     return m.get(k);
+  }
   m.set(k, v);
   return v;
 });
@@ -203,7 +204,7 @@ let getOrSetDefault = curry(<K, V>(v: V, k: K, m: Map<K, V>): V => {
  * groupBy :: (a->k) -> [a] -> Map k [a]
  * */
 export let groupBy = curry(<A, K>(f: F1<A, K>, xs: A[]): Map<K, A[]> => {
-  let res = new Map<K, A[]>();
+  const res = new Map<K, A[]>();
   for (let x of xs) {
     getOrSetDefault([], f(x), res).push(x);
   }
@@ -266,7 +267,7 @@ export let mergeObjs = curry(<A>(xs: A[]): A => Object.assign({}, ...xs));
  * groupByAll :: (a->k) -> [[a]] -> Map k [a]
  * */
 export let groupByAll = curry(<A, K>(f: F1<A, K>, xss: A[][]): Map<K, A[]> => {
-  let res = new Map<K, A[]>();
+  const res = new Map<K, A[]>();
   for (let xs of xss) {
     for (let x of xs) {
       getOrSetDefault([], f(x), res).push(x);

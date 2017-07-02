@@ -30,7 +30,7 @@ export function includes<A>(x: A, xs: A[]): boolean {
  * @return new array
  * */
 export function unique<A>(xs: A[]): A[] {
-  let res: A[] = [];
+  const res: A[] = [];
   xs.forEach(x => {
     if (!includes(x, res))
       res.push(x);
@@ -67,8 +67,9 @@ export function shiftUntilN(n: number, xs: any[]): void {
 }
 
 export function last<A>(xs: A[], skipCheck = false): A {
-  if (skipCheck || xs.length == 0)
+  if (skipCheck || xs.length == 0) {
     throw new TypeError('xs is not non-empty array');
+  }
   return xs[xs.length - 1];
 }
 
@@ -121,7 +122,7 @@ export function removeByIdx<A>(xs: A[], i: number) {
  * @return original array
  * */
 export function remove<A>(xs: A[], x: A): void {
-  let idx = xs.indexOf(x);
+  const idx = xs.indexOf(x);
   if (idx != -1) {
     xs.splice(idx, 1);
   }
@@ -142,7 +143,7 @@ export function removeBy<A>(xs: A[], f: (a: A) => boolean): A[] {
 }
 
 export function nodup<A>(xs: A[]): A[] {
-  let s = new Set<A>();
+  const s = new Set<A>();
   xs.forEach(x => s.add(x));
   return Array.from(s.values());
 }
