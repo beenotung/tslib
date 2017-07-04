@@ -1,5 +1,5 @@
 import {range} from './array';
-import {isDefined} from './lang';
+import {isDefined, isNumber} from './lang';
 
 export type Enum = { [index: number]: string } & { [key: string]: number } | Object;
 
@@ -39,7 +39,7 @@ export function enum_next_s<E extends Enum>(e: E, s: string): keyof E {
 }
 
 export function enum_keys<E extends Enum>(e: E): string[] {
-  return Object.keys(e).filter(x => typeof x !== 'number');
+  return Object.keys(e).filter(x => !isNumber(x));
 }
 
 export function enum_values<E extends Enum>(e: E): number[] {
@@ -76,4 +76,29 @@ export function enum_is_in_range<E extends Enum>(e: E, v: any): boolean {
 
 export function enum_not_equals<E1 extends Enum, E2 extends Enum>(e1: E1, e2: E2): boolean {
   return <Enum>e1 !== <Enum>e2;
+}
+
+/**
+ * inplace update
+ *
+ * @return original (modified) enum
+ * */
+export function enum_set_string<E extends Enum>(e: E): E {
+  Object.keys(e)
+    .filter(x => !isNumber(x))
+    .forEach(x => e[x] = e[e[x]]);
+  return e;
+}
+
+/**
+ * inplace update
+ * */
+export function enum_only_string<E extends Enum>(e: E) {
+  Object.keys(e)
+    .filter(isNumber)
+    .forEach(i => {
+      const s = e[i];
+      e[s] = s;
+      delete e[i];
+    });
 }
