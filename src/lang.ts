@@ -301,3 +301,7 @@ export function cast(o: any): any {
 export function equals<A>(a: A, b: A): boolean {
   return a === b;
 }
+
+export function not_equals<A>(a: A, b: A): boolean {
+  return a !== b;
+}

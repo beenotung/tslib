@@ -73,3 +73,7 @@ export function enum_is_last<E extends Enum>(e: E, v: keyof E): boolean {
 export function enum_is_in_range<E extends Enum>(e: E, v: any): boolean {
   return isDefined(e[v]);
 }
+
+export function enum_not_equals<E1 extends Enum, E2 extends Enum>(e1: E1, e2: E2): boolean {
+  return <Enum>e1 !== <Enum>e2;
+}
