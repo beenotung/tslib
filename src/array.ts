@@ -188,7 +188,8 @@ export function insertNoDupWithKey<A>(acc: A[], newXs: A[], key: string): A[] {
 export function removeDupByKey<A>(xs: A[], key: string | number): A[] {
   const t: Obj<A> = {};
   xs.map(x => t[x[key]] = x);
-  return objValues(t);
+  replace(xs, objValues(t));
+  return xs;
 }
 
 /**
