@@ -24,3 +24,4 @@ export namespace session {
     }
   }
 }
+export const time_zone_offset = new Date().getTimezoneOffset() * MINUTE;
