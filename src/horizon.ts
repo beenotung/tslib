@@ -42,7 +42,7 @@ export abstract class Table<A> {
   }
 
   deletes(keyOrDoc: string | Document<A>): Observable<any> {
-    let o = <Document<A>>{};
+    const o = <Document<A>>{};
     if (typeof keyOrDoc == 'string') {
       o.id = keyOrDoc;
     } else {
@@ -58,7 +58,7 @@ export async function newHorizonUUID(hz: Horizon, tableName: string = 'uuid'): P
 }
 
 export function removeAll(hz: Horizon, tableName: string): Observable<string> {
-  let table = hz<{ id: string }>(tableName);
+  const table = hz<{ id: string }>(tableName);
   return table.fetch().mergeMap(xs => table.removeAll(xs).map(x => x.id));
 }
 
@@ -80,16 +80,17 @@ export async function load_horizon_ng(http: Http, progressService: ProgressServi
 
   /* as demo to monitor the progress */
   progressService.downloadProgress.subscribe(event => {
-    if (is_debug_load_horizon)
+    if (is_debug_load_horizon) {
       console.log(event.loaded, event.loaded / horizon_api_size * 100 + '%');
+    }
   });
 
-  let defer = createDefer<void, string>();
+  const defer = createDefer<void, string>();
   http.get(url)
     .map(res => res.text())
     .subscribe(
       data => {
-        let script = document.createElement('script');
+        const script = document.createElement('script');
         script.innerText = data;
         document.head.appendChild(script);
         if (typeof getHorizon() != 'function') {
@@ -110,8 +111,8 @@ export async function load_horizon_ng(http: Http, progressService: ProgressServi
  * will not auto retry
  * */
 export async function load_horizon(url: string) {
-  let data = await fetch(url).then(x => x.text());
-  let script = document.createElement('script');
+  const data = await fetch(url).then(x => x.text());
+  const script = document.createElement('script');
   script.innerText = data;
   document.head.appendChild(script);
   if (typeof Horizon != 'function') {
