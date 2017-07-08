@@ -2,6 +2,7 @@ import {Http} from '@angular/http';
 import {createDefer} from './async';
 import {ProgressService} from './angular/progress';
 import {Observable} from 'rxjs/Observable';
+import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/mergeMap';
 import 'rxjs/add/operator/toPromise';
 import {Horizon} from '../../typestub-horizon-client/index';
@@ -24,7 +25,7 @@ export async function newHorizonUUID(hz: Horizon, tableName: string = 'uuid'): P
 
 export function removeAll(hz: Horizon, tableName: string): Observable<string> {
   const table = hz<{ id: string }>(tableName);
-  return (<any>table.fetch()).mergeMap(xs => (<any>table.removeAll(xs)).map(x => x.id));
+  return table.fetch().mergeMap(xs => table.removeAll(xs).map(x => x.id));
 }
 
 export function getHorizon(): Horizon {
@@ -52,7 +53,7 @@ export async function load_horizon_ng(http: Http, progressService: ProgressServi
   });
 
   const defer = createDefer<void, string>();
-  (<any>http.get(url))
+  http.get(url)
     .map(res => res.text())
     .subscribe(
       data => {
