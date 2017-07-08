@@ -16,11 +16,6 @@ export namespace PolyfillArray {
   export const prototype: PolyfillArray<any> = Object.assign({}, _prototype, Array.prototype);
 
   export function wrapArray<A>(xs: A[]): PolyfillArray<A> {
-    if (xs['__proto__']) {
-      Object.assign(xs['__proto__'], _prototype);
-      return <PolyfillArray<A>> xs;
-    } else {
-      return Object.assign(xs, _prototype);
-    }
+    return <PolyfillArray<A>>xs;
   }
 }
