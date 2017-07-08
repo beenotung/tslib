@@ -4,16 +4,17 @@
   "description": "rewrite of jslib",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "tslint --type-check --project tsconfig.json index.d.ts"
   },
   "author": "Beeno Tung",
   "license": "ISC",
-  "dependencies": {
-    "ionic-angular": "^3.2.0",
-    "isomorphic-fetch": "^2.2.1"
-  },
+  "dependencies": {},
   "devDependencies": {
     "@types/isomorphic-fetch": "0.0.34",
-    "tslint-eslint-rules": "^4.0.0"
+    "@types/jquery": "^3.2.6",
+    "codelyzer": "3.0.1",
+    "tslint": "5.5.0",
+    "tslint-eslint-rules": "4.0.0",
+    "typescript": "2.4.1"
   }
 }

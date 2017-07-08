@@ -1,8 +1,10 @@
-import {Observable} from 'rxjs';
 import {Http} from '@angular/http';
 import {createDefer} from './async';
-import {DataType, Horizon, OldRecord, TableObject} from '../../typestub-horizon-client/index';
 import {ProgressService} from './angular/progress';
+import {Observable} from 'rxjs/Observable';
+import 'rxjs/add/operator/mergeMap';
+import 'rxjs/add/operator/toPromise';
+import {Horizon} from '../../typestub-horizon-client/index';
 
 /**
  * @remark Hbase style operation should be deprecated, since horizon support partial update
@@ -14,52 +16,15 @@ import {ProgressService} from './angular/progress';
  *   The resulting object will be {id:id, a:10, b:2}
  */
 
-export abstract class Document<A> implements OldRecord {
-  id: string;
-  [key: string]: DataType;
-
-  deleted: boolean;
-
-  constructor(o?: OldRecord) {
-    Object.assign(this, o);
-  }
-}
-
-export abstract class Table<A> {
-  tableObject: TableObject<A>;
-
-  constructor(hz: Horizon,
-              public name: string,) {
-    this.tableObject = hz<A>(name);
-  }
-
-  all(): Observable<A[]> {
-    return this.tableObject
-      .findAll(<A><any>{
-        deleted: false
-      })
-      .fetch();
-  }
-
-  deletes(keyOrDoc: string | Document<A>): Observable<any> {
-    const o = <Document<A>>{};
-    if (typeof keyOrDoc == 'string') {
-      o.id = keyOrDoc;
-    } else {
-      o.id = keyOrDoc.id;
-    }
-    o.deleted = true;
-    return this.tableObject.update(<any><Document<A>>o);
-  }
-}
-
 export async function newHorizonUUID(hz: Horizon, tableName: string = 'uuid'): Promise<string> {
-  return hz(tableName).store({}).toPromise().then(x => x.id);
+  const defer = createDefer<string, any>();
+  hz(tableName).store({}).subscribe(x => defer.resolve(x.id), e => defer.reject(e));
+  return defer.promise;
 }
 
 export function removeAll(hz: Horizon, tableName: string): Observable<string> {
   const table = hz<{ id: string }>(tableName);
-  return table.fetch().mergeMap(xs => table.removeAll(xs).map(x => x.id));
+  return (<any>table.fetch()).mergeMap(xs => (<any>table.removeAll(xs)).map(x => x.id));
 }
 
 export function getHorizon(): Horizon {
@@ -73,7 +38,8 @@ export function getHorizon(): Horizon {
 export let horizon_api_size = 266826;
 export const is_debug_load_horizon = false;
 
-export async function load_horizon_ng(http: Http, progressService: ProgressService, url: string = 'http://localhost:8181/horizon/horizon.js', preF?: Function): Promise<void> {
+export async function load_horizon_ng(http: Http, progressService: ProgressService
+  , url: string = 'http://localhost:8181/horizon/horizon.js', preF?: Function): Promise<void> {
   if (typeof preF === 'function') {
     preF();
   }
@@ -86,7 +52,7 @@ export async function load_horizon_ng(http: Http, progressService: ProgressServi
   });
 
   const defer = createDefer<void, string>();
-  http.get(url)
+  (<any>http.get(url))
     .map(res => res.text())
     .subscribe(
       data => {

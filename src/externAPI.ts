@@ -55,10 +55,12 @@ export namespace externalAPI {
         });
       defer.reject(`no host record named '${name}'`);
     } catch (e) {
-      if (found)
+      if (found) {
         defer.resolve(found);
-      else
+      }
+      else {
         defer.reject(e);
+      }
     }
     return defer.promise;
   }

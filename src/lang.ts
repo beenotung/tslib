@@ -35,16 +35,18 @@ export function checkedGetProp<A>(k: ObjKey, o: Obj<A>): A {
   if (hasProp(k, o)) {
     return o[k];
   }
-  else
+  else {
     throw new TypeError(`property '${k}' does not exist in the object.`);
+  }
 }
 
 export function getPropWithDefault<A>(v: A, k: ObjKey, o: Obj<A>): A {
   if (hasProp(k, o)) {
     return o[k];
   }
-  else
+  else {
     return v;
+  }
 }
 
 export function first_non_null<A>(...args: A[]): A | null {
@@ -138,8 +140,9 @@ export function objValues<A>(o: Obj<A>): A[] {
 export function argsToArray<A>(args: IArguments): A[] {
   const len = args.length;
   const res = new Array<A>(len);
-  for (let i = 0; i < len; i++)
+  for (let i = 0; i < len; i++) {
     res[i] = args[i];
+  }
   return res;
 }
 
@@ -161,8 +164,9 @@ export function concatArgs<A>(as: ArrayLike<A>, args: ArrayLike<A>, offsetArgs =
 
 export function copyArray<A>(xs: ArrayLike<A>, offset: number = 0, count: number = xs.length): A[] {
   const res = new Array(count);
-  for (let i = 0; i < count; i++)
+  for (let i = 0; i < count; i++) {
     res[i] = xs[offset + i];
+  }
   return res;
 }
 

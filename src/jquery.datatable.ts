@@ -1,3 +1,5 @@
+declare let $: any;
+
 interface DataTableOption {
   lengthOptions: number[]
   searchPlaceholder: string
