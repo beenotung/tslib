@@ -12,14 +12,14 @@ export declare type Supplier<A> = () => A;
 export declare type AsyncSupplier<A> = () => Promise<A>;
 
 /** take all args (ignore arity) */
-export let apply = curry((f: Function) => function () {
+export const apply = curry((f: Function) => function () {
   return id(f.apply(null, arguments));
 });
 
-export let prop = curry(<A>(name: ObjKey, o: Obj<A>): A => o[name]);
+export const prop = curry(<A>(name: ObjKey, o: Obj<A>): A => o[name]);
 
 /** cannot represent recursive type, o must eventually contains type A */
-export let deepProp = curry(<A>(name: ObjKey, o: Obj<A> | any): A => {
+export const deepProp = curry(<A>(name: ObjKey, o: Obj<A> | any): A => {
   if (o[name] !== void 0) {
     return o[name];
   } else {
@@ -34,47 +34,47 @@ export let deepProp = curry(<A>(name: ObjKey, o: Obj<A> | any): A => {
  *
  * setProp :: a -> k -> {k:a} -> {k:a}
  * */
-export let setProp = curry(<A>(a: A, k: ObjKey, o: Obj<A>): Obj<A> => {
+export const setProp = curry(<A>(a: A, k: ObjKey, o: Obj<A>): Obj<A> => {
   o[k] = a;
   return o;
 });
-export let length = curry(<A>(x: ArrayLike<A>): number => x.length);
-export let filter = curry(<A>(f: CurryF1<A, boolean>, xs: A[]): A[] => xs.filter(f));
-export let compose = curry(<A, B, C>(f: CurryF1<B, C>, g: CurryF1<A, B>, a: A): C => f(g(a)));
-export let flip = curry(<A, B, C>(f: CurryF2<A, B, C>) => (b: B) => (a: A): C => f(a, b));
-export let lift = curry(<A, B>(a: A, b?: B): A => a);
-export let lift_noarg = curry(<A>(a: A) => (): A => a);
-export let liftError = curry(<E extends Error, A, B>(e: E, b: B): A => {
+export const length = curry(<A>(x: ArrayLike<A>): number => x.length);
+export const filter = curry(<A>(f: CurryF1<A, boolean>, xs: A[]): A[] => xs.filter(f));
+export const compose = curry(<A, B, C>(f: CurryF1<B, C>, g: CurryF1<A, B>, a: A): C => f(g(a)));
+export const flip = curry(<A, B, C>(f: CurryF2<A, B, C>) => (b: B) => (a: A): C => f(a, b));
+export const lift = curry(<A, B>(a: A, b?: B): A => a);
+export const lift_noarg = curry(<A>(a: A) => (): A => a);
+export const liftError = curry(<E extends Error, A, B>(e: E, b: B): A => {
   throw e;
 });
-export let liftError_noarg = curry(<E extends Error, A>(e: E) => (): A => {
+export const liftError_noarg = curry(<E extends Error, A>(e: E) => (): A => {
   throw e;
 });
-export let compose2 = compose(compose, compose);
-export let odd = curry((x: number) => x % 2 == 1);
-export let even = curry((x: number) => x % 2 == 0);
-export let countWhere = curry(compose2(length, filter));
+export const compose2 = compose(compose, compose);
+export const odd = curry((x: number) => x % 2 == 1);
+export const even = curry((x: number) => x % 2 == 0);
+export const countWhere = curry(compose2(length, filter));
 /**
  * @remark side effect
  * apply2 :: (*->a) -> (a->b) -> a -> b
  * */
-export let apply2 = curry(<A, B>(f: Function, g: CurryF1<A, B>, x: A): B => {
+export const apply2 = curry(<A, B>(f: Function, g: CurryF1<A, B>, x: A): B => {
   f(x);
   return g(x);
 });
 /**
  * @example echoF (console.log) (1) ~> console.log(1) +> return 1
  * */
-export let echoF = flip(apply2)(id);
-export let symbolFs = new Map<string, CurryF2<any, any, any>>();
-export let isFunction = (x: any) => typeof x === 'function';
-export let isNumber = (x: any) => typeof x === 'number';
-export let isString = (x: any) => typeof x === 'string';
+export const echoF = flip(apply2)(id);
+export const symbolFs = new Map<string, CurryF2<any, any, any>>();
+export const isFunction = (x: any) => typeof x === 'function';
+export const isNumber = (x: any) => typeof x === 'number';
+export const isString = (x: any) => typeof x === 'string';
 /*
  * main :: RealWorld -> ((), RealWorld)
  * */
 /**@remark side effect */
-export let forEach = curry(<A>(f: Function, xs: ArrayLike<A>) => {
+export const forEach = curry(<A>(f: Function, xs: ArrayLike<A>) => {
   /* xs is ArrayLike, might not has forEach */
   const n = xs.length;
   for (let i = 0; i < n; i++) {
@@ -86,20 +86,20 @@ export type Maybe<A> = [A] | EmptyArray<A>;
 /**
  * just :: a -> [a]
  * */
-export let just = curry(<A>(x: A) => [x]);
+export const just = curry(<A>(x: A) => [x]);
 /**
  * none :: * -> []
  * */
-export let none = curry(<A>(x: A): any[] => []);
-export let eq = curry(<A>(a: A, b: A): boolean => b === a);
-export let neq = curry(<A>(a: A, b: A): boolean => b !== a);
-export let gt = curry((a: number | string, b: number | string): boolean => b > a);
-export let lt = curry((a: number | string, b: number | string): boolean => b < a);
+export const none = curry(<A>(x: A): any[] => []);
+export const eq = curry(<A>(a: A, b: A): boolean => b === a);
+export const neq = curry(<A>(a: A, b: A): boolean => b !== a);
+export const gt = curry((a: number | string, b: number | string): boolean => b > a);
+export const lt = curry((a: number | string, b: number | string): boolean => b < a);
 /**
  * first :: (a->Bool) -> [a] -> Maybe a
  * */
-export let first = curry(<A>(f: CurryF1<A, boolean>, xs: A[]): Maybe<A> => {
-  for (let x of xs) {
+export const first = curry(<A>(f: CurryF1<A, boolean>, xs: A[]): Maybe<A> => {
+  for (const x of xs) {
     if (f(x)) {
       return just(x);
     }
@@ -109,8 +109,8 @@ export let first = curry(<A>(f: CurryF1<A, boolean>, xs: A[]): Maybe<A> => {
 /**
  * any :: (a->Bool) -> [a] -> Bool
  * */
-export let any = curry(<A>(f: CurryF1<A, boolean>, xs: A[]) => {
-  for (let x of xs) {
+export const any = curry(<A>(f: CurryF1<A, boolean>, xs: A[]) => {
+  for (const x of xs) {
     if (f(x)) {
       return true;
     }
@@ -122,35 +122,35 @@ export let any = curry(<A>(f: CurryF1<A, boolean>, xs: A[]) => {
  * @remark side effect
  * define infix operator (binary function)
  * */
-export let defineSymbolF = curry(<A, B, C>(name: string, f: CurryF2<A, B, C>): CurryF2<A, B, C> => {
+export const defineSymbolF = curry(<A, B, C>(name: string, f: CurryF2<A, B, C>): CurryF2<A, B, C> => {
   symbolFs.set(name, f);
   return f;
 });
 /* number | string atomically for a and b */
-export let add = defineSymbolF('+', (a: number, b: number) => b + a);
+export const add = defineSymbolF('+', (a: number, b: number) => b + a);
 /* number | string atomically for a and b */
-export let minus = defineSymbolF('-', (a: number, b: number) => b - a);
-export let mult = defineSymbolF('*', (a: number, b: number): number => b * a);
+export const minus = defineSymbolF('-', (a: number, b: number) => b - a);
+export const mult = defineSymbolF('*', (a: number, b: number): number => b * a);
 defineSymbolF('/', (a: number, b: number): number => b / a);
-export let rem = defineSymbolF('%', (a: number, b: number): number => b % a);
-export let div = curry((a: number, b: number): number => Math.floor(b / a));
-export let quot = curry((a: number, b: number): number => (b / a) | 0);
+export const rem = defineSymbolF('%', (a: number, b: number): number => b % a);
+export const div = curry((a: number, b: number): number => Math.floor(b / a));
+export const quot = curry((a: number, b: number): number => (b / a) | 0);
 /** faster */
-export let quotMod = curry((a: number, b: number): [number, number] => [(b / a) | 0, b % a]);
+export const quotMod = curry((a: number, b: number): [number, number] => [(b / a) | 0, b % a]);
 /* slower */
-export let divMod = curry((a: number, b: number): [number, number] => {
+export const divMod = curry((a: number, b: number): [number, number] => {
   const d = Math.floor((b / a));
   return [d, b - d * a];
 });
-export let symbolF = curry(<A, B, C>(name: string): CurryF2<A, B, C> => symbolFs.get(name));
-export let composeFs = curry(<A>(fs: CurryF1<A, A>[], acc: A) => {
+export const symbolF = curry(<A, B, C>(name: string): CurryF2<A, B, C> => symbolFs.get(name));
+export const composeFs = curry(<A>(fs: CurryF1<A, A>[], acc: A) => {
   for (let i = fs.length - 1; i >= 0; i--) {
     acc = fs[i](acc);
   }
   return acc;
 });
-export let chainFs = curry(<A>(fs: CurryF1<A, A>[], acc: A) => {
-  for (let f of fs) {
+export const chainFs = curry(<A>(fs: CurryF1<A, A>[], acc: A) => {
+  for (const f of fs) {
     acc = f(acc);
   }
   return acc;
@@ -160,8 +160,8 @@ export let chainFs = curry(<A>(fs: CurryF1<A, A>[], acc: A) => {
  * f :: unary function <A,B>
  * args :: ArrayLike<A>
  * */
-export let doAll = curry(<A>(f: Consumer<A>, args: A[]) => {
-  for (let arg of args) {
+export const doAll = curry(<A>(f: Consumer<A>, args: A[]) => {
+  for (const arg of args) {
     f(arg);
   }
 });
@@ -172,13 +172,13 @@ export let doAll = curry(<A>(f: Consumer<A>, args: A[]) => {
  * */
 export function iteratorsToArray<A>(itrs: IterableIterator<A>[]): A[] {
   const xs = <A[]> [];
-  for (let itr of itrs) {
+  for (const itr of itrs) {
     xs.push(...Array.from(itr));
   }
   return xs;
 }
 
-export let concatWithoutDup = curry(<A>(as: A[], bs: A[]): A[] => {
+export const concatWithoutDup = curry(<A>(as: A[], bs: A[]): A[] => {
   const acc = new Set<A>();
   doAll(
     (as: A[]) => doAll(
@@ -190,9 +190,9 @@ export let concatWithoutDup = curry(<A>(as: A[], bs: A[]): A[] => {
   return iteratorsToArray<A>([acc.values()]);
 });
 
-export let map = curry(<A, B>(f: CurryF1<A, B>, as: A[]): B[] => as.map(f));
+export const map = curry(<A, B>(f: CurryF1<A, B>, as: A[]): B[] => as.map(f));
 
-export let getOrSetDefault = curry(<K, V>(v: V, k: K, m: Map<K, V>): V => {
+export const getOrSetDefault = curry(<K, V>(v: V, k: K, m: Map<K, V>): V => {
   if (m.has(k)) {
     return m.get(k);
   }
@@ -203,9 +203,9 @@ export let getOrSetDefault = curry(<K, V>(v: V, k: K, m: Map<K, V>): V => {
 /**
  * groupBy :: (a->k) -> [a] -> Map k [a]
  * */
-export let groupBy = curry(<A, K>(f: F1<A, K>, xs: A[]): Map<K, A[]> => {
+export const groupBy = curry(<A, K>(f: F1<A, K>, xs: A[]): Map<K, A[]> => {
   const res = new Map<K, A[]>();
-  for (let x of xs) {
+  for (const x of xs) {
     getOrSetDefault([], f(x), res).push(x);
   }
   return res;
@@ -214,13 +214,13 @@ export let groupBy = curry(<A, K>(f: F1<A, K>, xs: A[]): Map<K, A[]> => {
 /**
  * foldl :: (b->a->b) -> b -> [a] -> b
  * */
-export let foldl = curry(<A, B>(f: F2<B, A, B>, acc: B, xs: A[]): B => {
+export const foldl = curry(<A, B>(f: F2<B, A, B>, acc: B, xs: A[]): B => {
   for (let i = 0, n = xs.length; i < n; i++) {
     acc = f(acc, xs[i]);
   }
   return acc;
 });
-export let foldl1 = curry(<A>(f: F2<A, A, A>, xs: A[]): A => {
+export const foldl1 = curry(<A>(f: F2<A, A, A>, xs: A[]): A => {
   const n = xs.length;
   if (n == 0) {
     throw new TypeError('xs should be non-empty ArrayLike<*>');
@@ -234,31 +234,31 @@ export let foldl1 = curry(<A>(f: F2<A, A, A>, xs: A[]): A => {
 /**
  * concat :: [a] -> [a] -> [a]
  * */
-export let concat = curry(<A>(as: A[], bs: A[]): A[] => as.concat(bs));
+export const concat = curry(<A>(as: A[], bs: A[]): A[] => as.concat(bs));
 /**
  * concatAll :: [[a]] -> [a]
  * */
-export let concatAll: <A>(ass: A[][]) => A[]
+export const concatAll: <A>(ass: A[][]) => A[]
   = foldl(concat, []);
 /**
  * @remark side effect to as
  * as -> bs -> __update as__
  * */
-export let pushAll = curry(<A>(as: A[], bs: A[]) => as.push(...bs));
+export const pushAll = curry(<A>(as: A[], bs: A[]) => as.push(...bs));
 /**
  * merge array of plain objects
  *   do not support merging functions
  *   do not support instant object (e.g. Map instance)
  * merge :: [a|b] -> a & b
  * */
-export let mergeObjs = curry(<A>(xs: A[]): A => Object.assign({}, ...xs));
+export const mergeObjs = curry(<A>(xs: A[]): A => Object.assign({}, ...xs));
 // /**
 //  * mergeAll :: (a=>) -> [a] -> [a] -> [a]
 //  * */
-// export let mergeAll = curry((f, as, bs) => {
+// export const mergeAll = curry((f, as, bs) => {
 //   as = groupBy(f, as);
 //   bs = groupBy(f, bs);
-//   let res = [];
+//   const res = [];
 //   forEach(xs => pushAll(res), as);
 //   forEach(xs => pushAll(res), bs);
 //   return res;
@@ -266,10 +266,10 @@ export let mergeObjs = curry(<A>(xs: A[]): A => Object.assign({}, ...xs));
 /**
  * groupByAll :: (a->k) -> [[a]] -> Map k [a]
  * */
-export let groupByAll = curry(<A, K>(f: F1<A, K>, xss: A[][]): Map<K, A[]> => {
+export const groupByAll = curry(<A, K>(f: F1<A, K>, xss: A[][]): Map<K, A[]> => {
   const res = new Map<K, A[]>();
-  for (let xs of xss) {
-    for (let x of xs) {
+  for (const xs of xss) {
+    for (const x of xs) {
       getOrSetDefault([], f(x), res).push(x);
     }
   }
@@ -283,11 +283,11 @@ export let groupByAll = curry(<A, K>(f: F1<A, K>, xss: A[][]): Map<K, A[]> => {
  *
  * more effective then using map if the original array is going to be discarded anyway
  * */
-export let update = curry(<A>(f: Consumer<A>, as: A[]) => {
+export const update = curry(<A>(f: Consumer<A>, as: A[]) => {
   as.forEach(f);
   return as;
 });
 
-export let map2 = curry(<A, B>(f: (a: A) => B, xss: A[][]): B[][] => {
+export const map2 = curry(<A, B>(f: (a: A) => B, xss: A[][]): B[][] => {
   return xss.map(xs => xs.map(f));
 });

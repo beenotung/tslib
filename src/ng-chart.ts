@@ -18,8 +18,8 @@ export type NgChartColor = {
  * @param a [Optional] : number [0..255]
  * */
 export function mkChartColor(r: number, g: number, b: number, a: number = 0): NgChartColor {
-  let rgb = r + ',' + g + ',' + b;
-  let rgba = rgb + ',' + a;
+  const rgb = r + ',' + g + ',' + b;
+  const rgba = rgb + ',' + a;
   return {
     backgroundColor: `rgba(${rgba})`,
     borderColor: `rgba(${rgb},1)`,

@@ -8,7 +8,7 @@ import {ProgressService} from './angular/progress';
  * @remark Hbase style operation should be deprecated, since horizon support partial update
  * @example
  *   ```
- *   let id = (await hz.store({a:1, b:2}).toPromise()).id;
+ *   const id = (await hz.store({a:1, b:2}).toPromise()).id;
  *   hz.update({id:id, a:10})
  *   ```
  *   The resulting object will be {id:id, a:10, b:2}
@@ -71,7 +71,7 @@ export function getHorizon(): Horizon {
  * will not auto retry
  * */
 export let horizon_api_size = 266826;
-export let is_debug_load_horizon = false;
+export const is_debug_load_horizon = false;
 
 export async function load_horizon_ng(http: Http, progressService: ProgressService, url: string = 'http://localhost:8181/horizon/horizon.js', preF?: Function): Promise<void> {
   if (typeof preF === 'function') {

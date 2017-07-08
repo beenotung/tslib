@@ -16,7 +16,7 @@ export class CustomBrowserXhr extends BrowserXhr {
   }
 
   build(): any {
-    let xhr = super.build();
+    const xhr = super.build();
     xhr.onprogress = (event) => {
       this.service.downloadProgress.next(event);
     };

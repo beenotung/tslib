@@ -14,7 +14,7 @@ export function curry<A extends Function>(f: Function): A {
   //   : f;
 }
 
-export let id = curry(<A>(x: A) => x);
+export const id = curry(<A>(x: A) => x);
 
 /** internal func, use id() instead */
 export function autoCurry<A extends Function>(f: Function): A {

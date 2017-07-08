@@ -16,11 +16,11 @@ export namespace externalAPI {
    * @example line : 192.168.1.2:8181 freedom-coin-server
    * */
   export async function getHostList(): Promise<HostRecord[]> {
-    let text = await (fetch(hostListUrl).then(x => x.text()));
+    const text = await (fetch(hostListUrl).then(x => x.text()));
     return text.split('\n')
       .filter(x => x.length != 0)
       .map(line => {
-        let record = <HostRecord>{};
+        const record = <HostRecord>{};
         let xs = line.split(' ');
         record.name = xs[1];
         xs = xs[0].split(':');
@@ -33,10 +33,10 @@ export namespace externalAPI {
   }
 
   export async function getHostByName(name: string): Promise<HostRecord> {
-    let text = (await fetch(hostListUrl).then(x => x.text()));
+    const text = (await fetch(hostListUrl).then(x => x.text()));
     /* not using `getHostList().filter()` for speed */
     let found: HostRecord;
-    let defer = createDefer<HostRecord, any>();
+    const defer = createDefer<HostRecord, any>();
     try {
       text.split('\n')
         .filter(x => x.length != 0)

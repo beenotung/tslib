@@ -6,18 +6,18 @@ import {createDefer} from './async';
 import {F1} from './typestub-curry';
 import {curry} from './curry';
 
-export let deepGetProp = curry(<A>(name: string, o: any): A => {
+export const deepGetProp = curry(<A>(name: string, o: any): A => {
   if (o[name]) {
     return o[name];
   }
-  let xs = name.split('.');
+  const xs = name.split('.');
   if (xs.length == 1) {
-    let message = `key '${name}' not found in object`;
+    const message = `key '${name}' not found in object`;
     console.warn(message, {name: name, o: o});
     throw new TypeError(message);
   }
-  let topLevelName = xs.shift();
-  let nextLevelName = xs.join('.');
+  const topLevelName = xs.shift();
+  const nextLevelName = xs.join('.');
   return deepGetProp(nextLevelName, o[topLevelName]);
 });
 
@@ -48,7 +48,7 @@ export function getPropWithDefault<A>(v: A, k: ObjKey, o: Obj<A>): A {
 }
 
 export function first_non_null<A>(...args: A[]): A | null {
-  for (let arg of args) {
+  for (const arg of args) {
     if (arg) return arg;
   }
   return null;
@@ -185,7 +185,7 @@ export function genFunction(n: number, f: Function): Function {
     for (let i = 1; i < n; i++) {
       args += ', a' + i;
     }
-    let code = `nFuncs[${n}] = function(f){
+    const code = `nFuncs[${n}] = function(f){
   return function fun${n}(${args}){
     return f.apply(null, arguments);
   };
@@ -223,7 +223,7 @@ export function forI(f: (i: number) => void, end: number, start = 0) {
 }
 
 export function mapI<A>(f: (i: number) => A, size: number): A[] {
-  let res = new Array<A>(size);
+  const res = new Array<A>(size);
   forI(i => res[i] = f(i), size, 0);
   return res;
 }
@@ -261,7 +261,7 @@ export function tryWithDefault<A>(f: Function, defaultValue: A, args: any[]): A 
 export type ChainObject<A> = (f: (a: A) => void) => ChainObject<A>;
 
 export function chainObject<A>(a: A): ChainObject<A> {
-  let res = (f: (a: A) => void) => {
+  const res = (f: (a: A) => void) => {
     f(a);
     return res;
   };

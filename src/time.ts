@@ -6,7 +6,7 @@ export const DAY = HOUR * 24;
 export const WEEK = DAY * 7;
 
 export namespace session {
-  let intervals = {};
+  const intervals = {};
 
   export function now(interval = 1000): number {
     const now = Date.now();

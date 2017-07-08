@@ -20,8 +20,8 @@ export type PipeArg <A> = [Function, A[]] | [Function];
  * pipe :: PipeArg p => [p] -> a -> *
  *   - don't have to be of same type (like chain)
  * */
-export let pipe = curry(<A, B>(ps: PipeArg<A>[], acc: A): B => {
-  for (let p of ps) {
+export const pipe = curry(<A, B>(ps: PipeArg<A>[], acc: A): B => {
+  for (const p of ps) {
     if (p[1]) {
       /* no extra args */
       acc = p[0](acc);
