@@ -15,7 +15,7 @@ const size_units = [
 
 export function format_byte(n_byte: number, n_decimal = 2): string {
   let acc = n_byte;
-  for (let size_unit of size_units) {
+  for (const size_unit of size_units) {
     if (acc < 1024) {
       return acc.toFixed(n_decimal) + ' ' + size_unit;
     }

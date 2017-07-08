@@ -4,12 +4,14 @@
   "description": "rewrite of jslib",
   "main": "index.js",
   "scripts": {
-    "test": "tslint --type-check --project tsconfig.json index.d.ts"
+    "lint": "ionic-app-scripts lint",
+    "test": "tslint --type-check --project tsconfig.json -c tslint.json index.d.ts"
   },
   "author": "Beeno Tung",
   "license": "ISC",
   "dependencies": {},
   "devDependencies": {
+    "@ionic/app-scripts": "^2.0.0",
     "@types/isomorphic-fetch": "0.0.34",
     "@types/jquery": "^3.2.6",
     "codelyzer": "3.0.1",

@@ -12,7 +12,7 @@ import {CreatedObject, DataType, Horizon, OldRecord, TableObject} from '../../..
  *   The resulting object will be {id:id, a:10, b:2}
  */
 
-export abstract class Document<A> implements OldRecord {
+export abstract class Document implements OldRecord {
   id: string;
   [key: string]: DataType;
 
@@ -23,7 +23,7 @@ export abstract class Document<A> implements OldRecord {
   }
 }
 
-export abstract class Table<D extends Document<A>, A> {
+export abstract class Table<D extends Document> {
   tableObject: TableObject<D>;
 
   constructor(hz: Horizon, public name: string) {

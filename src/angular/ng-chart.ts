@@ -9,7 +9,7 @@ export type NgChartColor = {
   pointBorderColor: string,
   pointHoverBackgroundColor: string,
   pointHoverBorderColor: string
-}
+};
 
 /**
  * @param r : number [0..255]

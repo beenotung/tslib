@@ -8,7 +8,7 @@ export interface PolyfillArray<A>extends Array<A> {
 export namespace PolyfillArray {
   const _prototype = {
     peek: function <A>(f: (element: A, index?: number) => void) {
-      (<A[]>this).forEach(f);
+      (<Array<A>><PolyfillArray<A>>this).forEach(f);
       return this;
     }
   };

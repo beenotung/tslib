@@ -34,8 +34,7 @@ export function hasProp<A>(k: ObjKey, o: Obj<A>): boolean {
 export function checkedGetProp<A>(k: ObjKey, o: Obj<A>): A {
   if (hasProp(k, o)) {
     return o[k];
-  }
-  else {
+  } else {
     throw new TypeError(`property '${k}' does not exist in the object.`);
   }
 }
@@ -43,15 +42,16 @@ export function checkedGetProp<A>(k: ObjKey, o: Obj<A>): A {
 export function getPropWithDefault<A>(v: A, k: ObjKey, o: Obj<A>): A {
   if (hasProp(k, o)) {
     return o[k];
-  }
-  else {
+  } else {
     return v;
   }
 }
 
 export function first_non_null<A>(...args: A[]): A | null {
   for (const arg of args) {
-    if (arg) return arg;
+    if (arg) {
+      return arg;
+    }
   }
   return null;
 }
@@ -87,7 +87,9 @@ export function caseLookup<A, B>(cases: Array<[A, B]>, target: A): B {
   const xss = cases.filter(xs => xs[0] == target);
   if (xss.length == 1) {
     return xss[0][1];
-  } else throw new Error('expect only 1 match, number of match:' + xss.length);
+  } else {
+    throw new Error('expect only 1 match, number of match:' + xss.length);
+  }
 }
 
 export function caseFunctionLookup<A, B>(cases: Array<[A, () => B]>, target: A): B {
@@ -95,14 +97,16 @@ export function caseFunctionLookup<A, B>(cases: Array<[A, () => B]>, target: A):
 }
 
 export function compareString(a: string, b: string): -1 | 0 | 1 {
-  if (a == b)
+  if (a == b) {
     return 0;
+  }
   return a < b ? -1 : 1;
 }
 
 export function deepCall(f: Function) {
-  while (typeof f === 'function')
+  while (typeof f === 'function') {
     f = f();
+  }
   return f;
 }
 
@@ -180,10 +184,11 @@ export function copyToArray<A>(dest: Array<A>, destOffset = 0, src: ArrayLike<A>
 const nFuncs = <F1<Function, Function>[]> [];
 
 export function genFunction(n: number, f: Function): Function {
-  if (n < 1)
+  if (n < 1) {
     return function fun0() {
       return f.apply(null, arguments);
     };
+  }
   if (!nFuncs[n]) {
     let args = 'a0';
     for (let i = 1; i < n; i++) {
@@ -194,7 +199,9 @@ export function genFunction(n: number, f: Function): Function {
     return f.apply(null, arguments);
   };
 }`;
+    /* tslint:disable */
     eval(code);
+    /* tslint:enable */
   }
   return nFuncs[n](f);
 }
@@ -212,8 +219,9 @@ export function isNumber(i: any): boolean {
 }
 
 export function toNumber(i: any): number {
-  if (!isNumber(i))
+  if (!isNumber(i)) {
     throw new TypeError('i is not a number: ' + i);
+  }
   return +i;
 }
 

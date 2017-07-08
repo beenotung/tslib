@@ -57,8 +57,7 @@ export namespace externalAPI {
     } catch (e) {
       if (found) {
         defer.resolve(found);
-      }
-      else {
+      } else {
         defer.reject(e);
       }
     }
