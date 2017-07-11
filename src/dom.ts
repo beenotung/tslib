@@ -17,3 +17,23 @@ export function appendNode(node: Node, parent: Node) {
   }
   parent.appendChild(node);
 }
+
+export function setFullscreen(element = document.body) {
+  if (element.requestFullscreen) {
+    element.requestFullscreen();
+  } else if (element.webkitRequestFullscreen) {
+    element.webkitRequestFullscreen();
+  } else {
+    console.warn('full screen is not supported');
+  }
+}
+
+export function exitFullscreen() {
+  if (document.webkitExitFullscreen) {
+    document.webkitExitFullscreen();
+  } else if (document.exitFullscreen) {
+    document.exitFullscreen();
+  } else {
+    console.warn('full screen is not supported');
+  }
+}
