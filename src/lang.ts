@@ -262,7 +262,7 @@ export function tryCall(f: Function, ...args: any[]) {
   }
 }
 
-export function tryWithDefault<A>(f: Function, defaultValue: A, args: any[]): A {
+export function tryWithDefault<A>(f: Function, defaultValue: A, args: any[] = []): A {
   try {
     return f(...args);
   } catch (e) {

@@ -1,6 +1,7 @@
 import {Component} from '@angular/core';
-import {NavController, NavParams} from 'ionic-angular';
+import {NavController, NavParams, Platform} from 'ionic-angular';
 import {Type} from './lang';
+import {enum_only_string} from './enum';
 
 /**
  * for the sake of type check on the param
@@ -21,4 +22,20 @@ export declare class TypedNavParams<A> extends NavParams {
 
 export function typedNavParams<A>(navParams: NavParams): TypedNavParams<A> {
   return navParams;
+}
+
+export enum AppType {
+  web, android, ios, windows,
+}
+
+enum_only_string(AppType);
+
+export function getAppType(platform: Platform): AppType {
+  return platform.is('mobileweb') ? AppType.web
+    : platform.is('android') ? AppType.android
+      : platform.is('ios') ? AppType.ios
+        : platform.is('windows') ? AppType.windows
+          : (() => {
+            throw new TypeError('unknown platform');
+          })();
 }
