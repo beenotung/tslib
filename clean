@@ -1,0 +1,2 @@
+#!/bin/bash
+git status --ignored | grep src | xargs rm
