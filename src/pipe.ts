@@ -32,3 +32,10 @@ export const pipe = curry(<A, B>(ps: PipeArg<A>[], acc: A): B => {
   }
   return <B><any><A> acc;
 });
+
+export function echo<A>(f: (a: A) => any): (a: A) => A {
+  return a => {
+    f(a);
+    return a;
+  };
+}
