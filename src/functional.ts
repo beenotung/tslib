@@ -11,7 +11,9 @@ export declare type Supplier<A> = () => A;
 
 export declare type AsyncSupplier<A> = () => Promise<A>;
 
-/** take all args (ignore arity) */
+/** take all args (ignore arity)
+ * apply :: (..args->a) -> ...args -> a
+ * */
 export const apply = curry((f: Function) => function () {
   return id(f.apply(null, arguments));
 });
@@ -42,6 +44,9 @@ export const length = curry(<A>(x: ArrayLike<A>): number => x.length);
 export const filter = curry(<A>(f: CurryF1<A, boolean>, xs: A[]): A[] => xs.filter(f));
 export const compose = curry(<A, B, C>(f: CurryF1<B, C>, g: CurryF1<A, B>, a: A): C => f(g(a)));
 export const flip = curry(<A, B, C>(f: CurryF2<A, B, C>) => (b: B) => (a: A): C => f(a, b));
+/**
+ * lift :: a -> b -> a
+ * */
 export const lift = curry(<A, B>(a: A, b?: B): A => a);
 export const lift_noarg = curry(<A>(a: A) => (): A => a);
 export const liftError = curry(<E extends Error, A, B>(e: E, b: B): A => {
@@ -63,6 +68,7 @@ export const apply2 = curry(<A, B>(f: Function, g: CurryF1<A, B>, x: A): B => {
   return g(x);
 });
 /**
+ * echoF :: (a->*) -> a -> a
  * @example echoF (console.log) (1) ~> console.log(1) +> return 1
  * */
 export const echoF = flip(apply2)(id);

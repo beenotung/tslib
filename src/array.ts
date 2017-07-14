@@ -20,6 +20,15 @@ export function replace<A>(dest: A[], src: A[]): A[] {
   return dest;
 }
 
+/**@remark side effect
+ * inplace operation
+ * */
+export function takeAll<A>(xs: A[]): A[] {
+  const res = xs.map(x => x);
+  clear(xs);
+  return res;
+}
+
 export function includes<A>(x: A, xs: A[]): boolean {
   return xs.indexOf(x) !== -1;
 }
