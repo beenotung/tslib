@@ -1,3 +1,2 @@
 #!/bin/bash
-lib/tslib/clean
 git status --ignored | grep src | grep -v modified | grep -v deleted  | xargs rm
