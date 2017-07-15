@@ -9,7 +9,9 @@
     },
     "author": "Beeno Tung",
     "license": "ISC",
-    "dependencies": {},
+    "dependencies": {
+        "ionic-angular": "3.5.3"
+    },
     "devDependencies": {
         "@ionic/app-scripts": "^2.0.0",
         "@types/isomorphic-fetch": "0.0.34",
