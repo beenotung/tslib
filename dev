@@ -1,2 +1,2 @@
 #!/bin/bash
-../../node_modules/.bin/tsc --watch src/*.ts --lib es2015,dom --experimentalDecorators --target es5
+node_modules/.bin/tsc --watch src/*.ts --lib es2015,dom --experimentalDecorators --target es5
