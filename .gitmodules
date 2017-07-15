@@ -1,0 +1,3 @@
+[submodule "lib/typestub-horizon-client"]
+	path = lib/typestub-horizon-client
+	url = https://github.com/beenotung/typestub-horizon-client.git

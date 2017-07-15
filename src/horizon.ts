@@ -5,7 +5,7 @@ import {Observable} from 'rxjs/Observable';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/mergeMap';
 import 'rxjs/add/operator/toPromise';
-import {Horizon} from '../../typestub-horizon-client/index';
+import {Horizon} from '../lib/typestub-horizon-client/index';
 
 /**
  * @remark Hbase style operation should be deprecated, since horizon support partial update
