@@ -1,0 +1,2 @@
+#!/bin/bash
+rm -rf lib/typestub-horizon-client/node_modules/rxjs

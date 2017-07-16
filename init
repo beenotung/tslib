@@ -1,4 +1,5 @@
 #!/bin/bash
 npm install
 ./gu
+./fix-dep
 echo 'done.'

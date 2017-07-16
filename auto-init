@@ -2,3 +2,5 @@
 if [ ! -d node_modules ]; then
   ./init
 fi
+
+rm lib/typestub-horizon-client/node_modules/rxjs/ -rf
