@@ -1,0 +1,2 @@
+#!/bin/bash
+cat package.json | grep version | awk -F '"' '{print $4}'
