@@ -49,9 +49,8 @@ export * from './functional';
 export * from './horizon';
 export * from './horizon-lib';
 export * from './ionic';
-export * from './ionic.d';
-export * from './jquery.datatable';
 export * from './jquery';
+export * from './jquery.datatable';
 export {
   deepGetProp,
   hasProp,
@@ -116,7 +115,6 @@ export * from './time';
 export * from './type';
 // export * from './typestub-curry';
 export * from './typestub-sweetalert2';
-export * from './typstub-jquery.datatable';
 export * from './uuid';
 export * from './validate';
 /* tslint:enable:no-unused-variable */
