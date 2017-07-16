@@ -1,6 +1,6 @@
 {
   "name": "@beenotung/tslib",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "rewrite of jslib",
   "main": "index.js",
   "scripts": {
@@ -32,6 +32,7 @@
     "@types/jquery": "3.2.8",
     "ajv": "^5.2.2",
     "codelyzer": "3.1.2",
+    "ng2-charts": "^1.6.0",
     "tslint": "5.5.0",
     "tslint-eslint-rules": "4.1.1",
     "typescript": "2.4.1"
