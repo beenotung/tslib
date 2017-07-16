@@ -88,7 +88,7 @@ export const forEach = curry(<A>(f: Function, xs: ArrayLike<A>) => {
   }
 });
 export type EmptyArray<A> = ArrayLike<A>;
-export type Maybe<A> = [A] | EmptyArray<A>;
+export type MaybeSingleton<A> = [A] | EmptyArray<A>;
 /**
  * just :: a -> [a]
  * */
@@ -104,7 +104,7 @@ export const lt = curry((a: number | string, b: number | string): boolean => b <
 /**
  * first :: (a->Bool) -> [a] -> Maybe a
  * */
-export const first = curry(<A>(f: CurryF1<A, boolean>, xs: A[]): Maybe<A> => {
+export const first = curry(<A>(f: CurryF1<A, boolean>, xs: A[]): MaybeSingleton<A> => {
   for (const x of xs) {
     if (f(x)) {
       return just(x);

@@ -99,7 +99,7 @@ export function insert<A>(xs: A[], index: number, x: A): void {
   xs.splice(index, 0, x);
 }
 
-type OrderType = 'ascending' | 'descending';
+export type OrderType = 'ascending' | 'descending';
 
 /**
  * insert into Ascending sorted array

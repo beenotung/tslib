@@ -1,2 +1,2 @@
 #!/bin/bash
-git status --ignored | grep src | grep -v modified | grep -v deleted  | xargs rm
+git status --ignored | grep src | grep -v modified | grep -v deleted  | grep -v 'new file' | grep -v renamed | xargs rm
