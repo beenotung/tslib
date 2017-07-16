@@ -1,4 +1,5 @@
 #!/bin/bash
 npm install
 git submodule update --init
+./fix-dep
 echo 'done.'
