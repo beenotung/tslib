@@ -1,12 +1,14 @@
 {
   "name": "@beenotung/tslib",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "rewrite of jslib",
   "main": "src/tslib.js",
   "types": "src/tslib.ts",
   "scripts": {
     "build": "tsc",
+    "postbuild": "ls src/*.ts | xargs -I {} echo mv {} {}.d | sed 's/ts.d/d.ts/' | source /dev/stdin",
     "lint": "ionic-app-scripts lint",
+    "prepublish": "npm run build",
     "test": "tslint --type-check --project tsconfig.json -c tslint.json index.d.ts"
   },
   "author": "Beeno Tung",
