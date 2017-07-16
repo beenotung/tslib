@@ -1,0 +1,9 @@
+#!/bin/bash
+git submodule init
+if [ "$1" == "-f" ] || [ "$1" == "--full" ]; then
+  git submodule update --recursive  #<- this is slow for long history (expectially when dist/asset is included)
+else
+  git submodule foreach --recursive 'git rev-parse HEAD | xargs -I {} git fetch origin {} && git reset --hard FETCH_HEAD'
+fi
+git submodule update --recursive
+
