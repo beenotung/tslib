@@ -1,1 +1,2 @@
-encode-test.js
+*.js
+*.js.map
