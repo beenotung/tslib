@@ -1,5 +1,10 @@
 declare let $: any;
 
+export interface JQuery {
+  DataTable: Function;
+  dataTable: Function;
+}
+
 interface DataTableOption {
   lengthOptions: number[]
   searchPlaceholder: string
