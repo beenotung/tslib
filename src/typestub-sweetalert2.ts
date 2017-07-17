@@ -617,5 +617,5 @@ export interface SweetAlert2 {
   noop(): void;
 }
 
-export let swal: sweetalert2 = _swal_js;
-export let SweetAlert2: sweetalert2 = _swal_js;
+export let swal: SweetAlert2 = _swal_js;
+export let SweetAlert2: SweetAlert2 = _swal_js;
