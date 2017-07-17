@@ -17,3 +17,14 @@ export function is_newer(base: number[], compare: number[]) {
 export function is_compatible(base: number[], compare: number[]) {
   return compare[0] == base[0] && (compare[1] == base[1] && compare[2] >= base[2] || compare[1] > base[1]);
 }
+
+export enum SemverDiffType {
+  breaking, compatible, same, newer
+}
+
+export function getSemverDiffType(base: number[], compare: number[]): SemverDiffType {
+  return base.join('.') === compare.join('.') ? SemverDiffType.same
+    : is_newer(base, compare) ? SemverDiffType.newer
+      : is_compatible(base, compare) ? SemverDiffType.compatible
+        : SemverDiffType.breaking;
+}
