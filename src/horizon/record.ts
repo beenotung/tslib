@@ -1,4 +1,4 @@
-import {Observable} from 'rxjs/Observable';
+import {Observable} from 'rxjs';
 import {CreatedObject, DataType, Horizon, OldRecord, TableObject} from 'typestub-horizon-client';
 
 /**
