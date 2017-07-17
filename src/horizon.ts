@@ -1,7 +1,7 @@
 import {Http} from '@angular/http';
 import {createDefer} from './async';
 import {ProgressService} from './angular/progress';
-import {Observable} from 'rxjs';
+import {Observable} from 'rxjs/Observable';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/mergeMap';
 import 'rxjs/add/operator/toPromise';
