@@ -73,9 +73,9 @@ export const apply2 = curry(<A, B>(f: Function, g: CurryF1<A, B>, x: A): B => {
  * */
 export const echoF = flip(apply2)(id);
 export const symbolFs = new Map<string, CurryF2<any, any, any>>();
-export const isFunction = (x: any) => typeof x === 'function';
-export const isNumber = (x: any) => typeof x === 'number';
-export const isString = (x: any) => typeof x === 'string';
+export const isFunctionType = (x: any) => typeof x === 'function';
+export const isNumberType = (x: any) => typeof x === 'number';
+export const isStringType = (x: any) => typeof x === 'string';
 /*
  * main :: RealWorld -> ((), RealWorld)
  * */

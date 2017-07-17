@@ -14,3 +14,8 @@ export function deepClone<A>(o: A): A {
     return res;
   }
 }
+
+export function replaceObject<A>(dest: A, src: A): A {
+  Object.keys(dest).forEach(x => delete dest[x]);
+  return Object.assign(dest, src);
+}

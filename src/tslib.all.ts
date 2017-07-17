@@ -22,53 +22,7 @@ export * from './horizon-lib';
 export * from './ionic';
 export * from './jquery';
 export * from './jquery.datatable';
-export {
-  deepGetProp,
-  hasProp,
-  checkedGetProp,
-  getPropWithDefault,
-  first_non_null,
-  ifNull,
-  ifNullF,
-  ifNullFAsync,
-  bindFunction,
-  caseLookup,
-  caseFunctionLookup,
-  compareString,
-  deepCall,
-  Obj,
-  ObjKey,
-  objForEach,
-  objMap,
-  objFilter,
-  objToArray,
-  objValues,
-  argsToArray,
-  concatArgs,
-  copyArray,
-  copyToArray,
-  genFunction,
-  isDefined,
-  notDefined,
-  isNumber as isValidNumber,
-  toNumber,
-  forI,
-  mapI,
-  repeatI,
-  tryApply,
-  tryCall,
-  tryWithDefault,
-  ChainObject,
-  chainObject,
-  Type,
-  _if,
-  applyIf,
-  gen_noop,
-  noop,
-  cast,
-  equals,
-  not_equals
-} from './lang';
+export * from './lang';
 export * from './lazy';
 export * from './maybe';
 export * from './network';

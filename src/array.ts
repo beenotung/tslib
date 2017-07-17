@@ -14,7 +14,7 @@ export function clear<A>(xs: A[]): A[] {
  * inplace replace all element in the array
  * @return the old elements
  * */
-export function replace<A>(dest: A[], src: A[]): A[] {
+export function replaceArray<A>(dest: A[], src: A[]): A[] {
   clear(dest);
   dest.push(...src);
   return dest;
@@ -198,7 +198,7 @@ export function insertNoDupWithKey<A>(acc: A[], newXs: A[], key: string): A[] {
 export function removeDupByKey<A>(xs: A[], key: string | number): A[] {
   const t: Obj<A> = {};
   xs.map(x => t[x[key]] = x);
-  replace(xs, objValues(t));
+  replaceArray(xs, objValues(t));
   return xs;
 }
 
@@ -207,7 +207,7 @@ export function removeDupByKey<A>(xs: A[], key: string | number): A[] {
  * @return old array
  * */
 export function removeByKey<A>(xs: A[], key: string | number, keys: Array<string | number>): A[] {
-  return replace(xs, xs.filter(x => !array_contains(keys, x[key])));
+  return replaceArray(xs, xs.filter(x => !array_contains(keys, x[key])));
 }
 
 /**
