@@ -119,6 +119,15 @@ export function insert_sorted<A>(xs: A[], comparator: (a: A, b: A) => CompareRes
 }
 
 /**
+ * @return new array (not deep cloning elements)
+ * */
+export function sortBy<A>(xs: A[], comparator: (a: A, b: A) => CompareResult): A[] {
+  const res: A[] = new Array(xs.length);
+  xs.forEach(x => insert_sorted(res, comparator, x));
+  return res;
+}
+
+/**
  * @remark inplace update
  * @return original array
  * */
