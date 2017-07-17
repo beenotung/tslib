@@ -5,7 +5,7 @@ import {Observable} from 'rxjs/Observable';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/mergeMap';
 import 'rxjs/add/operator/toPromise';
-import {Horizon} from '../lib/typestub-horizon-client/index';
+import {Horizon} from 'typestub-horizon-client';
 
 /**
  * @remark Hbase style operation should be deprecated, since horizon support partial update
@@ -82,7 +82,7 @@ export async function load_horizon(url: string) {
   const script = document.createElement('script');
   script.innerText = data;
   document.head.appendChild(script);
-  if (typeof Horizon != 'function') {
+  if (typeof getHorizon() != 'function') {
     throw new Error('failed to inject horizon script');
   }
   horizon_api_size = data.length;

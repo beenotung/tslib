@@ -1,5 +1,5 @@
 import {Observable} from 'rxjs/Observable';
-import {CreatedObject, DataType, Horizon, OldRecord, TableObject} from '../../lib/typestub-horizon-client/index';
+import {CreatedObject, DataType, Horizon, OldRecord, TableObject} from 'typestub-horizon-client';
 
 /**
  * @remark Hbase style operation should be deprecated, since horizon support partial update
