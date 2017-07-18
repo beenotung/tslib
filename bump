@@ -1,5 +1,9 @@
 #!/bin/bash
 ## bump version
+
+echo "deprecated: checkout `npm version --help`"
+sleep 4;
+
 set -e
 set -o pipefail
 

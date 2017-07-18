@@ -1,6 +1,4 @@
-import {Http} from '@angular/http';
 import {createDefer} from './async';
-import {ProgressService} from './angular/progress';
 import {Observable} from 'rxjs/Observable';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/mergeMap';
@@ -39,38 +37,8 @@ export function getHorizon(): Horizon {
 export let horizon_api_size = 266826;
 export const is_debug_load_horizon = false;
 
-export async function load_horizon_ng(http: Http, progressService: ProgressService
-  , url: string = 'http://localhost:8181/horizon/horizon.js', preF?: Function): Promise<void> {
-  if (typeof preF === 'function') {
-    preF();
-  }
-
-  /* as demo to monitor the progress */
-  progressService.downloadProgress.subscribe(event => {
-    if (is_debug_load_horizon) {
-      console.log(event.loaded, event.loaded / horizon_api_size * 100 + '%');
-    }
-  });
-
-  const defer = createDefer<void, string>();
-  http.get(url)
-    .map(res => res.text())
-    .subscribe(
-      data => {
-        const script = document.createElement('script');
-        script.innerText = data;
-        document.head.appendChild(script);
-        if (typeof getHorizon() != 'function') {
-          defer.reject('failed to inject horizon script, loaded Horizon is not function');
-        } else {
-          horizon_api_size = data.length;
-          defer.resolve(void 0);
-        }
-      }
-      , defer.reject
-      // , () => sub.unsubscribe()
-    );
-  return defer.promise;
+export function setHorizonAPISize(x: number) {
+  horizon_api_size = x;
 }
 
 /**
