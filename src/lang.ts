@@ -80,7 +80,9 @@ export async function ifNullFAsync<A>(a: A, f: Supplier<Promise<A>>): Promise<A>
 }
 
 export function bindFunction(f: Function): Function {
-  return f.bind(f);
+  const res = f.bind(f);
+  res.prototype = f.prototype;
+  return res;
 }
 
 export function caseLookup<A, B>(cases: Array<[A, B]>, target: A): B {
