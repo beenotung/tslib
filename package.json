@@ -1,6 +1,6 @@
 {
   "name": "@beenotung/tslib",
-  "version": "2.3.1",
+  "version": "2.3.2",
   "description": "rewrite of jslib",
   "main": "src/tslib.all.js",
   "types": "src/tslib.all.ts",
@@ -25,6 +25,7 @@
     "isomorphic-fetch": "2.2.1",
     "rxjs": "5.4.0",
     "sweetalert2": "6.6.6",
+    "typestub-horizon-client": "^0.1.2",
     "zone.js": "0.8.12"
   },
   "devDependencies": {
@@ -38,8 +39,7 @@
     "ng2-charts": "^1.6.0",
     "tslint": "5.5.0",
     "tslint-eslint-rules": "4.1.1",
-    "typescript": "2.4.1",
-    "typestub-horizon-client": "^0.1.2"
+    "typescript": "2.4.1"
   },
   "optionalDependencies": {},
   "peerDependencies": {
