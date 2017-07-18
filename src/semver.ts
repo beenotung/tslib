@@ -8,6 +8,14 @@ export function to_semver(s: string): number[] {
   return res;
 }
 
+export function is_semver(s: string): boolean {
+  try {
+    return to_semver(s).length === 3;
+  } catch (e) {
+    return false;
+  }
+}
+
 export function is_newer(base: number[], compare: number[]) {
   return compare[0] > base[0]
     || compare[0] == base[0] && (compare[1] > base[1]
