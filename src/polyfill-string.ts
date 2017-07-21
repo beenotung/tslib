@@ -1,4 +1,4 @@
-import {strReplaceAll} from './string';
+import {strReplaceAll} from "./string";
 
 export interface PolyfillString extends String {
   replaceAll(find: string, replace: string): PolyfillString;

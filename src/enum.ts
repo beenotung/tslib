@@ -1,5 +1,5 @@
-import {range} from './array';
-import {isDefined, isNumber} from './lang';
+import {range} from "./array";
+import {isDefined, isNumber} from "./lang";
 
 export type Enum = { [index: number]: string } & { [key: string]: number } | Object;
 
@@ -63,7 +63,7 @@ export function enum_is_last_s<E extends Enum>(e: E, s: string): boolean {
 }
 
 export function enum_is_last<E extends Enum>(e: E, v: keyof E): boolean {
-  if (typeof v === 'number') {
+  if (typeof v === "number") {
     return enum_is_last_i(e, <any>v);
   } else {
     return enum_is_last_s(e, v);

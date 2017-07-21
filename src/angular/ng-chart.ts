@@ -18,14 +18,14 @@ export type NgChartColor = {
  * @param a [Optional] : number [0..255]
  * */
 export function mkChartColor(r: number, g: number, b: number, a: number = 0): NgChartColor {
-  const rgb = r + ',' + g + ',' + b;
-  const rgba = rgb + ',' + a;
+  const rgb = r + "," + g + "," + b;
+  const rgba = rgb + "," + a;
   return {
     backgroundColor: `rgba(${rgba})`,
     borderColor: `rgba(${rgb},1)`,
     pointBackgroundColor: `rgba(${rgb},1)`,
-    pointBorderColor: '#fff',
-    pointHoverBackgroundColor: '#fff',
+    pointBorderColor: "#fff",
+    pointHoverBackgroundColor: "#fff",
     pointHoverBorderColor: `rgba(${rgb},0.8)`
   };
 }
@@ -55,4 +55,4 @@ export class NgChartParams {
   }
 }
 
-export type LineChartType = 'line' | 'pie' | string;
+export type LineChartType = "line" | "pie" | string;

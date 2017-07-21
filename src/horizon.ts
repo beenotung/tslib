@@ -1,9 +1,9 @@
-import {createDefer} from './async';
-import {Observable} from 'rxjs/Observable';
-import 'rxjs/add/operator/map';
-import 'rxjs/add/operator/mergeMap';
-import 'rxjs/add/operator/toPromise';
-import {Horizon} from 'typestub-horizon-client';
+import {createDefer} from "./async";
+import {Observable} from "rxjs/Observable";
+import "rxjs/add/operator/map";
+import "rxjs/add/operator/mergeMap";
+import "rxjs/add/operator/toPromise";
+import {Horizon} from "typestub-horizon-client";
 
 /**
  * @remark Hbase style operation should be deprecated, since horizon support partial update
@@ -15,7 +15,7 @@ import {Horizon} from 'typestub-horizon-client';
  *   The resulting object will be {id:id, a:10, b:2}
  */
 
-export async function newHorizonUUID(hz: Horizon, tableName: string = 'uuid'): Promise<string> {
+export async function newHorizonUUID(hz: Horizon, tableName: string = "uuid"): Promise<string> {
   const defer = createDefer<string, any>();
   hz(tableName).store({}).subscribe(x => defer.resolve(x.id), e => defer.reject(e));
   return defer.promise;
@@ -27,7 +27,7 @@ export function removeAll(hz: Horizon, tableName: string): Observable<string> {
 }
 
 export function getHorizon(): Horizon {
-  return window['Horizon'];
+  return window["Horizon"];
 }
 
 /**
@@ -47,12 +47,12 @@ export function setHorizonAPISize(x: number) {
  * */
 export async function load_horizon(url: string) {
   const data = await fetch(url).then(x => x.text());
-  const script = document.createElement('script');
+  const script = document.createElement("script");
   script.innerText = data;
   document.head.appendChild(script);
-  if (typeof getHorizon() != 'function') {
-    throw new Error('failed to inject horizon script');
+  if (typeof getHorizon() != "function") {
+    throw new Error("failed to inject horizon script");
   }
   horizon_api_size = data.length;
-  return 'ok';
+  return "ok";
 }

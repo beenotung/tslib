@@ -2,7 +2,7 @@
  * Created by beenotung on 12/26/16.
  */
 
-import {concatArgs, copyArray} from './lang';
+import {concatArgs, copyArray} from "./lang";
 
 /* reference : http://stackoverflow.com/questions/27996544/how-to-correctly-curry-a-function-in-javascript */
 
@@ -18,7 +18,7 @@ export const id = curry(<A>(x: A) => x);
 
 /** internal func, use id() instead */
 export function autoCurry<A extends Function>(f: Function): A {
-  return (typeof f === 'function' && f.length > 0)
+  return (typeof f === "function" && f.length > 0)
     ? partial(f, f.length, [])
     : f;
 }

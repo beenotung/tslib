@@ -1,5 +1,5 @@
-import {Observable} from 'rxjs/Observable';
-import {CreatedObject, DataType, Horizon, OldRecord, TableObject} from 'typestub-horizon-client';
+import {Observable} from "rxjs/Observable";
+import {CreatedObject, DataType, Horizon, OldRecord, TableObject} from "typestub-horizon-client";
 
 /**
  * @remark Hbase style operation should be deprecated, since horizon support partial update
@@ -39,7 +39,7 @@ export abstract class Table<D extends Document> {
 
   deletes(keyOrDoc: string | D): Observable<CreatedObject> {
     const o = <D>{};
-    if (typeof keyOrDoc == 'string') {
+    if (typeof keyOrDoc == "string") {
       o.id = keyOrDoc;
     } else {
       o.id = keyOrDoc.id;

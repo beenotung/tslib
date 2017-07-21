@@ -1,4 +1,4 @@
-import {createDefer} from './async';
+import {createDefer} from "./async";
 
 
 declare interface JQueryPromise<A> {

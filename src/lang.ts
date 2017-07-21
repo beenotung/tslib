@@ -1,23 +1,23 @@
 /**
  * Created by beenotung on 12/26/16.
  */
-import {Supplier} from './functional';
-import {createDefer} from './async';
-import {F1} from './typestub-curry';
-import {curry} from './curry';
+import {Supplier} from "./functional";
+import {createDefer} from "./async";
+import {F1} from "./typestub-curry";
+import {curry} from "./curry";
 
 export const deepGetProp = curry(<A>(name: string, o: any): A => {
   if (o[name]) {
     return o[name];
   }
-  const xs = name.split('.');
+  const xs = name.split(".");
   if (xs.length == 1) {
     const message = `key '${name}' not found in object`;
     console.warn(message, {name: name, o: o});
     throw new TypeError(message);
   }
   const topLevelName = xs.shift();
-  const nextLevelName = xs.join('.');
+  const nextLevelName = xs.join(".");
   return deepGetProp(nextLevelName, o[topLevelName]);
 });
 
@@ -90,7 +90,7 @@ export function caseLookup<A, B>(cases: Array<[A, B]>, target: A): B {
   if (xss.length == 1) {
     return xss[0][1];
   } else {
-    throw new Error('expect only 1 match, number of match:' + xss.length);
+    throw new Error("expect only 1 match, number of match:" + xss.length);
   }
 }
 
@@ -106,7 +106,7 @@ export function compareString(a: string, b: string): -1 | 0 | 1 {
 }
 
 export function deepCall(f: Function) {
-  while (typeof f === 'function') {
+  while (typeof f === "function") {
     f = f();
   }
   return f;
@@ -192,9 +192,9 @@ export function genFunction(n: number, f: Function): Function {
     };
   }
   if (!nFuncs[n]) {
-    let args = 'a0';
+    let args = "a0";
     for (let i = 1; i < n; i++) {
-      args += ', a' + i;
+      args += ", a" + i;
     }
     const code = `nFuncs[${n}] = function(f){
   return function fun${n}(${args}){
@@ -222,7 +222,7 @@ export function isNumber(i: any): boolean {
 
 export function toNumber(i: any): number {
   if (!isNumber(i)) {
-    throw new TypeError('i is not a number: ' + i);
+    throw new TypeError("i is not a number: " + i);
   }
   return +i;
 }

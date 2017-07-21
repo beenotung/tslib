@@ -1,7 +1,7 @@
-import {createDefer, Defer} from './async';
-import {mapI} from './lang';
+import {createDefer, Defer} from "./async";
+import {mapI} from "./lang";
 
-export type BlobType = 'image/png' | string;
+export type BlobType = "image/png" | string;
 
 function createAsyncFileReader<A>(): [Defer<A, any>, FileReader] {
   const defer = createDefer<A, any>();
@@ -32,8 +32,8 @@ export async function fileToArrayBuffer(file: File) {
   const [defer, reader] = createAsyncFileReader();
   reader.readAsArrayBuffer(file);
   return defer.promise.then(res => {
-    window['reader'] = reader;
-    window['res'] = res;
+    window["reader"] = reader;
+    window["res"] = res;
     return res;
   });
 }
@@ -43,21 +43,21 @@ export async function saveFile(url: string, filename?: string) {
   const defer = createDefer();
   if (!filename) {
     // Get file name from url.
-    filename = url.substring(url.lastIndexOf('/') + 1).split('?')[0];
+    filename = url.substring(url.lastIndexOf("/") + 1).split("?")[0];
   }
   const xhr = new XMLHttpRequest();
-  xhr.responseType = 'blob';
+  xhr.responseType = "blob";
   xhr.onload = function () {
-    const a = document.createElement('a');
+    const a = document.createElement("a");
     a.href = window.URL.createObjectURL(xhr.response); // xhr.response is a blob
     a.download = filename; // Set the file name.
-    a.style.display = 'none';
+    a.style.display = "none";
     document.body.appendChild(a);
     a.click();
     defer.resolve(true);
   };
   xhr.onerror = e => defer.resolve(e);
-  xhr.open('GET', url);
+  xhr.open("GET", url);
   xhr.send();
   return defer.promise;
 }

@@ -1,6 +1,6 @@
-import {forI, mapI, Obj, objValues} from './lang';
-import {Maybe} from './maybe';
-import {CompareResult} from './number';
+import {forI, mapI, Obj, objValues} from "./lang";
+import {Maybe} from "./maybe";
+import {CompareResult} from "./number";
 
 /**
  * inplace delete all element from the array
@@ -78,7 +78,7 @@ export function shiftUntilN(n: number, xs: any[]): void {
 
 export function last<A>(xs: A[], skipCheck = false): A {
   if (skipCheck || xs.length == 0) {
-    throw new TypeError('xs is not non-empty array');
+    throw new TypeError("xs is not non-empty array");
   }
   return xs[xs.length - 1];
 }
@@ -99,13 +99,13 @@ export function insert<A>(xs: A[], index: number, x: A): void {
   xs.splice(index, 0, x);
 }
 
-export type OrderType = 'ascending' | 'descending';
+export type OrderType = "ascending" | "descending";
 
 /**
  * insert into Ascending sorted array
  * */
-export function insert_sorted<A>(xs: A[], comparator: (a: A, b: A) => CompareResult, x: A, order: OrderType = 'ascending'): void {
-  const target = (order === 'ascending')
+export function insert_sorted<A>(xs: A[], comparator: (a: A, b: A) => CompareResult, x: A, order: OrderType = "ascending"): void {
+  const target = (order === "ascending")
     ? CompareResult.Larger
     : CompareResult.Smaller
   ;

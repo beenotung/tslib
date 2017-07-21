@@ -1,5 +1,5 @@
 export function isObject(o: any): boolean {
-  return typeof o === 'object';
+  return typeof o === "object";
 }
 
 export function deepClone<A>(o: A): A {

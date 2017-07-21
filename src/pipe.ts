@@ -1,4 +1,4 @@
-import {curry} from './curry';
+import {curry} from "./curry";
 
 export type PipeArg <A> = [Function, A[]] | [Function];
 

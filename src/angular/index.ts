@@ -1,1 +1,1 @@
-export * from './ng-chart';
+export * from "./ng-chart";

@@ -1,20 +1,20 @@
-import _swal_js from 'sweetalert2/dist/sweetalert2';
+import _swal_js from "sweetalert2/dist/sweetalert2";
 
-export type SweetAlertType = 'success' | 'error' | 'warning' | 'info' | 'question' | undefined;
+export type SweetAlertType = "success" | "error" | "warning" | "info" | "question" | undefined;
 
 export type SweetAlertInputType =
-  'text'
-  | 'email'
-  | 'password'
-  | 'number'
-  | 'tel'
-  | 'range'
-  | 'textarea'
-  | 'select'
-  | 'radio'
-  | 'checkbox'
-  | 'file'
-  | 'url'
+  "text"
+  | "email"
+  | "password"
+  | "number"
+  | "tel"
+  | "range"
+  | "textarea"
+  | "select"
+  | "radio"
+  | "checkbox"
+  | "file"
+  | "url"
   | undefined;
 
 export type SweetAlertInputOptions = { [inputValue: string]: string };

@@ -1,7 +1,7 @@
-import {NgZone} from '@angular/core';
-import {ControlValueAccessor} from '@angular/forms';
-import {Observable} from 'rxjs/Observable';
-import {createDefer} from './async';
+import {NgZone} from "@angular/core";
+import {ControlValueAccessor} from "@angular/forms";
+import {Observable} from "rxjs/Observable";
+import {createDefer} from "./async";
 
 /**
  * to usage [(ngModel)] directly

@@ -1,6 +1,6 @@
-import {Consumer} from './functional';
-import * as fetch from 'isomorphic-fetch';
-import {noop} from './lang';
+import {Consumer} from "./functional";
+import * as fetch from "isomorphic-fetch";
+import {noop} from "./lang";
 
 /**
  * Created by beenotung on 12/26/16.
@@ -92,13 +92,13 @@ export function clearAllTimer() {
   }
 }
 
-export function fetch_no_cache(url: string, method = 'GET'): Promise<Response> {
-  const req: Request | string = typeof Request === 'function' ? new Request(url) : url;
+export function fetch_no_cache(url: string, method = "GET"): Promise<Response> {
+  const req: Request | string = typeof Request === "function" ? new Request(url) : url;
   const init = {
     method: method
     , headers: {
-      'pragma': 'no-cache'
-      , 'cache-control': 'no-cache'
+      "pragma": "no-cache"
+      , "cache-control": "no-cache"
     }
   };
   return fetch(req, init);

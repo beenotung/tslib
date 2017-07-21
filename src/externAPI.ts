@@ -1,10 +1,10 @@
-import {createDefer} from './async';
+import {createDefer} from "./async";
 
 /**
  * external API powered by surge.sh
  */
 export namespace externalAPI {
-  const hostListUrl = 'http://host-list.surge.sh/list';
+  const hostListUrl = "http://host-list.surge.sh/list";
 
   interface HostRecord {
     name: string;
@@ -17,13 +17,13 @@ export namespace externalAPI {
    * */
   export async function getHostList(): Promise<HostRecord[]> {
     const text = await (fetch(hostListUrl).then(x => x.text()));
-    return text.split('\n')
+    return text.split("\n")
       .filter(x => x.length != 0)
       .map(line => {
         const record = <HostRecord>{};
-        let xs = line.split(' ');
+        let xs = line.split(" ");
         record.name = xs[1];
-        xs = xs[0].split(':');
+        xs = xs[0].split(":");
         if (xs.length == 2) {
           record.port = Number(xs[1]);
         }
@@ -38,19 +38,19 @@ export namespace externalAPI {
     let found: HostRecord;
     const defer = createDefer<HostRecord, any>();
     try {
-      text.split('\n')
+      text.split("\n")
         .filter(x => x.length != 0)
         .forEach(line => {
-          let xs = line.split(' ');
+          let xs = line.split(" ");
           if (xs[1] == name) {
             found = <HostRecord>{};
             found.name = xs[1];
-            xs = xs[0].split(':');
+            xs = xs[0].split(":");
             if (xs.length == 2) {
               found.port = Number(xs[1]);
             }
             found.ip = xs[0];
-            throw new Error('found');
+            throw new Error("found");
           }
         });
       defer.reject(`no host record named '${name}'`);

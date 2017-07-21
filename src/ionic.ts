@@ -1,7 +1,7 @@
-import {Component} from '@angular/core';
-import {NavController, NavParams, Platform} from 'ionic-angular';
-import {Type} from './lang';
-import {enum_only_string} from './enum';
+import {Component} from "@angular/core";
+import {NavController, NavParams, Platform} from "ionic-angular";
+import {Type} from "./lang";
+import {enum_only_string} from "./enum";
 
 /**
  * for the sake of type check on the param
@@ -31,11 +31,11 @@ export enum AppType {
 enum_only_string(AppType);
 
 export function getAppType(platform: Platform): AppType {
-  return platform.is('mobileweb') ? AppType.web
-    : platform.is('android') ? AppType.android
-      : platform.is('ios') ? AppType.ios
-        : platform.is('windows') ? AppType.windows
+  return platform.is("mobileweb") ? AppType.web
+    : platform.is("android") ? AppType.android
+      : platform.is("ios") ? AppType.ios
+        : platform.is("windows") ? AppType.windows
           : (() => {
-            throw new TypeError('unknown platform');
+            throw new TypeError("unknown platform");
           })();
 }
