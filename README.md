@@ -1,5 +1,5 @@
 # tslib
-utils library in Typescript (also Angular and Ionic)
+utils library in Typescript
 
 ## Why tslib
 My original lib [jslib](https://github.com/beenotung/jslib) was build before ES6 was popular, it has a number of ES6-like classes and polyfill which is not following the standard.
@@ -7,7 +7,7 @@ My original lib [jslib](https://github.com/beenotung/jslib) was build before ES6
 This lib is base on ES6 (and Typescript ES7) which should gain more native performance.
 
 This library is influenced by ramda, elixir, haskell.
-It also contains utils functions for rxjs Angular, Ionic, and ng2-chart.
+It also contains utils functions for rxjs and ng2-chart.
 
 ## Installation
 
@@ -34,3 +34,4 @@ Do not plan to support usage from javascript directly.
    - no effect on function of length 0
 
 ## Todo
+ - get rid of angular specific stuff (seperate into another repo)
