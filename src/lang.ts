@@ -217,7 +217,7 @@ export function notDefined(a: any): boolean {
 }
 
 export function isNumber(i: any): boolean {
-  return Number.isFinite(+i);
+  return Number.isFinite(+i) && i !== "";
 }
 
 export function toNumber(i: any): number {
