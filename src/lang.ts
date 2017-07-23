@@ -319,3 +319,10 @@ export function equals<A>(a: A, b: A): boolean {
 export function not_equals<A>(a: A, b: A): boolean {
   return a !== b;
 }
+
+export function another<A>(A, a: A, b: A, compare: A): A {
+  return compare == a ? b
+    : compare == b ? a
+      : compare
+    ;
+}
