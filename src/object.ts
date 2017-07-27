@@ -1,3 +1,5 @@
+import {isDefined} from "./lang";
+
 export function isObject(o: any): boolean {
   return typeof o === "object";
 }
@@ -18,4 +20,25 @@ export function deepClone<A>(o: A): A {
 export function replaceObject<A>(dest: A, src: A): A {
   Object.keys(dest).forEach(x => delete dest[x]);
   return Object.assign(dest, src);
+}
+
+const safeProxyHandler: ProxyHandler<any> = {
+  has: (target, p) => isDefined(target[p])
+  , get: (target, p, receiver) => {
+    const res = target[p];
+    return isDefined(res) ? res : makeSafeObject();
+  }
+  , set: (target, p, value, receiver) => {
+    target[p] = value;
+    return true;
+  }
+  , ownKeys: target => Object.keys(target)
+    .filter(p => isDefined(target[p]))
+};
+
+/**
+ * make a loss object, very forgiving
+ * */
+export function makeSafeObject() {
+  return new Proxy({}, safeProxyHandler);
 }
