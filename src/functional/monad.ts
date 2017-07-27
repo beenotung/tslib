@@ -1,4 +1,9 @@
 /** reference : https://github.com/douglascrockford/monad/blob/master/monad.js*/
+export interface Unit {
+  method();
+
+  lift_value();
+}
 
 export function MONAD(modifier?: Function) {
   const prototype = Object.create(null);
@@ -16,9 +21,7 @@ export function MONAD(modifier?: Function) {
   }
 
   unit["method"] = function (name: PropertyKey, f: Function) {
-    prototype[name] = function () {
-      return this.bind(f, arguments);
-    };
+    prototype[name] = f;
     return unit;
   };
 
