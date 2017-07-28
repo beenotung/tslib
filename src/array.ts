@@ -24,7 +24,7 @@ export function replaceArray<A>(dest: A[], src: A[]): A[] {
  * inplace operation
  * */
 export function takeAll<A>(xs: A[]): A[] {
-  const res = xs.map(x => x);
+  const res = [].concat(xs);
   clear(xs);
   return res;
 }
