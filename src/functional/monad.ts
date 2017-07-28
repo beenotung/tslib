@@ -9,9 +9,9 @@ import {isDefined} from "../lang";
 export interface Monad<A> {
   is_monad: true;
 
-  bind<B>(f: Function, args?: ArrayLike<any>): Monad<B>;
+  bind<B>(f: (a: A, ...args: any[]) => Monad<B>, args?: ArrayLike<any>): Monad<B>;
 
-  map<B>(f: Function, args?: ArrayLike<any>): Monad<B>
+  map<B>(f: (a: A, ...args: any[]) => B, args?: ArrayLike<any>): Monad<B>
 }
 
 export interface Unit<M extends Monad<V>, V> {
