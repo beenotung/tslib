@@ -14,28 +14,28 @@ export interface Monad<A> {
   map<B>(f: (a: A, ...args: any[]) => B, args?: ArrayLike<any>): Monad<B>
 }
 
-export interface Unit<M extends Monad<V>, V> {
-  (value: V): M;
+export interface Unit<M extends Monad<A>, A> {
+  <M extends Monad<A>, A>(value: A): M;
 
-  method(name: PropertyKey, f: Function): Unit<M, V>;
+  method(name: PropertyKey, f: Function): Unit<M, A>;
 
-  lift_value(name: PropertyKey, f: Function): Unit<M, V>;
+  lift_value<B>(name: PropertyKey, f: (a: A, ...args: any[]) => Monad<B>): Unit<Monad<B>, B>;
 
-  lift(name: PropertyKey, f: Function): Unit<M, V>;
+  lift<B>(name: PropertyKey, f: (a: A, ...args: any[]) => Monad<B> | B): Unit<M, A>;
 }
 
-export function createUnit<M extends Monad<V>, V>(modifier?: (monad: Monad<V>, value: any) => any): Unit<M, V> {
+export function createUnit<M extends Monad<A>, A>(modifier?: (monad: Monad<A>, value: any) => any): Unit<M, A> {
   const prototype = Object.create(null);
   prototype.is_monad = true;
 
-  const unit: Unit<M, V> = Object.assign(
-    function unit(value): Monad<V> {
-      const monad: Monad<V> = Object.assign(Object.create(prototype), {
-        bind: function bind<B>(f: Function, args?: ArrayLike<any>): Monad<B> {
+  const unit: Unit<M, A> = Object.assign(
+    function unit(value): Monad<A> {
+      const monad: Monad<A> = Object.assign(Object.create(prototype), {
+        bind: function bind<B>(f: (a: A, ...args: any[]) => Monad<B>, args?: ArrayLike<any>): Monad<B> {
           return f.call(void 0, value, ...toArray(args));
         }
-        , map: function map<B>(f: Function, args?: ArrayLike<any>): Monad<B> {
-          return unit(monad.bind(f, args));
+        , map: function map<B>(f: (a: A, ...args: any[]) => B, args?: ArrayLike<any>): Monad<B> {
+          return monad.bind((a, args) => <Monad<any>> <Monad<A>> unit(f.call(void 0, a, ...args)), args);
         }
       });
       if (typeof modifier === "function") {
@@ -44,22 +44,22 @@ export function createUnit<M extends Monad<V>, V>(modifier?: (monad: Monad<V>, v
       return monad;
     }
     , {
-      method: function method(name: PropertyKey, f: Function): Unit<M, V> {
+      method: function method(name: PropertyKey, f: Function): Unit<M, A> {
         prototype[name] = f;
         return unit;
       }
-      , lift_value: function lift_value(name: PropertyKey, f: Function): Unit<M, V> {
-        prototype[name] = function (): Monad<V> {
-          return (<Monad<V>>this).bind(f, arguments);
+      , lift_value: function lift_value<B>(name: PropertyKey, f: (a: A, ...args: any[]) => Monad<B>): Unit<M, A> {
+        prototype[name] = function (): Monad<B> {
+          return (<Monad<A>>this).bind(f, arguments);
         };
         return unit;
       }
-      , lift: function lift(name: PropertyKey, f: Function): Unit<M, V> {
-        prototype[name] = function (): Monad<V> {
-          const res: Monad<V> | any = (<Monad<V> > this).bind(f, arguments);
+      , lift: function lift<B>(name: PropertyKey, f: (a: A, ...args: any[]) => Monad<B> | B): Unit<M, A> {
+        prototype[name] = function (): Monad<B> {
+          const res: Monad<B> | B = (<Monad<A> > this).bind(<(a: A, ...args: any[]) => Monad<B>>f, arguments);
           return (isDefined(res) && res.is_monad)
-            ? res
-            : unit(res);
+            ? <Monad<B>>res
+            : unit(<B><any>res);
         };
         return unit;
       }
