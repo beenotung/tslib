@@ -1,6 +1,7 @@
 /* tslint:disable:no-unused-variable */
 export * from "./angular/index";
 export * from "./constant/index";
+export * from "./functional/index";
 export * from "./horizon/index";
 export * from "./angular";
 export * from "./array";
