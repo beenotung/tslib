@@ -1,9 +1,7 @@
 /* tslint:disable:no-unused-variable */
-export * from "./angular/index";
 export * from "./constant/index";
 export * from "./functional/index";
 export * from "./horizon/index";
-export * from "./angular";
 export * from "./array";
 export * from "./async";
 export * from "./class";
@@ -20,7 +18,6 @@ export * from "./format";
 export * from "./functional";
 export * from "./horizon";
 export * from "./horizon-lib";
-export * from "./ionic";
 export * from "./jquery";
 export * from "./jquery.datatable";
 export * from "./lang";

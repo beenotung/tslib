@@ -32,7 +32,7 @@ export function createUnit<M extends Monad<V>, V>(modifier?: (monad: Monad<V>, v
     function unit(value): Monad<V> {
       const monad: Monad<V> = Object.assign(Object.create(prototype), {
         bind: function bind<B>(f: Function, args?: ArrayLike<any>): Monad<B> {
-          return f.apply(void 0, value, ...toArray(args));
+          return f.call(void 0, value, ...toArray(args));
         }
         , map: function map<B>(f: Function, args?: ArrayLike<any>): Monad<B> {
           return unit(monad.bind(f, args));
