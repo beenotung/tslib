@@ -8,7 +8,7 @@
     "build": "tsc",
     "prepublish": "npm-run-all build lint",
     "lint": "ionic-app-scripts lint",
-    "test": "tslint --type-check --project tsconfig.json -c tslint.json index.d.ts"
+    "test": "tslint --type-check --project tsconfig.json -c tslint.json src/tslib.all.ts"
   },
   "author": "Beeno Tung",
   "license": "ISC",
@@ -35,7 +35,7 @@
     "ionic-angular": "^3.6.0",
     "ng2-charts": "^1.6.0",
     "npm-run-all": "^4.0.2",
-    "tslint": "5.5.0",
+    "tslint": "^5.5.0",
     "tslint-eslint-rules": "4.1.1",
     "typescript": "2.4.1",
     "typestub-horizon-client": "^0.1.3",
