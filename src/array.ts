@@ -235,7 +235,8 @@ export function filterByKey<A>(src: A[], key: string, keys: string[]): A[] {
 }
 
 export function toArray<A>(xs: ArrayLike<A>): A[] {
-  return mapI(i => xs[i], xs.length);
+  // return mapI(i => xs[i], xs.length);
+  return Array.prototype.concat.apply([], arguments);
 }
 
 export function flatten<A>(xss: A[][]): A[] {
