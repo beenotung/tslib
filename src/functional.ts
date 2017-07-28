@@ -102,7 +102,7 @@ export const neq = curry(<A>(a: A, b: A): boolean => b !== a);
 export const gt = curry((a: number | string, b: number | string): boolean => b > a);
 export const lt = curry((a: number | string, b: number | string): boolean => b < a);
 /**
- * first :: (a->Bool) -> [a] -> Maybe a
+ * first :: (a->Bool) -> [a] -> MaybeSingleton a
  * */
 export const first = curry(<A>(f: CurryF1<A, boolean>, xs: A[]): MaybeSingleton<A> => {
   for (const x of xs) {
