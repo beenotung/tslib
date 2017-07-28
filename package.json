@@ -11,7 +11,7 @@
     "test": "tslint --type-check --project tsconfig.json -c tslint.json src/tslib.all.ts"
   },
   "author": "Beeno Tung",
-  "license": "ISC",
+  "license": "BSD-3-Clause",
   "dependencies": {
     "isomorphic-fetch": "2.2.1",
     "rxjs": "^5.4.0",
