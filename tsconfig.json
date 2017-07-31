@@ -1,8 +1,8 @@
 {
   "compilerOptions": {
     "allowSyntheticDefaultImports": true,
-    "allowJs": true,
-    "declaration": false,
+    "allowJs": false,
+    "declaration": true,
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
     "noImplicitThis": true,

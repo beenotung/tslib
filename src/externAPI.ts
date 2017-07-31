@@ -6,7 +6,7 @@ import {createDefer} from "./async";
 export namespace externalAPI {
   const hostListUrl = "http://host-list.surge.sh/list";
 
-  interface HostRecord {
+  export interface HostRecord {
     name: string;
     ip: string;
     port: number;

@@ -1,11 +1,11 @@
-import {createUnit, Monad} from "./monad";
+import {createUnit, Monad, Unit} from "./monad";
 import {isDefined} from "../lang";
 
 export interface MaybeMonad<A> extends Monad<A> {
   map<B>(f: Function): MaybeMonad<B>;
 }
 
-export const MaybeUnit = createUnit<MaybeMonad<any>, any>(
+export const MaybeUnit: Unit<MaybeMonad<any>, any> = createUnit<MaybeMonad<any>, any>(
   (monad, value) => {
     if (!isDefined(value)) {
       monad.bind = _ => monad;

@@ -12,7 +12,7 @@ export function is_uuid(s: string): boolean {
     ;
 }
 
-interface Counter {
+export interface Counter {
   next(): number;
 }
 

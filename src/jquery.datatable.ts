@@ -5,7 +5,7 @@ export interface JQuery {
   dataTable: Function;
 }
 
-interface DataTableOption {
+export interface DataTableOption {
   lengthOptions: number[]
   searchPlaceholder: string
   allText: string

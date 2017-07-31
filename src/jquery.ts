@@ -1,7 +1,7 @@
 import {createDefer} from "./async";
 
 
-declare interface JQueryPromise<A> {
+export declare interface JQueryPromise<A> {
   done<B>(f: (a: A) => B): JQueryPromise<B>;
 
   fail<B>(f: (e: B) => B): JQueryPromise<B>;
