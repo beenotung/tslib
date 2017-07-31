@@ -4,6 +4,7 @@ import "rxjs/add/operator/map";
 import "rxjs/add/operator/mergeMap";
 import "rxjs/add/operator/toPromise";
 import {Horizon} from "typestub-horizon-client";
+import {objValues} from "./lang";
 
 /**
  * @remark Hbase style operation should be deprecated, since horizon support partial update
@@ -55,4 +56,28 @@ export async function load_horizon(url: string) {
   }
   horizon_api_size = data.length;
   return "ok";
+}
+
+export function isHorizonDataType(o, skipWarn = false): boolean {
+  const type = typeof o;
+  switch (type) {
+    case "number":
+    case "string":
+    case "boolean":
+      return true;
+    case "object":
+      return Array.isArray(o)
+        ? o.every(x => isHorizonDataType(x))
+        : objValues(o).every(x => isHorizonDataType(x, skipWarn))
+        ;
+    default:
+      /* e.g. undefined */
+      if (!skipWarn) {
+        console.warn("not supported field", {
+          type: type
+          , value: o
+        });
+      }
+      return false;
+  }
 }
