@@ -26,7 +26,7 @@ const safeProxyHandler: ProxyHandler<any> = {
   has: (target, p) => isDefined(target[p])
   , get: (target, p, receiver) => {
     const res = target[p];
-    return isDefined(res) ? res : makeSafeObject();
+    return isDefined(res) ? res : createSafeObject();
   }
   , set: (target, p, value, receiver) => {
     target[p] = value;
@@ -39,6 +39,6 @@ const safeProxyHandler: ProxyHandler<any> = {
 /**
  * make a loss object, very forgiving
  * */
-export function makeSafeObject() {
+export function createSafeObject() {
   return new Proxy({}, safeProxyHandler);
 }
