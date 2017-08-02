@@ -32,8 +32,6 @@ export async function base64ToImage(data: string): Promise<HTMLImageElement> {
  * also work for resizing
  * */
 export async function base64ToCanvas(data: string, width?: number, height?: number): Promise<HTMLCanvasElement> {
-  const canvas = document.createElement("canvas");
-  const ctx = canvas.getContext("2d");
   const image = await base64ToImage(data);
   if (xor(width, height)) {
     if (width) {
