@@ -58,6 +58,14 @@ export interface ISize {
   height: number
 }
 
+export async function getWidthHeightFromBase64(data: string): Promise<ISize> {
+  const image = await base64ToImage(data);
+  return {
+    width: image.naturalWidth
+    , height: image.naturalHeight
+  };
+}
+
 export enum ResizeType {
   /* with-in the given area, maybe smaller  */
   with_in
