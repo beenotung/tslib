@@ -13,6 +13,7 @@ else
   echo -n "update type `npm version --help | grep -oh \"\\\[.*]\"`: "; read t
 fi
 npm test
+rm -r package-lock.json
 npm version "$t"
 git push --follow-tags
 npm publish
