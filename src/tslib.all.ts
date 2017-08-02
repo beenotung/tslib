@@ -18,6 +18,7 @@ export * from "./format";
 export * from "./functional";
 export * from "./horizon";
 export * from "./horizon-lib";
+export * from "./image";
 export * from "./jquery";
 export * from "./jquery.datatable";
 export * from "./lang";

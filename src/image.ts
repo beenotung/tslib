@@ -1,4 +1,4 @@
-import {createDefer} from "./src/async";
+import {createDefer} from "./async";
 
 /**
  * reference : https://stackoverflow.com/questions/20958078/resize-a-base-64-image-in-javascript-without-using-canvas
