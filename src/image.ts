@@ -1,5 +1,6 @@
 import {createDefer} from "./async";
 import {xor} from "./logic";
+import {enum_only_string} from "./enum";
 
 /**
  * reference : https://stackoverflow.com/questions/20958078/resize-a-base-64-image-in-javascript-without-using-canvas
@@ -50,4 +51,38 @@ export async function base64ToCanvas(data: string, width?: number, height?: numb
 
 export async function resizeBase64Image(data: string, targetWidth: number, targetHeight: number): Promise<string> {
   return (await base64ToCanvas(data, targetWidth, targetHeight)).toDataURL();
+}
+
+export interface ISize {
+  width: number
+  height: number
+}
+
+export enum ResizeType {
+  /* with-in the given area, maybe smaller  */
+  with_in
+    /* at least as large as the given area, maybe larger */
+    , at_least
+}
+
+enum_only_string(ResizeType);
+
+export function resizeWithRatio(oriSize: ISize, targetSize: ISize, mode: ResizeType): ISize {
+  const widthRate = targetSize.width / oriSize.width;
+  const heightRate = targetSize.height / oriSize.height;
+  let rate: number;
+  switch (mode) {
+    case ResizeType.with_in:
+      rate = Math.min(widthRate, heightRate);
+      break;
+    case ResizeType.at_least:
+      rate = Math.max(widthRate, heightRate);
+      break;
+    default:
+      throw new TypeError(`unsupported type: ${mode}`);
+  }
+  return {
+    width: oriSize.width * rate
+    , height: oriSize.height * rate
+  };
 }
