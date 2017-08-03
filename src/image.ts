@@ -29,6 +29,15 @@ export async function base64ToImage(data: string): Promise<HTMLImageElement> {
 }
 
 /**
+ * TODO check if there are exceptions
+ * */
+export function checkBase64ImagePrefix(s: string): string {
+  return typeof s === "string" && s.startsWith("/9j/")
+    ? "data:image/jpeg;base64," + s
+    : s;
+}
+
+/**
  * data type conversion
  * also work for resizing
  * */
@@ -93,4 +102,13 @@ export function resizeWithRatio(oriSize: ISize, targetSize: ISize, mode: ResizeT
     width: oriSize.width * rate
     , height: oriSize.height * rate
   };
+}
+
+export async function resizeBase64WithRatio(data: string, preferedSize: ISize, mode: ResizeType): Promise<string> {
+  const image = await base64ToImage(data);
+  const targetSize = resizeWithRatio({
+    width: image.naturalWidth
+    , height: image.naturalHeight
+  }, preferedSize, mode);
+  return imageToBase64(image, targetSize.width, targetSize.height);
 }
