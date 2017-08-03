@@ -1,6 +1,6 @@
 {
   "name": "@beenotung/tslib",
-  "version": "5.4.0",
+  "version": "5.4.1",
   "description": "rewrite of jslib",
   "main": "src/tslib.all.js",
   "types": "src/tslib.all.ts",
