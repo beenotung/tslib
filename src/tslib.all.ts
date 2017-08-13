@@ -23,6 +23,7 @@ export * from "./jquery";
 export * from "./jquery.datatable";
 export * from "./lang";
 export * from "./lazy";
+export * from "./lock";
 export * from "./logic";
 export * from "./maybe";
 export * from "./network";
