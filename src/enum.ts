@@ -43,11 +43,11 @@ export function enum_keys<E extends Enum>(e: E): string[] {
 }
 
 export function enum_values<E extends Enum>(e: E): number[] {
-  return range(0, Object.keys(e).length / 2 - 1);
+  return range(0, enum_last_i(e));
 }
 
 export function enum_last_i<E extends Enum>(e: E): number {
-  return Object.keys(e).length / 2 - 1;
+  return enum_keys(e).length - 1;
 }
 
 export function enum_last_s<E extends Enum>(e: E): string {
