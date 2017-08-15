@@ -38,15 +38,23 @@ export function enum_next_s<E extends Enum>(e: E, s: string): keyof E {
   return res;
 }
 
-export function enum_keys<E extends Enum>(e: E): string[] {
-  return Object.keys(e).filter(x => !isNumber(x));
+export function enum_keys<E extends Enum>(e: E): Array<keyof E> {
+  return <any[]><string[]>Object.keys(e).filter(x => !isNumber(x));
 }
 
-export function enum_indices<E extends Enum>(e: E): number[] {
-  return range(0, enum_last_i(e));
+/**
+ * numeric values
+ * */
+export function enum_indices<E extends Enum>(e: E): E[] {
+  return <any[]><number[]>range(0, enum_last_i(e));
 }
 
-export function enum_values<E extends Enum>(e: E): Array<keyof E> {
+/**
+ * numeric or string values
+ * if    original enum -> numeric values;
+ *    stringified enum -> string values
+ * */
+export function enum_values<E extends Enum>(e: E): E[] {
   return enum_keys(e).map(s => e[s]);
 }
 
