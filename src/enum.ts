@@ -42,8 +42,12 @@ export function enum_keys<E extends Enum>(e: E): string[] {
   return Object.keys(e).filter(x => !isNumber(x));
 }
 
-export function enum_values<E extends Enum>(e: E): number[] {
+export function enum_indices<E extends Enum>(e: E): number[] {
   return range(0, enum_last_i(e));
+}
+
+export function enum_values<E extends Enum>(e: E): Array<keyof E> {
+  return enum_keys(e).map(s => e[s]);
 }
 
 export function enum_last_i<E extends Enum>(e: E): number {
