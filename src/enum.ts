@@ -45,8 +45,8 @@ export function enum_keys<E extends Enum>(e: E): Array<keyof E> {
 /**
  * numeric values
  * */
-export function enum_indices<E extends Enum>(e: E): E[] {
-  return <any[]><number[]>range(0, enum_last_i(e));
+export function enum_indices<E extends Enum>(e: E): number[] {
+  return range(0, enum_last_i(e));
 }
 
 /**
