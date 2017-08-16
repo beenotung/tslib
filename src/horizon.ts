@@ -3,7 +3,7 @@ import {Observable} from "rxjs/Observable";
 import "rxjs/add/operator/map";
 import "rxjs/add/operator/mergeMap";
 import "rxjs/add/operator/toPromise";
-import {Horizon} from "typestub-horizon-client";
+import {DataType, Horizon} from "typestub-horizon-client";
 import {objValues} from "./lang";
 
 /**
@@ -79,5 +79,42 @@ export function isHorizonDataType(o, skipWarn = false): boolean {
         });
       }
       return false;
+  }
+}
+
+export function toHorizonData(o: DataType, skipWarn = false): DataType | undefined {
+  if (o === null || o === undefined) {
+    if (!skipWarn) {
+      console.warn("skip empty value");
+    }
+    return undefined;
+  }
+  const type = typeof o;
+  switch (type) {
+    case "number":
+    case "string":
+    case "boolean":
+      return o;
+    case "object":
+      if (Array.isArray(o)) {
+        return <any[]>(<any[]>o).map(x => toHorizonData(x, skipWarn));
+      }
+      const res = {};
+      Object.keys(res).forEach(x => {
+        const v = toHorizonData(o[x], skipWarn);
+        if (v !== undefined) {
+          res[x] = v;
+        }
+      });
+      return res;
+    default:
+      /* e.g. undefined */
+      if (!skipWarn) {
+        console.warn("not supported field", {
+          type: type
+          , value: o
+        });
+      }
+      return undefined;
   }
 }
