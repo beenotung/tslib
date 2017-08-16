@@ -54,7 +54,7 @@ export function enum_indices<E extends Enum>(e: E): number[] {
  * if    original enum -> numeric values;
  *    stringified enum -> string values
  * */
-export function enum_values<E extends Enum>(e: E): E[] {
+export function enum_values<E extends Enum>(e: E | Object): E[] {
   return enum_keys(e).map(s => e[s]);
 }
 
