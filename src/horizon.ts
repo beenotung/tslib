@@ -100,7 +100,7 @@ export function toHorizonData(o: DataType, skipWarn = false): DataType | undefin
         return <any[]>(<any[]>o).map(x => toHorizonData(x, skipWarn));
       }
       const res = {};
-      Object.keys(res).forEach(x => {
+      Object.keys(o).forEach(x => {
         const v = toHorizonData(o[x], skipWarn);
         if (v !== undefined) {
           res[x] = v;
