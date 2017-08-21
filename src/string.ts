@@ -56,3 +56,7 @@ export function str_like(a: string, b: string, ignore_case = true) {
     return a.includes(b) || b.includes(a);
   }
 }
+
+export function is_non_empty_string(s: string): boolean {
+  return typeof s === "string" && s !== "";
+}
