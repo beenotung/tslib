@@ -1,6 +1,6 @@
 import {Consumer} from "./functional";
 import * as fetch from "isomorphic-fetch";
-import {noop} from "./lang";
+import {isDefined, noop} from "./lang";
 
 /**
  * Created by beenotung on 12/26/16.
@@ -18,6 +18,15 @@ export function createDefer<A, E>(): Defer<A, E> {
     res.reject = reject;
   });
   return res;
+}
+
+export async function resolveDefer<A, E>(defer: Defer<A, E>, a: A, f: () => E | Promise<E> = () => undefined) {
+  if (isDefined(a)) {
+    defer.resolve(a);
+  } else {
+    defer.reject(await f());
+  }
+  return defer.promise;
 }
 
 export async function autoRetryAsync<A>(f: () => Promise<A>, retry_delay = 1000): Promise<A> {
