@@ -16,6 +16,7 @@ export * from "./externAPI";
 export * from "./file";
 export * from "./format";
 export * from "./functional";
+export * from "./hashed-array";
 export * from "./horizon";
 export * from "./horizon-lib";
 export * from "./image";
