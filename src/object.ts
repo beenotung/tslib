@@ -42,3 +42,5 @@ const safeProxyHandler: ProxyHandler<any> = {
 export function createSafeObject() {
   return new Proxy({}, safeProxyHandler);
 }
+
+export const updateObject = dest => x => Object.assign(dest, x);
