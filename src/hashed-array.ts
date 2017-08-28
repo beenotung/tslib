@@ -48,4 +48,9 @@ export class HashedArray<A> {
       return this.insert(x, key);
     }
   }
+
+  isEmpty(f: (x: A) => boolean): boolean {
+    return this.array.length == 0
+      || this.array.findIndex(x => f(x)) === -1;
+  }
 }
