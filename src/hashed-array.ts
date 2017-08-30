@@ -59,4 +59,16 @@ export class HashedArray<A> {
     this.o = {};
     return clear(this.array);
   }
+
+  get(key: PropertyKey): A | undefined {
+    return this.o[key];
+  }
+
+  has(key: PropertyKey): boolean {
+    return isDefined(this.get(key));
+  }
+
+  set(key: PropertyKey, x: A) {
+    return this.update(x, key);
+  }
 }
