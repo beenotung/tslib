@@ -29,6 +29,14 @@ export async function resolveDefer<A, E>(defer: Defer<A, E>, a: A, f: () => E | 
   return defer.promise;
 }
 
+export async function tryFAsync<A>(f: () => A): Promise<A> {
+  try {
+    return f();
+  } catch (e) {
+    return Promise.reject(e);
+  }
+}
+
 export async function autoRetryAsync<A>(f: () => Promise<A>, retry_delay = 1000): Promise<A> {
   try {
     return await f();
