@@ -1,4 +1,3 @@
-import {Consumer} from "./functional";
 import * as fetch from "isomorphic-fetch";
 import {isDefined, noop} from "./lang";
 
@@ -7,15 +6,21 @@ import {isDefined, noop} from "./lang";
  */
 export class Defer<A, E> {
   promise: Promise<A>;
-  resolve: Consumer<A>;
-  reject: Consumer<E>;
+  resolve: (a: A) => Promise<A>;
+  reject: (e: E) => Promise<A>;
 }
 
 export function createDefer<A, E>(): Defer<A, E> {
   const res = new Defer<A, E>();
   res.promise = new Promise<A>((resolve, reject) => {
-    res.resolve = resolve;
-    res.reject = reject;
+    res.resolve = a => {
+      resolve(a);
+      return res.promise;
+    };
+    res.reject = e => {
+      reject(e);
+      return res.promise;
+    };
   });
   return res;
 }
