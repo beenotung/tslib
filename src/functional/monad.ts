@@ -28,7 +28,7 @@ export function createUnit<M extends Monad<A>, A>(modifier?: (monad: Monad<A>, v
   const prototype = Object.create(null);
   prototype.is_monad = true;
 
-  const unit: Unit<M, A> = Object.assign(
+  const unit: Unit<M, A> = <Unit<Monad<A>, A>> Object.assign(
     function unit(value): Monad<A> {
       const monad: Monad<A> = Object.assign(Object.create(prototype), {
         bind: function bind<B>(f: (a: A, ...args: any[]) => Monad<B>, args?: ArrayLike<any>): Monad<B> {
