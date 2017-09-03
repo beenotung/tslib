@@ -67,5 +67,3 @@ export function createUnit<M extends Monad<A>, A>(modifier?: (monad: Monad<A>, v
 
   return unit;
 }
-
-
