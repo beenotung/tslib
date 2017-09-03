@@ -8,7 +8,7 @@
     "postinstall": "npm run build",
     "build": "tsc",
     "lint": "npm-run-all lint:*",
-    "lint:tsc": "tslint --type-check --project tsconfig.json -c tslint.json src/tslib.all.ts",
+    "lint:tsc": "tslint --type-check --project tsconfig.json -c tslint.json",
     "lint:ionic": "ionic-app-scripts lint",
     "test": "npm-run-all build lint",
     "prepublishOnly": "npm test"
