@@ -2,8 +2,8 @@
   "name": "@beenotung/tslib",
   "version": "6.0.0",
   "description": "rewrite of jslib",
-  "main": "dist/tslib.all.js",
-  "types": "dist/tslib.all.d.ts",
+  "main": "tslib.all.js",
+  "types": "tslib.all.d.ts",
   "scripts": {
     "build": "tsc -p ./ --outDir ./",
     "lint": "npm-run-all lint:*",
