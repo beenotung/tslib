@@ -23,15 +23,9 @@ git submodule add https://github.com/beenotung/tslib.git
 npm install @beenotung/tslib
 ```
 
-## Usage
-Just import the ts files directly.
-
-Do not plan to support usage from javascript directly.
-
 ## Remark
  - curry only work for function of length > 0
    - breaking variety function (those who expect to accept variant length of arguments)
    - no effect on function of length 0
 
 ## Todo
- - get rid of angular specific stuff (seperate into another repo)

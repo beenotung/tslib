@@ -2,15 +2,15 @@
   "name": "@beenotung/tslib",
   "version": "5.16.5",
   "description": "rewrite of jslib",
-  "main": "src/tslib.all.js",
-  "types": "src/tslib.all.ts",
+  "main": "dist/tslib.all.js",
+  "types": "dist/tslib.all.d.ts",
   "scripts": {
     "build": "tsc",
     "lint": "npm-run-all lint:*",
     "lint:tsc": "tslint --type-check --project tsconfig.json -c tslint.json",
     "lint:ionic": "ionic-app-scripts lint",
     "test": "npm-run-all build lint",
-    "prepublishOnly": "npm build"
+    "prepublishOnly": "tsc -p ./ --outDir dist/"
   },
   "author": "Beeno Tung",
   "license": "BSD-3-Clause",
