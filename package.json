@@ -5,12 +5,12 @@
   "main": "dist/tslib.all.js",
   "types": "dist/tslib.all.d.ts",
   "scripts": {
-    "build": "tsc",
+    "build": "tsc -p ./ --outDir ./",
     "lint": "npm-run-all lint:*",
     "lint:tsc": "tslint --type-check --project tsconfig.json -c tslint.json",
     "lint:ionic": "ionic-app-scripts lint",
     "test": "npm-run-all build lint",
-    "prepublishOnly": "tsc -p ./ --outDir ./"
+    "prepublishOnly": "npm run build"
   },
   "author": "Beeno Tung",
   "license": "BSD-3-Clause",
