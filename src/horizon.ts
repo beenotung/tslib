@@ -36,7 +36,7 @@ export function getHorizon(): Horizon {
  * will not auto retry
  * */
 export let horizon_api_size = 266826;
-export const is_debug_load_horizon = false;
+export let is_debug_load_horizon = false;
 
 export function setHorizonAPISize(x: number) {
   horizon_api_size = x;
