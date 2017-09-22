@@ -242,3 +242,11 @@ export function toArray<A>(xs: ArrayLike<A>): A[] {
 export function flatten<A>(xss: A[][]): A[] {
   return [].concat(...xss);
 }
+
+/**
+ * array.push is not monadic, this is a wrapper to make it monadic
+ * */
+export function push<A>(res: A[], ...xs: A[]): A[] {
+  res.push(...xs);
+  return res;
+}
