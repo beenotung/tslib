@@ -4,6 +4,10 @@ export function isObject(o: any): boolean {
   return typeof o === "object";
 }
 
+export function hasFunction(o: object | Array<any>, name: PropertyKey): boolean {
+  return typeof (o[name]) === "function";
+}
+
 export function deepClone<A>(o: A): A {
   if (!isObject(o)) {
     return o;
