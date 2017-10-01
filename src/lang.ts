@@ -22,7 +22,7 @@ export const deepGetProp = curry(<A>(name: string, o: any): A => {
 });
 
 export function hasProp<A>(k: ObjKey, o: Obj<A>): boolean {
-  if (o[k]) {
+  if (typeof o[k] !== "undefined") {
     return true;
   }
   if (Array.isArray(o)) {
