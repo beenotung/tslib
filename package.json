@@ -9,6 +9,7 @@
     "lint": "npm-run-all lint:*",
     "lint:tsc": "tslint --type-check --project tsconfig.json -c tslint.json",
     "lint:ionic": "ionic-app-scripts lint",
+    "fix-lint": "tslint --fix -p .",
     "test": "npm-run-all build lint",
     "prepublishOnly": "npm run build"
   },

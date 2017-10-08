@@ -1,3 +1,5 @@
+import {Enum, enum_keys} from "./enum";
+
 export namespace Random {
   /** @return number : lower <= value < upper */
   export function nextInt(upper: number = Number.MAX_SAFE_INTEGER, lower: number = 0): number {
@@ -24,5 +26,12 @@ export namespace Random {
     const diff = before.getTime() - after.getTime();
     const time = Random.nextInt(after.getTime() + diff, after.getTime());
     return new Date(time);
+  }
+
+  /**
+   * @return value of enum (not key of enum)
+   * */
+  export function nextEnum<E extends Enum>(e: E): E {
+    return e[Random.element(enum_keys(e))];
   }
 }

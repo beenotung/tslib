@@ -1,5 +1,22 @@
 {
+  "extends": [
+    "tslint:recommended"
+  ],
+  "rulesDirectory": [
+    "node_modules/codelyzer",
+    "node_modules/tslint-eslint-rules/dist/rules"
+  ],
   "rules": {
+    "max-classes-per-file": [
+      false
+    ],
+    "no-namespace": false,
+    "align": [
+      true,
+      "statements"
+    ],
+    "arrow-parens": false,
+    "jsdoc-format": false,
     "space-before-function-paren": false,
     "callable-types": true,
     "class-name": true,
@@ -45,7 +62,7 @@
       "trace"
     ],
     "no-construct": true,
-    "no-debugger": true,
+    "no-debugger": false,
     "no-duplicate-variable": true,
     "no-unused-variable": [
       true
@@ -127,10 +144,21 @@
     "directive-class-suffix": true,
     "no-access-missing-member": true,
     "templates-use-public": true,
-    "invoke-injectable": true
-  },
-  "rulesDirectory": [
-    "node_modules/codelyzer",
-    "node_modules/tslint-eslint-rules/dist/rules"
-  ]
+    "invoke-injectable": true,
+    "interface-name": false,
+    "no-attribute-parameter-decorator": true,
+    "no-forward-ref": false,
+    "ordered-imports": false,
+    "pipe-naming": [
+      true,
+      "camelCase"
+    ],
+    "trailing-comma": [
+      false,
+      {
+        "multiline": "always",
+        "singleline": "never"
+      }
+    ]
+  }
 }
