@@ -13,7 +13,7 @@ export const deepGetProp = curry(<A>(name: string, o: any): A => {
   const xs = name.split(".");
   if (xs.length == 1) {
     const message = `key '${name}' not found in object`;
-    console.warn(message, {name: name, o: o});
+    console.warn(message, {name, o});
     throw new TypeError(message);
   }
   const topLevelName = xs.shift();
@@ -26,7 +26,7 @@ export function hasProp<A>(k: ObjKey, o: Obj<A>): boolean {
     return true;
   }
   if (Array.isArray(o)) {
-    return (<any[]>o).indexOf(k) != -1;
+    return (o as any[]).indexOf(k) != -1;
   }
   return Object.keys(o).filter(x => x == k).length != 0;
 }
@@ -79,11 +79,14 @@ export async function ifNullFAsync<A>(a: A, f: Supplier<Promise<A>>): Promise<A>
   return defer.promise;
 }
 
+/* tslint:disable:ban-types */
 export function bindFunction(f: Function): Function {
   const res = f.bind(f);
   res.prototype = f.prototype;
   return res;
 }
+
+/* tslint:enable:ban-types */
 
 export function caseLookup<A, B>(cases: Array<[A, B]>, target: A): B {
   const xss = cases.filter(xs => xs[0] == target);
@@ -105,7 +108,9 @@ export function compareString(a: string, b: string): -1 | 0 | 1 {
   return a < b ? -1 : 1;
 }
 
-export function deepCall(f: Function) {
+export type deepF<A> = (() => A) | (() => deepF<A>);
+
+export function deepCall<A>(f: deepF<A> | A): A {
   while (typeof f === "function") {
     f = f();
   }
@@ -132,7 +137,7 @@ export function objFilter<A>(f: (a?: A, k?: ObjKey, o?: Obj<A>) => boolean): (o:
   return o => Object.keys(o).filter(x => f(o[x], x, o)).map(x => o[x]);
 }
 
-export function objToArray<A>(o: Obj<A>): [A, ObjKey][] {
+export function objToArray<A>(o: Obj<A>): Array<[A, ObjKey]> {
   const xs = Object.keys(o);
   const res = new Array<[A, ObjKey]>(xs.length);
   xs.forEach((x, i) => res[i] = [o[x], x]);
@@ -176,14 +181,15 @@ export function copyArray<A>(xs: ArrayLike<A>, offset: number = 0, count: number
   return res;
 }
 
-export function copyToArray<A>(dest: Array<A>, destOffset = 0, src: ArrayLike<A>, srcOffset = 0, count = src.length) {
+export function copyToArray<A>(dest: A[], destOffset = 0, src: ArrayLike<A>, srcOffset = 0, count = src.length) {
   for (let i = 0; i < count; i++) {
     dest[destOffset + i] = src[srcOffset + i];
   }
   return dest;
 }
 
-const nFuncs = <F1<Function, Function>[]> [];
+/* tslint:disable:ban-types */
+const nFuncs = [] as Array<F1<Function, Function>>;
 
 export function genFunction(n: number, f: Function): Function {
   if (n < 1) {
@@ -201,12 +207,14 @@ export function genFunction(n: number, f: Function): Function {
     return f.apply(null, arguments);
   };
 }`;
-    /* tslint:disable */
+    /* tslint:disable:no-eval */
     eval(code);
-    /* tslint:enable */
+    /* tslint:enable:no-eval */
   }
   return nFuncs[n](f);
 }
+
+/* tslint:enable:ban-types */
 
 export function isDefined(a: any): boolean {
   return a !== null && a !== void 0;
@@ -247,7 +255,7 @@ export function repeatI<A>(f: () => A, size: number): A[] {
 }
 
 /** apply the function without throwing exception */
-export function tryApply(f: Function, args: any[]) {
+export function tryApply<A, B>(f: (...args: A[]) => B, args: A[]): B | undefined {
   try {
     return f(...args);
   } catch (e) {
@@ -256,7 +264,7 @@ export function tryApply(f: Function, args: any[]) {
 }
 
 /** call the function without throwing exception */
-export function tryCall(f: Function, ...args: any[]) {
+export function tryCall<A, B>(f: (...args: A[]) => B, ...args: A[]): B | undefined {
   try {
     return f(...args);
   } catch (e) {
@@ -264,7 +272,7 @@ export function tryCall(f: Function, ...args: any[]) {
   }
 }
 
-export function tryWithDefault<A>(f: Function, defaultValue: A, args: any[] = []): A {
+export function tryWithDefault<A, B>(f: (...args: A[]) => B, defaultValue: B, args: A[] = []): B {
   try {
     return f(...args);
   } catch (e) {
@@ -282,11 +290,14 @@ export function chainObject<A>(a: A): ChainObject<A> {
   return res;
 }
 
+/* tslint:disable:ban-types */
 export interface Type<A>extends Function {
   new(...args: any[]): A;
 }
 
-export function _if(f: Function): (b: boolean) => void {
+/* tslint:enable:ban-types */
+
+export function _if(f: () => any): (b: boolean) => void {
   return b => {
     if (b) {
       f();
@@ -305,7 +316,7 @@ export function gen_noop<A>(): (a: A) => void {
   };
 }
 
-export const noop: Function = () => {
+export const noop: (...args: any[]) => void = () => {
 };
 
 export function cast(o: any): any {

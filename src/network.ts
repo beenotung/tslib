@@ -20,7 +20,7 @@ export function toFormData(o: Obj<string | number | Blob>): FormData {
       if (typeof o[x] === "number") {
         formData.append(x, o[x] + "");
       } else {
-        formData.append(x, <string | Blob>o[x]);
+        formData.append(x, o[x] as string | Blob);
       }
     });
   return formData;

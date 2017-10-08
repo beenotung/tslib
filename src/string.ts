@@ -35,7 +35,6 @@ export function string_to_chars(s: string): string[] {
   return res;
 }
 
-
 /* source: https://stackoverflow.com/questions/1144783/how-to-replace-all-occurrences-of-a-string-in-javascript */
 export function escapeRegExp(str: string): string {
   return str.replace(/([.*+?^=!:${}()|\[\]\/\\])/g, "\\$1");

@@ -564,7 +564,7 @@ export interface SweetAlert2 {
    * Provide array of SweetAlert2 parameters to show multiple modals, one modal after another.
    */
 
-  queue(steps: (SweetAlertOptions | string)[]): Promise<any>;
+  queue(steps: Array<SweetAlertOptions | string>): Promise<any>;
 
   /**
    * Get the index of current modal in queue. When there's no active queue, null will be returned.

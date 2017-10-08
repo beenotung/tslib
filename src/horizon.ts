@@ -74,7 +74,7 @@ export function isHorizonDataType(o, skipWarn = false): boolean {
       /* e.g. undefined */
       if (!skipWarn) {
         console.warn("not supported field", {
-          type: type
+          type
           , value: o
         });
       }
@@ -97,7 +97,7 @@ export function toHorizonData(o: DataType, skipWarn = false): DataType | undefin
       return o;
     case "object":
       if (Array.isArray(o)) {
-        return <any[]>(<any[]>o).map(x => toHorizonData(x, skipWarn));
+        return (o as any[]).map(x => toHorizonData(x, skipWarn)) as any[];
       }
       const res = {};
       Object.keys(o).forEach(x => {
@@ -111,7 +111,7 @@ export function toHorizonData(o: DataType, skipWarn = false): DataType | undefin
       /* e.g. undefined */
       if (!skipWarn) {
         console.warn("not supported field", {
-          type: type
+          type
           , value: o
         });
       }

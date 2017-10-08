@@ -4,7 +4,7 @@ export function isObject(o: any): boolean {
   return typeof o === "object";
 }
 
-export function hasFunction(o: object | Array<any>, name: PropertyKey): boolean {
+export function hasFunction(o: object | any[], name: PropertyKey): boolean {
   return typeof (o[name]) === "function";
 }
 
@@ -13,9 +13,9 @@ export function deepClone<A>(o: A): A {
     return o;
   }
   if (o instanceof Array) {
-    return <A><any><any[]>o.map(deepClone);
+    return o.map(deepClone) as any[] as any as A;
   } else {
-    const res = <A>{};
+    const res = {} as A;
     Object.keys(o).forEach(x => res[x] = deepClone(o[x]));
     return res;
   }

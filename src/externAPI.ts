@@ -20,7 +20,7 @@ export namespace externalAPI {
     return text.split("\n")
       .filter(x => x.length != 0)
       .map(line => {
-        const record = <HostRecord>{};
+        const record = {} as HostRecord;
         let xs = line.split(" ");
         record.name = xs[1];
         xs = xs[0].split(":");
@@ -43,7 +43,7 @@ export namespace externalAPI {
         .forEach(line => {
           let xs = line.split(" ");
           if (xs[1] == name) {
-            found = <HostRecord>{};
+            found = {} as HostRecord;
             found.name = xs[1];
             xs = xs[0].split(":");
             if (xs.length == 2) {

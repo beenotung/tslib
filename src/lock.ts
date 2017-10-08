@@ -27,8 +27,8 @@ export class Lock {
     }
     const defer = createDefer<void, Error>();
     this.queue.push({
-      defer: defer
-      , amount: amount
+      defer
+      , amount
     });
     return defer.promise;
   }

@@ -1,6 +1,6 @@
 import {curry} from "./curry";
 
-export type PipeArg <A> = [Function, A[]] | [Function];
+export type PipeArg <A, B> = [(a: A) => B, A[]] | [(a: A) => B];
 
 /**
  * the function<A,B> :: A,...* -> B
@@ -20,17 +20,17 @@ export type PipeArg <A> = [Function, A[]] | [Function];
  * pipe :: PipeArg p => [p] -> a -> *
  *   - don't have to be of same type (like chain)
  * */
-export const pipe = curry(<A, B>(ps: PipeArg<A>[], acc: A): B => {
+export const pipe = curry(<A, B>(ps: Array<PipeArg<A, B>>, acc: A): B => {
   for (const p of ps) {
     if (p[1]) {
       /* no extra args */
-      acc = p[0](acc);
+      acc = p[0](acc) as B as any as A;
     } else {
       /* has extra args */
-      acc = p[0].call(null, acc, ...(<A[]>p[1]));
+      acc = p[0].call(null, acc, ...(p[1] as A[]));
     }
   }
-  return <B><any><A> acc;
+  return acc as A as any as B;
 });
 
 /**

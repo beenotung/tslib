@@ -1,6 +1,5 @@
 import {createDefer} from "./async";
 
-
 export declare interface JQueryPromise<A> {
   done<B>(f: (a: A) => B): JQueryPromise<B>;
 

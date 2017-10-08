@@ -6,7 +6,7 @@ export class HashedArray<A> {
   array: A[];
   o: { [key: string]: A };
 
-  constructor(mapper: (a: A) => PropertyKey = x => <any>x, array: A[] = [], o?: { [key: string]: A }) {
+  constructor(mapper: (a: A) => PropertyKey = x => x as any, array: A[] = [], o?: { [key: string]: A }) {
     this.array = array;
     this.mapper = mapper;
     if (isDefined(o)) {

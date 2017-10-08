@@ -1,9 +1,12 @@
 declare let $: any;
 
+// TODO better type def
+/* tslint:disable:ban-types */
 export interface JQuery {
   DataTable: Function;
   dataTable: Function;
 }
+/* tslint:enable:ban-types */
 
 export interface DataTableOption {
   lengthOptions: number[]
@@ -20,8 +23,8 @@ const defaultOption: DataTableOption = {
 export function initDatatable(e: HTMLTableElement, option?: DataTableOption) {
   option = Object.assign({}, defaultOption, option);
   $(e).DataTable({
-    "pagingType": "full_numbers"
-    , "lengthMenu": [
+    pagingType: "full_numbers"
+    , lengthMenu: [
       option.lengthOptions
       , option.lengthOptions.map(x => {
         if (x !== -1) {

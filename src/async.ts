@@ -92,14 +92,14 @@ export interface ParallelArray<A> {
 
 export namespace ParallelArray {
   export function wrap<A>(xs: A[]): ParallelArray<A> {
-    const res: ParallelArray<A> = <any>{};
+    const res: ParallelArray<A> = {} as any;
     res.map = f => wrapPromise(parallel_map(xs, f));
     res.unwrap = () => Promise.resolve(xs);
     return res;
   }
 
   export function wrapPromise<A>(xs: Promise<A[]>): ParallelArray<A> {
-    const res: ParallelArray<A> = <any>{};
+    const res: ParallelArray<A> = {} as any;
     res.map = f => wrapPromise(xs.then(xs => parallel_map(xs, f)));
     res.unwrap = () => xs;
     return res;
@@ -117,7 +117,7 @@ export function clearAllTimer() {
 export function fetch_no_cache(url: string, method = "GET"): Promise<Response> {
   const req: Request | string = typeof Request === "function" ? new Request(url) : url;
   const init = {
-    method: method
+    method
     , headers: {
       "pragma": "no-cache"
       , "cache-control": "no-cache"

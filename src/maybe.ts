@@ -21,7 +21,7 @@ export interface Maybe<A> {
 }
 
 export const Nothing: Maybe<any> = {
-  get: function () {
+  get () {
     throw new Error("Cannot get value from Nothing.");
   }
   , isJust: false

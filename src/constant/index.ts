@@ -1,4 +1,4 @@
 export * from "./ionic";
 export * from "./notification";
-export module constant {
+export namespace constant {
 }

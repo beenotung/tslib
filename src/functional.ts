@@ -14,7 +14,7 @@ export declare type AsyncSupplier<A> = () => Promise<A>;
 /** take all args (ignore arity)
  * apply :: (..args->a) -> ...args -> a
  * */
-export const apply = curry((f: Function) => function () {
+export const apply = curry(<A, B>(f: (...args: A[]) => B) => function () {
   return id(f.apply(null, arguments));
 });
 
@@ -25,8 +25,8 @@ export const deepProp = curry(<A>(name: ObjKey, o: Obj<A> | any): A => {
   if (o[name] !== void 0) {
     return o[name];
   } else {
-    return (<string>name).split(".")
-      .reduce((acc, c) => acc[c], <any>o);
+    return (name as string).split(".")
+      .reduce((acc, c) => acc[c], o as any);
   }
 });
 
@@ -43,6 +43,9 @@ export const setProp = curry(<A>(a: A, k: ObjKey, o: Obj<A>): Obj<A> => {
 export const length = curry(<A>(x: ArrayLike<A>): number => x.length);
 export const filter = curry(<A>(f: CurryF1<A, boolean>, xs: A[]): A[] => xs.filter(f));
 export const compose = curry(<A, B, C>(f: CurryF1<B, C>, g: CurryF1<A, B>, a: A): C => f(g(a)));
+/**
+ * flip :: (a->b) -> (b->a)
+ * */
 export const flip = curry(<A, B, C>(f: CurryF2<A, B, C>) => (b: B) => (a: A): C => f(a, b));
 /**
  * lift :: a -> b -> a
@@ -61,9 +64,9 @@ export const even = curry((x: number) => x % 2 == 0);
 export const countWhere = curry(compose2(length, filter));
 /**
  * @remark side effect
- * apply2 :: (*->a) -> (a->b) -> a -> b
+ * apply2 :: (a->*) -> (a->b) -> a -> b
  * */
-export const apply2 = curry(<A, B>(f: Function, g: CurryF1<A, B>, x: A): B => {
+export const apply2 = curry(<A, B>(f: Consumer<A>, g: CurryF1<A, B>, x: A): B => {
   f(x);
   return g(x);
 });
@@ -76,11 +79,12 @@ export const symbolFs = new Map<string, CurryF2<any, any, any>>();
 export const isFunctionType = (x: any) => typeof x === "function";
 export const isNumberType = (x: any) => typeof x === "number";
 export const isStringType = (x: any) => typeof x === "string";
-/*
- * main :: RealWorld -> ((), RealWorld)
+/**
+ * @remark side effect
+ *
+ * forEach :: (a->*) -> [a] -> *
  * */
-/**@remark side effect */
-export const forEach = curry(<A>(f: Function, xs: ArrayLike<A>) => {
+export const forEach = curry(<A>(f: Consumer<A>, xs: ArrayLike<A>) => {
   /* xs is ArrayLike, might not has forEach */
   const n = xs.length;
   for (let i = 0; i < n; i++) {
@@ -149,13 +153,13 @@ export const divMod = curry((a: number, b: number): [number, number] => {
   return [d, b - d * a];
 });
 export const symbolF = curry(<A, B, C>(name: string): CurryF2<A, B, C> => symbolFs.get(name));
-export const composeFs = curry(<A>(fs: CurryF1<A, A>[], acc: A) => {
+export const composeFs = curry(<A>(fs: Array<CurryF1<A, A>>, acc: A) => {
   for (let i = fs.length - 1; i >= 0; i--) {
     acc = fs[i](acc);
   }
   return acc;
 });
-export const chainFs = curry(<A>(fs: CurryF1<A, A>[], acc: A) => {
+export const chainFs = curry(<A>(fs: Array<CurryF1<A, A>>, acc: A) => {
   for (const f of fs) {
     acc = f(acc);
   }
@@ -172,12 +176,11 @@ export const doAll = curry(<A>(f: Consumer<A>, args: A[]) => {
   }
 });
 
-
 /**
  * flatten the iterators as a single array
  * */
-export function iteratorsToArray<A>(itrs: IterableIterator<A>[]): A[] {
-  const xs = <A[]> [];
+export function iteratorsToArray<A>(itrs: Array<IterableIterator<A>>): A[] {
+  const xs = [] as A[];
   for (const itr of itrs) {
     xs.push(...Array.from(itr));
   }

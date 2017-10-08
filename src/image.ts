@@ -20,7 +20,7 @@ export function imageToBase64(img: HTMLImageElement, width: number, height: numb
 
 export async function base64ToImage(data: string): Promise<HTMLImageElement> {
   const defer = createDefer<HTMLImageElement, any>();
-  const image = new Image;
+  const image = new Image();
   image.onload = () => {
     defer.resolve(image);
   };

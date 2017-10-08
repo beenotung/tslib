@@ -2,6 +2,8 @@
  * Created by beenotung on 12/26/16.
  */
 
+/* tslint:disable:ban-types */
+
 import {concatArgs, copyArray} from "./lang";
 
 /* reference : http://stackoverflow.com/questions/27996544/how-to-correctly-curry-a-function-in-javascript */
@@ -45,5 +47,7 @@ function partial<A extends Function, R>(f: Function, arity: number, acc: A[] | I
     }
     return result;
   };
-  return <A | R><any> next;
+  return next as any as A | R;
 }
+
+/* tslint:enable:ban-types */

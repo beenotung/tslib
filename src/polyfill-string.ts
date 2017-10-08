@@ -7,7 +7,7 @@ export interface PolyfillString extends String {
 export namespace PolyfillString {
   export function wrapString(s: string): PolyfillString {
     return Object.assign(s, {
-      replaceAll: function (find: string, replace: string): PolyfillString {
+      replaceAll (find: string, replace: string): PolyfillString {
         return wrapString(strReplaceAll(s, find, replace));
       }
     });

@@ -1,5 +1,5 @@
-export module constant {
-  export module Notification {
+export namespace constant {
+  export namespace Notification {
     export const granted = "granted";
     export const denied = "denied";
   }

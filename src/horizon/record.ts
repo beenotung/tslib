@@ -30,23 +30,21 @@ export abstract class Table<D extends Document> {
   }
 
   all(): Observable<D[]> {
-    return <any>this.tableObject
-      .findAll(<D>{
+    return this.tableObject
+      .findAll({
         deleted: false
-      })
-      .fetch();
+      } as D)
+      .fetch() as any;
   }
 
   deletes(keyOrDoc: string | D): Observable<CreatedObject> {
-    const o = <D>{};
+    const o = {} as D;
     if (typeof keyOrDoc == "string") {
       o.id = keyOrDoc;
     } else {
       o.id = keyOrDoc.id;
     }
     o.deleted = true;
-    return <any>this.tableObject.update(o);
+    return this.tableObject.update(o) as any;
   }
 }
-
-

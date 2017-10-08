@@ -7,8 +7,8 @@ export interface PolyfillArray<A>extends Array<A> {
 
 export namespace PolyfillArray {
   const _prototype = {
-    peek: function <A>(f: (element: A, index?: number) => void) {
-      (<Array<A>><PolyfillArray<A>>this).forEach(f);
+    peek(f: (element: A, index?: number) => void) {
+      (this as PolyfillArray<A> as A[]).forEach(f);
       return this;
     }
   };
@@ -16,6 +16,6 @@ export namespace PolyfillArray {
   export const prototype: PolyfillArray<any> = Object.assign({}, _prototype, Array.prototype);
 
   export function wrapArray<A>(xs: A[]): PolyfillArray<A> {
-    return <PolyfillArray<A>>xs;
+    return xs as PolyfillArray<A>;
   }
 }
