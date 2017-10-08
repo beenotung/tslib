@@ -59,7 +59,7 @@ export function createUnit<M extends Monad<A>, A>(modifier?: (monad: Monad<A>, v
           const res: Monad<B> | B = (this as Monad<A>).bind(f as (a: A, ...args: any[]) => Monad<B>, arguments);
           return (isDefined(res) && res.is_monad)
             ? res as Monad<B>
-            : unit(res as B as any);
+            : unit(res as any as B);
         };
         return unit;
       }

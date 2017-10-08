@@ -31,9 +31,9 @@ export function right<L, R>(r: R): Either<L, R> {
     }
     , getRight: lift(r)
     , mmap: <L2, R2>(fl: (l: L) => L2, fr: (r: R) => R2): Either<L2, R2> => right<L2, R2>(fr(r))
-    , mapLeft: <L2>(f: (L: L) => L2) => res as Either<L2, R> as Either<any, R>
+    , mapLeft: <L2>(f: (L: L) => L2) => res as Either<any, R>
     , mapRight: <R2>(f: (r: R) => R2): Either<L, R2> => right<L, R2>(f(r))
-    , bindLeft: <L2>(f: (l: L) => Either<L2, R>) => res as Either<L2, R> as Either<any, R>
+    , bindLeft: <L2>(f: (l: L) => Either<L2, R>) => res as Either<any, R>
     , bindRight: <R2>(f: (r: R) => Either<L, R2>) => f(r)
   };
   return res;
@@ -51,7 +51,7 @@ export function left<L, R>(l: L): Either<L, R> {
     , mapLeft: <L2>(f: (l: L) => L2) => left<L2, R>(f(l))
     , mapRight: <R2>(f: (r: R) => R2) => res as Either<L, any> as Either<L, R2>
     , bindLeft: <L2>(f: (l: L) => Either<L2, R>) => f(l)
-    , bindRight: <R2>(f: (r: R) => Either<L, R2>) => res as Either<L, R2> as Either<L, any>
+    , bindRight: <R2>(f: (r: R) => Either<L, R2>) => res as Either<L, any>
   };
   return res;
 }
