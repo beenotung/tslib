@@ -1,7 +1,9 @@
 import {range} from "./array";
 import {isDefined, isNumber} from "./lang";
 
-export type Enum = { [index: number]: string } & { [key: string]: number } | object;
+/* tslint:disable:ban-types */
+export type Enum = { [index: number]: string } & { [key: string]: number } | Object;
+/* tslint:enable:ban-types */
 
 /**
  * for the sake of implicit any in object index
