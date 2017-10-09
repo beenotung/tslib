@@ -66,9 +66,10 @@ export function isHorizonDataType(o, skipWarn = false): boolean {
     case "boolean":
       return true;
     case "object":
-      return Array.isArray(o)
-        ? o.every(x => isHorizonDataType(x))
-        : objValues(o).every(x => isHorizonDataType(x, skipWarn))
+      return o === null ? false :
+        Array.isArray(o)
+          ? o.every(x => isHorizonDataType(x))
+          : objValues(o).every(x => isHorizonDataType(x, skipWarn))
         ;
     default:
       /* e.g. undefined */
