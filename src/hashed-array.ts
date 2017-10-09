@@ -50,9 +50,10 @@ export class HashedArray<A> {
     }
   }
 
-  isEmpty(f: (x: A) => boolean): boolean {
+  isEmpty(isValid: (x: A) => boolean): boolean {
     return this.array.length == 0
-      || this.array.findIndex(x => f(x)) === -1;
+      || this.array.every(x => !isValid(x))
+      ;
   }
 
   clear() {
