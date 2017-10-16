@@ -1,5 +1,9 @@
 #!/bin/bash
+set -e
+
+if ! hash npm-run 2>/dev/null; then
+  ./install-dev
+fi
 if [ ! -d node_modules ]; then
   ./init
 fi
-

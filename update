@@ -1,2 +1,4 @@
 #!/bin/bash
-npx npm-check -u
+## check npm packages update
+./auto-init
+npm-check -u
