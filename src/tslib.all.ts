@@ -46,4 +46,5 @@ export * from "./type";
 export * from "./typestub-sweetalert2";
 export * from "./uuid";
 export * from "./validate";
+export * from "./window";
 /* tslint:enable:no-unused-variable */
