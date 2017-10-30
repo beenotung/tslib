@@ -4,6 +4,7 @@ export * from "./functional/index";
 export * from "./horizon/index";
 export * from "./array";
 export * from "./async";
+export * from "./blob";
 export * from "./class";
 export * from "./client";
 export * from "./curry";
