@@ -32,8 +32,6 @@ export async function fileToArrayBuffer(file: File) {
   const [defer, reader] = createAsyncFileReader();
   reader.readAsArrayBuffer(file);
   return defer.promise.then(res => {
-    window["reader"] = reader;
-    window["res"] = res;
     return res;
   });
 }
