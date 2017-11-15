@@ -6,11 +6,11 @@
   "types": "tslib.all.d.ts",
   "scripts": {
     "build": "tsc -p ./ --outDir ./",
-    "lint": "npm-run-all lint:*",
+    "lint": "run-s lint:*",
     "lint:tsc": "tslint --type-check --project tsconfig.json -c tslint.json",
     "lint:ionic": "ionic-app-scripts lint",
     "fix-lint": "tslint --fix -p .",
-    "test": "npm-run-all build lint",
+    "test": "run-s build lint",
     "prepublishOnly": "npm run build"
   },
   "author": "Beeno Tung",
@@ -31,7 +31,7 @@
     "@types/jquery": "^3.2.12",
     "ajv": "^5.0.0",
     "codelyzer": "^3.1.2",
-    "npm-run-all": "^4.1.1",
+    "npm-run-all": "^4.1.2",
     "tslint": "^5.7.0",
     "tslint-eslint-rules": "^4.1.1",
     "typescript": "^2.5.2",
