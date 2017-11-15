@@ -38,11 +38,7 @@ export function exitFullscreen() {
   }
 }
 
+/** @deprecated */
 export function htmlCollectionToArray(es: HTMLCollection): HTMLElement[] {
-  const n = es.length;
-  const res = new Array(n);
-  for (let i = 0; i < n; i++) {
-    res[i] = es.item(i);
-  }
-  return res;
+  return Array.from(es);
 }
