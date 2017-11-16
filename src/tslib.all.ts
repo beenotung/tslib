@@ -28,6 +28,7 @@ export * from "./lang";
 export * from "./lazy";
 export * from "./lock";
 export * from "./logic";
+export * from "./math";
 export * from "./maybe";
 export * from "./network";
 export * from "./notification";
