@@ -42,3 +42,6 @@ export function exitFullscreen() {
 export function htmlCollectionToArray(es: HTMLCollection): HTMLElement[] {
   return Array.from(es);
 }
+
+export let qa = (x, parent = document.body) => parent.querySelectorAll(x);
+export let q = (x, parent = document.body) => parent.querySelector(x);
