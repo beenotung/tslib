@@ -76,7 +76,7 @@ export function shiftUntilN(n: number, xs: any[]): void {
   forI(_ => xs.shift(), xs.length - n);
 }
 
-export function last<A>(xs: A[], skipCheck = false): A {
+export function last<A>(xs: ArrayLike<A>, skipCheck = false): A {
   if (skipCheck || xs.length == 0) {
     throw new TypeError("xs is not non-empty array");
   }
