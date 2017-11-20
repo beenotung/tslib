@@ -50,7 +50,11 @@ export class HashedArray<A> {
     }
   }
 
-  remove(key: PropertyKey) {
+  remove(x: A) {
+    return this.removeByKey(this.mapper(x));
+  }
+
+  removeByKey(key: PropertyKey) {
     removeBy(this.array, x => this.mapper(x) === key);
     delete this.o[key];
     return this;
