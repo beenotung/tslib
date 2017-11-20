@@ -1,5 +1,5 @@
 import {isDefined} from "./lang";
-import {clear} from "./array";
+import {clear, removeBy} from "./array";
 
 export class HashedArray<A> {
   mapper: (a: A) => PropertyKey;
@@ -48,6 +48,12 @@ export class HashedArray<A> {
     } else {
       return this.insert(x, key);
     }
+  }
+
+  remove(key: PropertyKey) {
+    removeBy(this.array, x => this.mapper(x) === key);
+    delete this.o[key];
+    return this;
   }
 
   isEmpty(isValid: (x: A) => boolean): boolean {
