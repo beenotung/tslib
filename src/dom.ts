@@ -39,9 +39,11 @@ export function exitFullscreen() {
 }
 
 /** @deprecated */
-export function htmlCollectionToArray(es: HTMLCollection): HTMLElement[] {
+export function htmlCollectionToArray(es: HTMLCollection): Element[] {
   return Array.from(es);
 }
 
+/** @deprecated lost type hint */
 export let qa = (x, parent = document.body) => parent.querySelectorAll(x);
+/** @deprecated lost type hint */
 export let q = (x, parent = document.body) => parent.querySelector(x);
