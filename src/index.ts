@@ -43,7 +43,6 @@ export * from "./strict-type";
 export * from "./string";
 export * from "./task";
 export * from "./time";
-export * from "./tslib.all";
 export * from "./typestub-curry";
 export * from "./typestub-sweetalert2";
 export * from "./type";
