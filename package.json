@@ -9,7 +9,8 @@
     "lint": "run-s lint:*",
     "lint:tsc": "tslint --type-check --project tsconfig.json -c tslint.json",
     "lint:ionic": "ionic-app-scripts lint",
-    "fix-lint": "tslint --fix -p .",
+    "fix": "npm run fix:lint",
+    "fix:lint": "tslint --fix -p .",
     "test": "run-s build lint",
     "prepublishOnly": "npm run build"
   },

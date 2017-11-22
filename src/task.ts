@@ -15,7 +15,7 @@ export class Task<A> {
   }
 }
 
-export type TaskPoolEventType = 'pending' | 'running' | 'stopped';
+export type TaskPoolEventType = "pending" | "running" | "stopped";
 
 export interface TaskPoolProgress {
   eventType: TaskPoolEventType
@@ -66,7 +66,7 @@ export class TaskPool<A> {
     }
     if (this.runningTasks.length >= this.limit) {
       this.pendingTasks.push(task);
-      this.report('pending');
+      this.report("pending");
       return task;
     }
     return this.runTask(task);
@@ -88,7 +88,7 @@ export class TaskPool<A> {
       task.done = true;
       remove(this.runningTasks, task);
       this.stoppedTasks.push(task);
-      this.report('stopped');
+      this.report("stopped");
       this.check();
     };
     task.f()
@@ -102,7 +102,7 @@ export class TaskPool<A> {
         task.defer.reject(err);
         done();
       });
-    this.report('running');
+    this.report("running");
     return task;
   }
 
