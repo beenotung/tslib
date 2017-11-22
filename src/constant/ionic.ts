@@ -1,7 +1,5 @@
-export namespace constant {
-  export namespace ionic {
-    /* nav */
-    export const forward = "forward";
-    export const back = "back";
-  }
+export namespace constant.ionic {
+  /* nav */
+  export const forward = "forward";
+  export const back = "back";
 }

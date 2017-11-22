@@ -1,5 +1,6 @@
-import {createDefer, Defer, remove} from "@beenotung/tslib";
-import {log} from "./debug";
+import {createDefer, Defer} from "./async";
+import {Subject} from "rxjs/Subject";
+import {remove} from "./array";
 
 export class Task<A> {
   readonly f: () => Promise<A>;
@@ -14,12 +15,25 @@ export class Task<A> {
   }
 }
 
-export class TaskPool<A> {
-  pendingTasks: Array<Task<A>> = [];
-  runningTasks: Array<Task<A>> = [];
-  stoppedTasks: Array<Task<A>> = [];
+export type TaskPoolEventType = 'pending' | 'running' | 'stopped';
 
-  constructor(public limit: number) {
+export interface TaskPoolProgress {
+  eventType: TaskPoolEventType
+  pending: number
+  running: number
+  stopped: number
+}
+
+export class TaskPool<A> {
+  readonly pendingTasks: Array<Task<A>> = [];
+  readonly runningTasks: Array<Task<A>> = [];
+  readonly stoppedTasks: Array<Task<A>> = [];
+  readonly progress?: Subject<TaskPoolProgress>;
+
+  constructor(public limit: number, public readonly report_progress = true) {
+    if (!report_progress) {
+      this.progress = new Subject();
+    }
   }
 
   addTaskF(f: () => Promise<A>) {
@@ -52,13 +66,13 @@ export class TaskPool<A> {
     }
     if (this.runningTasks.length >= this.limit) {
       this.pendingTasks.push(task);
+      this.report('pending');
       return task;
     }
     return this.runTask(task);
   }
 
   check() {
-    log(`pending: ${this.pendingTasks.length}, running: ${this.runningTasks.length}, stopped: ${this.stoppedTasks.length}`);
     if (this.runningTasks.length < this.limit && this.pendingTasks.length > 0) {
       const task = this.pendingTasks.pop();
       this.runTask(task);
@@ -74,6 +88,7 @@ export class TaskPool<A> {
       task.done = true;
       remove(this.runningTasks, task);
       this.stoppedTasks.push(task);
+      this.report('stopped');
       this.check();
     };
     task.f()
@@ -87,6 +102,16 @@ export class TaskPool<A> {
         task.defer.reject(err);
         done();
       });
+    this.report('running');
     return task;
+  }
+
+  private report(type: TaskPoolEventType) {
+    this.progress && this.progress.next({
+      eventType: type,
+      pending: this.pendingTasks.length,
+      running: this.runningTasks.length,
+      stopped: this.stoppedTasks.length
+    });
   }
 }
