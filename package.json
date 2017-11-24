@@ -1,6 +1,6 @@
 {
   "name": "@beenotung/tslib",
-  "version": "8.7.0",
+  "version": "8.7.1",
   "description": "rewrite of jslib",
   "main": "index.js",
   "types": "index.d.ts",
