@@ -44,7 +44,6 @@ export * from "./string";
 export * from "./task";
 export * from "./time";
 export * from "./typestub-curry";
-export * from "./typestub-sweetalert2";
 export * from "./type";
 export * from "./uuid";
 export * from "./validate";
