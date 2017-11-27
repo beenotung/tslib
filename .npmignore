@@ -4,31 +4,20 @@
 ## Dev scripts
 gencode
 auto-init
-auto-update
 build
-build-apk
-build-web
-bump
-bump-android
 clean
 cordova
 dev
 dist:move
 dist:unmove
-gc
-gs
 gu
 init
 install
 install-dev
-ionic
 lint
 publish
-resource
 test
 update
-upload
-version
 
 ## Source config
 .editorconfig

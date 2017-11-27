@@ -1,0 +1,13 @@
+#!/bin/bash
+hash yarn 2>/dev/null || npm i -g yarn
+set -e
+yarn install --dev
+if [ -d src/index ]; then
+  mv src/index .
+fi
+./gen-index
+yarn build
+./rm-index
+mv index src/ || echo ''
+yarn install --prod
+echo "done."

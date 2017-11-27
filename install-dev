@@ -1,0 +1,7 @@
+#!/bin/bash
+
+hash yarn 2>/dev/null || npm i -g yarn
+yarn global add \
+  npm-run \
+  npm-check
+echo 'install-dev done.'
