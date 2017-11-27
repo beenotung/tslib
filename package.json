@@ -1,21 +1,35 @@
 {
   "name": "@beenotung/tslib",
   "version": "8.8.0",
-  "description": "rewrite of jslib",
-  "main": "index.js",
-  "types": "index.d.ts",
-  "scripts": {
-    "build": "tsc -p ./ --outDir ./",
-    "lint": "run-s lint:*",
-    "lint:tsc": "tslint --type-check --project tsconfig.json -c tslint.json",
-    "lint:ionic": "ionic-app-scripts lint",
-    "fix": "npm run fix:lint",
-    "fix:lint": "tslint --fix -p .",
-    "test": "run-s build lint",
-    "prepublishOnly": "npm run build"
-  },
+  "description": "utils library in Typescript",
+  "keywords": [
+    "Typescript",
+    "Library",
+    "Utility"
+  ],
   "author": "Beeno Tung",
   "license": "BSD-3-Clause",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/beenotung/tslib.git"
+  },
+  "bugs": {
+    "url": "https://github.com/beenotung/tslib/issues"
+  },
+  "homepage": "https://github.com/beenotung/tslib#readme",
+  "main": "index.js",
+  "types": "index.d.ts",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "build": "tsc -p ./ --outDir ./",
+    "lint": "tslint --project tsconfig.json -c tslint.json",
+    "watch:lint": "chokidar src/**/*.ts -c \"npm run lint\" --initial --verbose",
+    "fix": "tslint --fix -p .",
+    "test": "run-p build lint",
+    "prepublishOnly": "npm run build"
+  },
   "dependencies": {
     "arraybuffer-to-buffer": "^0.0.4",
     "isomorphic-fetch": "2.2.1",
@@ -23,40 +37,22 @@
     "sweetalert2": "^6.6.10"
   },
   "devDependencies": {
-    "@angular/compiler": "^4.0.0",
-    "@angular/compiler-cli": "^4.0.0",
-    "@angular/core": "^4.0.0",
-    "@angular/tsc-wrapped": "^4.0.0",
-    "@ionic/app-scripts": "^2.1.4",
-    "@types/isomorphic-fetch": "0.0.34",
-    "@types/jquery": "^3.2.12",
-    "ajv": "^5.0.0",
-    "codelyzer": "^3.1.2",
+    "@angular/compiler": "^2.3.1 || >=4.0.0-beta <5.0.0",
+    "@angular/core": "^2.3.1 || >=4.0.0-beta <5.0.0",
+    "@types/isomorphic-fetch": "^0.0.34",
+    "@types/node": "^8.0.53",
+    "chokidar": "^1.7.0",
+    "chokidar-cli": "^1.2.0",
+    "codelyzer": "^3.0.1",
     "npm-run-all": "^4.1.2",
     "tslint": "^5.7.0",
     "tslint-eslint-rules": "^4.1.1",
-    "typescript": "^2.5.2",
-    "typestub-horizon-client": "^0.1.7",
+    "typescript": "^2.3.4",
+    "typestub-horizon-client": "^0.1.8",
     "zone.js": "^0.8.4"
   },
   "optionalDependencies": {},
   "peerDependencies": {
     "typestub-horizon-client": "^0.1.7"
-  },
-  "directories": {
-    "test": "test"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/beenotung/tslib.git"
-  },
-  "keywords": [
-    "Typescript",
-    "Library",
-    "Utility"
-  ],
-  "bugs": {
-    "url": "https://github.com/beenotung/tslib/issues"
-  },
-  "homepage": "https://github.com/beenotung/tslib#readme"
+  }
 }
