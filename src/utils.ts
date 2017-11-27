@@ -1,10 +1,10 @@
-import {createDefer} from "./async";
+import {createDefer} from "@beenotung/tslib/async";
 import {Observable} from "rxjs/Observable";
 import "rxjs/add/operator/map";
 import "rxjs/add/operator/mergeMap";
 import "rxjs/add/operator/toPromise";
 import {DataType, Horizon} from "typestub-horizon-client";
-import {objValues} from "./lang";
+import {objValues} from "@beenotung/tslib/lang";
 
 /**
  * @remark Hbase style operation should be deprecated, since horizon support partial update
