@@ -2,6 +2,7 @@
   "compilerOptions": {
     "allowSyntheticDefaultImports": true,
     "allowJs": false,
+    "sourceMap": false,
     "declaration": true,
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
@@ -13,7 +14,6 @@
     ],
     "module": "commonjs",
     "moduleResolution": "node",
-    "sourceMap": true,
     "target": "es5",
     "outDir": "dist"
   },

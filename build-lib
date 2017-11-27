@@ -9,5 +9,5 @@ fi
 yarn build
 ./rm-index
 mv index src/ || echo ''
-yarn install --prod
+node ./mk-package.js > dist/package.json
 echo "done."

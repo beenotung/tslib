@@ -17,5 +17,7 @@ fi
 npm test
 rm -rf package-lock.json
 npm version "$t"
-git push --follow-tags
+./build-lib
+cd dist
 npm publish
+git push --follow-tags
