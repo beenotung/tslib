@@ -1,6 +1,6 @@
 {
   "name": "@beenotung/tslib",
-  "version": "8.8.0",
+  "version": "9.0.0",
   "description": "utils library in Typescript",
   "keywords": [
     "Typescript",
@@ -17,14 +17,16 @@
     "url": "https://github.com/beenotung/tslib/issues"
   },
   "homepage": "https://github.com/beenotung/tslib#readme",
-  "main": "index.js",
-  "types": "index.d.ts",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "directories": {
     "test": "test"
   },
   "scripts": {
-    "build": "tsc -p ./ --outDir ./",
+    "build": "tsc -p .",
     "lint": "tslint --project tsconfig.json -c tslint.json",
+    "dev": "run-p watch:*",
+    "watch:build": "tsc -p . --watch",
     "watch:lint": "chokidar src/**/*.ts -c \"npm run lint\" --initial --verbose",
     "fix": "tslint --fix -p .",
     "test": "run-p build lint",

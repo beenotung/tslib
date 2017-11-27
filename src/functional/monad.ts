@@ -50,13 +50,17 @@ export function createUnit<M extends Monad<A>, A>(modifier?: (monad: Monad<A>, v
       }
       , lift_value: function lift_value<B>(name: PropertyKey, f: (a: A, ...args: any[]) => Monad<B>): Unit<M, A> {
         prototype[name] = function (): Monad<B> {
+          /* tslint:disable:no-invalid-this */
           return (this as Monad<A>).bind(f, arguments);
+          /* tslint:enable:no-invalid-this */
         };
         return unit;
       }
       , lift: function lift<B>(name: PropertyKey, f: (a: A, ...args: any[]) => Monad<B> | B): Unit<M, A> {
         prototype[name] = function (): Monad<B> {
+          /* tslint:disable:no-invalid-this */
           const res: Monad<B> | B = (this as Monad<A>).bind(f as (a: A, ...args: any[]) => Monad<B>, arguments);
+          /* tslint:enable:no-invalid-this */
           return (isDefined(res) && res.is_monad)
             ? res as Monad<B>
             : unit(res as any as B);
