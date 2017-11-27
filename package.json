@@ -49,11 +49,9 @@
     "tslint": "^5.7.0",
     "tslint-eslint-rules": "^4.1.1",
     "typescript": "^2.3.4",
-    "typestub-horizon-client": "^0.1.8",
     "zone.js": "^0.8.4"
   },
   "optionalDependencies": {},
   "peerDependencies": {
-    "typestub-horizon-client": "^0.1.7"
   }
 }
