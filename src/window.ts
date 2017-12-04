@@ -1,9 +1,8 @@
-import {prop, setProp} from "./functional";
-
 export function setWindowProp(key: string, value: any) {
-  setProp(value, key, window);
+  window[key] = value;
+  return value;
 }
 
 export function getWindownProp(key: string) {
-  prop(key, window);
+  return window[key];
 }
