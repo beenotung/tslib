@@ -1,6 +1,6 @@
 {
   "name": "@beenotung/tslib",
-  "version": "9.0.1",
+  "version": "9.0.2",
   "description": "utils library in Typescript",
   "keywords": [
     "Typescript",
@@ -52,6 +52,5 @@
     "zone.js": "^0.8.4"
   },
   "optionalDependencies": {},
-  "peerDependencies": {
-  }
+  "peerDependencies": {}
 }
