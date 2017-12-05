@@ -8,3 +8,12 @@ export async function blobToBuffer(blob: Blob): Promise<Uint8Array> {
     reader.readAsArrayBuffer(blob);
   });
 }
+
+export function blobToText(blob: Blob): Promise<string> {
+  return new Promise<string>((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = () => resolve(reader.result);
+    reader.onerror = e => reject(e);
+    reader.readAsText(blob);
+  });
+}
