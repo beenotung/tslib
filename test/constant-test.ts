@@ -1,10 +1,12 @@
-import {constant as main} from "./index/constant/index";
-import {constant as io} from "../src/constant/ionic";
-import {constant as no} from "../src/constant/notification";
-import {constant} from "../src/constant";
+import {ionic} from "../dist/constant/ionic";
+import {notification} from "../dist/constant/notification";
+import {constant} from "../dist/constant/all";
 
-console.log({main});
-console.log({io});
-console.log({no});
+console.log({ionic: ionic.constant});
+console.log({notification: notification.constant});
+console.log({all: constant});
 
-console.log('well', constant);
+console.log(ionic.constant.back);
+console.log(constant.back);
+// console.log(constant.not);
+console.log(constant.denied);
