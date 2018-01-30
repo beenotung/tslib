@@ -250,3 +250,19 @@ export function push<A>(res: A[], ...xs: A[]): A[] {
   res.push(...xs);
   return res;
 }
+
+export function binArray<A>(xs: A[], binSize: number): A[][] {
+  let res: A[][] = [];
+  let acc: A[] = [];
+  for (let x of xs) {
+    if (acc.length >= binSize) {
+      res.push(acc);
+      acc = [];
+    }
+    acc.push(x);
+  }
+  if (acc.length != 0) {
+    res.push(acc);
+  }
+  return res;
+}
