@@ -17,3 +17,10 @@ export function ensureNumberInRange(a: number | string, lower: number, higher: n
   }
   throw new TypeError(`number not in range, value: ${a}, lower: ${lower}, higher: ${higher}`);
 }
+
+export function ensureString(s: string): string {
+  if (typeof s !== "string") {
+    throw new TypeError("expect string, but got " + (typeof s));
+  }
+  return s;
+}
