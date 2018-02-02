@@ -27,7 +27,7 @@
     "lint": "tslint --project tsconfig.json -c tslint.json",
     "dev": "run-p watch:*",
     "watch:build": "tsc -p . --watch",
-    "watch:lint": "chokidar src/**/*.ts -c \"npm run lint\" --initial --verbose",
+    "watch:lint": "chokidar src/**/*.ts -c \"run-s fix lint\" --initial --verbose",
     "fix": "tslint --fix -p .",
     "test": "run-p build lint",
     "prepublishOnly": "npm run build"
