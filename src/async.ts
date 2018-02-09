@@ -74,10 +74,20 @@ export async function waitFor<A>(pred: () => boolean | any, f: () => A): Promise
   return defer.promise;
 }
 
-export async function later(duration = 0) {
-  const defer = createDefer();
-  setTimeout(defer.resolve, duration);
-  return defer.promise;
+export async function later(delay = 0) {
+  return new Promise(resolve => setTimeout(resolve, delay));
+}
+
+export async function runLater<A>(f: () => A, delay = 0): Promise<A> {
+  return new Promise<A>((resolve, reject) => {
+    setTimeout(() => {
+      try {
+        resolve(f());
+      } catch (e) {
+        reject(e);
+      }
+    }, delay);
+  });
 }
 
 export async function parallel_map<A, B>(xs: A[], f: (a: A) => Promise<B>): Promise<B[]> {
@@ -126,3 +136,8 @@ export function fetch_no_cache(url: string, method = "GET"): Promise<Response> {
   };
   return fetch(req, init);
 }
+
+export const fetch_retry = (url: string, num_remind = 1, e?): Promise<Response> =>
+  num_remind <= 0
+    ? Promise.reject(e)
+    : fetch(url).catch(e => fetch_retry(url, num_remind - 1, e));
