@@ -61,9 +61,9 @@ export function is_non_empty_string(s: string): boolean {
 }
 
 export function str_dos2unix(s: string): string {
-  return strReplaceAll(s, '\r\n', '\n');
+  return strReplaceAll(s, "\r\n", "\n");
 }
 
 export function str_unix2dos(s: string): string {
-  return strReplaceAll(s, '\n', '\r\n');
+  return strReplaceAll(s, "\n", "\r\n");
 }

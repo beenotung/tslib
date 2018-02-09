@@ -1,11 +1,13 @@
-export let rl = require('readline').createInterface({
+/* tslint:disable:no-var-requires */
+export let rl = require("readline").createInterface({
   input: process.stdin
 });
+/* tslint:enable:no-var-requires */
 export namespace IO {
   export function forEachLine(onnext: (line: string) => void, oncomplete?: () => void) {
     rl.on("line", line => {
       if (line) {
-        onnext(line)
+        onnext(line);
       }
     });
     if (typeof oncomplete === "function") {
