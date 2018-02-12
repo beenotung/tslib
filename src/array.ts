@@ -271,6 +271,9 @@ export function binArray<A>(xs: A[], binSize: number): A[][] {
   return res;
 }
 
+/**
+ * non-curry version of `groupBy` in functional.ts
+ * */
 export function binArrayBy<A, K>(xs: A[], mapper: (a: A) => K): Map<K, A[]> {
   const res = new Map<K, A[]>();
   xs.forEach(x => {
