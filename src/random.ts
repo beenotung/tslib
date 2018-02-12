@@ -1,4 +1,4 @@
-import {Enum, enum_keys} from "./enum";
+import {enum_keys} from "./enum";
 
 export namespace Random {
   /** @return number : lower <= value < upper */
@@ -31,7 +31,7 @@ export namespace Random {
   /**
    * @return value of enum (not key of enum)
    * */
-  export function nextEnum<E extends Enum>(e: E): E {
-    return e[Random.element(enum_keys(e))];
+  export function nextEnum<E>(e: E): E[keyof E] {
+    return e[Random.element(enum_keys(e)) as any];
   }
 }

@@ -18,9 +18,16 @@ export function ensureNumberInRange(a: number | string, lower: number, higher: n
   throw new TypeError(`number not in range, value: ${a}, lower: ${lower}, higher: ${higher}`);
 }
 
-export function ensureString(s: string): string {
+export function ensureString<S extends string>(s: S): S {
   if (typeof s !== "string") {
     throw new TypeError("expect string, but got " + (typeof s));
   }
   return s;
+}
+
+export function ensureNumber<Num extends number>(x: Num): Num {
+  if (typeof x !== "number") {
+    throw new TypeError("expect number, but got " + (typeof x));
+  }
+  return x;
 }

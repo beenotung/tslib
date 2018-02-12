@@ -59,3 +59,11 @@ export function str_like(a: string, b: string, ignore_case = true) {
 export function is_non_empty_string(s: string): boolean {
   return typeof s === "string" && s !== "";
 }
+
+export function str_dos2unix(s: string): string {
+  return strReplaceAll(s, "\r\n", "\n");
+}
+
+export function str_unix2dos(s: string): string {
+  return strReplaceAll(s, "\n", "\r\n");
+}

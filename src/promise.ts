@@ -6,8 +6,8 @@ export async function promisify<A>(f: (...args: any[]) => any, args: any[] = [])
       } else {
         resolve(res);
       }
-    })
-  })
+    });
+  });
 }
 
 export interface PromiseCallback<A> {
@@ -17,16 +17,17 @@ export interface PromiseCallback<A> {
 }
 
 export function genPromiseCallback<A>(): PromiseCallback<A> {
-  let resolve, reject;
-  let p = new Promise<A>((res, rej) => {
+  let resolve: (a: A) => void;
+  let reject: (e) => void;
+  const p = new Promise<A>((res, rej) => {
     resolve = res;
     reject = rej;
   });
-  let cb = (err, res) => {
+  const cb = (err, res) => {
     if (err) {
-      reject(err)
+      reject(err);
     } else {
-      resolve(res)
+      resolve(res);
     }
   };
   return Object.assign(cb, {promise: p});
