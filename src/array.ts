@@ -266,3 +266,17 @@ export function binArray<A>(xs: A[], binSize: number): A[][] {
   }
   return res;
 }
+
+export function binArrayBy<A, K>(xs: A[], mapper: (a: A) => K): Map<K, A[]> {
+  const res = new Map<K, A[]>();
+  xs.forEach(x => {
+    const k = mapper(x);
+    const xs = res.get(k);
+    if (xs) {
+      xs.push(x);
+    } else {
+      res.set(k, [x]);
+    }
+  });
+  return res;
+}
