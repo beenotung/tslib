@@ -1,13 +1,15 @@
 /* tslint:disable:no-var-requires */
 export let rl = require("readline").createInterface({
+  /* tslint:enable:no-var-requires */
   input: process.stdin
 });
-/* tslint:enable:no-var-requires */
 export namespace IO {
-  export function forEachLine(onnext: (line: string) => void, oncomplete?: () => void) {
+  export function forEachLine(onnext: (line: string, lineNum: number) => void, oncomplete?: () => void) {
+    let lineNum = -1;
     rl.on("line", line => {
+      lineNum++;
       if (line) {
-        onnext(line);
+        onnext(line, lineNum);
       }
     });
     if (typeof oncomplete === "function") {
@@ -15,10 +17,14 @@ export namespace IO {
     }
   }
 
-  export async function mapLine<A>(f: (line: string) => A): Promise<A[]> {
+  export async function mapLine<A>(f: (line: string, lineNum: number) => A): Promise<A[]> {
     return new Promise<A[]>((resolve, reject) => {
-      const res = [];
-      forEachLine(line => res.push(f(line)), () => resolve(res));
+      try {
+        const res = [];
+        forEachLine((line, lineNum) => res.push(f(line, lineNum)), () => resolve(res));
+      } catch (e) {
+        reject(e);
+      }
     });
   }
 
