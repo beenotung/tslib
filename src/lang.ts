@@ -224,19 +224,21 @@ export function notDefined(a: any): boolean {
   return !isDefined(a);
 }
 
-export function isNumber(i: any): boolean {
+export function isNumber(i: string | number): boolean {
   return Number.isFinite(+i) && i !== "";
 }
 
-export function toNumber(i: any): number {
+export function toNumber(i: string | number): number {
   if (!isNumber(i)) {
-    throw new TypeError("i is not a number: " + i);
+    throw new TypeError(`expect number string, but got '${i}'`);
   }
   return +i;
 }
 
 /**
- * @param end: number (exclusive)
+ * @param f: consumer function
+ * @param end: ending (exclusive)
+ * @param start: offset (inclusive)
  * */
 export function forI(f: (i: number) => void, end: number, start = 0) {
   for (let i = start; i < end; i++) {
