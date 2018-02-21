@@ -5,6 +5,7 @@ import {Supplier} from "./functional";
 import {createDefer} from "./async";
 import {F1} from "./typestub-curry";
 import {curry} from "./curry";
+import {inspect} from "util";
 
 export const deepGetProp = curry(<A>(name: string, o: any): A => {
   if (o[name]) {
@@ -229,8 +230,9 @@ export function isNumber(i: string | number): boolean {
 }
 
 export function toNumber(i: string | number): number {
+  const f = typeof inspect == "function" ? inspect : JSON.stringify.bind(JSON);
   if (!isNumber(i)) {
-    throw new TypeError(`expect number string, but got '${i}'`);
+    throw new TypeError(`expect number string, but got \`${f(i)}\` of type ${typeof i}`);
   }
   return +i;
 }
