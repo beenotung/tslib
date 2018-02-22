@@ -1,10 +1,20 @@
+export let dateFormatter = (x: Date) => x.toString();
+
+export function setDateFormatLocale(lang: string, timezone: string) {
+  dateFormatter = x => x.toLocaleDateString(lang, {timeZone: timezone});
+}
+
+export function resetDateFormatLocale() {
+  dateFormatter = x => x.toString();
+}
+
 export function toString(o: any): string {
   switch (typeof o) {
     case "string":
       return o;
   }
   if (o instanceof Date) {
-    return (o as Date).toString();
+    return dateFormatter(o);
   }
   if (o instanceof Set) {
     return toString(Array.from(o as Set<any>));
