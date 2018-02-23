@@ -229,10 +229,11 @@ export function isNumber(i: string | number): boolean {
   return Number.isFinite(+i) && i !== "";
 }
 
+const toString = typeof inspect == "function" ? inspect : JSON.stringify.bind(JSON);
+
 export function toNumber(i: string | number): number {
-  const f = typeof inspect == "function" ? inspect : JSON.stringify.bind(JSON);
   if (!isNumber(i)) {
-    throw new TypeError(`expect number string, but got \`${f(i)}\` of type ${typeof i}`);
+    throw new TypeError(`expect number string, but got \`${toString(i)}\` of type ${typeof i}`);
   }
   return +i;
 }
