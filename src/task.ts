@@ -1,6 +1,7 @@
 import {createDefer, Defer} from "./async";
 import {Subject} from "rxjs/Subject";
 import {remove} from "./array";
+import {ensureNumber, ensureString} from "./strict-type";
 
 export class Task<A> {
   readonly f: () => Promise<A>;
@@ -24,15 +25,36 @@ export interface TaskPoolProgress {
   stopped: number
 }
 
+export interface TaskPoolOptions {
+  limit: number
+  /* default true */
+  report_progress?: boolean
+  mode?: TaskPoolMode
+}
+
+export const defaultTaskPoolOptions: TaskPoolOptions = {
+  limit: undefined
+  , report_progress: true
+  , mode: "FILO"
+};
+
+export type TaskPoolMode = "FIFO" | "FILO";
+
 export class TaskPool<A> {
   readonly pendingTasks: Array<Task<A>> = [];
   readonly runningTasks: Array<Task<A>> = [];
   readonly stoppedTasks: Array<Task<A>> = [];
   readonly progress?: Subject<TaskPoolProgress>;
 
-  constructor(public limit: number, public readonly report_progress = true) {
-    if (!report_progress) {
-      this.progress = new Subject();
+  limit: number;
+  mode: TaskPoolMode;
+
+  constructor(options: TaskPoolOptions) {
+    options = Object.assign({}, defaultTaskPoolOptions, options);
+    this.limit = ensureNumber(options.limit);
+    this.mode = ensureString(options.mode);
+    if (options.report_progress) {
+      this.progress = new Subject<TaskPoolProgress>();
     }
   }
 
@@ -74,7 +96,10 @@ export class TaskPool<A> {
 
   check() {
     if (this.runningTasks.length < this.limit && this.pendingTasks.length > 0) {
-      const task = this.pendingTasks.pop();
+      const task = this.mode === "FILO"
+        ? this.pendingTasks.pop() /* first in last out */
+        : this.pendingTasks.shift() /* first in first out */
+      ;
       this.runTask(task);
       this.check();
     }

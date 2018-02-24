@@ -6,22 +6,26 @@ import {CompareResult} from "./number";
  * inplace delete all element from the array
  * @return old elements
  * */
-export function clear<A>(xs: A[]): A[] {
+export function clearArray<A>(xs: A[]): A[] {
   return xs.splice(0, xs.length);
 }
+
+/** @deprecated renamed to clearArray */
+export const clear = clearArray;
 
 /**
  * inplace replace all element in the array
  * @return the old elements
  * */
 export function replaceArray<A>(dest: A[], src: A[]): A[] {
-  clear(dest);
+  clearArray(dest);
   dest.push(...src);
   return dest;
 }
 
 /**@remark side effect
  * inplace operation
+ * @deprecated same as clear
  * */
 export function takeAll<A>(xs: A[]): A[] {
   const res = [].concat(xs);
@@ -173,7 +177,7 @@ export function nodup<A>(xs: A[]): A[] {
  * */
 export function removeDup<A>(xs: A[]): A[] {
   const ys = nodup(xs);
-  clear(xs);
+  clearArray(xs);
   xs.push(...ys);
   return xs;
 }
@@ -264,5 +268,22 @@ export function binArray<A>(xs: A[], binSize: number): A[][] {
   if (acc.length != 0) {
     res.push(acc);
   }
+  return res;
+}
+
+/**
+ * non-curry version of `groupBy` in functional.ts
+ * */
+export function binArrayBy<A, K>(xs: A[], mapper: (a: A) => K): Map<K, A[]> {
+  const res = new Map<K, A[]>();
+  xs.forEach(x => {
+    const k = mapper(x);
+    const xs = res.get(k);
+    if (xs) {
+      xs.push(x);
+    } else {
+      res.set(k, [x]);
+    }
+  });
   return res;
 }

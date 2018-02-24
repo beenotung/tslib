@@ -1,5 +1,5 @@
 import {isDefined} from "./lang";
-import {clear, removeBy} from "./array";
+import {clearArray, removeBy} from "./array";
 
 export class HashedArray<A> {
   mapper: (a: A) => PropertyKey;
@@ -68,7 +68,7 @@ export class HashedArray<A> {
 
   clear() {
     this.o = {};
-    return clear(this.array);
+    return clearArray(this.array);
   }
 
   get(key: PropertyKey): A | undefined {
