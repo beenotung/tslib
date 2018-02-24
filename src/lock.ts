@@ -1,9 +1,11 @@
 import {createDefer, Defer} from "./async/defer";
 
 interface QueueItem {
-  defer: Defer<void, Error>;
+  defer: Defer<void, never>;
   amount: number;
 }
+
+let interval = 0;
 
 export class Lock {
 
@@ -21,25 +23,28 @@ export class Lock {
     if (amount > this.quota) {
       throw new Error("not enough quota: max=" + this.quota + ", require=" + amount);
     }
-    if (amount <= this.res) {
+    if (this.res >= amount) {
       this.res -= amount;
-      return void 0;
+      return;
     }
-    const defer = createDefer<void, Error>();
-    this.queue.push({
-      defer
-      , amount
-    });
+    const defer = createDefer<void, never>();
+    this.queue.push({defer, amount});
     return defer.promise;
   }
 
   release(amount = 1) {
     this.res += amount;
-    this.queue.forEach(item => {
-      if (item.amount <= this.res) {
+    this.check();
+  }
+
+  private check() {
+    this.queue = this.queue.filter(item => {
+      if (this.res >= item.amount) {
         this.res -= item.amount;
         item.defer.resolve(void 0);
+        return false;
       }
+      return true;
     });
   }
 }
