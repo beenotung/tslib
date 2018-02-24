@@ -7,6 +7,21 @@ export function createRL(options: ReadLineOptions = {input: process.stdin}): Rea
 
 export let getRL: () => ReadLine = createLazy(createRL);
 
+/**@deprecated*/
+export let rl: ReadLine;
+{
+  let isNew = true;
+  rl = new Proxy({}as ReadLine, {
+    get: function (target, p) {
+      if (isNew) {
+        isNew = false;
+        Object.assign(target, getRL());
+      }
+      return target[p];
+    }
+  });
+}
+
 export namespace IO {
   export function forEachLine(onnext: (line: string, lineNum: number) => void, oncomplete?: () => void) {
     const rl = getRL();
