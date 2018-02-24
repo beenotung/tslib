@@ -1,10 +1,15 @@
-/* tslint:disable:no-var-requires */
-export let rl = require("readline").createInterface({
-  input: process.stdin
-});
-/* tslint:enable:no-var-requires */
+import {createInterface, ReadLine, ReadLineOptions} from "readline";
+import {createLazy} from "./lazy";
+
+export function createRL(options: ReadLineOptions = {input: process.stdin}): ReadLine {
+  return createInterface(options);
+}
+
+export let getRL: () => ReadLine = createLazy(createRL);
+
 export namespace IO {
   export function forEachLine(onnext: (line: string) => void, oncomplete?: () => void) {
+    const rl = getRL();
     rl.on("line", line => {
       if (line) {
         onnext(line);
