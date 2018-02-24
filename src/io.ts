@@ -12,7 +12,7 @@ export let rl: ReadLine;
 {
   let isNew = true;
   rl = new Proxy({}as ReadLine, {
-    get: function (target, p) {
+    get: (target, p) => {
       if (isNew) {
         isNew = false;
         Object.assign(target, getRL());
