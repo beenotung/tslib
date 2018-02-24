@@ -1,7 +1,7 @@
 export class TimeoutError extends Error {
   constructor(public context?) {
     super();
-    this.name = 'TimeoutError';
+    this.name = "TimeoutError";
   }
 }
 

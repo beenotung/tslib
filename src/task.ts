@@ -3,6 +3,7 @@ import {Subject} from "rxjs/Subject";
 import {remove} from "./array";
 import {ensureNumber, ensureString} from "./strict-type";
 
+/**@deprecated*/
 export class Task<A> {
   readonly f: () => Promise<A>;
   res?: A;
@@ -40,6 +41,7 @@ export const defaultTaskPoolOptions: TaskPoolOptions = {
 
 export type TaskPoolMode = "FIFO" | "FILO";
 
+/**@deprecated*/
 export class TaskPool<A> {
   readonly pendingTasks: Array<Task<A>> = [];
   readonly runningTasks: Array<Task<A>> = [];

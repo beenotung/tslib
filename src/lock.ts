@@ -5,8 +5,6 @@ interface QueueItem {
   amount: number;
 }
 
-let interval = 0;
-
 export class Lock {
 
   readonly quota: number;
