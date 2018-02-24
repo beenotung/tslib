@@ -1,4 +1,5 @@
 #!/bin/bash
+set -e
 git submodule init
 if [ "$1" == "-f" ] || [ "$1" == "--full" ]; then
   git submodule update --recursive  #<- this is slow for long history (expectially when dist/asset is included)
