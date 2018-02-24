@@ -1,25 +1,16 @@
 export class TimeoutError extends Error {
-  constructor() {
-    super("timeout");
+  constructor(public context?) {
+    super();
+    this.name = 'TimeoutError';
   }
 }
 
 export class TimeoutPromise<T> implements Promise<T> {
   [Symbol.toStringTag];
-  worker: Promise<T>;
-  timer: Promise<never>;
-  promise: Promise<T>;
+  private promise;
 
-  constructor(executor: (resolve: (value?: T | PromiseLike<T>) => void, reject: (reason?: any) => void) => void, timeout?: number) {
-    this.worker = new Promise<T>(executor);
-    this.timer = new Promise<never>((resolve, reject) => {
-      if (typeof timeout === "number") {
-        setTimeout(() => {
-          reject(new TimeoutError());
-        }, timeout);
-      }
-    });
-    this.promise = Promise.race([this.worker, this.timer]);
+  constructor(executor: (resolve: (value?: T | PromiseLike<T>) => void, reject: (e?: any) => void) => void, timeout: number, context?) {
+    this.promise = timeoutPromise(new Promise<any>(executor), timeout, context);
   }
 
   then<R, E>(onfulfilled?: ((value: T) => (PromiseLike<R> | R)), onrejected?: ((reason: any) => (PromiseLike<E> | E))): Promise<R | E> {
@@ -31,6 +22,22 @@ export class TimeoutPromise<T> implements Promise<T> {
   }
 }
 
-export function timeoutPromise<T>(p: Promise<T>, timeout: number) {
-  return new TimeoutPromise((resolve, reject) => p.then(resolve).catch(reject), timeout);
+export function timeoutPromise<T>(p: Promise<T>, timeout: number, context?) {
+  let timer;
+  const timerPromise = new Promise<never>((resolve, reject) => {
+    if (typeof timeout === "number") {
+      timer = setTimeout(() => {
+        reject(new TimeoutError(context));
+      }, timeout);
+    }
+  });
+  return Promise.race([p, timerPromise])
+    .then(x => {
+      clearTimeout(timer);
+      return x;
+    })
+    .catch(e => {
+      clearTimeout(timer);
+      return Promise.reject(e);
+    });
 }
