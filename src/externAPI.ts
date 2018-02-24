@@ -1,8 +1,8 @@
-import {createDefer} from "./async";
-
 /**
  * external API powered by surge.sh
  */
+import {createDefer} from "./async/defer";
+
 export namespace externalAPI {
   const hostListUrl = "http://host-list.surge.sh/list";
 

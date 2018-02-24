@@ -1,4 +1,4 @@
-import {createDefer, Defer} from "./async";
+import {createDefer, Defer} from "./async/defer";
 import {Subject} from "rxjs/Subject";
 import {remove} from "./array";
 import {ensureNumber, ensureString} from "./strict-type";

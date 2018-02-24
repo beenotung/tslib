@@ -1,4 +1,4 @@
-import {createDefer, Defer} from "./async";
+import {createDefer, Defer} from "./async/defer";
 
 interface QueueItem {
   defer: Defer<void, Error>;

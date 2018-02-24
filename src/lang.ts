@@ -2,7 +2,7 @@
  * Created by beenotung on 12/26/16.
  */
 import {Supplier} from "./functional";
-import {createDefer} from "./async";
+import {createDefer} from "./async/defer";
 import {F1} from "./typestub-curry";
 import {curry} from "./curry";
 import {inspect} from "util";

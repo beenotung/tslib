@@ -1,4 +1,4 @@
-import {createDefer} from "./async";
+import {createDefer} from "./async/defer";
 import {Obj} from "./lang";
 
 /**

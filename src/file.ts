@@ -1,4 +1,4 @@
-import {createDefer, Defer} from "./async";
+import {createDefer, Defer} from "./async/defer";
 import {mapI} from "./lang";
 
 export type BlobType = "image/png" | string;

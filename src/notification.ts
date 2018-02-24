@@ -1,4 +1,4 @@
-import {createDefer} from "./async";
+import {createDefer} from "./async/defer";
 
 export function isSupportNotification(): boolean {
   return "Notification" in window;

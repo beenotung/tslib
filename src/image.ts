@@ -1,4 +1,4 @@
-import {createDefer} from "./async";
+import {createDefer} from "./async/defer";
 import {xor} from "./logic";
 import {enum_only_string} from "./enum";
 
@@ -78,8 +78,8 @@ export async function getWidthHeightFromBase64(data: string): Promise<ISize> {
 export enum ResizeType {
   /* with-in the given area, maybe smaller  */
   with_in
-    /* at least as large as the given area, maybe larger */
-    , at_least
+  /* at least as large as the given area, maybe larger */
+  , at_least
 }
 
 enum_only_string(ResizeType);
