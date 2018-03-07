@@ -20,49 +20,48 @@ export class Lazy<A> {
   }
 
   add(b) {
-    return new Lazy(() => this.value() + b);
+    return this.map(a => a + b);
   }
 
   minus(b) {
-    return new Lazy(() => this.value() as any - b);
+    return this.map(a => a as any - b);
   }
 
   mult(b) {
-    return new Lazy(() => this.value() as any * b);
+    return this.map(a => a as any * b);
   }
 
   rem(b) {
-    return new Lazy(() => this.value() as any % b);
+    return this.map(a => a as any % b);
   }
 
   div(b) {
-    return new Lazy(() => this.value() as any / b);
+    return this.map(a => a as any / b);
   }
 
   quot(b) {
-    return new Lazy(() => (this.value() as any / b) | 0);
+    return this.map(a => (a as any / b) | 0);
   }
 
   quotRem(b) {
-    return new Lazy(() => {
-      const a = this.value() as any;
+    return this.map((a: any) => {
       return [(a / b) | 0, a % b];
     });
   }
 
   and(b) {
-    return new Lazy(() => this.value() && b);
+    return this.map(a => a && b);
   }
 
   or(b) {
-    return new Lazy(() => this.value() || b);
+    return this.map(a => a || b);
   }
 
   not() {
-    return new Lazy(() => !this.value());
+    return this.map(a => !a);
   }
 
   notnot() {
-    return new Lazy(() => !!this.value());
+    return this.map(a => !!a);
   }
 }
