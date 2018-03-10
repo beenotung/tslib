@@ -152,6 +152,10 @@ export const divMod = curry((a: number, b: number): [number, number] => {
   const d = Math.floor((b / a));
   return [d, b - d * a];
 });
+export const and = defineSymbolF("&&", (a, b) => b && a);
+export const or = defineSymbolF("||", (a, b) => b || a);
+export const not = defineSymbolF("!", (a) => !a);
+export const notnot = defineSymbolF("!!", (a) => !!a);
 export const symbolF = curry(<A, B, C>(name: string): CurryF2<A, B, C> => symbolFs.get(name));
 export const composeFs = curry(<A>(fs: Array<CurryF1<A, A>>, acc: A) => {
   for (let i = fs.length - 1; i >= 0; i--) {
