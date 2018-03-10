@@ -1,11 +1,13 @@
 import {wrapFunction} from "./reflection";
 import {MapMap} from "./map-map";
 
+/* tslint:disable:ban-types */
 /**
  * @description support any arguments length, any data type arguments
  * @description do not works for self-recursive functions
  * */
 export function memorize<F extends Function>(f: F): F {
+  /* tslint:enable:ban-types */
   /* length => ...args */
   const cache = new MapMap<number, MapMap<any, any>>();
   return wrapFunction<F>(function () {
@@ -30,7 +32,7 @@ export class MemorizePool<A> {
    * @return [has_or_not, result]
    * */
   get(args: IArguments): undefined | [A] {
-    let map = this.getLastMap(args);
+    const map = this.getLastMap(args);
     const last = args[0];
     if (map.has(last)) {
       return [map.get(last)as any];

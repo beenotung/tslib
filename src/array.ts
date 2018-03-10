@@ -297,7 +297,7 @@ export function binArrayBy<A, K>(xs: A[], mapper: (a: A) => K): Map<K, A[]> {
  *   map(new Array(3),x=>1) ~~> [ 1, 1, 1 ]
  * */
 export function mapArray<A, B>(xs: A[], f: (a: A, i: number) => B): B[] {
-  let res = new Array<B>(xs.length);
+  const res = new Array<B>(xs.length);
   for (let i = xs.length - 1; i >= 0; i--) {
     res[i] = f(xs[i], i);
   }
