@@ -4,7 +4,18 @@ import {MapMap} from "./map-map";
 /* tslint:disable:ban-types */
 /**
  * @description support any arguments length, any data type arguments
- * @description do not works for self-recursive functions
+ *   do not works for self-recursive functions
+ *   unless it is wrapped when being constructed
+ *
+ *   Example that works:
+ *
+ *       const q = memorize((n: number) => n < 2 ? 1 : q(n - 1) + q(n - 2));
+ *
+ *   Example that do not works:
+ *
+ *       let f = (n: number) => n < 2 ? 1 : f(n - 1) + f(n - 2);
+ *       f = memorize(f);
+ *
  * */
 export function memorize<F extends Function>(f: F): F {
   /* tslint:enable:ban-types */

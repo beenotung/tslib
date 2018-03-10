@@ -12,13 +12,15 @@ function time(f: () => any, name: string = f.name) {
   }
 }
 
-function test(name: string, f: () => any, g: () => any) {
+function test(name: string, f: () => any, g: () => any, q?: () => any) {
   console.log('=== begin ' + name + ' ====');
   console.log('=== pass 1 ====');
   time(f, 'f');
+  q ? time(q, 'q') : '';
   time(g, 'g');
   console.log('=== pass 2 ====');
   time(f, 'f');
+  q ? time(q, 'q') : '';
   time(g, 'g');
   console.log('=== finish ====');
 }
@@ -26,6 +28,7 @@ function test(name: string, f: () => any, g: () => any) {
 /* Fib number */
 function test1() {
   const f = (n: number) => n < 2 ? 1 : f(n - 1) + f(n - 2);
+  const q = memorize((n: number) => n < 2 ? 1 : q(n - 1) + q(n - 2));
   const pool = new MemorizePool<number>();
   const g = function (n: number): number {
     return pool.getOrCalc(arguments, () => n < 2 ? 1 : g(n - 1) + g(n - 2));
