@@ -17,23 +17,26 @@ import {MapMap} from "./map-map";
  *       f = memorize(f);
  *
  * */
-export function memorize<F extends Function>(f: F): F {
+export function memorize<F extends Function>(f: F): F & { clear: () => void } {
   /* tslint:enable:ban-types */
   /* length => ...args */
   const cache = new MapMap<number, MapMap<any, any>>();
-  return wrapFunction<F>(function () {
-    let map = cache.getMap(arguments.length);
-    for (let i = arguments.length - 1; i > 0; i--) {
-      map = map.getMap(arguments[i]);
-    }
-    const last = arguments[0];
-    if (map.has(last)) {
-      return map.get(last);
-    }
-    const res = f.apply(null, arguments);
-    map.set(last, res);
-    return res;
-  } as any, f.length, f.name);
+  return Object.assign(
+    wrapFunction<F>(function () {
+      let map = cache.getMap(arguments.length);
+      for (let i = arguments.length - 1; i > 0; i--) {
+        map = map.getMap(arguments[i]);
+      }
+      const last = arguments[0];
+      if (map.has(last)) {
+        return map.get(last);
+      }
+      const res = f.apply(null, arguments);
+      map.set(last, res);
+      return res;
+    } as any, f.length, f.name)
+    , {clear: () => cache.clear()}
+  );
 }
 
 export class MemorizePool<A> {

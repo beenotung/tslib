@@ -39,6 +39,10 @@ export class MapMap<K, V> {
     this.set(k, res as any);
     return res as any;
   }
+
+  clear() {
+    this.m.clear();
+  }
 }
 
 /**
@@ -66,5 +70,9 @@ export class SimpleMapMap<K extends PropertyKey, V> {
     const res = new SimpleMapMap<K, V>();
     this.o[k as PropertyKey] = res as any as V;
     return res as any as V;
+  }
+
+  clear() {
+    this.o = {};
   }
 }
