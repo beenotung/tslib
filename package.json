@@ -30,6 +30,8 @@
     "watch:lint": "chokidar src/**/*.ts -c \"run-s fix lint\" --initial --verbose",
     "fix": "tslint --fix -p .",
     "test": "run-p build lint",
+    "precommit": "npm run fix && npm run test",
+    "commit": "git commit $@",
     "prepublishOnly": "npm run build"
   },
   "dependencies": {
