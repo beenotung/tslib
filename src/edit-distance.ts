@@ -32,8 +32,8 @@ export const edit_distance = memorize(<A>(s: ArrayData<A> | A[] | string, t: Arr
 
 const edit_distance_clear = edit_distance.clear.bind(edit_distance);
 edit_distance.clear = () => {
-  if ('clear' in last) {
-    last['clear']();
+  if ("clear" in last) {
+    last["clear"]();
   }
   pop.clear();
   wrapArray.clear();

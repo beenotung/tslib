@@ -18,7 +18,6 @@ export interface ArrayData<A> {
 
 export const wrapArray = <A>(s: string | A[]): ArrayData<A> => ({s, offset: 0, length: s.length});
 
-
 export const pop = <A>(x: ArrayData<A>): ArrayData<A> => ({
   s: x.s,
   offset: x.offset,
