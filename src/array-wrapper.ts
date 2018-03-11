@@ -24,4 +24,4 @@ export const pop = <A>(x: ArrayData<A>): ArrayData<A> => ({
   length: x.length - 1 < 0 ? 0 : x.length - 1
 });
 
-export const last = <A>(x: ArrayData<A>): A => x.s[x.offset + x.length - 1] as A;
+export const wrappedLast = <A>(x: ArrayData<A>): A => x.s[x.offset + x.length - 1] as A;

@@ -1,5 +1,5 @@
 import {memorize} from "./memorize";
-import {ArrayData, last as _last, pop as _pop, wrapArray as _wrapArray} from "./array-wrapper";
+import {ArrayData, pop as _pop, wrapArray as _wrapArray, wrappedLast as _last} from "./array-wrapper";
 
 // const last = memorize(_last);
 const last = _last;
