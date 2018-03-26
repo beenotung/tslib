@@ -9,7 +9,7 @@ export class PolyfillMap<K, V> implements Map <K, V> {
 
   get size(): number {
     return this.ks.length;
-  };
+  }
 
   clear(): void {
     clearArray(this.ks);
