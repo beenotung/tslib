@@ -1,5 +1,6 @@
-export const not_impl_error = new Error("not impl");
+export class NotImplError extends Error {
+}
 
 export function not_impl(): any {
-  throw not_impl_error;
+  throw new NotImplError();
 }
