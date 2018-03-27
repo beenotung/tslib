@@ -3,10 +3,13 @@
  * */
 export class KVMap<K, V> implements Map<K, V> {
   [Symbol.toStringTag];
+  deleteKey = this.delete;
+  getValue = this.get;
+  hasKey = this.has;
   private kvs = new Map<K, V>();
   private vks = new Map<V, K>();
 
-  constructor(entries?: [K, V][]) {
+  constructor(entries?: Array<[K, V]>) {
     if (entries) {
       for (const [k, v] of entries) {
         this.set(k, v);
@@ -16,7 +19,7 @@ export class KVMap<K, V> implements Map<K, V> {
 
   get size(): number {
     return this.kvs.size;
-  };
+  }
 
   clear(): void {
     this.kvs.clear();
@@ -31,8 +34,6 @@ export class KVMap<K, V> implements Map<K, V> {
     }
     return false;
   }
-
-  deleteKey = this.delete;
 
   deleteValue(value: V): boolean {
     if (this.vks.has(value)) {
@@ -51,8 +52,6 @@ export class KVMap<K, V> implements Map<K, V> {
     return this.kvs.get(key);
   }
 
-  getValue = this.get;
-
   getKey(value: V): K | undefined {
     return this.vks.get(value);
   }
@@ -60,8 +59,6 @@ export class KVMap<K, V> implements Map<K, V> {
   has(key: K): boolean {
     return this.kvs.has(key);
   }
-
-  hasKey = this.has;
 
   hasValue(value: V): boolean {
     return this.vks.has(value);
@@ -96,8 +93,10 @@ export class KVMap<K, V> implements Map<K, V> {
   toVKMap(): Map<V, K> {
     return this.vks;
   }
+}
 
-  static fromMap<K, V>(map: Map<K, V>) {
+export namespace KVMap {
+  export function fromMap<K, V>(map: Map<K, V>) {
     const res = new KVMap<K, V>();
     map.forEach((value, key) => {
       res.set(key, value);
