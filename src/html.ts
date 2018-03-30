@@ -41,6 +41,9 @@ export function displayJSON(o: any, mode: "raw" | "table" = "table"): string {
       if (o instanceof Date) {
         return o.toString();
       }
+      if (o == null) {
+        return "null";
+      }
       break;
     case "string":
       const s = o as string;
