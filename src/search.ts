@@ -11,7 +11,8 @@ export namespace search {
     if (typeof base === "string") {
       return str_contains(base, query, caseInsensitive);
     }
-    for (const k in base) {
+    // for (const k in base) {
+    for (const k of Object.keys(base)) {
       const v = base[k];
       if (typeof v === "string" && typeof query === "string") {
         if (str_contains(v, query, caseInsensitive)) {
