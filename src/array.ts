@@ -276,7 +276,7 @@ export function binArray<A>(xs: A[], binSize: number): A[][] {
  * */
 export function binArrayBy<A, K>(xs: A[], mapper: (a: A) => K): Map<K, A[]> {
   const res = new Map<K, A[]>();
-  xs.forEach(x => {
+  for (const x of xs) {
     const k = mapper(x);
     const xs = res.get(k);
     if (xs) {
@@ -284,8 +284,21 @@ export function binArrayBy<A, K>(xs: A[], mapper: (a: A) => K): Map<K, A[]> {
     } else {
       res.set(k, [x]);
     }
-  });
+  }
   return res;
+}
+
+export function partitionArrayBy<A>(xs: A[], f: (a: A) => boolean): [A[], A[]] {
+  const true_xs: A[] = [];
+  const false_xs: A[] = [];
+  for (const x of xs) {
+    if (f(x)) {
+      true_xs.push(x);
+    } else {
+      false_xs.push(x);
+    }
+  }
+  return [true_xs, false_xs];
 }
 
 /**
