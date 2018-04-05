@@ -1,7 +1,7 @@
 import * as event_stream from "event-stream";
 
 /**
- * lineNum start from 0
+ * @description lineNum start from 0
  * */
 export function readStreamByLine(stream: NodeJS.ReadableStream
   , onLine: (line: string, lineNum: number) => void

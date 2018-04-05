@@ -23,6 +23,9 @@ export let rl: ReadLine;
 }
 
 export namespace IO {
+  /**
+   * @description lineNum start from 0
+   * */
   export function forEachLine(onnext: (line: string, lineNum: number) => void, oncomplete?: () => void) {
     const rl = getRL();
     let lineNum = -1;
@@ -37,6 +40,9 @@ export namespace IO {
     }
   }
 
+  /**
+   * @description lineNum start from 0
+   * */
   export async function mapLine<A>(f: (line: string, lineNum: number) => A): Promise<A[]> {
     return new Promise<A[]>((resolve, reject) => {
       try {
