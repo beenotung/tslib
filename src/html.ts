@@ -1,11 +1,19 @@
 export let dateFormatter = (x: Date) => x.toString();
 
+export function setDateFormatter(f: (x: Date) => string) {
+  dateFormatter = f;
+}
+
+export function resetDateFormatter() {
+  dateFormatter = (x: Date) => x.toString();
+}
+
 export function setDateFormatLocale(lang: string, timezone: string) {
-  dateFormatter = x => x.toLocaleDateString(lang, {timeZone: timezone});
+  dateFormatter = x => x.toLocaleString(lang, {timeZone: timezone});
 }
 
 export function resetDateFormatLocale() {
-  dateFormatter = x => x.toString();
+  dateFormatter = x => x.toLocaleString();
 }
 
 export function toString(o: any): string {
@@ -39,7 +47,7 @@ export function displayJSON(o: any, mode: "raw" | "table" = "table"): string {
         return "<ul>" + (o as any[]).map(x => "<li>" + displayJSON(x, mode) + "</li>").join("") + "</ul>";
       }
       if (o instanceof Date) {
-        return o.toString();
+        return toString(o);
       }
       if (o == null) {
         return "null";
