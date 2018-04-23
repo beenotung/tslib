@@ -10,7 +10,7 @@ export function is_hk_mobile_phone(x: number | string): boolean {
   }
   const s = x.toString();
   return s.length === 8
-    && ( s[0] === "6"
+    && (s[0] === "6"
       || s[0] === "9"
       || s[0] === "5"
     )
@@ -23,7 +23,10 @@ export function is_hk_mobile_phone(x: number | string): boolean {
  * @return +852xxxxyyyy if valid
  *         empty string if not valid
  * */
-export function to_full_hk_mobile_phone(s: string): string {
+export function to_full_hk_mobile_phone(s: string | number): string {
+  if (typeof s === "number") {
+    s = s.toString();
+  }
   s = string_to_chars(s)
     .filter(x => isNumber(x))
     .join("");
