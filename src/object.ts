@@ -66,7 +66,7 @@ export function removeNull(o) {
   if (typeof o == "object" && o != null) {
     o = Object.assign({}, o);
     for (const k of Object.keys(o)) {
-      let v = o[k];
+      const v = o[k];
       if (v === null || v === undefined || v === "") {
         delete o[k];
       }
