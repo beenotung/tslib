@@ -23,7 +23,7 @@ export function reduceMap<K, V, A>(map: Map<K, V>, mapper: (acc: A, v: V, k: K) 
   return acc;
 }
 
-export function mapFetOrSetDefault<K, V>(map: Map<K, V>, key: K, f: () => V): V {
+export function mapGetOrSetDefault<K, V>(map: Map<K, V>, key: K, f: () => V): V {
   if (map.has(key)) {
     return map.get(key);
   }

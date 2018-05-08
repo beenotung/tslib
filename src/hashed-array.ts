@@ -82,4 +82,10 @@ export class HashedArray<A> {
   set(key: PropertyKey, x: A) {
     return this.update(x, key);
   }
+
+  static from<A>(xs: A[]): HashedArray<A> {
+    const res = new HashedArray<A>();
+    xs.forEach(x => res.insert(x));
+    return res;
+  }
 }
