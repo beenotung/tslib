@@ -7,7 +7,11 @@
     "Library",
     "Utility"
   ],
-  "author": "Beeno Tung",
+  "author": {
+    "name": "Beeno Tung",
+    "email": "aabbcc1241@yahoo.com.hk",
+    "url": "https://beeno-tung.surge.sh"
+  },
   "license": "BSD-3-Clause",
   "repository": {
     "type": "git",
