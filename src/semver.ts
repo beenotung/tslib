@@ -1,4 +1,5 @@
 import {isNumber} from "./lang";
+import {enum_only_string} from "./enum";
 
 export function to_semver(s: string): number[] {
   const res = s.split(".").map(x => +x);
@@ -29,6 +30,8 @@ export function is_compatible(base: number[], compare: number[]) {
 export enum SemverDiffType {
   breaking, compatible, same, newer
 }
+
+enum_only_string(SemverDiffType);
 
 export function getSemverDiffType(base: number[], compare: number[]): SemverDiffType {
   return base.join(".") === compare.join(".") ? SemverDiffType.same
