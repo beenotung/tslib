@@ -1,6 +1,10 @@
 import {isDefined} from "./lang";
 import {clearArray, removeBy} from "./array";
 
+/**
+ * <A> must be object.
+ * For string, number e.t.c use Set instead
+ * */
 export class HashedArray<A> {
   mapper: (a: A) => PropertyKey;
   array: A[];
