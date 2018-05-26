@@ -27,7 +27,7 @@ export type writeOptions =
 
 export function writeFile(filename: string,
                           data,
-                          options: writeOptions): Promise<any> {
+                          options?: writeOptions): Promise<any> {
   return new Promise((resolve, reject) => {
     fs.writeFile(filename, data, options, err => {
       err ? reject(err) : resolve();
