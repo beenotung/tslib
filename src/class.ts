@@ -9,9 +9,9 @@ import {Obj, Type} from "./lang";
  * @return original object
  * */
 /* tslint:disable:ban-types */
-export function bindMethods<A extends Obj<Function | any>>(o: A): A {
+export function bindMethods<A extends Obj<Function | any>> (o: A): A {
   Object.keys(o)
-    .forEach(x => {
+    .forEach((x) => {
       const f = o[x];
       if (typeof f === "function") {
         o[x] = f.bind(o);
@@ -24,6 +24,6 @@ export function bindMethods<A extends Obj<Function | any>>(o: A): A {
 /**
  * cast object to class with class methods
  * */
-export function withMethod<A>(c: Type<A>, o: A): A {
+export function withMethod<A> (c: Type<A>, o: A): A {
   return Object.assign(new c(), o);
 }

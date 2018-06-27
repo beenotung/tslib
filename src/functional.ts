@@ -2,8 +2,8 @@
  * Created by beenotung on 12/26/16.
  */
 
-import {Obj, ObjKey} from "./lang";
 import {curry, id} from "./curry";
+import {Obj, ObjKey} from "./lang";
 import {CurryF1, CurryF2, F1, F2} from "./typestub-curry";
 
 export declare type Consumer<A> = (a: A) => void;
@@ -59,8 +59,8 @@ export const liftError_noarg = curry(<E extends Error, A>(e: E) => (): A => {
   throw e;
 });
 export const compose2 = compose(compose, compose);
-export const odd = curry((x: number) => x % 2 == 1);
-export const even = curry((x: number) => x % 2 == 0);
+export const odd = curry((x: number) => x % 2 === 1);
+export const even = curry((x: number) => x % 2 === 0);
 export const countWhere = curry(compose2(length, filter));
 /**
  * @remark side effect
@@ -144,9 +144,11 @@ export const mult = defineSymbolF("*", (a: number, b: number): number => b * a);
 defineSymbolF("/", (a: number, b: number): number => b / a);
 export const rem = defineSymbolF("%", (a: number, b: number): number => b % a);
 export const div = curry((a: number, b: number): number => Math.floor(b / a));
+/* tslint:disable no-bitwise */
 export const quot = curry((a: number, b: number): number => (b / a) | 0);
 /** faster */
 export const quotMod = curry((a: number, b: number): [number, number] => [(b / a) | 0, b % a]);
+/* tslint:enable no-bitwise */
 /* slower */
 export const divMod = curry((a: number, b: number): [number, number] => {
   const d = Math.floor((b / a));
@@ -183,7 +185,7 @@ export const doAll = curry(<A>(f: Consumer<A>, args: A[]) => {
 /**
  * flatten the iterators as a single array
  * */
-export function iteratorsToArray<A>(itrs: Array<IterableIterator<A>>): A[] {
+export function iteratorsToArray<A> (itrs: Array<IterableIterator<A>>): A[] {
   const xs = [] as A[];
   for (const itr of itrs) {
     xs.push(...Array.from(itr));
@@ -196,9 +198,9 @@ export const concatWithoutDup = curry(<A>(as: A[], bs: A[]): A[] => {
   doAll(
     (as: A[]) => doAll(
       (a: A) => acc.add(a)
-      , as
+      , as,
     )
-    , [as, bs]
+    , [as, bs],
   );
   return iteratorsToArray<A>([acc.values()]);
 });
@@ -235,7 +237,7 @@ export const foldl = curry(<A, B>(f: F2<B, A, B>, acc: B, xs: A[]): B => {
 });
 export const foldl1 = curry(<A>(f: F2<A, A, A>, xs: A[]): A => {
   const n = xs.length;
-  if (n == 0) {
+  if (n === 0) {
     throw new TypeError("xs should be non-empty ArrayLike<*>");
   }
   let acc = xs[0];
@@ -302,5 +304,5 @@ export const update = curry(<A>(f: Consumer<A>, as: A[]) => {
 });
 
 export const map2 = curry(<A, B>(f: (a: A) => B, xss: A[][]): B[][] => {
-  return xss.map(xs => xs.map(f));
+  return xss.map((xs) => xs.map(f));
 });

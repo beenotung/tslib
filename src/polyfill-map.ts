@@ -2,21 +2,21 @@ import {clearArray, removeByIdx} from "./array";
 import {getWindowOrGlobal} from "./runtime";
 
 export class PolyfillMap<K, V> implements Map <K, V> {
-  [Symbol.toStringTag];
+  public [Symbol.toStringTag];
 
-  ks: K[] = [];
-  vs: V[] = [];
+  public ks: K[] = [];
+  public vs: V[] = [];
 
-  get size(): number {
+  get size (): number {
     return this.ks.length;
   }
 
-  clear(): void {
+  public clear (): void {
     clearArray(this.ks);
     clearArray(this.vs);
   }
 
-  delete(key: K): boolean {
+  public delete (key: K): boolean {
     const idx = this.getIndex(key);
     if (idx === -1) {
       return false;
@@ -26,7 +26,7 @@ export class PolyfillMap<K, V> implements Map <K, V> {
     return true;
   }
 
-  forEach(callbackfn: (value: V, key: K, map: Map<K, V>) => void, thisArg?: PolyfillMap<K, V>): void {
+  public forEach (callbackfn: (value: V, key: K, map: Map<K, V>) => void, thisArg?: PolyfillMap<K, V>): void {
     if (arguments.length <= 1) {
       thisArg = this;
     }
@@ -35,16 +35,16 @@ export class PolyfillMap<K, V> implements Map <K, V> {
     }
   }
 
-  get(key: K): V | undefined {
+  public get (key: K): V | undefined {
     const idx = this.getIndex(key);
     return idx === -1 ? undefined : this.vs[idx];
   }
 
-  has(key: K): boolean {
+  public has (key: K): boolean {
     return this.getIndex(key) !== -1;
   }
 
-  set(key: K, value: V): this {
+  public set (key: K, value: V): this {
     let idx = this.getIndex(key);
     // const res = idx === -1 ? undefined : this.vs[idx];
     if (idx === -1) {
@@ -55,7 +55,7 @@ export class PolyfillMap<K, V> implements Map <K, V> {
     return this;
   }
 
-  [Symbol.iterator](): IterableIterator<[K, V]> {
+  public [Symbol.iterator] (): IterableIterator<[K, V]> {
     let idx = 0;
 
     return {
@@ -68,33 +68,33 @@ export class PolyfillMap<K, V> implements Map <K, V> {
         }
         return {done: true, value: undefined};
       }
-      , [Symbol.iterator]() {
+      , [Symbol.iterator] () {
         return this;
-      }
+      },
     };
   }
 
-  entries(): IterableIterator<[K, V]> {
+  public entries (): IterableIterator<[K, V]> {
     return this[Symbol.iterator]();
   }
 
-  keys(): IterableIterator<K> {
+  public keys (): IterableIterator<K> {
     return this.ks[Symbol.iterator]();
   }
 
-  values(): IterableIterator<V> {
+  public values (): IterableIterator<V> {
     return this.vs[Symbol.iterator]();
   }
 
   /**
    * return -1 if not found
    * */
-  private getIndex(key: K): number {
+  private getIndex (key: K): number {
     return this.ks.indexOf(key);
   }
 }
 
-export function polyfillMap() {
+export function polyfillMap () {
   if (typeof Map === "function") {
     return;
   }

@@ -38,8 +38,8 @@ export const pipe = curry(<A, B>(ps: Array<PipeArg<A, B>>, acc: A): B => {
  *
  * echo :: (a->*) -> a -> a
  * */
-export function peek<A>(f: (a: A) => any): (a: A) => A {
-  return a => {
+export function peek<A> (f: (a: A) => any): (a: A) => A {
+  return (a) => {
     f(a);
     return a;
   };
@@ -49,21 +49,21 @@ export function peek<A>(f: (a: A) => any): (a: A) => A {
 export const echo = peek;
 
 export interface Chain<A> {
-  use(f: (a: A) => any): Chain<A>;
+  use (f: (a: A) => any): Chain<A>;
 
-  map<B>(f: (a: A) => B): Chain<B>;
+  map<B> (f: (a: A) => B): Chain<B>;
 
-  unwrap(): A;
+  unwrap (): A;
 }
 
-export function createChain<A>(a: A): Chain<A> {
+export function createChain<A> (a: A): Chain<A> {
   const res = {
-    use: f => {
+    use: (f) => {
       f(a);
       return res;
     }
-    , map: f => createChain(f(a))
-    , unwrap: () => a
+    , map: (f) => createChain(f(a))
+    , unwrap: () => a,
   };
   return res;
 }

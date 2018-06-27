@@ -1,22 +1,22 @@
 export let dateFormatter = (x: Date) => x.toString();
 
-export function setDateFormatter(f: (x: Date) => string) {
+export function setDateFormatter (f: (x: Date) => string) {
   dateFormatter = f;
 }
 
-export function resetDateFormatter() {
+export function resetDateFormatter () {
   dateFormatter = (x: Date) => x.toString();
 }
 
-export function setDateFormatLocale(lang: string, timezone: string) {
-  dateFormatter = x => x.toLocaleString(lang, {timeZone: timezone});
+export function setDateFormatLocale (lang: string, timezone: string) {
+  dateFormatter = (x) => x.toLocaleString(lang, {timeZone: timezone});
 }
 
-export function resetDateFormatLocale() {
-  dateFormatter = x => x.toLocaleString();
+export function resetDateFormatLocale () {
+  dateFormatter = (x) => x.toLocaleString();
 }
 
-export function toString(o: any): string {
+export function toString (o: any): string {
   switch (typeof o) {
     case "string":
       return o;
@@ -32,24 +32,24 @@ export function toString(o: any): string {
 
 const escape_space = "&nbsp;";
 
-export function displayJSON(o: any, mode: "raw" | "table" = "table"): string {
+export function displayJSON (o: any, mode: "raw" | "table" = "table"): string {
   if (mode === "raw") {
     return `<pre>${toString(o)}</pre>`;
   }
-  /* mode == 'table' */
+  /* mode === 'table' */
   switch (typeof o) {
     case "object":
       if (Array.isArray(o)) {
-        return "<ol>" + (o as any[]).map(x => "<li>" + displayJSON(x, mode) + "</li>").join("") + "</ol>";
+        return "<ol>" + (o as any[]).map((x) => "<li>" + displayJSON(x, mode) + "</li>").join("") + "</ol>";
       }
       if (o instanceof Set) {
         o = Array.from(o);
-        return "<ul>" + (o as any[]).map(x => "<li>" + displayJSON(x, mode) + "</li>").join("") + "</ul>";
+        return "<ul>" + (o as any[]).map((x) => "<li>" + displayJSON(x, mode) + "</li>").join("") + "</ul>";
       }
       if (o instanceof Date) {
         return toString(o);
       }
-      if (o == null) {
+      if (o === null) {
         return "null";
       }
       break;
@@ -66,7 +66,7 @@ export function displayJSON(o: any, mode: "raw" | "table" = "table"): string {
   }
   /* being object */
   const rows = Object.keys(o)
-    .map(k => {
+    .map((k) => {
       const v = o[k];
       return `<tr><td>${displayJSON(k, mode)}</td><td>${displayJSON(v, mode)}</td></tr>`;
     })

@@ -1,5 +1,5 @@
-import {memorize} from "./memorize";
 import {ArrayData, pop as _pop, wrapArray as _wrapArray, wrappedLast as _last} from "./array-wrapper";
+import {memorize} from "./memorize";
 
 // const last = memorize(_last);
 const last = _last;
@@ -10,10 +10,10 @@ const wrapArray = memorize(_wrapArray);
  * @description this can consume lot of memory, need to manually invoke edit_distance.clear() to free the caches
  * */
 export const edit_distance = memorize(<A>(s: ArrayData<A> | A[] | string, t: ArrayData<A> | A[] | string, loop?: boolean): number => {
-  if (s.length == 0) {
+  if (s.length === 0) {
     return t.length;
   }
-  if (t.length == 0) {
+  if (t.length === 0) {
     return s.length;
   }
   if (loop) {
@@ -24,16 +24,16 @@ export const edit_distance = memorize(<A>(s: ArrayData<A> | A[] | string, t: Arr
     t = typeof t === "string" || Array.isArray(t) ? wrapArray(t) : t;
   }
   return Math.min(
-    edit_distance(pop(s), pop(t), true) + (last(s) == last(t) ? 0 : 1)
+    edit_distance(pop(s), pop(t), true) + (last(s) === last(t) ? 0 : 1)
     , edit_distance(pop(s), t, true) + 1
-    , edit_distance(s, pop(t), true) + 1
+    , edit_distance(s, pop(t), true) + 1,
   );
 });
 
 const edit_distance_clear = edit_distance.clear.bind(edit_distance);
 edit_distance.clear = () => {
   if ("clear" in last) {
-    last["clear"]();
+    last.clear();
   }
   pop.clear();
   wrapArray.clear();

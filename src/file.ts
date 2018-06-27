@@ -3,7 +3,7 @@ import {mapI} from "./lang";
 
 export type BlobType = "image/png" | string;
 
-function createAsyncFileReader<A>(): [Defer<A, any>, FileReader] {
+function createAsyncFileReader<A> (): [Defer<A, any>, FileReader] {
   const defer = createDefer<A, any>();
   const reader = new FileReader();
   reader.onload = () => defer.resolve(reader.result);
@@ -11,33 +11,33 @@ function createAsyncFileReader<A>(): [Defer<A, any>, FileReader] {
   return [defer, reader];
 }
 
-export async function fileToBase64String(file: File): Promise<string> {
+export async function fileToBase64String (file: File): Promise<string> {
   const [defer, reader] = createAsyncFileReader<string>();
   reader.readAsDataURL(file);
   return defer.promise;
 }
 
-export async function fileToBinaryString(file: File): Promise<string> {
+export async function fileToBinaryString (file: File): Promise<string> {
   const [defer, reader] = createAsyncFileReader<string>();
   reader.readAsBinaryString(file);
   return defer.promise;
 }
 
-export async function fileToArray(file: File): Promise<number[]> {
+export async function fileToArray (file: File): Promise<number[]> {
   const s = await(fileToBinaryString(file));
-  return mapI(i => s.charCodeAt(i), s.length);
+  return mapI((i) => s.charCodeAt(i), s.length);
 }
 
-export async function fileToArrayBuffer(file: File) {
+export async function fileToArrayBuffer (file: File) {
   const [defer, reader] = createAsyncFileReader();
   reader.readAsArrayBuffer(file);
-  return defer.promise.then(res => {
+  return defer.promise.then((res) => {
     return res;
   });
 }
 
 /* reference: https://ausdemmaschinenraum.wordpress.com/2012/12/06/how-to-save-a-file-from-a-url-with-javascript/ */
-export async function saveFile(url: string, filename?: string) {
+export async function saveFile (url: string, filename?: string) {
   const defer = createDefer();
   if (!filename) {
     // Get file name from url.
@@ -54,7 +54,7 @@ export async function saveFile(url: string, filename?: string) {
     a.click();
     defer.resolve(true);
   };
-  xhr.onerror = e => defer.resolve(e);
+  xhr.onerror = (e) => defer.resolve(e);
   xhr.open("GET", url);
   xhr.send();
   return defer.promise;

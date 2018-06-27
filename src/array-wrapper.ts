@@ -21,7 +21,7 @@ export const wrapArray = <A>(s: string | A[]): ArrayData<A> => ({s, offset: 0, l
 export const pop = <A>(x: ArrayData<A>): ArrayData<A> => ({
   s: x.s,
   offset: x.offset,
-  length: x.length - 1 < 0 ? 0 : x.length - 1
+  length: x.length - 1 < 0 ? 0 : x.length - 1,
 });
 
 export const wrappedLast = <A>(x: ArrayData<A>): A => x.s[x.offset + x.length - 1] as A;

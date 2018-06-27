@@ -8,7 +8,7 @@ export class LazyList<A> extends Lazy<A> {
   private tail?: LazyList<A>;
   private mapper?: (x) => A;
 
-  constructor(value?: () => A, tail?: LazyList<A>, mapper?: (x) => A) {
+  constructor (value?: () => A, tail?: LazyList<A>, mapper?: (x) => A) {
     super(value);
     if (arguments.length === 0) {
       this.isHead = true;
@@ -17,20 +17,20 @@ export class LazyList<A> extends Lazy<A> {
     this.mapper = mapper;
   }
 
-  append(a: () => A): LazyList<A> {
+  public append (a: () => A): LazyList<A> {
     return new LazyList<A>(a, this, this.mapper);
   }
 
-  appendRaw(a: A): LazyList<A> {
+  public appendRaw (a: A): LazyList<A> {
     return this.append(() => a);
   }
 
-  appendAll(xs: A[]): LazyList<A> {
+  public appendAll (xs: A[]): LazyList<A> {
     return xs.reduce((acc, c) => acc.appendRaw(c), this);
   }
 
   /** @description non-lazy */
-  toArray(thisArg: LazyList<A> = this): A[] {
+  public toArray (thisArg: LazyList<A> = this): A[] {
     const xs: A[] = [];
     for (let c = thisArg; !c.isHead; c = c.tail) {
       if (c.mapper) {
@@ -43,9 +43,9 @@ export class LazyList<A> extends Lazy<A> {
   }
 
   /** @override */
-  map<B>(f: (a: A) => B): LazyList<B> {
+  public map<B> (f: (a: A) => B): LazyList<B> {
     if (this.mapper) {
-      return new LazyList<B>(() => this.value() as any, this.tail as any, a => f(this.mapper(a)));
+      return new LazyList<B>(() => this.value() as any, this.tail as any, (a) => f(this.mapper(a)));
     } else {
       return new LazyList<B>(() => this.value() as any, this.tail as any, f);
     }

@@ -17,16 +17,16 @@ export interface DataTableOption {
 const defaultOption: DataTableOption = {
   lengthOptions: [10, 25, 50, -1]
   , searchPlaceholder: "Search records"
-  , allText: "All"
+  , allText: "All",
 };
 
-export function initDatatable(e: HTMLTableElement, option?: DataTableOption) {
+export function initDatatable (e: HTMLTableElement, option?: DataTableOption) {
   option = Object.assign({}, defaultOption, option);
   $(e).DataTable({
     pagingType: "full_numbers"
     , lengthMenu: [
       option.lengthOptions
-      , option.lengthOptions.map(x => {
+      , option.lengthOptions.map((x) => {
         if (x !== -1) {
           return x;
         } else {
@@ -36,7 +36,7 @@ export function initDatatable(e: HTMLTableElement, option?: DataTableOption) {
     , responsive: true
     , language: {
       search: "_INPUT_"
-      , searchPlaceholder: option.searchPlaceholder
-    }
+      , searchPlaceholder: option.searchPlaceholder,
+    },
   });
 }

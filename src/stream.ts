@@ -3,7 +3,7 @@ import * as event_stream from "event-stream";
 /**
  * @description lineNum start from 0
  * */
-export function readStreamByLine(stream: NodeJS.ReadableStream
+export function readStreamByLine (stream: NodeJS.ReadableStream
   , onLine: (line: string, lineNum: number) => void
   , onError: (e: Error) => void
   , onComplete: () => void) {

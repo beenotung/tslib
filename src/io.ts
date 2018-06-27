@@ -1,7 +1,7 @@
 import {createInterface, ReadLine, ReadLineOptions} from "readline";
 import {createLazy} from "./lazy";
 
-export function createRL(options: ReadLineOptions = {input: process.stdin}): ReadLine {
+export function createRL (options: ReadLineOptions = {input: process.stdin}): ReadLine {
   return createInterface(options);
 }
 
@@ -18,7 +18,7 @@ export let rl: ReadLine;
         Object.assign(target, getRL());
       }
       return target[p];
-    }
+    },
   });
 }
 
@@ -26,10 +26,10 @@ export namespace IO {
   /**
    * @description lineNum start from 0
    * */
-  export function forEachLine(onnext: (line: string, lineNum: number) => void, oncomplete?: () => void) {
+  export function forEachLine (onnext: (line: string, lineNum: number) => void, oncomplete?: () => void) {
     const rl = getRL();
     let lineNum = -1;
-    rl.on("line", line => {
+    rl.on("line", (line) => {
       lineNum++;
       if (line) {
         onnext(line, lineNum);
@@ -43,7 +43,7 @@ export namespace IO {
   /**
    * @description lineNum start from 0
    * */
-  export async function mapLine<A>(f: (line: string, lineNum: number) => A): Promise<A[]> {
+  export async function mapLine<A> (f: (line: string, lineNum: number) => A): Promise<A[]> {
     return new Promise<A[]>((resolve, reject) => {
       try {
         const res = [];
@@ -54,7 +54,7 @@ export namespace IO {
     });
   }
 
-  export async function collect(): Promise<string[]> {
-    return mapLine(x => x);
+  export async function collect (): Promise<string[]> {
+    return mapLine((x) => x);
   }
 }

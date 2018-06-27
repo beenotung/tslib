@@ -11,7 +11,7 @@ export namespace CompareResult {
 }
 export type CompareResult = CompareResult.Smaller | CompareResult.Equal | CompareResult.Larger;
 
-export function compare_number(a: number, b: number): CompareResult {
+export function compare_number (a: number, b: number): CompareResult {
   return a === b
     ? CompareResult.Equal
     : a < b

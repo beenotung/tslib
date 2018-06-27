@@ -3,23 +3,22 @@
     "tslint:recommended"
   ],
   "rulesDirectory": [
-    "node_modules/codelyzer",
     "node_modules/tslint-eslint-rules/dist/rules"
   ],
   "rules": {
-    "no-reference": false,
+    "no-reference": true,
     "only-arrow-functions": false,
     "max-classes-per-file": [
-      false
+      true
     ],
     "no-namespace": false,
     "align": [
       true,
       "statements"
     ],
-    "arrow-parens": false,
+    "arrow-parens": true,
     "jsdoc-format": false,
-    "space-before-function-paren": false,
+    "space-before-function-paren": true,
     "no-invalid-this": true,
     "callable-types": true,
     "class-name": true,
@@ -39,13 +38,13 @@
       true,
       "spaces"
     ],
-    "interface-over-type-literal": false,
+    "interface-over-type-literal": true,
     "label-position": true,
     "max-line-length": [
       true,
       140
     ],
-    "member-access": false,
+    "member-access": true,
     "member-ordering": [
       true,
       {
@@ -55,9 +54,9 @@
       "variables-before-functions"
     ],
     "no-arg": true,
-    "no-bitwise": false,
+    "no-bitwise": true,
     "no-console": [
-      false,
+      true,
       "debug",
       "info",
       "time",
@@ -65,17 +64,17 @@
       "trace"
     ],
     "no-construct": true,
-    "no-debugger": false,
+    "no-debugger": true,
     "no-duplicate-variable": true,
     "no-unused-variable": [
       true
     ],
-    "no-empty": false,
+    "no-empty": true,
     "no-empty-interface": true,
     "no-eval": true,
-    "no-inferrable-types": false,
+    "no-inferrable-types": true,
     "no-shadowed-variable": false,
-    "no-string-literal": false,
+    "no-string-literal": true,
     "no-string-throw": true,
     "no-switch-case-fall-through": true,
     "no-trailing-whitespace": true,
@@ -94,7 +93,7 @@
     ],
     "prefer-const": true,
     "quotemark": [
-      false,
+      true,
       "double",
       "avoid-escape"
     ],
@@ -104,7 +103,7 @@
       "always",
       "ignore-interfaces"
     ],
-    "triple-equals": false,
+    "triple-equals": true,
     "typedef-whitespace": [
       true,
       {
@@ -125,37 +124,10 @@
       "check-separator",
       "check-type"
     ],
-    "directive-selector": [
-      true,
-      "attribute",
-      "",
-      "camelCase"
-    ],
-    "component-selector": [
-      true,
-      "element",
-      "",
-      "kebab-case"
-    ],
-    "use-input-property-decorator": true,
-    "use-output-property-decorator": true,
-    "use-host-property-decorator": true,
-    "no-input-rename": true,
-    "no-output-rename": true,
-    "use-life-cycle-interface": true,
-    "use-pipe-transform-interface": true,
-    "component-class-suffix": false,
-    "directive-class-suffix": true,
     "interface-name": false,
-    "no-attribute-parameter-decorator": true,
-    "no-forward-ref": false,
-    "ordered-imports": false,
-    "pipe-naming": [
-      true,
-      "camelCase"
-    ],
+    "ordered-imports": true,
     "trailing-comma": [
-      false,
+      true,
       {
         "multiline": "always",
         "singleline": "never"

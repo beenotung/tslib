@@ -4,64 +4,68 @@
 export class Lazy<A> {
   private f: () => A;
 
-  constructor(f: () => A) {
+  constructor (f: () => A) {
     this.f = f;
   }
 
-  value(): A {
+  public value (): A {
     const res = this.f();
     delete this.f;
     this.value = () => res;
     return res;
   }
 
-  map<B>(f: (a: A) => B): Lazy<B> {
+  public map<B> (f: (a: A) => B): Lazy<B> {
     return new Lazy<B>(() => f(this.value()));
   }
 
-  add(b) {
-    return this.map(a => a + b);
+  public add (b) {
+    return this.map((a) => a + b);
   }
 
-  minus(b) {
-    return this.map(a => a as any - b);
+  public minus (b) {
+    return this.map((a) => a as any - b);
   }
 
-  mult(b) {
-    return this.map(a => a as any * b);
+  public mult (b) {
+    return this.map((a) => a as any * b);
   }
 
-  rem(b) {
-    return this.map(a => a as any % b);
+  public rem (b) {
+    return this.map((a) => a as any % b);
   }
 
-  div(b) {
-    return this.map(a => a as any / b);
+  public div (b) {
+    return this.map((a) => a as any / b);
   }
 
-  quot(b) {
-    return this.map(a => (a as any / b) | 0);
+  public quot (b) {
+    /* tslint:disable no-bitwise */
+    return this.map((a) => (a as any / b) | 0);
+    /* tslint:enable no-bitwise */
   }
 
-  quotRem(b) {
+  public quotRem (b) {
     return this.map((a: any) => {
+    /* tslint:disable no-bitwise */
       return [(a / b) | 0, a % b];
+    /* tslint:enable no-bitwise */
     });
   }
 
-  and(b) {
-    return this.map(a => a && b);
+  public and (b) {
+    return this.map((a) => a && b);
   }
 
-  or(b) {
-    return this.map(a => a || b);
+  public or (b) {
+    return this.map((a) => a || b);
   }
 
-  not() {
-    return this.map(a => !a);
+  public not () {
+    return this.map((a) => !a);
   }
 
-  notnot() {
-    return this.map(a => !!a);
+  public notnot () {
+    return this.map((a) => !!a);
   }
 }

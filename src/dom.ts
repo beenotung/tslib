@@ -1,9 +1,9 @@
-export function removeNode(node: Node) {
+export function removeNode (node: Node) {
   if (!node) {
     return;
   }
-  if (typeof node["remove"] === "function") {
-    return node["remove"]();
+  if (typeof node.remove === "function") {
+    return node.remove();
   }
   return node.parentNode.removeChild(node);
 }
@@ -11,14 +11,14 @@ export function removeNode(node: Node) {
 /**
  * auto remove, then append to {parent}
  * */
-export function appendNode(node: Node, parent: Node) {
+export function appendNode (node: Node, parent: Node) {
   if (node.parentNode) {
     node.parentNode.removeChild(node);
   }
   parent.appendChild(node);
 }
 
-export function setFullscreen(element = document.body) {
+export function setFullscreen (element = document.body) {
   if (element.requestFullscreen) {
     element.requestFullscreen();
   } else if (element.webkitRequestFullscreen) {
@@ -28,7 +28,7 @@ export function setFullscreen(element = document.body) {
   }
 }
 
-export function exitFullscreen() {
+export function exitFullscreen () {
   if (document.webkitExitFullscreen) {
     document.webkitExitFullscreen();
   } else if (document.exitFullscreen) {
@@ -39,7 +39,7 @@ export function exitFullscreen() {
 }
 
 /** @deprecated */
-export function htmlCollectionToArray(es: HTMLCollection): Element[] {
+export function htmlCollectionToArray (es: HTMLCollection): Element[] {
   return Array.from(es);
 }
 

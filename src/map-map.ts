@@ -11,7 +11,7 @@ import {PolyfillMap} from "./polyfill-map";
 export class MapMap<K, V> {
   private m: Map<K, V>;
 
-  constructor() {
+  constructor () {
     if (typeof Map === "function") {
       this.m = new Map();
     } else {
@@ -19,19 +19,19 @@ export class MapMap<K, V> {
     }
   }
 
-  has(k: K): boolean {
+  public has (k: K): boolean {
     return this.m.has(k);
   }
 
-  get(k: K): V {
+  public get (k: K): V {
     return this.m.get(k);
   }
 
-  set(k: K, v: V) {
+  public set (k: K, v: V) {
     return this.m.set(k, v);
   }
 
-  getMap(k: K): V & MapMap<any, any> {
+  public getMap (k: K): V & MapMap<any, any> {
     if (this.m.has(k)) {
       return this.m.get(k) as any;
     }
@@ -40,7 +40,7 @@ export class MapMap<K, V> {
     return res as any;
   }
 
-  clear() {
+  public clear () {
     this.m.clear();
   }
 }
@@ -51,19 +51,19 @@ export class MapMap<K, V> {
 export class SimpleMapMap<K extends PropertyKey, V> {
   private o: { [k: string ]: V } = {};
 
-  has(k: K): boolean {
+  public has (k: K): boolean {
     return k in this.o;
   }
 
-  get(k: K): V {
+  public get (k: K): V {
     return this.o[k as PropertyKey];
   }
 
-  set(k: K, v: V) {
+  public set (k: K, v: V) {
     this.o[k as PropertyKey] = v;
   }
 
-  getMap(k: K): V {
+  public getMap (k: K): V {
     if (k in this.o) {
       return this.o[k as PropertyKey];
     }
@@ -72,7 +72,7 @@ export class SimpleMapMap<K extends PropertyKey, V> {
     return res as any as V;
   }
 
-  clear() {
+  public clear () {
     this.o = {};
   }
 }

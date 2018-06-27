@@ -7,22 +7,22 @@ export interface Either<L, R> {
   isLeft: boolean;
   isRight: boolean;
 
-  getLeft(): L;
+  getLeft (): L;
 
-  getRight(): R;
+  getRight (): R;
 
-  mmap<L2, R2>(fl: (l: L) => L2, fr: (r: R) => R2): Either<L2, R2>;
+  mmap<L2, R2> (fl: (l: L) => L2, fr: (r: R) => R2): Either<L2, R2>;
 
-  mapLeft<L2>(f: (l: L) => L2): Either<L2, R>;
+  mapLeft<L2> (f: (l: L) => L2): Either<L2, R>;
 
-  mapRight<R2>(f: (r: R) => R2): Either<L, R2>;
+  mapRight<R2> (f: (r: R) => R2): Either<L, R2>;
 
-  bindLeft<L2>(f: (l: L) => Either<L2, R>): Either<L2, R>;
+  bindLeft<L2> (f: (l: L) => Either<L2, R>): Either<L2, R>;
 
-  bindRight<R2>(f: (r: R) => Either<L, R2>): Either<L, R2>;
+  bindRight<R2> (f: (r: R) => Either<L, R2>): Either<L, R2>;
 }
 
-export function right<L, R>(r: R): Either<L, R> {
+export function right<L, R> (r: R): Either<L, R> {
   const res: Either<L, R> = {
     isLeft: false
     , isRight: true
@@ -34,12 +34,12 @@ export function right<L, R>(r: R): Either<L, R> {
     , mapLeft: <L2>(f: (L: L) => L2) => res as Either<any, R>
     , mapRight: <R2>(f: (r: R) => R2): Either<L, R2> => right<L, R2>(f(r))
     , bindLeft: <L2>(f: (l: L) => Either<L2, R>) => res as Either<any, R>
-    , bindRight: <R2>(f: (r: R) => Either<L, R2>) => f(r)
+    , bindRight: <R2>(f: (r: R) => Either<L, R2>) => f(r),
   };
   return res;
 }
 
-export function left<L, R>(l: L): Either<L, R> {
+export function left<L, R> (l: L): Either<L, R> {
   const res: Either<L, R> = {
     isLeft: true
     , isRight: false
@@ -51,13 +51,13 @@ export function left<L, R>(l: L): Either<L, R> {
     , mapLeft: <L2>(f: (l: L) => L2) => left<L2, R>(f(l))
     , mapRight: <R2>(f: (r: R) => R2) => res as Either<L, any> as Either<L, R2>
     , bindLeft: <L2>(f: (l: L) => Either<L2, R>) => f(l)
-    , bindRight: <R2>(f: (r: R) => Either<L, R2>) => res as Either<L, any>
+    , bindRight: <R2>(f: (r: R) => Either<L, R2>) => res as Either<L, any>,
   };
   return res;
 }
 
 export namespace Either {
-  export function get<A>(either: Either<A, A>): A {
+  export function get<A> (either: Either<A, A>): A {
     return either.isLeft ? either.getLeft() : either.getRight();
   }
 }

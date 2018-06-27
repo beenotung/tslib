@@ -1,6 +1,6 @@
 import {createDefer} from "./defer";
 
-export async function tryFAsync<A>(f: () => A): Promise<A> {
+export async function tryFAsync<A> (f: () => A): Promise<A> {
   try {
     return f();
   } catch (e) {
@@ -8,7 +8,7 @@ export async function tryFAsync<A>(f: () => A): Promise<A> {
   }
 }
 
-export async function autoRetryAsync<A>(f: () => Promise<A>, retry_delay = 1000): Promise<A> {
+export async function autoRetryAsync<A> (f: () => Promise<A>, retry_delay = 1000): Promise<A> {
   try {
     return await f();
   } catch (e) {

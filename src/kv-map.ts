@@ -2,14 +2,14 @@
  * A Map that can do normal and reversed operations
  * */
 export class KVMap<K, V> implements Map<K, V> {
-  [Symbol.toStringTag];
-  deleteKey = this.delete;
-  getValue = this.get;
-  hasKey = this.has;
+  public [Symbol.toStringTag];
+  public deleteKey = this.delete;
+  public getValue = this.get;
+  public hasKey = this.has;
   private kvs = new Map<K, V>();
   private vks = new Map<V, K>();
 
-  constructor(entries?: Array<[K, V]>) {
+  constructor (entries?: Array<[K, V]>) {
     if (entries) {
       for (const [k, v] of entries) {
         this.set(k, v);
@@ -17,16 +17,16 @@ export class KVMap<K, V> implements Map<K, V> {
     }
   }
 
-  get size(): number {
+  get size (): number {
     return this.kvs.size;
   }
 
-  clear(): void {
+  public clear (): void {
     this.kvs.clear();
     this.vks.clear();
   }
 
-  delete(key: K): boolean {
+  public delete (key: K): boolean {
     if (this.kvs.has(key)) {
       this.vks.delete(this.kvs.get(key));
       this.kvs.delete(key);
@@ -35,7 +35,7 @@ export class KVMap<K, V> implements Map<K, V> {
     return false;
   }
 
-  deleteValue(value: V): boolean {
+  public deleteValue (value: V): boolean {
     if (this.vks.has(value)) {
       this.kvs.delete(this.vks.get(value));
       this.vks.delete(value);
@@ -44,59 +44,59 @@ export class KVMap<K, V> implements Map<K, V> {
     return false;
   }
 
-  forEach(callbackfn: (value: V, key: K, map: Map<K, V>) => void, thisArg?: any): void {
+  public forEach (callbackfn: (value: V, key: K, map: Map<K, V>) => void, thisArg?: any): void {
     this.kvs.forEach(callbackfn, this);
   }
 
-  get(key: K): V | undefined {
+  public get (key: K): V | undefined {
     return this.kvs.get(key);
   }
 
-  getKey(value: V): K | undefined {
+  public getKey (value: V): K | undefined {
     return this.vks.get(value);
   }
 
-  has(key: K): boolean {
+  public has (key: K): boolean {
     return this.kvs.has(key);
   }
 
-  hasValue(value: V): boolean {
+  public hasValue (value: V): boolean {
     return this.vks.has(value);
   }
 
-  set(key: K, value: V): this {
+  public set (key: K, value: V): this {
     this.kvs.set(key, value);
     this.vks.set(value, key);
     return this;
   }
 
-  [Symbol.iterator](): IterableIterator<[K, V]> {
+  public [Symbol.iterator] (): IterableIterator<[K, V]> {
     return this.kvs[Symbol.iterator]();
   }
 
-  entries(): IterableIterator<[K, V]> {
+  public entries (): IterableIterator<[K, V]> {
     return this.kvs.entries();
   }
 
-  keys(): IterableIterator<K> {
+  public keys (): IterableIterator<K> {
     return this.kvs.keys();
   }
 
-  values(): IterableIterator<V> {
+  public values (): IterableIterator<V> {
     return this.kvs.values();
   }
 
-  toKVMap(): Map<K, V> {
+  public toKVMap (): Map<K, V> {
     return this.kvs;
   }
 
-  toVKMap(): Map<V, K> {
+  public toVKMap (): Map<V, K> {
     return this.vks;
   }
 }
 
 export namespace KVMap {
-  export function fromMap<K, V>(map: Map<K, V>) {
+  export function fromMap<K, V> (map: Map<K, V>) {
     const res = new KVMap<K, V>();
     map.forEach((value, key) => {
       res.set(key, value);

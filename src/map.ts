@@ -1,4 +1,4 @@
-export function collectMap<K, V, A>(map: Map<K, V>, mapper: (v: V, k: K) => A): Map<A, V[]> {
+export function collectMap<K, V, A> (map: Map<K, V>, mapper: (v: V, k: K) => A): Map<A, V[]> {
   const res = new Map<A, V[]>();
   map.forEach((value, key) => {
     const a = mapper(value, key);
@@ -15,7 +15,7 @@ export function collectMap<K, V, A>(map: Map<K, V>, mapper: (v: V, k: K) => A): 
 /**@deprecated renamed to collectMap */
 export const mapMap = collectMap;
 
-export function reduceMap<K, V, A>(map: Map<K, V>, mapper: (acc: A, v: V, k: K) => A, initial: A): A {
+export function reduceMap<K, V, A> (map: Map<K, V>, mapper: (acc: A, v: V, k: K) => A, initial: A): A {
   let acc = initial;
   map.forEach((value, key) => {
     acc = mapper(acc, value, key);
@@ -23,7 +23,7 @@ export function reduceMap<K, V, A>(map: Map<K, V>, mapper: (acc: A, v: V, k: K) 
   return acc;
 }
 
-export function mapGetOrSetDefault<K, V>(map: Map<K, V>, key: K, f: () => V): V {
+export function mapGetOrSetDefault<K, V> (map: Map<K, V>, key: K, f: () => V): V {
   if (map.has(key)) {
     return map.get(key);
   }

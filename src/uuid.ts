@@ -1,7 +1,7 @@
 /**
  * https://en.wikipedia.org/wiki/Universally_unique_identifier
  */
-export function is_uuid(s: string): boolean {
+export function is_uuid (s: string): boolean {
   const ss = s.split("-");
   return ss.length === 5
     && ss[0].length === 8
@@ -13,12 +13,12 @@ export function is_uuid(s: string): boolean {
 }
 
 export interface Counter {
-  next(): number;
+  next (): number;
 }
 
-export function new_counter(init = 0): Counter {
+export function new_counter (init = 0): Counter {
   return {
-    next: () => ++init
+    next: () => ++init,
   };
 }
 

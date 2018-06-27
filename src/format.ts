@@ -10,10 +10,10 @@ const size_units = [
   , "PB"
   , "EB"
   , "ZB"
-  , "YB"
+  , "YB",
 ];
 
-export function format_byte(n_byte: number, n_decimal = 2): string {
+export function format_byte (n_byte: number, n_decimal = 2): string {
   let acc = n_byte;
   for (const size_unit of size_units) {
     if (acc < 1024) {

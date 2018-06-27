@@ -17,7 +17,7 @@ export type F12<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, R> = (t1: T1,
 
 /* CurryF<> */
 export interface CurryF1<T1, R> extends Function {
-  apply(thisArg: any, argArray: [T1]): R;
+  apply (thisArg: any, argArray: [T1]): R;
 
   (): CurryF1<T1, R>;
 
@@ -25,7 +25,7 @@ export interface CurryF1<T1, R> extends Function {
 }
 
 export interface CurryF2<T1, T2, R> extends Function {
-  apply(thisArg: any, argArray: [T1, T2]): R;
+  apply (thisArg: any, argArray: [T1, T2]): R;
 
   (): CurryF2<T1, T2, R>;
 
@@ -35,7 +35,7 @@ export interface CurryF2<T1, T2, R> extends Function {
 }
 
 export interface CurryF3<T1, T2, T3, R> extends Function {
-  apply(thisArg: any, argArray: [T1, T2, T3]): R;
+  apply (thisArg: any, argArray: [T1, T2, T3]): R;
 
   (): CurryF3<T1, T2, T3, R>;
 
@@ -47,7 +47,7 @@ export interface CurryF3<T1, T2, T3, R> extends Function {
 }
 
 export interface CurryF4<T1, T2, T3, T4, R> extends Function {
-  apply(thisArg: any, argArray: [T1, T2, T3, T4]): R;
+  apply (thisArg: any, argArray: [T1, T2, T3, T4]): R;
 
   (): CurryF4<T1, T2, T3, T4, R>;
 
@@ -61,7 +61,7 @@ export interface CurryF4<T1, T2, T3, T4, R> extends Function {
 }
 
 export interface CurryF5<T1, T2, T3, T4, T5, R> extends Function {
-  apply(thisArg: any, argArray: [T1, T2, T3, T4, T5]): R;
+  apply (thisArg: any, argArray: [T1, T2, T3, T4, T5]): R;
 
   (): CurryF5<T1, T2, T3, T4, T5, R>;
 
@@ -77,7 +77,7 @@ export interface CurryF5<T1, T2, T3, T4, T5, R> extends Function {
 }
 
 export interface CurryF6<T1, T2, T3, T4, T5, T6, R> extends Function {
-  apply(thisArg: any, argArray: [T1, T2, T3, T4, T5, T6]): R;
+  apply (thisArg: any, argArray: [T1, T2, T3, T4, T5, T6]): R;
 
   (): CurryF6<T1, T2, T3, T4, T5, T6, R>;
 
@@ -95,7 +95,7 @@ export interface CurryF6<T1, T2, T3, T4, T5, T6, R> extends Function {
 }
 
 export interface CurryF7<T1, T2, T3, T4, T5, T6, T7, R> extends Function {
-  apply(thisArg: any, argArray: [T1, T2, T3, T4, T5, T6, T7]): R;
+  apply (thisArg: any, argArray: [T1, T2, T3, T4, T5, T6, T7]): R;
 
   (): CurryF7<T1, T2, T3, T4, T5, T6, T7, R>;
 
@@ -115,7 +115,7 @@ export interface CurryF7<T1, T2, T3, T4, T5, T6, T7, R> extends Function {
 }
 
 export interface CurryF8<T1, T2, T3, T4, T5, T6, T7, T8, R> extends Function {
-  apply(thisArg: any, argArray: [T1, T2, T3, T4, T5, T6, T7, T8]): R;
+  apply (thisArg: any, argArray: [T1, T2, T3, T4, T5, T6, T7, T8]): R;
 
   (): CurryF8<T1, T2, T3, T4, T5, T6, T7, T8, R>;
 
@@ -137,7 +137,7 @@ export interface CurryF8<T1, T2, T3, T4, T5, T6, T7, T8, R> extends Function {
 }
 
 export interface CurryF9<T1, T2, T3, T4, T5, T6, T7, T8, T9, R> extends Function {
-  apply(thisArg: any, argArray: [T1, T2, T3, T4, T5, T6, T7, T8, T9]): R;
+  apply (thisArg: any, argArray: [T1, T2, T3, T4, T5, T6, T7, T8, T9]): R;
 
   (): CurryF9<T1, T2, T3, T4, T5, T6, T7, T8, T9, R>;
 
@@ -161,7 +161,7 @@ export interface CurryF9<T1, T2, T3, T4, T5, T6, T7, T8, T9, R> extends Function
 }
 
 export interface CurryF10<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, R> extends Function {
-  apply(thisArg: any, argArray: [T1, T2, T3, T4, T5, T6, T7, T8, T9, T10]): R;
+  apply (thisArg: any, argArray: [T1, T2, T3, T4, T5, T6, T7, T8, T9, T10]): R;
 
   (): CurryF10<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, R>;
 
@@ -187,7 +187,7 @@ export interface CurryF10<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, R> extends Fu
 }
 
 export interface CurryF11<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, R> extends Function {
-  apply(thisArg: any, argArray: [T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11]): R;
+  apply (thisArg: any, argArray: [T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11]): R;
 
   (): CurryF11<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, R>;
 
@@ -215,7 +215,7 @@ export interface CurryF11<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, R> exten
 }
 
 export interface CurryF12<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, R> extends Function {
-  apply(thisArg: any, argArray: [T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12]): R;
+  apply (thisArg: any, argArray: [T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12]): R;
 
   (): CurryF12<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, R>;
 
@@ -245,18 +245,18 @@ export interface CurryF12<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, R> 
 }
 
 /* curry() annotation */
-declare function curry<T1, R>(f1: F1<T1, R>): CurryF1<T1, R>;
-declare function curry<T1, T2, R>(f2: F2<T1, T2, R>): CurryF2<T1, T2, R>;
-declare function curry<T1, T2, T3, R>(f3: F3<T1, T2, T3, R>): CurryF3<T1, T2, T3, R>;
-declare function curry<T1, T2, T3, T4, R>(f4: F4<T1, T2, T3, T4, R>): CurryF4<T1, T2, T3, T4, R>;
-declare function curry<T1, T2, T3, T4, T5, R>(f5: F5<T1, T2, T3, T4, T5, R>): CurryF5<T1, T2, T3, T4, T5, R>;
-declare function curry<T1, T2, T3, T4, T5, T6, R>(f6: F6<T1, T2, T3, T4, T5, T6, R>): CurryF6<T1, T2, T3, T4, T5, T6, R>;
-declare function curry<T1, T2, T3, T4, T5, T6, T7, R>(f7: F7<T1, T2, T3, T4, T5, T6, T7, R>): CurryF7<T1, T2, T3, T4, T5, T6, T7, R>;
-declare function curry<T1, T2, T3, T4, T5, T6, T7, T8, R>(f8: F8<T1, T2, T3, T4, T5, T6, T7, T8, R>): CurryF8<T1, T2, T3, T4, T5, T6, T7, T8, R>;
-declare function curry<T1, T2, T3, T4, T5, T6, T7, T8, T9, R>(f9: F9<T1, T2, T3, T4, T5, T6, T7, T8, T9, R>): CurryF9<T1, T2, T3, T4, T5, T6, T7, T8, T9, R>;
-declare function curry<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, R>(f10: F10<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, R>): CurryF10<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, R>;
-declare function curry<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, R>(f11: F11<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, R>): CurryF11<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, R>;
-declare function curry<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, R>(f12: F12<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, R>): CurryF12<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, R>;
+declare function curry<T1, R> (f1: F1<T1, R>): CurryF1<T1, R>;
+declare function curry<T1, T2, R> (f2: F2<T1, T2, R>): CurryF2<T1, T2, R>;
+declare function curry<T1, T2, T3, R> (f3: F3<T1, T2, T3, R>): CurryF3<T1, T2, T3, R>;
+declare function curry<T1, T2, T3, T4, R> (f4: F4<T1, T2, T3, T4, R>): CurryF4<T1, T2, T3, T4, R>;
+declare function curry<T1, T2, T3, T4, T5, R> (f5: F5<T1, T2, T3, T4, T5, R>): CurryF5<T1, T2, T3, T4, T5, R>;
+declare function curry<T1, T2, T3, T4, T5, T6, R> (f6: F6<T1, T2, T3, T4, T5, T6, R>): CurryF6<T1, T2, T3, T4, T5, T6, R>;
+declare function curry<T1, T2, T3, T4, T5, T6, T7, R> (f7: F7<T1, T2, T3, T4, T5, T6, T7, R>): CurryF7<T1, T2, T3, T4, T5, T6, T7, R>;
+declare function curry<T1, T2, T3, T4, T5, T6, T7, T8, R> (f8: F8<T1, T2, T3, T4, T5, T6, T7, T8, R>): CurryF8<T1, T2, T3, T4, T5, T6, T7, T8, R>;
+declare function curry<T1, T2, T3, T4, T5, T6, T7, T8, T9, R> (f9: F9<T1, T2, T3, T4, T5, T6, T7, T8, T9, R>): CurryF9<T1, T2, T3, T4, T5, T6, T7, T8, T9, R>;
+declare function curry<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, R> (f10: F10<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, R>): CurryF10<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, R>;
+declare function curry<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, R> (f11: F11<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, R>): CurryF11<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, R>;
+declare function curry<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, R> (f12: F12<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, R>): CurryF12<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, R>;
 
 /* tslint:enable:no-unused-variable */
 /* tslint:enable:max-line-length */

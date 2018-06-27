@@ -1,18 +1,18 @@
-import {createDefer, Defer} from "./async/defer";
 import {Subject} from "rxjs/Subject";
 import {remove} from "./array";
+import {createDefer, Defer} from "./async/defer";
 import {ensureNumber, ensureString} from "./strict-type";
 
 /**@deprecated*/
 export class Task<A> {
-  readonly f: () => Promise<A>;
-  res?: A;
-  err?: any;
-  running = false;
-  done = false;
-  readonly defer: Defer<A, any> = createDefer();
+  public readonly f: () => Promise<A>;
+  public res?: A;
+  public err?: any;
+  public running = false;
+  public done = false;
+  public readonly defer: Defer<A, any> = createDefer();
 
-  constructor(f: () => Promise<A>) {
+  constructor (f: () => Promise<A>) {
     this.f = f;
   }
 }
@@ -36,22 +36,22 @@ export interface TaskPoolOptions {
 export const defaultTaskPoolOptions: TaskPoolOptions = {
   limit: undefined
   , report_progress: true
-  , mode: "FILO"
+  , mode: "FILO",
 };
 
 export type TaskPoolMode = "FIFO" | "FILO";
 
 /**@deprecated*/
 export class TaskPool<A> {
-  readonly pendingTasks: Array<Task<A>> = [];
-  readonly runningTasks: Array<Task<A>> = [];
-  readonly stoppedTasks: Array<Task<A>> = [];
-  readonly progress?: Subject<TaskPoolProgress>;
+  public readonly pendingTasks: Array<Task<A>> = [];
+  public readonly runningTasks: Array<Task<A>> = [];
+  public readonly stoppedTasks: Array<Task<A>> = [];
+  public readonly progress?: Subject<TaskPoolProgress>;
 
-  limit: number;
-  mode: TaskPoolMode;
+  public limit: number;
+  public mode: TaskPoolMode;
 
-  constructor(options: TaskPoolOptions) {
+  constructor (options: TaskPoolOptions) {
     options = Object.assign({}, defaultTaskPoolOptions, options);
     this.limit = ensureNumber(options.limit);
     this.mode = ensureString(options.mode);
@@ -60,7 +60,7 @@ export class TaskPool<A> {
     }
   }
 
-  addTaskF(f: () => Promise<A>) {
+  public addTaskF (f: () => Promise<A>) {
     return this.addTask(new Task<A>(f));
   }
 
@@ -68,18 +68,18 @@ export class TaskPool<A> {
    * parent must be already in pool
    * child should be new task (not in pool)
    * */
-  addDepTask(parent: Task<A>, child: Task<A>) {
-    parent.defer.promise.then(res => {
+  public addDepTask (parent: Task<A>, child: Task<A>) {
+    parent.defer.promise.then((res) => {
       this.addTask(child);
     });
     return child;
   }
 
-  addDepTaskF(parent: Task<A>, childF: () => Promise<A>) {
+  public addDepTaskF (parent: Task<A>, childF: () => Promise<A>) {
     return this.addDepTask(parent, new Task<A>(childF));
   }
 
-  addTask(task: Task<A>) {
+  public addTask (task: Task<A>) {
     if (task.running) {
       this.runningTasks.push(task);
       return task;
@@ -96,7 +96,7 @@ export class TaskPool<A> {
     return this.runTask(task);
   }
 
-  check() {
+  public check () {
     if (this.runningTasks.length < this.limit && this.pendingTasks.length > 0) {
       const task = this.mode === "FILO"
         ? this.pendingTasks.pop() /* first in last out */
@@ -107,7 +107,7 @@ export class TaskPool<A> {
     }
   }
 
-  private runTask(task: Task<A>) {
+  private runTask (task: Task<A>) {
     this.runningTasks.push(task);
     task.running = true;
     const done = () => {
@@ -119,12 +119,12 @@ export class TaskPool<A> {
       this.check();
     };
     task.f()
-      .then(res => {
+      .then((res) => {
         task.res = res;
         task.defer.resolve(res);
         done();
       })
-      .catch(err => {
+      .catch((err) => {
         task.err = err;
         task.defer.reject(err);
         done();
@@ -133,12 +133,12 @@ export class TaskPool<A> {
     return task;
   }
 
-  private report(type: TaskPoolEventType) {
+  private report (type: TaskPoolEventType) {
     this.progress && this.progress.next({
       eventType: type,
       pending: this.pendingTasks.length,
       running: this.runningTasks.length,
-      stopped: this.stoppedTasks.length
+      stopped: this.stoppedTasks.length,
     });
   }
 }
