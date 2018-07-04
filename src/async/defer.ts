@@ -1,4 +1,4 @@
-import {isDefined} from "../lang";
+import {isDefined} from '../lang';
 
 export interface Defer<A, E> {
   promise: Promise<A>;

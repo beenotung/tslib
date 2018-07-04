@@ -1,4 +1,4 @@
-import * as arraybufferToBuffer from "arraybuffer-to-buffer";
+import * as arraybufferToBuffer from 'arraybuffer-to-buffer';
 
 export async function blobToBuffer (blob: Blob): Promise<Uint8Array> {
   return new Promise<Uint8Array>((resolve, reject) => {

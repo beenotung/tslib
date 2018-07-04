@@ -1,8 +1,8 @@
-export function removeNode (node: Node) {
+export function removeNode (node: Node & {remove?: () => void}) {
   if (!node) {
     return;
   }
-  if (typeof node.remove === "function") {
+  if (typeof node.remove === 'function') {
     return node.remove();
   }
   return node.parentNode.removeChild(node);
@@ -24,7 +24,7 @@ export function setFullscreen (element = document.body) {
   } else if (element.webkitRequestFullscreen) {
     element.webkitRequestFullscreen();
   } else {
-    console.warn("full screen is not supported");
+    console.warn('full screen is not supported');
   }
 }
 
@@ -34,7 +34,7 @@ export function exitFullscreen () {
   } else if (document.exitFullscreen) {
     document.exitFullscreen();
   } else {
-    console.warn("full screen is not supported");
+    console.warn('full screen is not supported');
   }
 }
 

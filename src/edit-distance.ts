@@ -1,5 +1,5 @@
-import {ArrayData, pop as _pop, wrapArray as _wrapArray, wrappedLast as _last} from "./array-wrapper";
-import {memorize} from "./memorize";
+import {ArrayData, pop as _pop, wrapArray as _wrapArray, wrappedLast as _last} from './array-wrapper';
+import {memorize} from './memorize';
 
 // const last = memorize(_last);
 const last = _last;
@@ -20,8 +20,8 @@ export const edit_distance = memorize(<A>(s: ArrayData<A> | A[] | string, t: Arr
     s = s as ArrayData<A>;
     t = t as ArrayData<A>;
   } else {
-    s = typeof s === "string" || Array.isArray(s) ? wrapArray(s) : s;
-    t = typeof t === "string" || Array.isArray(t) ? wrapArray(t) : t;
+    s = typeof s === 'string' || Array.isArray(s) ? wrapArray(s) : s;
+    t = typeof t === 'string' || Array.isArray(t) ? wrapArray(t) : t;
   }
   return Math.min(
     edit_distance(pop(s), pop(t), true) + (last(s) === last(t) ? 0 : 1)
@@ -32,8 +32,8 @@ export const edit_distance = memorize(<A>(s: ArrayData<A> | A[] | string, t: Arr
 
 const edit_distance_clear = edit_distance.clear.bind(edit_distance);
 edit_distance.clear = () => {
-  if ("clear" in last) {
-    last.clear();
+  if (typeof (last as any).clear === 'function') {
+    (last as any).clear();
   }
   pop.clear();
   wrapArray.clear();

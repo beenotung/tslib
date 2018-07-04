@@ -3,8 +3,8 @@
  * reference : https://github.com/douglascrockford/monad/blob/master/monad.js
  * */
 
-import {toArray} from "../array";
-import {isDefined} from "../lang";
+import {toArray} from '../array';
+import {isDefined} from '../lang';
 
 export interface Monad<A> {
   is_monad: true;
@@ -38,7 +38,7 @@ export function createUnit<M extends Monad<A>, A> (modifier?: (monad: Monad<A>, 
           return monad.bind((a, args) => unit(f.call(void 0, a, ...args)) as Monad<A> as Monad<any>, args);
         },
       });
-      if (typeof modifier === "function") {
+      if (typeof modifier === 'function') {
         value = modifier(monad, value);
       }
       return monad;

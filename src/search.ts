@@ -8,13 +8,13 @@ export namespace search {
   }
 
   export function object_contains (base, query: string, caseInsensitive = true) {
-    if (typeof base === "string") {
+    if (typeof base === 'string') {
       return str_contains(base, query, caseInsensitive);
     }
     // for (const k in base) {
     for (const k of Object.keys(base)) {
       const v = base[k];
-      if (typeof v === "string" && typeof query === "string") {
+      if (typeof v === 'string' && typeof query === 'string') {
         if (str_contains(v, query, caseInsensitive)) {
           return true;
         }

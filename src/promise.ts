@@ -1,2 +1,2 @@
 /**@deprecated*/
-export * from "./async/promise";
+export * from './async/promise';

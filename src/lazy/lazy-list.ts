@@ -1,4 +1,4 @@
-import {Lazy} from "./lazy";
+import {Lazy} from './lazy';
 
 /**
  * @description lazy linked list
@@ -53,7 +53,7 @@ export class LazyList<A> extends Lazy<A> {
 }
 
 export namespace LazyList {
-  export const headSymbol = Symbol.for("head");
+  export const headSymbol = Symbol.for('head');
   export const empty = <A>(): LazyList<A> => new LazyList();
   export const fromArray = <A>(xs: A[]): LazyList<A> => empty<A>().appendAll(xs);
 }

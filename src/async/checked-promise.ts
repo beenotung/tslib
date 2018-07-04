@@ -7,7 +7,7 @@ export class CheckedPromise<T> implements Promise <T> {
     this.promise = new Promise<T>(executor)
       .catch((reason) => {
         if (!this.hasCatch) {
-          console.error("Uncaught Rejection:", reason);
+          console.error('Uncaught Rejection:', reason);
           throw new Error(reason);
         }
         return Promise.reject(reason);

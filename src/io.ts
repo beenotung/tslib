@@ -1,5 +1,5 @@
-import {createInterface, ReadLine, ReadLineOptions} from "readline";
-import {createLazy} from "./lazy";
+import {createInterface, ReadLine, ReadLineOptions} from 'readline';
+import {createLazy} from './lazy';
 
 export function createRL (options: ReadLineOptions = {input: process.stdin}): ReadLine {
   return createInterface(options);
@@ -29,14 +29,14 @@ export namespace IO {
   export function forEachLine (onnext: (line: string, lineNum: number) => void, oncomplete?: () => void) {
     const rl = getRL();
     let lineNum = -1;
-    rl.on("line", (line) => {
+    rl.on('line', (line) => {
       lineNum++;
       if (line) {
         onnext(line, lineNum);
       }
     });
-    if (typeof oncomplete === "function") {
-      rl.on("close", oncomplete);
+    if (typeof oncomplete === 'function') {
+      rl.on('close', oncomplete);
     }
   }
 

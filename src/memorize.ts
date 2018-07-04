@@ -1,5 +1,5 @@
-import {MapMap} from "./map-map";
-import {wrapFunction} from "./reflection";
+import {MapMap} from './map-map';
+import {wrapFunction} from './reflection';
 
 /* tslint:disable:ban-types */
 /**

@@ -1,4 +1,4 @@
-import {later} from "./async/wait";
+import {later} from './async/wait';
 
 export const tryN = <A>(n: number, f: () => Promise<A>, interval = 0, e?): Promise<A> => n < 0
   ? Promise.reject(e)

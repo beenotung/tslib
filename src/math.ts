@@ -15,6 +15,6 @@ export let math: { phi: number } = {
     return phi || (phi = calcPhi());
   },
   set phi (never: number) {
-    throw new Error("unexpected assignment");
+    throw new Error('unexpected assignment');
   },
 };

@@ -2,9 +2,9 @@
  * Created by beenotung on 12/26/16.
  */
 
-import {curry, id} from "./curry";
-import {Obj, ObjKey} from "./lang";
-import {CurryF1, CurryF2, F1, F2} from "./typestub-curry";
+import {curry, id} from './curry';
+import {Obj, ObjKey} from './lang';
+import {CurryF1, CurryF2, F1, F2} from './typestub-curry';
 
 export declare type Consumer<A> = (a: A) => void;
 export declare type Supplier<A> = () => A;
@@ -25,7 +25,7 @@ export const deepProp = curry(<A>(name: ObjKey, o: Obj<A> | any): A => {
   if (o[name] !== void 0) {
     return o[name];
   } else {
-    return (name as string).split(".")
+    return (name as string).split('.')
       .reduce((acc, c) => acc[c], o as any);
   }
 });
@@ -76,9 +76,9 @@ export const apply2 = curry(<A, B>(f: Consumer<A>, g: CurryF1<A, B>, x: A): B =>
  * */
 export const echoF = flip(apply2)(id);
 export const symbolFs = new Map<string, CurryF2<any, any, any>>();
-export const isFunctionType = (x: any) => typeof x === "function";
-export const isNumberType = (x: any) => typeof x === "number";
-export const isStringType = (x: any) => typeof x === "string";
+export const isFunctionType = (x: any) => typeof x === 'function';
+export const isNumberType = (x: any) => typeof x === 'number';
+export const isStringType = (x: any) => typeof x === 'string';
 /**
  * @remark side effect
  *
@@ -137,12 +137,12 @@ export const defineSymbolF = curry(<A, B, C>(name: string, f: CurryF2<A, B, C>):
   return f;
 });
 /* number | string atomically for a and b */
-export const add = defineSymbolF("+", (a: number, b: number) => b + a);
+export const add = defineSymbolF('+', (a: number, b: number) => b + a);
 /* number | string atomically for a and b */
-export const minus = defineSymbolF("-", (a: number, b: number) => b - a);
-export const mult = defineSymbolF("*", (a: number, b: number): number => b * a);
-defineSymbolF("/", (a: number, b: number): number => b / a);
-export const rem = defineSymbolF("%", (a: number, b: number): number => b % a);
+export const minus = defineSymbolF('-', (a: number, b: number) => b - a);
+export const mult = defineSymbolF('*', (a: number, b: number): number => b * a);
+defineSymbolF('/', (a: number, b: number): number => b / a);
+export const rem = defineSymbolF('%', (a: number, b: number): number => b % a);
 export const div = curry((a: number, b: number): number => Math.floor(b / a));
 /* tslint:disable no-bitwise */
 export const quot = curry((a: number, b: number): number => (b / a) | 0);
@@ -154,10 +154,10 @@ export const divMod = curry((a: number, b: number): [number, number] => {
   const d = Math.floor((b / a));
   return [d, b - d * a];
 });
-export const and = defineSymbolF("&&", (a, b) => b && a);
-export const or = defineSymbolF("||", (a, b) => b || a);
-export const not = defineSymbolF("!", (a) => !a);
-export const notnot = defineSymbolF("!!", (a) => !!a);
+export const and = defineSymbolF('&&', (a, b) => b && a);
+export const or = defineSymbolF('||', (a, b) => b || a);
+export const not = defineSymbolF('!', (a) => !a);
+export const notnot = defineSymbolF('!!', (a) => !!a);
 export const symbolF = curry(<A, B, C>(name: string): CurryF2<A, B, C> => symbolFs.get(name));
 export const composeFs = curry(<A>(fs: Array<CurryF1<A, A>>, acc: A) => {
   for (let i = fs.length - 1; i >= 0; i--) {
@@ -238,7 +238,7 @@ export const foldl = curry(<A, B>(f: F2<B, A, B>, acc: B, xs: A[]): B => {
 export const foldl1 = curry(<A>(f: F2<A, A, A>, xs: A[]): A => {
   const n = xs.length;
   if (n === 0) {
-    throw new TypeError("xs should be non-empty ArrayLike<*>");
+    throw new TypeError('xs should be non-empty ArrayLike<*>');
   }
   let acc = xs[0];
   for (let i = 1; i < n; i++) {

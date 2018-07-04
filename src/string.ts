@@ -1,4 +1,4 @@
-import {forI} from "./lang";
+import {forI} from './lang';
 
 export function str_contains (pattern: string, target: string, ignore_case = false): boolean {
   if (ignore_case) {
@@ -11,12 +11,12 @@ export function str_contains (pattern: string, target: string, ignore_case = fal
  * example : 'change the words' ~> 'Change The Words'
  * */
 export function strToCapWords (s: string): string {
-  let res = "";
+  let res = '';
   let lastSpace = true;
   forI((i) => {
-    if (s[i] === " ") {
+    if (s[i] === ' ') {
       lastSpace = true;
-      res += " ";
+      res += ' ';
     } else {
       if (lastSpace) {
         res += s[i].toUpperCase();
@@ -37,11 +37,11 @@ export function string_to_chars (s: string): string[] {
 
 /* source: https://stackoverflow.com/questions/1144783/how-to-replace-all-occurrences-of-a-string-in-javascript */
 export function escapeRegExp (str: string): string {
-  return str.replace(/([.*+?^=!:${}()|\[\]\/\\])/g, "\\$1");
+  return str.replace(/([.*+?^=!:${}()|\[\]\/\\])/g, '\\$1');
 }
 
 export function strReplaceAll (str: string, find: string, replace: string): string {
-  return str.replace(new RegExp(escapeRegExp(find), "g"), replace);
+  return str.replace(new RegExp(escapeRegExp(find), 'g'), replace);
 }
 
 export function string_nbyte (s: string): number {
@@ -57,13 +57,13 @@ export function str_like (a: string, b: string, ignore_case = true) {
 }
 
 export function is_non_empty_string (s: string): boolean {
-  return typeof s === "string" && s !== "";
+  return typeof s === 'string' && s !== '';
 }
 
 export function str_dos2unix (s: string): string {
-  return strReplaceAll(s, "\r\n", "\n");
+  return strReplaceAll(s, '\r\n', '\n');
 }
 
 export function str_unix2dos (s: string): string {
-  return strReplaceAll(s, "\n", "\r\n");
+  return strReplaceAll(s, '\n', '\r\n');
 }

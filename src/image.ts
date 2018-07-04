@@ -1,13 +1,13 @@
-import {createDefer} from "./async/defer";
-import {enum_only_string} from "./enum";
-import {xor} from "./logic";
+import {createDefer} from './async/defer';
+import {enum_only_string} from './enum';
+import {xor} from './logic';
 
 /**
  * reference : https://stackoverflow.com/questions/20958078/resize-a-base-64-image-in-javascript-without-using-canvas
  * */
 export function imageToCanvas (img: HTMLImageElement, width: number, height: number): HTMLCanvasElement {
-  const canvas = document.createElement("canvas");
-  const ctx = canvas.getContext("2d");
+  const canvas = document.createElement('canvas');
+  const ctx = canvas.getContext('2d');
   canvas.width = width;
   canvas.height = height;
   ctx.drawImage(img, 0, 0, width, height);
@@ -32,8 +32,8 @@ export async function base64ToImage (data: string): Promise<HTMLImageElement> {
  * TODO check if there are exceptions
  * */
 export function checkBase64ImagePrefix (s: string): string {
-  return typeof s === "string" && s.startsWith("/9j/")
-    ? "data:image/jpeg;base64," + s
+  return typeof s === 'string' && s.startsWith('/9j/')
+    ? 'data:image/jpeg;base64,' + s
     : s;
 }
 

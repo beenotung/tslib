@@ -1,5 +1,5 @@
-import {clearArray, removeByIdx} from "./array";
-import {getWindowOrGlobal} from "./runtime";
+import {clearArray, removeByIdx} from './array';
+import {getWindowOrGlobal} from './runtime';
 
 export class PolyfillMap<K, V> implements Map <K, V> {
   public [Symbol.toStringTag];
@@ -95,7 +95,7 @@ export class PolyfillMap<K, V> implements Map <K, V> {
 }
 
 export function polyfillMap () {
-  if (typeof Map === "function") {
+  if (typeof Map === 'function') {
     return;
   }
   const parent = getWindowOrGlobal();

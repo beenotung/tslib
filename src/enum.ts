@@ -1,6 +1,6 @@
-import {range} from "./array";
-import {isDefined, isNumber} from "./lang";
-import {ensureNumber, ensureString} from "./strict-type";
+import {range} from './array';
+import {isDefined, isNumber} from './lang';
+import {ensureNumber, ensureString} from './strict-type';
 
 /* tslint:disable:ban-types */
 /**@deprecated*/
@@ -80,7 +80,7 @@ export function enum_is_last_s<E> (e: E, s: E[keyof E]): boolean {
 }
 
 export function enum_is_last<E> (e: E, v: E[keyof E] | keyof E): boolean {
-  if (typeof v === "number") {
+  if (typeof v === 'number') {
     return enum_is_last_i(e, v as keyof E);
   } else {
     return enum_is_last_s(e, v as E[keyof E]);

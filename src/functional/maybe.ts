@@ -1,5 +1,5 @@
-import {isDefined} from "../lang";
-import {createUnit, Monad, Unit} from "./monad";
+import {isDefined} from '../lang';
+import {createUnit, Monad, Unit} from './monad';
 
 export interface MaybeMonad<A> extends Monad<A> {
   map<B> (f: (a: A) => B): MaybeMonad<B>;

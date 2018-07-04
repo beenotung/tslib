@@ -1,5 +1,5 @@
-import * as fs from "fs";
-import {WriteStream} from "fs";
+import * as fs from 'fs';
+import {WriteStream} from 'fs';
 
 export type readOptions = { encoding?: string | null; flag?: string; } | string | undefined | null;
 

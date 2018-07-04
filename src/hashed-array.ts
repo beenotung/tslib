@@ -1,5 +1,5 @@
-import {clearArray, removeBy} from "./array";
-import {isDefined} from "./lang";
+import {clearArray, removeBy} from './array';
+import {isDefined} from './lang';
 
 /**
  * <A> must be object.

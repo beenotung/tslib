@@ -1,11 +1,11 @@
-import {isDefined} from "./lang";
+import {isDefined} from './lang';
 
 export function isObject (o: any): boolean {
-  return typeof o === "object";
+  return typeof o === 'object';
 }
 
 export function hasFunction (o: object | any[], name: PropertyKey): boolean {
-  return typeof (o[name]) === "function";
+  return typeof (o[name]) === 'function';
 }
 
 export function deepClone<A> (o: A): A {
@@ -49,12 +49,12 @@ export function createSafeObject () {
 
 export const updateObject = (dest) => (x) => Object.assign(dest, x);
 
-export const isNull = (x): boolean => !(x === null || x === undefined || x === "");
+export const isNull = (x): boolean => !(x === null || x === undefined || x === '');
 
 export function removeNull (o) {
   if (Array.isArray(o)) {
     return o
-      .filter((x) => !(x === null || x === undefined || x === ""))
+      .filter((x) => !(x === null || x === undefined || x === ''))
       .map((x) => removeNull(x));
   }
   if (o instanceof Set) {
@@ -63,11 +63,11 @@ export function removeNull (o) {
   if (o instanceof Date) {
     return o;
   }
-  if (typeof o === "object" && o !== null) {
+  if (typeof o === 'object' && o !== null) {
     o = Object.assign({}, o);
     for (const k of Object.keys(o)) {
       const v = o[k];
-      if (v === null || v === undefined || v === "") {
+      if (v === null || v === undefined || v === '') {
         delete o[k];
       }
     }

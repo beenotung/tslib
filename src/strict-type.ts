@@ -1,8 +1,8 @@
-import {notDefined, toNumber} from "./lang";
+import {notDefined, toNumber} from './lang';
 
 export function ensureDefined<A> (a: A): A {
   if (notDefined(a)) {
-    throw new TypeError("data is not defined");
+    throw new TypeError('data is not defined');
   }
   return a;
 }
@@ -19,15 +19,15 @@ export function ensureNumberInRange (a: number | string, lower: number, higher: 
 }
 
 export function ensureString<S extends string> (s: S): S {
-  if (typeof s !== "string") {
-    throw new TypeError("expect string, but got " + (typeof s));
+  if (typeof s !== 'string') {
+    throw new TypeError('expect string, but got ' + (typeof s));
   }
   return s;
 }
 
 export function ensureNumber<Num extends number> (x: Num): Num {
-  if (typeof x !== "number") {
-    throw new TypeError("expect number, but got " + (typeof x));
+  if (typeof x !== 'number') {
+    throw new TypeError('expect number, but got ' + (typeof x));
   }
   return x;
 }

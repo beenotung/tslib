@@ -1,4 +1,4 @@
-import {mapArray} from "./array";
+import {mapArray} from './array';
 
 let f_name: string;
 
@@ -8,7 +8,7 @@ let f_name: string;
  * */
 export function wrapFunction<F extends Function> (_host_function_: F, n = _host_function_.length, name = _host_function_.name): F {
   /* tslint:enable:ban-types */
-  const args = mapArray(new Array(n), (x, i) => "a" + i).join(",");
+  const args = mapArray(new Array(n), (x, i) => 'a' + i).join(',');
   /* tslint:disable */
   let newF: F;
   eval(`newF=function ${name}(${args}){return ${f_name}.apply(null,arguments);}`);
@@ -16,4 +16,4 @@ export function wrapFunction<F extends Function> (_host_function_: F, n = _host_
   /* tslint:enable */
 }
 
-f_name = wrapFunction.toString().split("(")[1].split(",")[0];
+f_name = wrapFunction.toString().split('(')[1].split(',')[0];

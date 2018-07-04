@@ -1,10 +1,10 @@
-import {enum_only_string} from "./enum";
-import {isNumber} from "./lang";
+import {enum_only_string} from './enum';
+import {isNumber} from './lang';
 
 export function to_semver (s: string): number[] {
-  const res = s.split(".").map((x) => +x);
+  const res = s.split('.').map((x) => +x);
   if (res.length !== 3 || res.find((x) => !isNumber(x))) {
-    throw new TypeError("input is not a valid semver string");
+    throw new TypeError('input is not a valid semver string');
   }
   return res;
 }
@@ -34,7 +34,7 @@ export enum SemverDiffType {
 enum_only_string(SemverDiffType);
 
 export function getSemverDiffType (base: number[], compare: number[]): SemverDiffType {
-  return base.join(".") === compare.join(".") ? SemverDiffType.same
+  return base.join('.') === compare.join('.') ? SemverDiffType.same
     : is_newer(base, compare) ? SemverDiffType.newer
       : is_compatible(base, compare) ? SemverDiffType.compatible
         : SemverDiffType.breaking;

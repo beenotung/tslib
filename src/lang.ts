@@ -1,29 +1,29 @@
 /**
  * Created by beenotung on 12/26/16.
  */
-import {inspect} from "util";
-import {createDefer} from "./async/defer";
-import {curry} from "./curry";
-import {Supplier} from "./functional";
-import {F1} from "./typestub-curry";
+import {inspect} from 'util';
+import {createDefer} from './async/defer';
+import {curry} from './curry';
+import {Supplier} from './functional';
+import {F1} from './typestub-curry';
 
 export const deepGetProp = curry(<A>(name: string, o: any): A => {
   if (o[name]) {
     return o[name];
   }
-  const xs = name.split(".");
+  const xs = name.split('.');
   if (xs.length === 1) {
     const message = `key '${name}' not found in object`;
     console.warn(message, {name, o});
     throw new TypeError(message);
   }
   const topLevelName = xs.shift();
-  const nextLevelName = xs.join(".");
+  const nextLevelName = xs.join('.');
   return deepGetProp(nextLevelName, o[topLevelName]);
 });
 
 export function hasProp<A> (k: ObjKey, o: Obj<A>): boolean {
-  if (typeof o[k] !== "undefined") {
+  if (typeof o[k] !== 'undefined') {
     return true;
   }
   if (Array.isArray(o)) {
@@ -94,7 +94,7 @@ export function caseLookup<A, B> (cases: Array<[A, B]>, target: A): B {
   if (xss.length === 1) {
     return xss[0][1];
   } else {
-    throw new Error("expect only 1 match, number of match:" + xss.length);
+    throw new Error('expect only 1 match, number of match:' + xss.length);
   }
 }
 
@@ -112,7 +112,7 @@ export function compareString (a: string, b: string): -1 | 0 | 1 {
 export type deepF<A> = (() => A) | (() => deepF<A>);
 
 export function deepCall<A> (f: deepF<A> | A): A {
-  while (typeof f === "function") {
+  while (typeof f === 'function') {
     f = f();
   }
   return f;
@@ -199,9 +199,9 @@ export function genFunction (n: number, f: Function): Function {
     };
   }
   if (!nFuncs[n]) {
-    let args = "a0";
+    let args = 'a0';
     for (let i = 1; i < n; i++) {
-      args += ", a" + i;
+      args += ', a' + i;
     }
     const code = `nFuncs[${n}] = function(f){
   return function fun${n}(${args}){
@@ -226,10 +226,10 @@ export function notDefined (a: any): boolean {
 }
 
 export function isNumber (i: string | number): boolean {
-  return Number.isFinite(+i) && i !== "";
+  return Number.isFinite(+i) && i !== '';
 }
 
-const toString = typeof inspect === "function" ? inspect : JSON.stringify.bind(JSON);
+const toString = typeof inspect === 'function' ? inspect : JSON.stringify.bind(JSON);
 
 export function toNumber (i: string | number): number {
   if (!isNumber(i)) {

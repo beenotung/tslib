@@ -1,4 +1,4 @@
-import {createDefer} from "./defer";
+import {createDefer} from './defer';
 
 export async function tryFAsync<A> (f: () => A): Promise<A> {
   try {

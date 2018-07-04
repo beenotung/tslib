@@ -1,5 +1,5 @@
-import {Either, left, right} from "./either";
-import {isDefined} from "./lang";
+import {Either, left, right} from './either';
+import {isDefined} from './lang';
 
 /**
  * Created by beenotung on 2/16/17.
@@ -22,7 +22,7 @@ export interface Maybe<A> {
 
 export const Nothing: Maybe<any> = {
   get () {
-    throw new Error("Cannot get value from Nothing.");
+    throw new Error('Cannot get value from Nothing.');
   }
   , isJust: false
   , isNothing: true

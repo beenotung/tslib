@@ -1,7 +1,7 @@
-import {Subject} from "rxjs/Subject";
-import {remove} from "./array";
-import {createDefer, Defer} from "./async/defer";
-import {ensureNumber, ensureString} from "./strict-type";
+import {Subject} from 'rxjs/Subject';
+import {remove} from './array';
+import {createDefer, Defer} from './async/defer';
+import {ensureNumber, ensureString} from './strict-type';
 
 /**@deprecated*/
 export class Task<A> {
@@ -17,7 +17,7 @@ export class Task<A> {
   }
 }
 
-export type TaskPoolEventType = "pending" | "running" | "stopped";
+export type TaskPoolEventType = 'pending' | 'running' | 'stopped';
 
 export interface TaskPoolProgress {
   eventType: TaskPoolEventType
@@ -36,10 +36,10 @@ export interface TaskPoolOptions {
 export const defaultTaskPoolOptions: TaskPoolOptions = {
   limit: undefined
   , report_progress: true
-  , mode: "FILO",
+  , mode: 'FILO',
 };
 
-export type TaskPoolMode = "FIFO" | "FILO";
+export type TaskPoolMode = 'FIFO' | 'FILO';
 
 /**@deprecated*/
 export class TaskPool<A> {
@@ -90,7 +90,7 @@ export class TaskPool<A> {
     }
     if (this.runningTasks.length >= this.limit) {
       this.pendingTasks.push(task);
-      this.report("pending");
+      this.report('pending');
       return task;
     }
     return this.runTask(task);
@@ -98,7 +98,7 @@ export class TaskPool<A> {
 
   public check () {
     if (this.runningTasks.length < this.limit && this.pendingTasks.length > 0) {
-      const task = this.mode === "FILO"
+      const task = this.mode === 'FILO'
         ? this.pendingTasks.pop() /* first in last out */
         : this.pendingTasks.shift() /* first in first out */
       ;
@@ -115,7 +115,7 @@ export class TaskPool<A> {
       task.done = true;
       remove(this.runningTasks, task);
       this.stoppedTasks.push(task);
-      this.report("stopped");
+      this.report('stopped');
       this.check();
     };
     task.f()
@@ -129,7 +129,7 @@ export class TaskPool<A> {
         task.defer.reject(err);
         done();
       });
-    this.report("running");
+    this.report('running');
     return task;
   }
 

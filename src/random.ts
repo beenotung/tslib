@@ -1,4 +1,4 @@
-import {enum_keys} from "./enum";
+import {enum_keys} from './enum';
 
 export namespace Random {
   /** @return number : lower <= value < upper */
@@ -22,7 +22,7 @@ export namespace Random {
     return xs[nextInt(xs.length, 0)];
   }
 
-  export function nextDate (after = new Date("2016-12-12"), before = new Date("2018-12-12")): Date {
+  export function nextDate (after = new Date('2016-12-12'), before = new Date('2018-12-12')): Date {
     const diff = before.getTime() - after.getTime();
     const time = Random.nextInt(after.getTime() + diff, after.getTime());
     return new Date(time);

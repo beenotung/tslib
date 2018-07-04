@@ -18,7 +18,7 @@ export function resetDateFormatLocale () {
 
 export function toString (o: any): string {
   switch (typeof o) {
-    case "string":
+    case 'string':
       return o;
   }
   if (o instanceof Date) {
@@ -30,36 +30,36 @@ export function toString (o: any): string {
   return JSON.stringify(o, undefined, 2);
 }
 
-const escape_space = "&nbsp;";
+const escape_space = '&nbsp;';
 
-export function displayJSON (o: any, mode: "raw" | "table" = "table"): string {
-  if (mode === "raw") {
+export function displayJSON (o: any, mode: 'raw' | 'table' = 'table'): string {
+  if (mode === 'raw') {
     return `<pre>${toString(o)}</pre>`;
   }
   /* mode === 'table' */
   switch (typeof o) {
-    case "object":
+    case 'object':
       if (Array.isArray(o)) {
-        return "<ol>" + (o as any[]).map((x) => "<li>" + displayJSON(x, mode) + "</li>").join("") + "</ol>";
+        return '<ol>' + (o as any[]).map((x) => '<li>' + displayJSON(x, mode) + '</li>').join('') + '</ol>';
       }
       if (o instanceof Set) {
         o = Array.from(o);
-        return "<ul>" + (o as any[]).map((x) => "<li>" + displayJSON(x, mode) + "</li>").join("") + "</ul>";
+        return '<ul>' + (o as any[]).map((x) => '<li>' + displayJSON(x, mode) + '</li>').join('') + '</ul>';
       }
       if (o instanceof Date) {
         return toString(o);
       }
       if (o === null) {
-        return "null";
+        return 'null';
       }
       break;
-    case "string":
+    case 'string':
       const s = o as string;
       return s
-        .split("\r").join("")
-        .split("\n").join("<br>")
-        .split("  ").join(escape_space.repeat(2))
-        .split("\t").join(escape_space.repeat(4))
+        .split('\r').join('')
+        .split('\n').join('<br>')
+        .split('  ').join(escape_space.repeat(2))
+        .split('\t').join(escape_space.repeat(4))
         ;
     default:
       return `<pre>${JSON.stringify(o)}</pre>`;
@@ -70,7 +70,7 @@ export function displayJSON (o: any, mode: "raw" | "table" = "table"): string {
       const v = o[k];
       return `<tr><td>${displayJSON(k, mode)}</td><td>${displayJSON(v, mode)}</td></tr>`;
     })
-    .join("")
+    .join('')
   ;
   return `<table><tbody>${rows}</tbody></table>`;
 }

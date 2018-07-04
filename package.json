@@ -31,10 +31,10 @@
     "lint": "tslint --project tsconfig.json -c tslint.json",
     "dev": "run-p watch:*",
     "watch:build": "tsc -p . --watch",
-    "watch:lint": "chokidar src/**/*.ts -c \"run-s fix lint\" --initial --verbose",
-    "fix": "tslint --fix -p .",
+    "watch:lint": "chokidar src/**/*.ts -c \"run-s format lint\" --initial --verbose",
+    "format": "tslint --fix -p .",
     "test": "run-p build lint",
-    "precommit": "npm run fix && npm run test",
+    "precommit": "run-s format test",
     "commit": "git commit $@",
     "prepublishOnly": "npm run build"
   },

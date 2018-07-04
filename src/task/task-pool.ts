@@ -1,5 +1,5 @@
-import {Lock} from "../lock";
-import {Task} from "./task";
+import {Lock} from '../lock';
+import {Task} from './task';
 
 export class TaskPool {
   private readonly lock: Lock;

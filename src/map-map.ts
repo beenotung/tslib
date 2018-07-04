@@ -1,4 +1,4 @@
-import {PolyfillMap} from "./polyfill-map";
+import {PolyfillMap} from './polyfill-map';
 
 /**
  * map of value or map, aka nested map
@@ -12,7 +12,7 @@ export class MapMap<K, V> {
   private m: Map<K, V>;
 
   constructor () {
-    if (typeof Map === "function") {
+    if (typeof Map === 'function') {
       this.m = new Map();
     } else {
       this.m = new PolyfillMap();

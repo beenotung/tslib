@@ -1,4 +1,4 @@
-import * as event_stream from "event-stream";
+import * as event_stream from 'event-stream';
 
 /**
  * @description lineNum start from 0
@@ -10,7 +10,7 @@ export function readStreamByLine (stream: NodeJS.ReadableStream
   let lineNum = -1;
   let hasFail = false;
   stream
-    .pipe(event_stream.split("\n"))
+    .pipe(event_stream.split('\n'))
     .pipe(event_stream.mapSync((line: string) => {
       if (hasFail) {
         return;
@@ -25,6 +25,6 @@ export function readStreamByLine (stream: NodeJS.ReadableStream
         }
       }
     }))
-    .on("error", onError)
-    .on("end", onComplete);
+    .on('error', onError)
+    .on('end', onComplete);
 }

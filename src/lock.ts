@@ -1,4 +1,4 @@
-import {createDefer, Defer} from "./async/defer";
+import {createDefer, Defer} from './async/defer';
 
 interface QueueItem {
   defer: Defer<void, never>;
@@ -19,7 +19,7 @@ export class Lock {
 
   public async acquire (amount = 1): Promise<void> {
     if (amount > this.quota) {
-      throw new Error("not enough quota: max=" + this.quota + ", require=" + amount);
+      throw new Error('not enough quota: max=' + this.quota + ', require=' + amount);
     }
     if (this.res >= amount) {
       this.res -= amount;
