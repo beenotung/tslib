@@ -51,6 +51,3 @@ plugins/
 plugins/android.json
 plugins/ios.json
 www/
-
-# Build files
-dist.list
