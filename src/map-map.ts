@@ -13,9 +13,9 @@ export class MapMap<K, V> {
 
   constructor () {
     if (typeof Map === 'function') {
-      this.m = new Map();
+      this.m = new Map<K, V>();
     } else {
-      this.m = new PolyfillMap();
+      this.m = new PolyfillMap<K, V>();
     }
   }
 
