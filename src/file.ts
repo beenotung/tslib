@@ -28,12 +28,10 @@ export async function fileToArray (file: File): Promise<number[]> {
   return mapI((i) => s.charCodeAt(i), s.length);
 }
 
-export async function fileToArrayBuffer (file: File) {
-  const [defer, reader] = createAsyncFileReader();
+export async function fileToArrayBuffer (file: File): Promise<ArrayBuffer> {
+  const [defer, reader] = createAsyncFileReader<ArrayBuffer>();
   reader.readAsArrayBuffer(file);
-  return defer.promise.then((res) => {
-    return res;
-  });
+  return defer.promise;
 }
 
 /* reference: https://ausdemmaschinenraum.wordpress.com/2012/12/06/how-to-save-a-file-from-a-url-with-javascript/ */

@@ -26,7 +26,7 @@ export class LazyList<A> extends Lazy<A> {
   }
 
   public appendAll (xs: A[]): LazyList<A> {
-    return xs.reduce((acc, c) => acc.appendRaw(c), this);
+    return xs.reduce((acc: LazyList<A> , c) =>   acc.appendRaw(c), this);
   }
 
   /** @description non-lazy */
@@ -54,6 +54,6 @@ export class LazyList<A> extends Lazy<A> {
 
 export namespace LazyList {
   export const headSymbol = Symbol.for('head');
-  export const empty = <A>(): LazyList<A> => new LazyList();
+  export const empty = <A>(): LazyList<A> => new LazyList<A>();
   export const fromArray = <A>(xs: A[]): LazyList<A> => empty<A>().appendAll(xs);
 }
