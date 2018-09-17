@@ -8,6 +8,13 @@ export type BlobType = 'image/png'
   | 'image/*'
   | 'video/*'
   | 'audio/*'
+  | 'text/plain'
+  | 'text/html'
+  | 'text/css'
+  | 'text/javascript'
+  | 'text/csv'
+  | 'application/json'
+  | 'application/xml'
   | string;
 
 function createAsyncFileReader<A> (): [Defer<A, any>, FileReader] {
@@ -42,7 +49,7 @@ export async function fileToArrayBuffer (file: File): Promise<ArrayBuffer> {
 }
 
 /* reference: https://ausdemmaschinenraum.wordpress.com/2012/12/06/how-to-save-a-file-from-a-url-with-javascript/ */
-export async function saveFile (url: string, filename?: string) {
+export async function downloadFile (url: string, filename?: string) {
   const defer = createDefer();
   if (!filename) {
     // Get file name from url.
@@ -64,6 +71,9 @@ export async function saveFile (url: string, filename?: string) {
   xhr.send();
   return defer.promise;
 }
+
+/**@deprecated*/
+export let saveFile = downloadFile;
 
 export interface SelectFileOptions {
   multiple?: boolean;
@@ -91,4 +101,23 @@ export function selectFile (options?: SelectFileOptions): Promise<File[]> {
     };
     input.click();
   });
+}
+
+export function saveBlobToFile (blob: Blob, filename?: string) {
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  if (filename) {
+    a.download = filename;
+  }
+  a.href = url;
+  if (document.body) {
+    a.style.display = 'none';
+    a.textContent = 'Download file';
+    document.body.appendChild(a);
+  }
+  a.click();
+}
+
+export function saveStringToFile (s: string, type: BlobType = 'text/plain', filename?: string) {
+  return saveBlobToFile(new Blob([s], {type}));
 }
