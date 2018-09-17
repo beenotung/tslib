@@ -1,6 +1,5 @@
 #!/bin/bash
 set -e
-hash yarn 2>/dev/null || npm i -g yarn
-yarn install
+npm i
 ./gu
 echo 'init done.'
