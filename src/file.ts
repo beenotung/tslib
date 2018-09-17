@@ -1,7 +1,14 @@
 import {createDefer, Defer} from './async/defer';
 import {mapI} from './lang';
 
-export type BlobType = 'image/png' | string;
+/**
+ * @ref https://www.iana.org/assignments/media-types/media-types.xhtml
+ * */
+export type BlobType = 'image/png'
+  | 'image/*'
+  | 'video/*'
+  | 'audio/*'
+  | string;
 
 function createAsyncFileReader<A> (): [Defer<A, any>, FileReader] {
   const defer = createDefer<A, any>();
@@ -56,4 +63,32 @@ export async function saveFile (url: string, filename?: string) {
   xhr.open('GET', url);
   xhr.send();
   return defer.promise;
+}
+
+export interface SelectFileOptions {
+  multiple?: boolean;
+  accept?: BlobType;
+  pattern?: string;
+}
+
+export function selectFile (options?: SelectFileOptions): Promise<File[]> {
+  options = options || {};
+  return new Promise<File[]>((resolve, reject) => {
+    const input = document.createElement('input');
+    input.type = 'file';
+    Object.keys(options).forEach((x) => (input[x] = options[x]));
+    input.onchange = (e) => {
+      const nFile = input.files.length;
+      if (nFile < 1) {
+        reject();
+      } else {
+        const files: File[] = new Array(nFile);
+        for (let i = 0; i < nFile; i++) {
+          files[i] = input.files.item(i);
+        }
+        resolve(files);
+      }
+    };
+    input.click();
+  });
 }
