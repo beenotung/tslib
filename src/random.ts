@@ -34,4 +34,14 @@ export namespace Random {
   export function nextEnum<E> (e: E): E[keyof E] {
     return e[Random.element(enum_keys(e)) as any];
   }
+
+  export function nextBuffer (n: number) {
+    // tslint:disable:no-bitwise
+    const res = new Buffer(n);
+    for (let i = 0; i < n; i++) {
+      res[i] = Math.random() * 256 >>> 0;
+    }
+    return res;
+    // tslint:enable:no-bitwise
+  }
 }
