@@ -1,12 +1,6 @@
 #!/bin/bash
 set -e
 npm i
-if [ -d src/index ]; then
-  mv src/index .
-fi
-./gen-index
-npm i
-./rm-index
-mv index src/ || echo ''
+npm run build
 node ./mk-package.js > dist/package.json
 echo "done."
