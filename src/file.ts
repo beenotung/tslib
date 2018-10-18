@@ -119,5 +119,5 @@ export function saveBlobToFile (blob: Blob, filename?: string) {
 }
 
 export function saveStringToFile (s: string, type: BlobType = 'text/plain', filename?: string) {
-  return saveBlobToFile(new Blob([s], {type}));
+  return saveBlobToFile(new Blob([s], {type}), filename);
 }
