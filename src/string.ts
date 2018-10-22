@@ -1,4 +1,5 @@
-import {forI} from './lang';
+import { forI } from './lang';
+import { setMinus, setToArray } from './set';
 
 export function str_contains (pattern: string, target: string, ignore_case = false): boolean {
   if (ignore_case) {
@@ -66,4 +67,13 @@ export function str_dos2unix (s: string): string {
 
 export function str_unix2dos (s: string): string {
   return strReplaceAll(s, '\n', '\r\n');
+}
+
+export function str_minus (a: string, b: string): string {
+  return setToArray(
+    setMinus(
+      new Set(a),
+      new Set(b),
+    ),
+  ).join('');
 }

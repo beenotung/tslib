@@ -18,7 +18,7 @@
     ],
     "arrow-parens": false,
     "jsdoc-format": false,
-    "space-before-function-paren": false,
+    "space-before-function-paren": true,
     "no-invalid-this": true,
     "callable-types": true,
     "class-name": true,

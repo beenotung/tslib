@@ -1,4 +1,26 @@
 import {enum_keys} from './enum';
+import {str_minus} from './string';
+
+/**
+ * @param start {number} inclusive
+ * @param end {number} exclusive
+ * */
+export function genStringRange (start: number, end: number): string {
+  let s = '';
+  for (let i = start; i < end; i++) {
+    s += String.fromCharCode(i);
+  }
+  return s;
+}
+
+export const digits = genStringRange(48, 48 + 10);
+export const upperCaseLetters = genStringRange(65, 65 + 26);
+export const lowerCaseLetters = genStringRange(65 + 32, 65 + 32 + 26);
+/** visible characters only in ascii range */
+export const visibleLetters = genStringRange(32, 127);
+/** base58btc format, removed '0OIl' and '+/' */
+export const base58Letters = '123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz';
+export const symbolLetters = str_minus(visibleLetters, digits + upperCaseLetters + lowerCaseLetters);
 
 export namespace Random {
   /** @return number : lower <= value < upper */
@@ -15,10 +37,13 @@ export namespace Random {
     return Math.random() * 2 - 1;
   }
 
+  export function element<A> (xs: A[]): A;
+  export function element<A> (s: string): string;
+
   /**
    * Nullable
    * */
-  export function element<A> (xs: A[]): A {
+  export function element<A> (xs: string | A[]): A | string {
     return xs[nextInt(xs.length, 0)];
   }
 
@@ -43,5 +68,13 @@ export namespace Random {
     }
     return res;
     // tslint:enable:no-bitwise
+  }
+
+  export function nextString (n: number, pool = visibleLetters) {
+    let s = '';
+    for (; s.length < n;) {
+      s += element(pool);
+    }
+    return s;
   }
 }

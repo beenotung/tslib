@@ -27,7 +27,7 @@ export function enum_s2i<E> (e: E, s: E[keyof E]): keyof E {
   return ensureNumber(res as any);
 }
 
-export function enum_next_i<E> (e: E, i: keyof E): keyof E {
+export function enum_next_i<E> (e: E, i: number & keyof E): keyof E {
   const res = e[e[i + 1]];
   if (res === void 0) {
     throw new TypeError(`Enum of index '${i}' don't have next value`);

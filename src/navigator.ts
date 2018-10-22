@@ -6,7 +6,7 @@
  * 3. remove non-serializable fields (function, prototype)
  *
  * */
-export function toJson(o: any, visited: Set<any>): object {
+export function toJson (o: any, visited: Set<any>): object {
   if (o === null) {
     return null;
   }
@@ -57,6 +57,6 @@ export function toJson(o: any, visited: Set<any>): object {
   return res;
 }
 
-export function mkNavigator(): object {
+export function mkNavigator (): object {
   return toJson(window.navigator, new Set<any>());
 }
