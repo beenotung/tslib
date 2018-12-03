@@ -9,7 +9,7 @@ export function readStreamByLine (stream: NodeJS.ReadableStream
   , onComplete: () => void) {
   let lineNum = -1;
   let hasFail = false;
-  stream
+  return stream
     .pipe(event_stream.split('\n'))
     .pipe(event_stream.mapSync((line: string) => {
       if (hasFail) {
