@@ -1,11 +1,15 @@
-import {createDefer} from './async/defer';
-import {enum_only_string} from './enum';
-import {xor} from './logic';
+import { createDefer } from './async/defer';
+import { enum_only_string } from './enum';
+import { xor } from './logic';
 
 /**
  * reference : https://stackoverflow.com/questions/20958078/resize-a-base-64-image-in-javascript-without-using-canvas
  * */
-export function imageToCanvas (img: HTMLImageElement, width: number, height: number): HTMLCanvasElement {
+export function imageToCanvas(
+  img: HTMLImageElement,
+  width: number,
+  height: number,
+): HTMLCanvasElement {
   const canvas = document.createElement('canvas');
   const ctx = canvas.getContext('2d');
   canvas.width = width;
@@ -14,11 +18,15 @@ export function imageToCanvas (img: HTMLImageElement, width: number, height: num
   return canvas;
 }
 
-export function imageToBase64 (img: HTMLImageElement, width: number, height: number): string {
+export function imageToBase64(
+  img: HTMLImageElement,
+  width: number,
+  height: number,
+): string {
   return imageToCanvas(img, width, height).toDataURL();
 }
 
-export async function base64ToImage (data: string): Promise<HTMLImageElement> {
+export async function base64ToImage(data: string): Promise<HTMLImageElement> {
   const defer = createDefer<HTMLImageElement, any>();
   const image = new Image();
   image.onload = () => {
@@ -31,7 +39,7 @@ export async function base64ToImage (data: string): Promise<HTMLImageElement> {
 /**
  * TODO check if there are exceptions
  * */
-export function checkBase64ImagePrefix (s: string): string {
+export function checkBase64ImagePrefix(s: string): string {
   return typeof s === 'string' && s.startsWith('/9j/')
     ? 'data:image/jpeg;base64,' + s
     : s;
@@ -41,15 +49,19 @@ export function checkBase64ImagePrefix (s: string): string {
  * data type conversion
  * also work for resizing
  * */
-export async function base64ToCanvas (data: string, width?: number, height?: number): Promise<HTMLCanvasElement> {
+export async function base64ToCanvas(
+  data: string,
+  width?: number,
+  height?: number,
+): Promise<HTMLCanvasElement> {
   const image = await base64ToImage(data);
   if (xor(width, height)) {
     if (width) {
       /* height is not defined */
-      height = image.naturalHeight / image.naturalWidth * width;
+      height = (image.naturalHeight / image.naturalWidth) * width;
     } else {
       /* width is not defined */
-      width = image.naturalWidth / image.naturalHeight * height;
+      width = (image.naturalWidth / image.naturalHeight) * height;
     }
   } else if (!width && !height) {
     width = image.naturalWidth;
@@ -58,33 +70,41 @@ export async function base64ToCanvas (data: string, width?: number, height?: num
   return imageToCanvas(image, width, height);
 }
 
-export async function resizeBase64Image (data: string, targetWidth: number, targetHeight: number): Promise<string> {
+export async function resizeBase64Image(
+  data: string,
+  targetWidth: number,
+  targetHeight: number,
+): Promise<string> {
   return (await base64ToCanvas(data, targetWidth, targetHeight)).toDataURL();
 }
 
 export interface ISize {
-  width: number
-  height: number
+  width: number;
+  height: number;
 }
 
-export async function getWidthHeightFromBase64 (data: string): Promise<ISize> {
+export async function getWidthHeightFromBase64(data: string): Promise<ISize> {
   const image = await base64ToImage(data);
   return {
-    width: image.naturalWidth
-    , height: image.naturalHeight,
+    width: image.naturalWidth,
+    height: image.naturalHeight,
   };
 }
 
 export enum ResizeType {
   /* with-in the given area, maybe smaller  */
-  with_in
+  with_in,
   /* at least as large as the given area, maybe larger */
-  , at_least,
+  at_least,
 }
 
 enum_only_string(ResizeType);
 
-export function resizeWithRatio (oriSize: ISize, targetSize: ISize, mode: ResizeType): ISize {
+export function resizeWithRatio(
+  oriSize: ISize,
+  targetSize: ISize,
+  mode: ResizeType,
+): ISize {
   const widthRate = targetSize.width / oriSize.width;
   const heightRate = targetSize.height / oriSize.height;
   let rate: number;
@@ -99,16 +119,24 @@ export function resizeWithRatio (oriSize: ISize, targetSize: ISize, mode: Resize
       throw new TypeError(`unsupported type: ${mode}`);
   }
   return {
-    width: oriSize.width * rate
-    , height: oriSize.height * rate,
+    width: oriSize.width * rate,
+    height: oriSize.height * rate,
   };
 }
 
-export async function resizeBase64WithRatio (data: string, preferedSize: ISize, mode: ResizeType): Promise<string> {
+export async function resizeBase64WithRatio(
+  data: string,
+  preferedSize: ISize,
+  mode: ResizeType,
+): Promise<string> {
   const image = await base64ToImage(data);
-  const targetSize = resizeWithRatio({
-    width: image.naturalWidth
-    , height: image.naturalHeight,
-  }, preferedSize, mode);
+  const targetSize = resizeWithRatio(
+    {
+      width: image.naturalWidth,
+      height: image.naturalHeight,
+    },
+    preferedSize,
+    mode,
+  );
   return imageToBase64(image, targetSize.width, targetSize.height);
 }

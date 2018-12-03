@@ -9,13 +9,15 @@ export namespace CompareResult {
   export type Larger = 1;
   export const Larger: Larger = 1;
 }
-export type CompareResult = CompareResult.Smaller | CompareResult.Equal | CompareResult.Larger;
+export type CompareResult =
+  | CompareResult.Smaller
+  | CompareResult.Equal
+  | CompareResult.Larger;
 
-export function compare_number (a: number, b: number): CompareResult {
+export function compare_number(a: number, b: number): CompareResult {
   return a === b
     ? CompareResult.Equal
     : a < b
-      ? CompareResult.Smaller
-      : CompareResult.Larger
-    ;
+    ? CompareResult.Smaller
+    : CompareResult.Larger;
 }

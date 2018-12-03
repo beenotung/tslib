@@ -1,5 +1,9 @@
 export namespace search {
-  export function str_contains (base: string, query: string, caseInsensitive = true) {
+  export function str_contains(
+    base: string,
+    query: string,
+    caseInsensitive = true,
+  ) {
     if (caseInsensitive) {
       return base.toLocaleLowerCase().indexOf(query.toLocaleLowerCase()) !== -1;
     } else {
@@ -7,7 +11,7 @@ export namespace search {
     }
   }
 
-  export function object_contains (base, query: string, caseInsensitive = true) {
+  export function object_contains(base, query: string, caseInsensitive = true) {
     if (typeof base === 'string') {
       return str_contains(base, query, caseInsensitive);
     }
@@ -21,7 +25,7 @@ export namespace search {
       } else if (v === query) {
         return true;
       } else if (Array.isArray(v)) {
-        if (v.some((base) => object_contains(base, query, caseInsensitive))) {
+        if (v.some(base => object_contains(base, query, caseInsensitive))) {
           return true;
         }
       }

@@ -1,4 +1,7 @@
-export async function promisify<A> (f: (...args: any[]) => any, args: any[] = []): Promise<A> {
+export async function promisify<A>(
+  f: (...args: any[]) => any,
+  args: any[] = [],
+): Promise<A> {
   return new Promise<A>((resolve, reject) => {
     (f as any).call(...args, (err, res: A) => {
       if (err) {
@@ -16,7 +19,7 @@ export interface PromiseCallback<A> {
   promise: Promise<A>;
 }
 
-export function genPromiseCallback<A> (): PromiseCallback<A> {
+export function genPromiseCallback<A>(): PromiseCallback<A> {
   let resolve: (a: A) => void;
   let reject: (e) => void;
   const p = new Promise<A>((res, rej) => {
@@ -30,5 +33,5 @@ export function genPromiseCallback<A> (): PromiseCallback<A> {
       resolve(res);
     }
   };
-  return Object.assign(cb, {promise: p});
+  return Object.assign(cb, { promise: p });
 }

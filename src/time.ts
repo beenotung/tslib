@@ -8,7 +8,7 @@ export const WEEK = DAY * 7;
 export namespace session {
   const intervals = {};
 
-  export function now (interval = 1000): number {
+  export function now(interval = 1000): number {
     const now = Date.now();
     const last = intervals[interval];
     if (last) {

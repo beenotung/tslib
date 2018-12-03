@@ -1,22 +1,22 @@
 export let dateFormatter = (x: Date) => x.toString();
 
-export function setDateFormatter (f: (x: Date) => string) {
+export function setDateFormatter(f: (x: Date) => string) {
   dateFormatter = f;
 }
 
-export function resetDateFormatter () {
+export function resetDateFormatter() {
   dateFormatter = (x: Date) => x.toString();
 }
 
-export function setDateFormatLocale (lang: string, timezone: string) {
-  dateFormatter = (x) => x.toLocaleString(lang, {timeZone: timezone});
+export function setDateFormatLocale(lang: string, timezone: string) {
+  dateFormatter = x => x.toLocaleString(lang, { timeZone: timezone });
 }
 
-export function resetDateFormatLocale () {
-  dateFormatter = (x) => x.toLocaleString();
+export function resetDateFormatLocale() {
+  dateFormatter = x => x.toLocaleString();
 }
 
-export function toString (o: any): string {
+export function toString(o: any): string {
   switch (typeof o) {
     case 'string':
       return o;
@@ -32,7 +32,7 @@ export function toString (o: any): string {
 
 const escape_space = '&nbsp;';
 
-export function displayJSON (o: any, mode: 'raw' | 'table' = 'table'): string {
+export function displayJSON(o: any, mode: 'raw' | 'table' = 'table'): string {
   if (mode === 'raw') {
     return `<pre>${toString(o)}</pre>`;
   }
@@ -40,11 +40,23 @@ export function displayJSON (o: any, mode: 'raw' | 'table' = 'table'): string {
   switch (typeof o) {
     case 'object':
       if (Array.isArray(o)) {
-        return '<ol>' + (o as any[]).map((x) => '<li>' + displayJSON(x, mode) + '</li>').join('') + '</ol>';
+        return (
+          '<ol>' +
+          (o as any[])
+            .map(x => '<li>' + displayJSON(x, mode) + '</li>')
+            .join('') +
+          '</ol>'
+        );
       }
       if (o instanceof Set) {
         o = Array.from(o);
-        return '<ul>' + (o as any[]).map((x) => '<li>' + displayJSON(x, mode) + '</li>').join('') + '</ul>';
+        return (
+          '<ul>' +
+          (o as any[])
+            .map(x => '<li>' + displayJSON(x, mode) + '</li>')
+            .join('') +
+          '</ul>'
+        );
       }
       if (o instanceof Date) {
         return toString(o);
@@ -56,21 +68,26 @@ export function displayJSON (o: any, mode: 'raw' | 'table' = 'table'): string {
     case 'string':
       const s = o as string;
       return s
-        .split('\r').join('')
-        .split('\n').join('<br>')
-        .split('  ').join(escape_space.repeat(2))
-        .split('\t').join(escape_space.repeat(4))
-        ;
+        .split('\r')
+        .join('')
+        .split('\n')
+        .join('<br>')
+        .split('  ')
+        .join(escape_space.repeat(2))
+        .split('\t')
+        .join(escape_space.repeat(4));
     default:
       return `<pre>${JSON.stringify(o)}</pre>`;
   }
   /* being object */
   const rows = Object.keys(o)
-    .map((k) => {
+    .map(k => {
       const v = o[k];
-      return `<tr><td>${displayJSON(k, mode)}</td><td>${displayJSON(v, mode)}</td></tr>`;
+      return `<tr><td>${displayJSON(k, mode)}</td><td>${displayJSON(
+        v,
+        mode,
+      )}</td></tr>`;
     })
-    .join('')
-  ;
+    .join('');
   return `<table><tbody>${rows}</tbody></table>`;
 }

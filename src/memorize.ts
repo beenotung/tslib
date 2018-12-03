@@ -1,5 +1,5 @@
-import {MapMap} from './map-map';
-import {wrapFunction} from './reflection';
+import { MapMap } from './map-map';
+import { wrapFunction } from './reflection';
 
 /* tslint:disable:ban-types */
 /**
@@ -17,25 +17,29 @@ import {wrapFunction} from './reflection';
  *       f = memorize(f);
  *
  * */
-export function memorize<F extends Function> (f: F): F & { clear: () => void } {
+export function memorize<F extends Function>(f: F): F & { clear: () => void } {
   /* tslint:enable:ban-types */
   /* length => ...args */
   const cache = new MapMap<number, MapMap<any, any>>();
   return Object.assign(
-    wrapFunction<F>(function () {
-      let map = cache.getMap(arguments.length);
-      for (let i = arguments.length - 1; i > 0; i--) {
-        map = map.getMap(arguments[i]);
-      }
-      const last = arguments[0];
-      if (map.has(last)) {
-        return map.get(last);
-      }
-      const res = f.apply(null, arguments);
-      map.set(last, res);
-      return res;
-    } as any, f.length, f.name)
-    , {clear: () => cache.clear()},
+    wrapFunction<F>(
+      function() {
+        let map = cache.getMap(arguments.length);
+        for (let i = arguments.length - 1; i > 0; i--) {
+          map = map.getMap(arguments[i]);
+        }
+        const last = arguments[0];
+        if (map.has(last)) {
+          return map.get(last);
+        }
+        const res = f.apply(null, arguments);
+        map.set(last, res);
+        return res;
+      } as any,
+      f.length,
+      f.name,
+    ),
+    { clear: () => cache.clear() },
   );
 }
 
@@ -45,21 +49,21 @@ export class MemorizePool<A> {
   /**
    * @return [has_or_not, result]
    * */
-  public get (args: IArguments): undefined | [A] {
+  public get(args: IArguments): undefined | [A] {
     const map = this.getLastMap(args);
     const last = args[0];
     if (map.has(last)) {
-      return [map.get(last)as any];
+      return [map.get(last) as any];
     } else {
       return undefined;
     }
   }
 
-  public set (args: IArguments, res) {
+  public set(args: IArguments, res) {
     this.getLastMap(args).set(args[0], res);
   }
 
-  public getOrCalc (args: IArguments, f: () => A) {
+  public getOrCalc(args: IArguments, f: () => A) {
     const map = this.getLastMap(args);
     const last = args[0];
     if (map.has(last)) {
@@ -70,7 +74,7 @@ export class MemorizePool<A> {
     return res;
   }
 
-  private getLastMap (args: IArguments): MapMap<any, A> {
+  private getLastMap(args: IArguments): MapMap<any, A> {
     let map = this.cache.getMap(args.length);
     for (let i = args.length - 1; i > 0; i--) {
       map = map.getMap(args[i]);

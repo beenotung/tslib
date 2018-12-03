@@ -1,7 +1,7 @@
-import {Subject} from 'rxjs/Subject';
-import {remove} from './array';
-import {createDefer, Defer} from './async/defer';
-import {ensureNumber, ensureString} from './strict-type';
+import { Subject } from 'rxjs/Subject';
+import { remove } from './array';
+import { createDefer, Defer } from './async/defer';
+import { ensureNumber, ensureString } from './strict-type';
 
 /**@deprecated*/
 export class Task<A> {
@@ -12,7 +12,7 @@ export class Task<A> {
   public done = false;
   public readonly defer: Defer<A, any> = createDefer();
 
-  constructor (f: () => Promise<A>) {
+  constructor(f: () => Promise<A>) {
     this.f = f;
   }
 }
@@ -20,23 +20,23 @@ export class Task<A> {
 export type TaskPoolEventType = 'pending' | 'running' | 'stopped';
 
 export interface TaskPoolProgress {
-  eventType: TaskPoolEventType
-  pending: number
-  running: number
-  stopped: number
+  eventType: TaskPoolEventType;
+  pending: number;
+  running: number;
+  stopped: number;
 }
 
 export interface TaskPoolOptions {
-  limit: number
+  limit: number;
   /* default true */
-  report_progress?: boolean
-  mode?: TaskPoolMode
+  report_progress?: boolean;
+  mode?: TaskPoolMode;
 }
 
 export const defaultTaskPoolOptions: TaskPoolOptions = {
-  limit: undefined
-  , report_progress: true
-  , mode: 'FILO',
+  limit: undefined,
+  report_progress: true,
+  mode: 'FILO',
 };
 
 export type TaskPoolMode = 'FIFO' | 'FILO';
@@ -51,7 +51,7 @@ export class TaskPool<A> {
   public limit: number;
   public mode: TaskPoolMode;
 
-  constructor (options: TaskPoolOptions) {
+  constructor(options: TaskPoolOptions) {
     options = Object.assign({}, defaultTaskPoolOptions, options);
     this.limit = ensureNumber(options.limit);
     this.mode = ensureString(options.mode);
@@ -60,7 +60,7 @@ export class TaskPool<A> {
     }
   }
 
-  public addTaskF (f: () => Promise<A>) {
+  public addTaskF(f: () => Promise<A>) {
     return this.addTask(new Task<A>(f));
   }
 
@@ -68,18 +68,18 @@ export class TaskPool<A> {
    * parent must be already in pool
    * child should be new task (not in pool)
    * */
-  public addDepTask (parent: Task<A>, child: Task<A>) {
-    parent.defer.promise.then((res) => {
+  public addDepTask(parent: Task<A>, child: Task<A>) {
+    parent.defer.promise.then(res => {
       this.addTask(child);
     });
     return child;
   }
 
-  public addDepTaskF (parent: Task<A>, childF: () => Promise<A>) {
+  public addDepTaskF(parent: Task<A>, childF: () => Promise<A>) {
     return this.addDepTask(parent, new Task<A>(childF));
   }
 
-  public addTask (task: Task<A>) {
+  public addTask(task: Task<A>) {
     if (task.running) {
       this.runningTasks.push(task);
       return task;
@@ -96,18 +96,18 @@ export class TaskPool<A> {
     return this.runTask(task);
   }
 
-  public check () {
+  public check() {
     if (this.runningTasks.length < this.limit && this.pendingTasks.length > 0) {
-      const task = this.mode === 'FILO'
-        ? this.pendingTasks.pop() /* first in last out */
-        : this.pendingTasks.shift() /* first in first out */
-      ;
+      const task =
+          this.mode === 'FILO'
+            ? this.pendingTasks.pop() /* first in last out */
+            : this.pendingTasks.shift() /* first in first out */;
       this.runTask(task);
       this.check();
     }
   }
 
-  private runTask (task: Task<A>) {
+  private runTask(task: Task<A>) {
     this.runningTasks.push(task);
     task.running = true;
     const done = () => {
@@ -118,13 +118,14 @@ export class TaskPool<A> {
       this.report('stopped');
       this.check();
     };
-    task.f()
-      .then((res) => {
+    task
+      .f()
+      .then(res => {
         task.res = res;
         task.defer.resolve(res);
         done();
       })
-      .catch((err) => {
+      .catch(err => {
         task.err = err;
         task.defer.reject(err);
         done();
@@ -133,12 +134,13 @@ export class TaskPool<A> {
     return task;
   }
 
-  private report (type: TaskPoolEventType) {
-    this.progress && this.progress.next({
-      eventType: type,
-      pending: this.pendingTasks.length,
-      running: this.runningTasks.length,
-      stopped: this.stoppedTasks.length,
-    });
+  private report(type: TaskPoolEventType) {
+    this.progress &&
+      this.progress.next({
+        eventType: type,
+        pending: this.pendingTasks.length,
+        running: this.runningTasks.length,
+        stopped: this.stoppedTasks.length,
+      });
   }
 }
