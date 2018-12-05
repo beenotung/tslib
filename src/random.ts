@@ -25,6 +25,7 @@ export const symbolLetters = str_minus(
   visibleLetters,
   digits + upperCaseLetters + lowerCaseLetters,
 );
+export const alphabetNumLetters = upperCaseLetters + lowerCaseLetters + digits;
 
 export namespace Random {
   /** @return number : lower <= value < upper */
@@ -82,7 +83,7 @@ export namespace Random {
 
   export function nextString(n: number, pool = visibleLetters) {
     let s = '';
-    for (; s.length < n; ) {
+    for (; s.length < n;) {
       s += element(pool);
     }
     return s;
