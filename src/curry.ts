@@ -4,11 +4,11 @@
 
 /* tslint:disable:ban-types */
 
-import {concatArgs, copyArray} from './lang';
+import { concatArgs, copyArray } from './lang';
 
 /* reference : http://stackoverflow.com/questions/27996544/how-to-correctly-curry-a-function-in-javascript */
 
-export function curry<A extends Function> (f: Function): A {
+export function curry<A extends Function>(f: Function): A {
   const arity = f.length;
   return arity === 0 ? f : partial(f, arity, []);
   // return typeof f === 'function' && f.length > 0
@@ -19,10 +19,8 @@ export function curry<A extends Function> (f: Function): A {
 export const id = curry(<A>(x: A) => x);
 
 /** internal func, use id() instead */
-export function autoCurry<A extends Function> (f: Function): A {
-  return (typeof f === 'function' && f.length > 0)
-    ? partial(f, f.length, [])
-    : f;
+export function autoCurry<A extends Function>(f: Function): A {
+  return typeof f === 'function' && f.length > 0 ? partial(f, f.length, []) : f;
 }
 
 /**
@@ -34,8 +32,12 @@ export function autoCurry<A extends Function> (f: Function): A {
  *       then apply them to the result of f
  *   else take all param, wait for extra param
  * */
-function partial<A extends Function, R> (f: Function, arity: number, acc: A[] | IArguments): A | R {
-  const next = function partialNext () {
+function partial<A extends Function, R>(
+  f: Function,
+  arity: number,
+  acc: A[] | IArguments,
+): A | R {
+  const next = function partialNext() {
     const args = arguments;
     const m = args.length;
     if (m < arity) {
@@ -47,7 +49,7 @@ function partial<A extends Function, R> (f: Function, arity: number, acc: A[] | 
     }
     return result;
   };
-  return next as any as A | R;
+  return (next as any) as A | R;
 }
 
 /* tslint:enable:ban-types */

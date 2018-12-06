@@ -1,4 +1,4 @@
-import {PolyfillMap} from './polyfill-map';
+import { PolyfillMap } from './polyfill-map';
 
 /**
  * map of value or map, aka nested map
@@ -11,7 +11,7 @@ import {PolyfillMap} from './polyfill-map';
 export class MapMap<K, V> {
   private m: Map<K, V>;
 
-  constructor () {
+  constructor() {
     if (typeof Map === 'function') {
       this.m = new Map<K, V>();
     } else {
@@ -19,19 +19,19 @@ export class MapMap<K, V> {
     }
   }
 
-  public has (k: K): boolean {
+  public has(k: K): boolean {
     return this.m.has(k);
   }
 
-  public get (k: K): V {
+  public get(k: K): V {
     return this.m.get(k);
   }
 
-  public set (k: K, v: V) {
+  public set(k: K, v: V) {
     return this.m.set(k, v);
   }
 
-  public getMap (k: K): V & MapMap<any, any> {
+  public getMap(k: K): V & MapMap<any, any> {
     if (this.m.has(k)) {
       return this.m.get(k) as any;
     }
@@ -40,7 +40,7 @@ export class MapMap<K, V> {
     return res as any;
   }
 
-  public clear () {
+  public clear() {
     this.m.clear();
   }
 }
@@ -49,30 +49,30 @@ export class MapMap<K, V> {
  * Key can only be number, string or symbol
  * */
 export class SimpleMapMap<K extends PropertyKey, V> {
-  private o: { [k: string ]: V } = {};
+  private o: { [k: string]: V } = {};
 
-  public has (k: K): boolean {
+  public has(k: K): boolean {
     return k in this.o;
   }
 
-  public get (k: K): V {
+  public get(k: K): V {
     return this.o[k as PropertyKey];
   }
 
-  public set (k: K, v: V) {
+  public set(k: K, v: V) {
     this.o[k as PropertyKey] = v;
   }
 
-  public getMap (k: K): V {
+  public getMap(k: K): V {
     if (k in this.o) {
       return this.o[k as PropertyKey];
     }
     const res = new SimpleMapMap<K, V>();
-    this.o[k as PropertyKey] = res as any as V;
-    return res as any as V;
+    this.o[k as PropertyKey] = (res as any) as V;
+    return (res as any) as V;
   }
 
-  public clear () {
+  public clear() {
     this.o = {};
   }
 }

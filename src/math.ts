@@ -1,6 +1,6 @@
-export function calcPhi () {
+export function calcPhi() {
   let phi = 1;
-  for (; ;) {
+  for (;;) {
     const x = 1 + 1 / phi;
     if (phi === x) {
       return x;
@@ -11,15 +11,15 @@ export function calcPhi () {
 
 let phi: number;
 export let math: { phi: number } = {
-  get phi (): number {
+  get phi(): number {
     return phi || (phi = calcPhi());
   },
-  set phi (never: number) {
+  set phi(never: number) {
     throw new Error('unexpected assignment');
   },
 };
 
-export function gcd (a: number, b: number): number {
+export function gcd(a: number, b: number): number {
   a = Math.abs(a);
   b = Math.abs(b);
   if (b > a) {
@@ -27,7 +27,7 @@ export function gcd (a: number, b: number): number {
     a = b;
     b = t;
   }
-  for (; ;) {
+  for (;;) {
     if (b === 0) {
       return a;
     }
@@ -39,6 +39,6 @@ export function gcd (a: number, b: number): number {
   }
 }
 
-export function lcm (a: number, b: number): number {
+export function lcm(a: number, b: number): number {
   return !a || !b ? 0 : Math.abs(a * b) / gcd(a, b);
 }

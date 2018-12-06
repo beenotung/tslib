@@ -1,7 +1,7 @@
 /**
  * external API powered by surge.sh
  */
-import {createDefer} from './async/defer';
+import { createDefer } from './async/defer';
 
 export namespace externalAPI {
   const hostListUrl = 'http://host-list.surge.sh/list';
@@ -15,11 +15,12 @@ export namespace externalAPI {
   /**
    * @example line : 192.168.1.2:8181 freedom-coin-server
    * */
-  export async function getHostList (): Promise<HostRecord[]> {
-    const text = await (fetch(hostListUrl).then((x) => x.text()));
-    return text.split('\n')
-      .filter((x) => x.length !== 0)
-      .map((line) => {
+  export async function getHostList(): Promise<HostRecord[]> {
+    const text = await fetch(hostListUrl).then(x => x.text());
+    return text
+      .split('\n')
+      .filter(x => x.length !== 0)
+      .map(line => {
         const record = {} as HostRecord;
         let xs = line.split(' ');
         record.name = xs[1];
@@ -32,15 +33,16 @@ export namespace externalAPI {
       });
   }
 
-  export async function getHostByName (name: string): Promise<HostRecord> {
-    const text = (await fetch(hostListUrl).then((x) => x.text()));
+  export async function getHostByName(name: string): Promise<HostRecord> {
+    const text = await fetch(hostListUrl).then(x => x.text());
     /* not using `getHostList().filter()` for speed */
     let found: HostRecord;
     const defer = createDefer<HostRecord, any>();
     try {
-      text.split('\n')
-        .filter((x) => x.length !== 0)
-        .forEach((line) => {
+      text
+        .split('\n')
+        .filter(x => x.length !== 0)
+        .forEach(line => {
           let xs = line.split(' ');
           if (xs[1] === name) {
             found = {} as HostRecord;

@@ -1,19 +1,9 @@
 /**
  * Created by beenotung on 3/9/17.
  */
-const size_units = [
-  'B'
-  , 'KB'
-  , 'MB'
-  , 'GB'
-  , 'TB'
-  , 'PB'
-  , 'EB'
-  , 'ZB'
-  , 'YB',
-];
+const size_units = ['B', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'];
 
-export function format_byte (n_byte: number, n_decimal = 2): string {
+export function format_byte(n_byte: number, n_decimal = 2): string {
   let acc = n_byte;
   for (const size_unit of size_units) {
     if (acc < 1024) {
@@ -21,5 +11,7 @@ export function format_byte (n_byte: number, n_decimal = 2): string {
     }
     acc /= 1024;
   }
-  return (acc * 1024).toFixed(n_decimal) + ' ' + size_units[size_units.length - 1];
+  return (
+    (acc * 1024).toFixed(n_decimal) + ' ' + size_units[size_units.length - 1]
+  );
 }

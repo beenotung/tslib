@@ -1,6 +1,6 @@
-import {curry} from './curry';
+import { curry } from './curry';
 
-export type PipeArg <A, B> = [(a: A) => B, A[]] | [(a: A) => B];
+export type PipeArg<A, B> = [(a: A) => B, A[]] | [(a: A) => B];
 
 /**
  * the function<A,B> :: A,...* -> B
@@ -20,26 +20,28 @@ export type PipeArg <A, B> = [(a: A) => B, A[]] | [(a: A) => B];
  * pipe :: PipeArg p => [p] -> a -> *
  *   - don't have to be of same type (like chain)
  * */
-export const pipe = curry(<A, B>(ps: Array<PipeArg<A, B>>, acc: A): B => {
-  for (const p of ps) {
-    if (p[1]) {
-      /* no extra args */
-      acc = p[0](acc) as B as any as A;
-    } else {
-      /* has extra args */
-      acc = p[0].call(null, acc, ...(p[1] as A[]));
+export const pipe = curry(
+  <A, B>(ps: Array<PipeArg<A, B>>, acc: A): B => {
+    for (const p of ps) {
+      if (p[1]) {
+        /* no extra args */
+        acc = ((p[0](acc) as B) as any) as A;
+      } else {
+        /* has extra args */
+        acc = p[0].call(null, acc, ...(p[1] as A[]));
+      }
     }
-  }
-  return acc as A as any as B;
-});
+    return ((acc as A) as any) as B;
+  },
+);
 
 /**
  * non-curried version of echoF in functional.ts
  *
  * echo :: (a->*) -> a -> a
  * */
-export function peek<A> (f: (a: A) => any): (a: A) => A {
-  return (a) => {
+export function peek<A>(f: (a: A) => any): (a: A) => A {
+  return a => {
     f(a);
     return a;
   };
@@ -49,21 +51,21 @@ export function peek<A> (f: (a: A) => any): (a: A) => A {
 export const echo = peek;
 
 export interface Chain<A> {
-  use (f: (a: A) => any): Chain<A>;
+  use(f: (a: A) => any): Chain<A>;
 
-  map<B> (f: (a: A) => B): Chain<B>;
+  map<B>(f: (a: A) => B): Chain<B>;
 
-  unwrap (): A;
+  unwrap(): A;
 }
 
-export function createChain<A> (a: A): Chain<A> {
+export function createChain<A>(a: A): Chain<A> {
   const res = {
-    use: (f) => {
+    use: f => {
       f(a);
       return res;
-    }
-    , map: (f) => createChain(f(a))
-    , unwrap: () => a,
+    },
+    map: f => createChain(f(a)),
+    unwrap: () => a,
   };
   return res;
 }
