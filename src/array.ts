@@ -44,11 +44,13 @@ export function includes<A> (x: A, xs: A[]): boolean {
  * */
 export function unique<A> (xs: A[]): A[] {
   const res: A[] = [];
-  xs.forEach((x) => {
-    if (!includes(x, res)) {
+  const set = new Set<A>();
+  for (const x of xs) {
+    if (!set.has(x)) {
+      set.add(x);
       res.push(x);
     }
-  });
+  }
   return res;
 }
 
