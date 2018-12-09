@@ -9,11 +9,24 @@ export async function blobToBuffer(blob: Blob): Promise<Uint8Array> {
   });
 }
 
-export function blobToText(blob: Blob): Promise<string> {
-  return new Promise<string>((resolve, reject) => {
+export function blobToText(blob: Blob): Promise<string | ArrayBuffer> {
+  return new Promise<string | ArrayBuffer>((resolve, reject) => {
     const reader = new FileReader();
     reader.onload = () => resolve(reader.result);
     reader.onerror = e => reject(e);
     reader.readAsText(blob);
   });
+}
+
+export function blobToString(blob: Blob): Promise<string> {
+  return blobToText(blob).then(x =>
+    typeof x === 'string' ? x : arrayBufferToString(x),
+  );
+}
+
+export function arrayBufferToString(
+  array: ArrayBuffer,
+  encode?: string,
+): string {
+  return new TextDecoder(encode).decode(array);
 }

@@ -1,3 +1,4 @@
+export type json = object | string | number | boolean;
 /**
  * 1. resolve nested object as undefined
  *
@@ -6,7 +7,7 @@
  * 3. remove non-serializable fields (function, prototype)
  *
  * */
-export function toJson(o: any, visited: Set<any>): object {
+export function toJson(o: any, visited: Set<any>): json {
   if (o === null) {
     return null;
   }
@@ -57,6 +58,6 @@ export function toJson(o: any, visited: Set<any>): object {
   return res;
 }
 
-export function mkNavigator(): object {
+export function mkNavigator(): json {
   return toJson(window.navigator, new Set<any>());
 }

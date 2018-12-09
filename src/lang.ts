@@ -121,7 +121,7 @@ export type deepF<A> = (() => A) | (() => deepF<A>);
 
 export function deepCall<A>(f: deepF<A> | A): A {
   while (typeof f === 'function') {
-    f = f();
+    f = (f as deepF<A>)();
   }
   return f;
 }
@@ -309,7 +309,7 @@ export function tryApply<A, B>(
 /** call the function without throwing exception */
 export function tryCall<A, B>(
   f: (...args: A[]) => B,
-  ...args: A[],
+  ...args: A[]
 ): B | undefined {
   try {
     return f(...args);
@@ -370,6 +370,7 @@ export function gen_noop<A>(): (a: A) => void {
 }
 
 export const noop: (...args: any[]) => void = () => {};
+
 /* tslint:enable no-empty */
 
 export function cast(o: any): any {

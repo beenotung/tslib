@@ -1,4 +1,5 @@
 import { createDefer, Defer } from './async/defer';
+import { arrayBufferToString } from './blob';
 import { mapI } from './lang';
 
 /**
@@ -18,8 +19,11 @@ export type BlobType =
   | 'application/xml'
   | string;
 
-function createAsyncFileReader<A>(): [Defer<A, any>, FileReader] {
-  const defer = createDefer<A, any>();
+function createAsyncFileReader(): [
+  Defer<string | ArrayBuffer, any>,
+  FileReader
+] {
+  const defer = createDefer<string | ArrayBuffer, any>();
   const reader = new FileReader();
   reader.onload = () => defer.resolve(reader.result);
   reader.onerror = defer.reject;
@@ -27,15 +31,15 @@ function createAsyncFileReader<A>(): [Defer<A, any>, FileReader] {
 }
 
 export async function fileToBase64String(file: File): Promise<string> {
-  const [defer, reader] = createAsyncFileReader<string>();
+  const [defer, reader] = createAsyncFileReader();
   reader.readAsDataURL(file);
-  return defer.promise;
+  return defer.promise.then(arrayBufferToString);
 }
 
 export async function fileToBinaryString(file: File): Promise<string> {
-  const [defer, reader] = createAsyncFileReader<string>();
+  const [defer, reader] = createAsyncFileReader();
   reader.readAsBinaryString(file);
-  return defer.promise;
+  return defer.promise.then(arrayBufferToString);
 }
 
 export async function fileToArray(file: File): Promise<number[]> {
@@ -44,9 +48,19 @@ export async function fileToArray(file: File): Promise<number[]> {
 }
 
 export async function fileToArrayBuffer(file: File): Promise<ArrayBuffer> {
-  const [defer, reader] = createAsyncFileReader<ArrayBuffer>();
+  const [defer, reader] = createAsyncFileReader();
   reader.readAsArrayBuffer(file);
-  return defer.promise;
+  return defer.promise.then(x => {
+    if (typeof x === 'string') {
+      const xs = new ArrayBuffer(x.length);
+      for (let i = 0, n = x.length; i < n; i++) {
+        xs[i] = x[i];
+      }
+      return xs;
+    } else {
+      return x;
+    }
+  });
 }
 
 /* reference: https://ausdemmaschinenraum.wordpress.com/2012/12/06/how-to-save-a-file-from-a-url-with-javascript/ */

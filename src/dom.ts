@@ -21,16 +21,16 @@ export function appendNode(node: Node, parent: Node) {
 export function setFullscreen(element = document.body) {
   if (element.requestFullscreen) {
     element.requestFullscreen();
-  } else if (element.webkitRequestFullscreen) {
-    element.webkitRequestFullscreen();
+  } else if ((element as any).webkitRequestFullscreen) {
+    (element as any).webkitRequestFullscreen();
   } else {
     console.warn('full screen is not supported');
   }
 }
 
 export function exitFullscreen() {
-  if (document.webkitExitFullscreen) {
-    document.webkitExitFullscreen();
+  if ((document as any).webkitExitFullscreen) {
+    (document as any).webkitExitFullscreen();
   } else if (document.exitFullscreen) {
     document.exitFullscreen();
   } else {

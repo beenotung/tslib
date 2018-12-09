@@ -21,27 +21,27 @@ export class HashedArray<A> {
       this.o = o;
     } else {
       o = {};
-      array.forEach(x => (o[mapper(x)] = x));
+      array.forEach(x => (o[mapper(x) as string] = x));
       this.o = o;
     }
   }
 
   public insert(x: A, key: PropertyKey = this.mapper(x)) {
     this.array.push(x);
-    this.o[key] = x;
+    this.o[key as string] = x;
     return this;
   }
 
   public replace(x: A, key: PropertyKey = this.mapper(x)) {
     const idx = this.array.findIndex(y => y === x);
     if (idx !== -1) {
-      this.o[key] = this.array[idx] = x;
+      this.o[key as string] = this.array[idx] = x;
     }
     return this;
   }
 
   public update(x: A, key: PropertyKey = this.mapper(x)) {
-    Object.assign(this.o[key], x);
+    Object.assign(this.o[key as string], x);
     return this;
   }
 
@@ -49,7 +49,7 @@ export class HashedArray<A> {
    * insert or replace
    * */
   public upsert(x: A, key: PropertyKey = this.mapper(x)) {
-    const y = this.o[key];
+    const y = this.o[key as string];
     if (isDefined(y)) {
       Object.assign(y, x);
       return this;
@@ -64,7 +64,7 @@ export class HashedArray<A> {
 
   public removeByKey(key: PropertyKey) {
     removeBy(this.array, x => this.mapper(x) === key);
-    delete this.o[key];
+    delete this.o[key as string];
     return this;
   }
 
@@ -78,7 +78,7 @@ export class HashedArray<A> {
   }
 
   public get(key: PropertyKey): A | undefined {
-    return this.o[key];
+    return this.o[key as string];
   }
 
   public has(key: PropertyKey): boolean {

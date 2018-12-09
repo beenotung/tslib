@@ -56,19 +56,19 @@ export class SimpleMapMap<K extends PropertyKey, V> {
   }
 
   public get(k: K): V {
-    return this.o[k as PropertyKey];
+    return this.o[k as string];
   }
 
   public set(k: K, v: V) {
-    this.o[k as PropertyKey] = v;
+    this.o[k as string] = v;
   }
 
   public getMap(k: K): V {
     if (k in this.o) {
-      return this.o[k as PropertyKey];
+      return this.o[k as string];
     }
     const res = new SimpleMapMap<K, V>();
-    this.o[k as PropertyKey] = (res as any) as V;
+    this.o[k as string] = (res as any) as V;
     return (res as any) as V;
   }
 
