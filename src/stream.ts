@@ -1,34 +1,57 @@
-import * as event_stream from 'event-stream';
+import { Stream } from 'stream';
 
 /**
  * @description lineNum start from 0
  * */
 export function readStreamByLine(
   stream: NodeJS.ReadableStream,
-  onLine: (line: string, lineNum: number) => void,
-  onError: (e: Error) => void,
-  onComplete: () => void,
+  _onLine?: (line: string, lineNum: number) => void,
+  _onError?: (e: Error) => void,
+  _onComplete?: () => void,
 ) {
-  let lineNum = -1;
-  let hasFail = false;
-  return stream
-    .pipe(event_stream.split('\n'))
-    .pipe(
-      event_stream.mapSync((line: string) => {
-        if (hasFail) {
-          return;
-        }
-        lineNum++;
-        if (line) {
-          try {
-            onLine(line, lineNum);
-          } catch (e) {
-            hasFail = true;
-            onError(e);
-          }
-        }
-      }),
-    )
-    .on('error', onError)
-    .on('end', onComplete);
+  const _lineStream = new Stream();
+  let _lineNum = -1;
+  let acc = '';
+
+  const onLine = (line: string) => {
+    _lineNum++;
+    const data = { line, lineNum: _lineNum };
+    _lineStream.emit('data', data);
+    if (_onLine) {
+      _onLine(line, _lineNum);
+    }
+  };
+  const onError = e => {
+    _lineStream.emit('error', e);
+    if (_onError) {
+      _onError(e);
+    }
+  };
+  const onComplete = () => {
+    if (acc !== '') {
+      console.warn('stream ends without newline');
+      onLine(acc);
+    }
+    _lineStream.emit('end');
+    if (_onComplete) {
+      _onComplete();
+    }
+  };
+
+  stream.on('data', s => {
+    acc += s;
+    const ss = acc.split('\n');
+    if (ss.length === 1) {
+      return;
+    }
+    const n = ss.length - 1;
+    for (let i = 0; i < n; i++) {
+      onLine(ss[i]);
+    }
+    acc = ss[n];
+  });
+  stream.on('error', onError);
+  stream.on('end', onComplete);
+
+  return _lineStream;
 }

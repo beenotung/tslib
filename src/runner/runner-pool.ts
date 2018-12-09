@@ -1,14 +1,14 @@
 import { Lock } from '../lock';
-import { Task } from './task';
+import { Runnable } from './runnable';
 
-export class TaskPool {
+export class RunnerPool {
   private readonly lock: Lock;
 
   constructor(limit: number) {
     this.lock = new Lock(limit);
   }
 
-  public async run<A>(task: Task<A>): Promise<A> {
+  public async run<A>(task: Runnable<A>): Promise<A> {
     await this.lock.acquire(1);
     try {
       return await task();

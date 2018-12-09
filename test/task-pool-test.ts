@@ -1,4 +1,4 @@
-import {TaskPool} from "../src/task/task-pool";
+import {TaskPool} from "./runner/task-pool";
 import {later} from "../src/async/wait";
 
 const pool = new TaskPool(2);
