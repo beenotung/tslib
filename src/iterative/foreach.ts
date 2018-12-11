@@ -1,4 +1,4 @@
-import { getObjectType } from '../object';
+import { getObjectType } from '../type';
 import { ArrayMapper, MapValueMapper, ObjectMapper, SetMapper } from './map';
 
 export type ArrayConsumer<A> = ArrayMapper<A, void>;

@@ -1,4 +1,6 @@
+import { map_any, map_set } from './iterative/map';
 import { isDefined } from './lang';
+import { getObjectType } from './type';
 
 export function isObject(o: any): boolean {
   return typeof o === 'object';
@@ -75,21 +77,45 @@ export function removeNull(o) {
   return o;
 }
 
-export type ObjectType =
-  | 'Object'
-  | 'Array'
-  | 'Map'
-  | 'Set'
-  | 'Number'
-  | 'String'
-  | 'Null'
-  | 'Undefined'
-  | 'Function'
-  | 'AsyncFunction';
-
-export function getObjectType(o: any): ObjectType {
-  return Object.prototype.toString
-    .call(o)
-    .replace('[object ', '')
-    .replace(']', '');
+/**
+ * @param {any}       o           : value to be checked
+ * @param {boolean}   skip        : true will remove duplicated value silently;
+ *                                  false will throw an error upon duplication
+ * @param {any}       placeholder : custom value to replace duplicated object
+ * @param {function}  mapper      : optional map function
+ * @param {Set}       visited     : internal book keeping seen objects
+ * */
+export function ensureNonCyclic<A>(
+  o: A,
+  skip = true,
+  placeholder: any = void 0,
+  mapper?: (a: any) => any,
+  visited = new Set(),
+): A {
+  switch (getObjectType(o)) {
+    case 'Number':
+    case 'String':
+    case 'Null':
+    case 'Undefined':
+    case 'Function':
+    case 'AsyncFunction':
+      /* these types can be duplicated */
+      return mapper ? mapper(o) : o;
+    default:
+      /* array, set, map, object */
+      if (visited.has(o)) {
+        /* duplicated object */
+        if (skip) {
+          return placeholder;
+        }
+        throw new Error('circular structure, duplicated value: ' + o);
+      }
+      /* non-duplicated object */
+      /* clone the set, to allow sibling duplication */
+      visited = map_set(visited, x => x);
+      visited.add(o);
+      return map_any(o, x =>
+        ensureNonCyclic(x, skip, placeholder, mapper, visited),
+      );
+  }
 }

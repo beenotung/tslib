@@ -1,5 +1,5 @@
-import { getObjectType } from '../object';
 import '../polyfill-array';
+import { getObjectType } from '../type';
 
 export type Mapper<A, B> = (a: A) => B;
 export type ArrayMapper<A, B> = (a: A, i: number, xs: A[]) => B;
