@@ -27,6 +27,7 @@
   "scripts": {
     "prebuild": "gen-index",
     "build": "tsc -p .",
+    "postbuild": "rm src/index.ts",
     "lint": "tslint --project tsconfig.json -c tslint.json",
     "dev": "run-p watch:*",
     "watch:build": "tsc -p . --watch",
