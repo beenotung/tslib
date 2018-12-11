@@ -1,4 +1,5 @@
-import './polyfill-array';
+import { getObjectType } from '../object';
+import '../polyfill-array';
 
 export type Mapper<A, B> = (a: A) => B;
 export type ArrayMapper<A, B> = (a: A, i: number, xs: A[]) => B;
@@ -44,23 +45,27 @@ export namespace maps {
     });
     return ys;
   };
+  export const any = (o, f: (a: any) => any): any => {
+    if (Array.isArray(o)) {
+      return array(o, f);
+    }
+    switch (getObjectType(o)) {
+      case 'Array':
+        return array(o, f);
+      case 'Set':
+        return set(o, f);
+      case 'Map':
+        return map(o, f);
+      case 'Object':
+        return object(o, f);
+      default:
+        return f(o);
+    }
+  };
 }
+
 export const map_array = maps.array;
 export const map_object = maps.object;
 export const map_set = maps.set;
 export const map_map = maps.map;
-export const map_any = (o, f) => {
-  if (Array.isArray(o)) {
-    return map_array(o, f);
-  }
-  if (o instanceof Set) {
-    return map_set(o, f);
-  }
-  if (o instanceof Map) {
-    return map_map(o, f);
-  }
-  if (o !== null && typeof o === 'object') {
-    return map_object(o, f);
-  }
-  return f(o);
-};
+export const map_any = maps.any;
