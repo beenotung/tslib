@@ -1,4 +1,5 @@
 export type json = object | string | number | boolean;
+
 /**
  * 1. resolve nested object as undefined
  *
@@ -11,7 +12,7 @@ export function toJson(o: any, visited: Set<any>): json {
   if (o === null) {
     return null;
   }
-  if (typeof o === 'object') {
+  if (typeof o === 'object' && o !== null) {
     if (visited.has(o)) {
       // console.log('duplicated visit of:', o);
       return undefined;

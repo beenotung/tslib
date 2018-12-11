@@ -12,7 +12,7 @@
     "email": "aabbcc1241@yahoo.com.hk",
     "url": "https://beeno-tung.surge.sh"
   },
-  "license": "BSD-3-Clause",
+  "license": "BSD-2-Clause",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/beenotung/tslib.git"
@@ -46,7 +46,7 @@
   "devDependencies": {
     "@beenotung/gen-index": "^1.0.4",
     "@types/isomorphic-fetch": "^0.0.34",
-    "@types/node": "^8.0.53",
+    "@types/node": "^8.10.38",
     "chokidar": "^1.7.0",
     "chokidar-cli": "^1.2.0",
     "npm-run-all": "^4.1.2",

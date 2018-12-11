@@ -1,4 +1,5 @@
 import { clearArray, removeByIdx } from './array';
+import { Type } from './lang';
 import { getWindowOrGlobal } from './runtime';
 
 export class PolyfillMap<K, V> implements Map<K, V> {
@@ -97,10 +98,11 @@ export class PolyfillMap<K, V> implements Map<K, V> {
   }
 }
 
-export function polyfillMap() {
+export function polyfillMap<K, V>(): Type<Map<K, V>> {
   if (typeof Map === 'function') {
-    return;
+    return Map;
   }
   const parent = getWindowOrGlobal();
   Object.assign(parent, { Map: PolyfillMap });
+  return PolyfillMap;
 }

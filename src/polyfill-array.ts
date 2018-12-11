@@ -1,6 +1,13 @@
 /**
  * Created by beenotung on 5/18/17.
  */
+
+if (!Array.isArray) {
+  Array.isArray = function(arg: any): arg is any[] {
+    return Object.prototype.toString.call(arg) === '[object Array]';
+  };
+}
+
 export interface PolyfillArray<A> extends Array<A> {
   peek(f: (element: A, index?: number) => void);
 }

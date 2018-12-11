@@ -234,7 +234,9 @@ export const concatWithoutDup = curry(
   },
 );
 
-export const map = curry(<A, B>(f: CurryF1<A, B>, as: A[]): B[] => as.map(f));
+export const fmap = curry(<A, B>(f: CurryF1<A, B>, as: A[]): B[] => as.map(f));
+/**@deprecated*/
+export const map = fmap;
 
 export const getOrSetDefault = curry(
   <K, V>(v: V, k: K, m: Map<K, V>): V => {

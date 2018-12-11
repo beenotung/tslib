@@ -74,3 +74,22 @@ export function removeNull(o) {
   }
   return o;
 }
+
+export type ObjectType =
+  | 'Object'
+  | 'Array'
+  | 'Map'
+  | 'Set'
+  | 'Number'
+  | 'String'
+  | 'Null'
+  | 'Undefined'
+  | 'Function'
+  | 'AsyncFunction';
+
+export function getObjectType(o: any): ObjectType {
+  return Object.prototype.toString
+    .call(o)
+    .replace('[object ', '')
+    .replace(']', '');
+}
