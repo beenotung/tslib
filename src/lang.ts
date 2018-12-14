@@ -3,26 +3,23 @@
  */
 import { inspect } from 'util';
 import { createDefer } from './async/defer';
-import { curry } from './curry';
 import { Supplier } from './functional';
 import { F1 } from './typestub-curry';
 
-export const deepGetProp = curry(
-  <A>(name: string, o: any): A => {
-    if (o[name]) {
-      return o[name];
-    }
-    const xs = name.split('.');
-    if (xs.length === 1) {
-      const message = `key '${name}' not found in object`;
-      console.warn(message, { name, o });
-      throw new TypeError(message);
-    }
-    const topLevelName = xs.shift();
-    const nextLevelName = xs.join('.');
-    return deepGetProp(nextLevelName, o[topLevelName]);
-  },
-);
+export function deepGetProp<A>(name: string, o: any): A {
+  if (o[name]) {
+    return o[name];
+  }
+  const xs = name.split('.');
+  if (xs.length === 1) {
+    const message = `key '${name}' not found in object`;
+    console.warn(message, { name, o });
+    throw new TypeError(message);
+  }
+  const topLevelName = xs.shift();
+  const nextLevelName = xs.join('.');
+  return deepGetProp(nextLevelName, o[topLevelName]);
+}
 
 export function hasProp<A>(k: ObjKey, o: Obj<A>): boolean {
   if (typeof o[k] !== 'undefined') {
