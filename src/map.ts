@@ -18,6 +18,15 @@ export function collectMap<K, V, A>(
 /**@deprecated renamed to collectMap */
 export const mapMap = collectMap;
 
+export function mapToArray<K, V, A>(
+  map: Map<K, V>,
+  f: (v: V, k: K, map: Map<K, V>) => A,
+): A[] {
+  const res: A[] = [];
+  map.forEach((v, k, m) => res.push(f(v, k, m)));
+  return res;
+}
+
 export function reduceMap<K, V, A>(
   map: Map<K, V>,
   mapper: (acc: A, v: V, k: K) => A,

@@ -1,9 +1,12 @@
 /**
  * Created by beenotung on 12/26/16.
+ * the curried functions are deprecated due to type system limit
  */
 
 import { curry, id } from './curry';
+import { Mapper } from './iterative/map';
 import { Obj, ObjKey } from './lang';
+import { mapGetOrSetDefault } from './map';
 import { CurryF1, CurryF2, F1, F2 } from './typestub-curry';
 
 export declare type Consumer<A> = (a: A) => void;
@@ -238,6 +241,7 @@ export const fmap = curry(<A, B>(f: CurryF1<A, B>, as: A[]): B[] => as.map(f));
 /**@deprecated*/
 export const map = fmap;
 
+/**@deprecated use mapGetOrSetDefault in map.ts */
 export const getOrSetDefault = curry(
   <K, V>(v: V, k: K, m: Map<K, V>): V => {
     if (m.has(k)) {
@@ -249,17 +253,15 @@ export const getOrSetDefault = curry(
 );
 
 /**
- * groupBy :: (a->k) -> [a] -> Map k [a]
+ * groupBy :: (a->k) , [a] -> Map k [a]
  * */
-export const groupBy = curry(
-  <A, K>(f: F1<A, K>, xs: A[]): Map<K, A[]> => {
-    const res = new Map<K, A[]>();
-    for (const x of xs) {
-      getOrSetDefault([], f(x), res).push(x);
-    }
-    return res;
-  },
-);
+export function groupBy<A, K>(f: Mapper<A, K>, xs: A[]): Map<K, A[]> {
+  const res = new Map<K, A[]>();
+  for (const x of xs) {
+    mapGetOrSetDefault(res, f(x), () => []).push(x);
+  }
+  return res;
+}
 
 /**
  * foldl :: (b->a->b) -> b -> [a] -> b
