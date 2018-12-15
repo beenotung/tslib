@@ -3,4 +3,5 @@ set -e
 npm i
 npm run build
 node ./mk-package.js > dist/package.json
-echo "done."
+find src -type f -name '*.ts' | awk '{print "cp",$1,$1}' | sed 's/.ts src/.ts dist/' | sh
+echo "done build-lib."
