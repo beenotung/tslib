@@ -6,63 +6,91 @@ export function from_csv(
   s: string,
   separator = COMMA,
   delimiter = DOUBLE_QUOTE,
-) {
+): string[][] {
   const rows: string[][] = [];
   let cols: string[] = [];
+  let col = '';
   let i = 0;
   const n = s.length;
   for (; i < n; ) {
     const c = s[i];
+    i++;
     switch (c) {
       case separator:
-        cols.push('');
-        i++;
+        cols.push(col);
+        col = '';
         break;
       case '\n':
-      case '\r':
+        cols.push(col);
+        col = '';
         rows.push(cols);
         cols = [];
-        if (c === '\r' && s[i + 1] === '\n') {
-          i += 2;
-        } else {
-          i += 1;
-        }
         break;
-      case delimiter: {
-        let col = '';
-        let idx = i + 1;
-        for (; idx < n; idx++) {
-          const c = s[idx];
-          // console.log({cols, col, c});
-          if (c === delimiter && s[idx + 1] === delimiter) {
-            col += delimiter;
-            idx++;
-          } else if (c === delimiter) {
-            break;
-          } else {
-            col += c;
+      default:
+        if (c === delimiter) {
+          for (;;) {
+            const c = s[i];
+            i++;
+            if (c === delimiter) {
+              if (s[i] === delimiter) {
+                /* the content is delimiter */
+                col += delimiter;
+                i++;
+              } else {
+                /* the content has ends */
+                break;
+              }
+            } else {
+              /* the content is not delimiter */
+              col += c;
+            }
           }
+          break;
         }
-        cols.push(col);
-        i = idx + 1;
-        break;
-      }
-      default: {
-        /* normal mode */
-        const start = i;
-        let end = s.indexOf(separator, start);
-        if (end === -1) {
-          end = n;
-        }
-        const col = s.substring(start, end);
-        cols.push(col);
-        i = end + 1;
-        break;
-      }
+        col += c;
     }
   }
-  if (cols.length > 0) {
-    rows.push(cols);
+  if (s[n - 1] !== '\n') {
+    // not terminated by new line, auto feed a newline
+    if (col.length > 0) {
+      cols.push(col);
+    }
+    if (cols.length > 0) {
+      rows.push(cols);
+    }
   }
   return rows;
+}
+
+export function to_csv(
+  rows: string[][],
+  separator = COMMA,
+  delimiter = DOUBLE_QUOTE,
+): string {
+  const res: string[] = [];
+  for (const cols of rows) {
+    let first = true;
+    for (const col of cols) {
+      if (first) {
+        first = false;
+      } else {
+        res.push(separator);
+      }
+      if (col.indexOf(delimiter) === -1 && col.indexOf(separator) === -1) {
+        res.push(col);
+      } else {
+        res.push(delimiter);
+        for (const c of col) {
+          if (c === delimiter) {
+            res.push(delimiter, delimiter);
+          } else {
+            res.push(c);
+          }
+        }
+        res.push(delimiter);
+      }
+    }
+    res.push('\n');
+  }
+  return res.join('');
 }
