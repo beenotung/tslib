@@ -12,6 +12,10 @@ export function str_contains(
   return target.indexOf(pattern) !== -1;
 }
 
+export function str_contains_any(patterns: string[], target: string, ignore_case = false): boolean {
+  return patterns.some(p => str_contains(p, target, ignore_case));
+}
+
 /**
  * example : 'change the words' ~> 'Change The Words'
  * */
