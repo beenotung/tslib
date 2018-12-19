@@ -1,13 +1,19 @@
 import { Random, visibleLetters } from '../src/random';
-import { csv_to_json, from_csv, to_csv } from '../src/csv';
+import { csv_to_json, from_csv, json_to_csv, to_csv } from '../src/csv';
 
-let datas = csv_to_json([
+let testData = [
   ['sid', 'name'],
   ['101', 'beeno'],
   ['102', 'peter'],
-]);
-if (datas[0].name !== 'beeno') {
-  console.error('csv_to_json() failed', { datas });
+];
+let jsonData = csv_to_json(testData);
+if (jsonData[0].name !== 'beeno') {
+  console.error('csv_to_json() failed', { jsonData });
+  process.exit(1);
+}
+let csvData = json_to_csv(jsonData);
+if (JSON.stringify(testData) !== JSON.stringify(csvData)) {
+  console.error('json_to_csv() failed', { csvData });
   process.exit(1);
 }
 

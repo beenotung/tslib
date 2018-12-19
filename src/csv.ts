@@ -115,3 +115,37 @@ export function csv_to_json(rows: string[][], titles?: string[]) {
     return res;
   });
 }
+
+export function json_to_csv(xs: any[]): string[][] {
+  const titles: string[] = [];
+  const titleCache = {};
+  const rows: string[][] = [titles];
+
+  /* build title list */
+  for (const x of xs) {
+    for (const title of Object.keys(x)) {
+      if (!titleCache[title]) {
+        titleCache[title] = true;
+        titles.push(title);
+      }
+    }
+  }
+
+  const n = titles.length;
+
+  for (const x of xs) {
+    const cols = new Array(n).fill('');
+    rows.push(cols);
+    for (let i = 0; i < n; i++) {
+      let col = x[titles[i]];
+      if (col === null || col === undefined) {
+        col = '';
+      } else {
+        col = String(col);
+      }
+      cols[i] = col;
+    }
+  }
+
+  return rows;
+}
