@@ -20,6 +20,11 @@ export function from_csv(
         cols.push(col);
         col = '';
         break;
+      case '\r':
+        if (s[i] !== '\n') {
+          col += c;
+        }
+        break;
       case '\n':
         cols.push(col);
         col = '';
@@ -90,7 +95,7 @@ export function to_csv(
         res.push(delimiter);
       }
     }
-    res.push('\n');
+    res.push('\r\n');
   }
   return res.join('');
 }
