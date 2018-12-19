@@ -1,5 +1,15 @@
 import { Random, visibleLetters } from '../src/random';
-import { from_csv, to_csv } from '../src/csv';
+import { csv_to_json, from_csv, to_csv } from '../src/csv';
+
+let datas = csv_to_json([
+  ['sid', 'name'],
+  ['101', 'beeno'],
+  ['102', 'peter'],
+]);
+if (datas[0].name !== 'beeno') {
+  console.error('csv_to_json() failed', { datas });
+  process.exit(1);
+}
 
 let genRows = (size: number): string[][] => {
   let rows = [];
