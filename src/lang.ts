@@ -3,7 +3,7 @@
  */
 import { inspect } from 'util';
 import { createDefer } from './async/defer';
-import { Supplier } from './functional';
+import { Supplier } from './functional/types';
 import { F1 } from './typestub-curry';
 
 export function deepGetProp<A>(name: string, o: any): A {
