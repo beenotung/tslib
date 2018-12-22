@@ -9,6 +9,7 @@ export type ObjectType =
   | 'Map'
   | 'Set'
   | 'Number'
+  | 'Boolean'
   | 'String'
   | 'Null'
   | 'Undefined'
@@ -16,8 +17,5 @@ export type ObjectType =
   | 'AsyncFunction';
 
 export function getObjectType(o: any): ObjectType {
-  return Object.prototype.toString
-    .call(o)
-    .replace('[object ', '')
-    .replace(']', '');
+  return Object.prototype.toString.call(o).match(/^\[object (.*)]$/)[1];
 }

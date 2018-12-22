@@ -4,15 +4,11 @@
  */
 
 import { curry, id } from './curry';
+import { Consumer } from './functional/types';
 import { Mapper } from './iterative/map';
 import { Obj, ObjKey } from './lang';
 import { mapGetOrSetDefault } from './map';
 import { CurryF1, CurryF2, F1, F2 } from './typestub-curry';
-
-export declare type Consumer<A> = (a: A) => void;
-export declare type Supplier<A> = () => A;
-
-export declare type AsyncSupplier<A> = () => Promise<A>;
 
 /** take all args (ignore arity)
  * apply :: (..args->a) -> ...args -> a
@@ -113,8 +109,9 @@ export const forEach = curry(<A>(f: Consumer<A>, xs: ArrayLike<A>) => {
     f(xs[i]);
   }
 });
-export type EmptyArray<A> = ArrayLike<A>;
-export type MaybeSingleton<A> = [A] | EmptyArray<A>;
+/**@deprecated*/
+export type EmptyArray<A> = [];
+export type MaybeSingleton<A> = [A] | [];
 /**
  * just :: a -> [a]
  * */
