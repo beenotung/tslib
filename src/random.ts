@@ -36,6 +36,20 @@ export namespace Random {
     return Math.floor(Math.random() * (upper - lower) + lower);
   }
 
+  export function nextFloat(
+    upper: number = Number.MAX_VALUE,
+    lower = 0,
+    decimal = 2,
+  ) {
+    const a = nextInt(upper, lower);
+    const b = nextInt(Math.pow(10, decimal));
+    if (b === 0) {
+      return a;
+    }
+    const p = Math.pow(10, Math.ceil(Math.log10(b)));
+    return a + b / p;
+  }
+
   export function nextBool(prob = 0.5): boolean {
     return Math.random() < prob;
   }
