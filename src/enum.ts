@@ -1,14 +1,17 @@
-import { range } from './array';
-import { isDefined, isNumber } from './lang';
 import { ensureNumber, ensureString } from './strict-type';
 
 /* tslint:disable:ban-types */
-/**@deprecated*/
-export type Enum =
-  | { [index: number]: string } & { [key: string]: number }
+export type Enum<E> =
+  | { [value: number]: keyof E } & { [key: string]: E }
   | Object;
 
 /* tslint:enable:ban-types */
+
+function is_enum_key(x) {
+  /* tslint:disable */
+  return x != +x;
+  /* tslint:enable */
+}
 
 /**
  * for the sake of implicit any in object index
@@ -45,15 +48,20 @@ export function enum_next_s<E>(e: E, s: E[keyof E]): E[keyof E] {
   return res;
 }
 
-export function enum_keys<E>(e: E): Array<E[keyof E]> {
-  return (Object.keys(e).filter(x => !isNumber(x)) as string[]) as any[];
+export function enum_keys<E>(e: Enum<E>): Array<string & keyof E> {
+  return Object.keys(e).filter(is_enum_key) as any[];
 }
 
 /**
  * numeric values
  * */
-export function enum_indices<E>(e: E): Array<keyof E> {
-  return range(0, enum_last_i(e) as any) as any;
+export function enum_indices<E>(e: Enum<E>): Array<keyof E> {
+  const n = enum_last_i(e) + 1;
+  const res = new Array(n);
+  for (let i = 0; i < n; i++) {
+    res[i] = i;
+  }
+  return res;
 }
 
 /**
@@ -61,36 +69,40 @@ export function enum_indices<E>(e: E): Array<keyof E> {
  * if    original enum -> numeric values;
  *    stringified enum -> string values
  * */
-export function enum_values<E>(e: E): Array<keyof E> {
+export function enum_values<E>(e: Enum<E>): Array<keyof E> {
   return enum_keys(e).map(s => e[s as any]) as any[];
 }
 
-export function enum_last_i<E>(e: E): keyof E {
-  return (enum_keys(e).length - 1) as any;
+export function enum_last_i<E>(e: Enum<E>): E & number {
+  return e[enum_last_s(e) as string];
 }
 
-export function enum_last_s<E>(e: E): E[keyof E] {
-  return e[enum_last_i(e)];
+export function enum_last_s<E>(e: Enum<E>): keyof E & string {
+  const ks = Object.keys(e);
+  return ks[ks.length - 1] as any;
 }
 
-export function enum_is_last_i<E>(e: E, i: keyof E): boolean {
+export function enum_is_last_i<E>(e: Enum<E>, i: E): boolean {
   return i === enum_last_i(e);
 }
 
-export function enum_is_last_s<E>(e: E, s: E[keyof E]): boolean {
+export function enum_is_last_s<E>(e: Enum<E>, s: keyof E): boolean {
   return s === enum_last_s(e);
 }
 
-export function enum_is_last<E>(e: E, v: E[keyof E] | keyof E): boolean {
+export function enum_is_last<E>(
+  e: Enum<E>,
+  v: E | number | keyof E | string,
+): boolean {
   if (typeof v === 'number') {
-    return enum_is_last_i(e, v as keyof E);
+    return enum_is_last_i(e, v as E);
   } else {
-    return enum_is_last_s(e, v as E[keyof E]);
+    return enum_is_last_s(e, v as keyof E);
   }
 }
 
 export function enum_is_in_range<E>(e: E, v: E[keyof E] | keyof E): boolean {
-  return isDefined(e[v as any]);
+  return v in e;
 }
 
 export function enum_not_equals<E1, E2>(e1: E1, e2: E2): boolean {
@@ -104,8 +116,8 @@ export function enum_not_equals<E1, E2>(e1: E1, e2: E2): boolean {
  * */
 export function enum_set_string<E>(e: E): E {
   Object.keys(e)
-    .filter(x => !isNumber(x))
-    .forEach(x => (e[x] = e[e[x]]));
+    .filter(is_enum_key)
+    .forEach(s => (e[s] = e[e[s]]));
   return e;
 }
 
@@ -113,12 +125,14 @@ export function enum_set_string<E>(e: E): E {
  * inplace update
  * */
 export function enum_only_string<E>(e: E) {
-  Object.keys(e)
-    .filter(isNumber)
-    .forEach(i => {
+  Object.keys(e).forEach(i => {
+    /* tslint:disable */
+    if ((i as any) == +i) {
+      /* tslint:enable */
       const s = e[i];
       e[s] = s;
       delete e[i];
-    });
+    }
+  });
   return e;
 }
