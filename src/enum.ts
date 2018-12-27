@@ -69,7 +69,7 @@ export function enum_indices<E>(e: Enum<E>): Array<keyof E> {
  * if    original enum -> numeric values;
  *    stringified enum -> string values
  * */
-export function enum_values<E>(e: Enum<E>): Array<keyof E> {
+export function enum_values<E>(e: Enum<E>): E[] {
   return enum_keys(e).map(s => e[s as any]) as any[];
 }
 
