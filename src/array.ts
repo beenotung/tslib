@@ -321,10 +321,30 @@ export function partitionArrayBy<A>(xs: A[], f: (a: A) => boolean): [A[], A[]] {
  *   new Array(3).map(x=>1) ~~> [<3 empty items>]
  *   map(new Array(3),x=>1) ~~> [ 1, 1, 1 ]
  * */
-export function mapArray<A, B>(xs: A[], f: (a: A, i: number) => B): B[] {
+export function mapArray<A, B>(
+  xs: A[],
+  f: (a: A, i: number, xs: A[]) => B,
+): B[] {
   const res = new Array<B>(xs.length);
   for (let i = xs.length - 1; i >= 0; i--) {
-    res[i] = f(xs[i], i);
+    res[i] = f(xs[i], i, xs);
   }
   return res;
+}
+
+export function countArray<A>(
+  xs: A[],
+  f: (a: A, i: number, xs: A[]) => boolean,
+): number {
+  return xs.reduce((acc, x, i, xs) => acc + (f(x, i, xs) ? 1 : 0), 0);
+}
+
+export function asyncCountArray<A>(
+  xs: A[],
+  f: (x: A, i: number, xs: A[]) => Promise<boolean>,
+): Promise<number> {
+  let acc = 0;
+  return Promise.all(
+    xs.map((x, i, xs) => f(x, i, xs).then(b => (acc += b ? 1 : 0))),
+  ).then(() => acc);
 }
