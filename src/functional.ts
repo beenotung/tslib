@@ -109,9 +109,8 @@ export const forEach = curry(<A>(f: Consumer<A>, xs: ArrayLike<A>) => {
     f(xs[i]);
   }
 });
-/**@deprecated*/
-export type EmptyArray<A> = [];
-export type MaybeSingleton<A> = [A] | [];
+export type EmptyArray<A> = ArrayLike<A>;
+export type MaybeSingleton<A> = [A] | EmptyArray<A>;
 /**
  * just :: a -> [a]
  * */
