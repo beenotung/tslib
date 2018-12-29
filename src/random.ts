@@ -1,4 +1,4 @@
-import { enum_keys } from './enum';
+import { Enum, enum_keys } from './enum';
 import { str_minus } from './string';
 
 /**
@@ -81,8 +81,12 @@ export namespace Random {
   /**
    * @return value of enum (not key of enum)
    * */
-  export function nextEnum<E>(e: E): E[keyof E] {
-    return e[Random.element(enum_keys(e)) as any];
+  export function nextEnum<E>(e: Enum<E>): E {
+    return e[Random.element(enum_keys<E>(e)) as any] as any;
+  }
+
+  export function nextEnumKey<E>(e: Enum<E>): string & keyof E {
+    return Random.element(enum_keys(e));
   }
 
   export function nextBuffer(n: number) {
