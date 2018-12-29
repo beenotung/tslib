@@ -95,7 +95,7 @@ export function enum_is_last<E>(
   v: E | number | keyof E | string,
 ): boolean {
   if (typeof v === 'number') {
-    return enum_is_last_i(e, v as E);
+    return enum_is_last_i(e, v as any);
   } else {
     return enum_is_last_s(e, v as keyof E);
   }
