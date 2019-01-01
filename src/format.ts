@@ -15,3 +15,21 @@ export function format_byte(n_byte: number, n_decimal = 2): string {
     (acc * 1024).toFixed(n_decimal) + ' ' + size_units[size_units.length - 1]
   );
 }
+
+export function format_datetime(
+  time: number,
+  options: { locales?: string; empty?: string } = {},
+) {
+  if (!time) {
+    return options.empty || '-';
+  }
+  return new Date(time).toLocaleString(options.locales || 'en', {
+    weekday: 'short',
+    year: 'numeric',
+    month: 'short',
+    day: 'numeric',
+    hour: '2-digit',
+    hour12: true,
+    minute: '2-digit',
+  });
+}
