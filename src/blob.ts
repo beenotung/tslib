@@ -25,8 +25,11 @@ export function blobToString(blob: Blob): Promise<string> {
 }
 
 export function arrayBufferToString(
-  array: ArrayBuffer,
+  array: ArrayBuffer | string,
   encode?: string,
 ): string {
+  if (typeof array === 'string') {
+    return array;
+  }
   return new TextDecoder(encode).decode(array);
 }
