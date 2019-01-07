@@ -7,7 +7,7 @@ export function setStoreName(name: string) {
   _store = undefined;
 }
 
-function getStore() {
+export function getStore() {
   if (!_store) {
     if (typeof localStorage === 'undefined' || localStorage === null) {
       const { LocalStorage } = require('node-localstorage');
