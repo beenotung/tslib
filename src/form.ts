@@ -12,7 +12,11 @@ export function jsonToFormData(json, formData: FormData) {
         formData.append(key, value.toString());
         break;
       default:
-        formData.append(key, JSON.stringify(value));
+        if (value instanceof File) {
+          formData.append(key, value);
+        } else {
+          formData.append(key, JSON.stringify(value));
+        }
     }
   });
 }
