@@ -14,6 +14,8 @@ export function jsonToFormData(json, formData: FormData) {
       default:
         if (value instanceof File) {
           formData.append(key, value);
+        } else if (Array.isArray(value)) {
+          value.forEach(value => formData.append(key, value));
         } else {
           formData.append(key, JSON.stringify(value));
         }
