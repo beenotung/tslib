@@ -19,6 +19,11 @@ export function getStore() {
   return _store;
 }
 
+export function getNodeStore(name: string): Storage {
+  const { LocalStorage } = require('node-localstorage');
+  return new LocalStorage(name);
+}
+
 export function storeSet(key: string, value) {
   getStore().setItem(key, JSON.stringify(value));
 }
