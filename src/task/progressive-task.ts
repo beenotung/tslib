@@ -1,10 +1,10 @@
 import { Subject } from 'rxjs/Subject';
-import { remove } from './array';
-import { createDefer, Defer } from './async/defer';
-import { ensureNumber, ensureString } from './strict-type';
+import { remove } from '../array';
+import { createDefer, Defer } from '../async/defer';
+import { ensureNumber, ensureString } from '../strict-type';
 
 /**@deprecated*/
-export class Task<A> {
+export class ProgressiveTask<A> {
   public readonly f: () => Promise<A>;
   public res?: A;
   public err?: any;
@@ -17,69 +17,69 @@ export class Task<A> {
   }
 }
 
-export type TaskPoolEventType = 'pending' | 'running' | 'stopped';
+export type ProgressiveTaskPoolEventType = 'pending' | 'running' | 'stopped';
 
-export interface TaskPoolProgress {
-  eventType: TaskPoolEventType;
+export interface ProgressiveTaskPoolProgress {
+  eventType: ProgressiveTaskPoolEventType;
   pending: number;
   running: number;
   stopped: number;
 }
 
-export interface TaskPoolOptions {
+export interface ProgressiveTaskPoolOptions {
   limit: number;
   /* default true */
   report_progress?: boolean;
-  mode?: TaskPoolMode;
+  mode?: ProgressiveTaskPoolMode;
 }
 
-export const defaultTaskPoolOptions: TaskPoolOptions = {
+export const defaultProgressiveTaskPoolOptions: ProgressiveTaskPoolOptions = {
   limit: undefined,
   report_progress: true,
   mode: 'FILO',
 };
 
-export type TaskPoolMode = 'FIFO' | 'FILO';
+export type ProgressiveTaskPoolMode = 'FIFO' | 'FILO';
 
 /**@deprecated*/
-export class TaskPool<A> {
-  public readonly pendingTasks: Array<Task<A>> = [];
-  public readonly runningTasks: Array<Task<A>> = [];
-  public readonly stoppedTasks: Array<Task<A>> = [];
-  public readonly progress?: Subject<TaskPoolProgress>;
+export class ProgressiveTaskPool<A> {
+  public readonly pendingTasks: Array<ProgressiveTask<A>> = [];
+  public readonly runningTasks: Array<ProgressiveTask<A>> = [];
+  public readonly stoppedTasks: Array<ProgressiveTask<A>> = [];
+  public readonly progress?: Subject<ProgressiveTaskPoolProgress>;
 
   public limit: number;
-  public mode: TaskPoolMode;
+  public mode: ProgressiveTaskPoolMode;
 
-  constructor(options: TaskPoolOptions) {
-    options = Object.assign({}, defaultTaskPoolOptions, options);
+  constructor(options: ProgressiveTaskPoolOptions) {
+    options = Object.assign({}, defaultProgressiveTaskPoolOptions, options);
     this.limit = ensureNumber(options.limit);
     this.mode = ensureString(options.mode);
     if (options.report_progress) {
-      this.progress = new Subject<TaskPoolProgress>();
+      this.progress = new Subject<ProgressiveTaskPoolProgress>();
     }
   }
 
   public addTaskF(f: () => Promise<A>) {
-    return this.addTask(new Task<A>(f));
+    return this.addTask(new ProgressiveTask<A>(f));
   }
 
   /**
    * parent must be already in pool
    * child should be new task (not in pool)
    * */
-  public addDepTask(parent: Task<A>, child: Task<A>) {
+  public addDepTask(parent: ProgressiveTask<A>, child: ProgressiveTask<A>) {
     parent.defer.promise.then(res => {
       this.addTask(child);
     });
     return child;
   }
 
-  public addDepTaskF(parent: Task<A>, childF: () => Promise<A>) {
-    return this.addDepTask(parent, new Task<A>(childF));
+  public addDepTaskF(parent: ProgressiveTask<A>, childF: () => Promise<A>) {
+    return this.addDepTask(parent, new ProgressiveTask<A>(childF));
   }
 
-  public addTask(task: Task<A>) {
+  public addTask(task: ProgressiveTask<A>) {
     if (task.running) {
       this.runningTasks.push(task);
       return task;
@@ -99,15 +99,15 @@ export class TaskPool<A> {
   public check() {
     if (this.runningTasks.length < this.limit && this.pendingTasks.length > 0) {
       const task =
-          this.mode === 'FILO'
-            ? this.pendingTasks.pop() /* first in last out */
-            : this.pendingTasks.shift() /* first in first out */;
+        this.mode === 'FILO'
+          ? this.pendingTasks.pop() /* first in last out */
+          : this.pendingTasks.shift() /* first in first out */;
       this.runTask(task);
       this.check();
     }
   }
 
-  private runTask(task: Task<A>) {
+  private runTask(task: ProgressiveTask<A>) {
     this.runningTasks.push(task);
     task.running = true;
     const done = () => {
@@ -134,13 +134,13 @@ export class TaskPool<A> {
     return task;
   }
 
-  private report(type: TaskPoolEventType) {
+  private report(type: ProgressiveTaskPoolEventType) {
     this.progress &&
-      this.progress.next({
-        eventType: type,
-        pending: this.pendingTasks.length,
-        running: this.runningTasks.length,
-        stopped: this.stoppedTasks.length,
-      });
+    this.progress.next({
+      eventType: type,
+      pending: this.pendingTasks.length,
+      running: this.runningTasks.length,
+      stopped: this.stoppedTasks.length,
+    });
   }
 }
