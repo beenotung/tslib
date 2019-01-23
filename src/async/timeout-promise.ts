@@ -21,14 +21,14 @@ export class TimeoutPromise<T> implements Promise<T> {
   }
 
   public then<R, E>(
-    onfulfilled?: ((value: T) => PromiseLike<R> | R),
-    onrejected?: ((reason: any) => PromiseLike<E> | E),
+    onfulfilled?: (value: T) => PromiseLike<R> | R,
+    onrejected?: (reason: any) => PromiseLike<E> | E,
   ): Promise<R | E> {
     return this.promise.then(onfulfilled, onrejected);
   }
 
   public catch<TResult>(
-    onrejected?: ((reason: any) => PromiseLike<TResult> | TResult),
+    onrejected?: (reason: any) => PromiseLike<TResult> | TResult,
   ): Promise<T | TResult> {
     return this.promise.catch(onrejected);
   }

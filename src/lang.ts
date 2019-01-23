@@ -338,9 +338,7 @@ export function chainObject<A>(a: A): ChainObject<A> {
 }
 
 /* tslint:disable:ban-types */
-export interface Type<A> extends Function {
-  new (...args: any[]): A;
-}
+export type Type<A> = new (...args: any[]) => A;
 
 /* tslint:enable:ban-types */
 
