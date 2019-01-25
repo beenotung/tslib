@@ -99,9 +99,9 @@ export class ProgressiveTaskPool<A> {
   public check() {
     if (this.runningTasks.length < this.limit && this.pendingTasks.length > 0) {
       const task =
-        this.mode === 'FILO'
-          ? this.pendingTasks.pop() /* first in last out */
-          : this.pendingTasks.shift() /* first in first out */;
+          this.mode === 'FILO'
+            ? this.pendingTasks.pop() /* first in last out */
+            : this.pendingTasks.shift() /* first in first out */;
       this.runTask(task);
       this.check();
     }
@@ -136,11 +136,11 @@ export class ProgressiveTaskPool<A> {
 
   private report(type: ProgressiveTaskPoolEventType) {
     this.progress &&
-    this.progress.next({
-      eventType: type,
-      pending: this.pendingTasks.length,
-      running: this.runningTasks.length,
-      stopped: this.stoppedTasks.length,
-    });
+      this.progress.next({
+        eventType: type,
+        pending: this.pendingTasks.length,
+        running: this.runningTasks.length,
+        stopped: this.stoppedTasks.length,
+      });
   }
 }

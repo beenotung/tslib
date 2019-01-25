@@ -23,6 +23,74 @@ export function deepClone<A>(o: A): A {
   }
 }
 
+export function deepEqual(a, b): boolean {
+  if (a === b) {
+    return true;
+  }
+  const aType = getObjectType(a);
+  const bType = getObjectType(b);
+  if (aType !== bType) {
+    return false;
+  }
+  switch (aType) {
+    case 'AsyncFunction':
+    case 'Function':
+      return a.toString() === b.toString();
+    case 'Array':
+      if (a.length !== b.length) {
+        return false;
+      }
+      return (a as any[]).every((_, i) => deepEqual(a[i], b[i]));
+    case 'Uint8Array':
+      if (a.length !== b.length) {
+        return false;
+      }
+      return (a as Uint8Array).every((_, i) => deepEqual(a[i], b[i]));
+    case 'Boolean':
+    case 'Number':
+    case 'String':
+      return a === b;
+    case 'Null':
+    case 'Undefined':
+      return true;
+    case 'Map':
+      const aMap = a as Map<any, any>;
+      const bMap = b as Map<any, any>;
+      for (const key of aMap.keys()) {
+        if (!bMap.has(key)) {
+          return false;
+        }
+        if (!deepEqual(aMap.get(key), bMap.get(key))) {
+          return false;
+        }
+      }
+      return true;
+    case 'Set':
+      const aSet = a as Set<any>;
+      const bSet = b as Set<any>;
+      if (aSet.size !== bSet.size) {
+        return false;
+      }
+      for (const value of aSet.values()) {
+        if (!bSet.has(value)) {
+          return false;
+        }
+      }
+      return true;
+    case 'Date':
+      return (a as Date).getTime() === (b as Date).getTime();
+    case 'Object':
+      const aKeys = Object.keys(a);
+      const bKeys = Object.keys(b);
+      if (aKeys.length !== bKeys.length) {
+        return false;
+      }
+      return aKeys.every(key => deepEqual(a[key], b[key]));
+    default:
+      throw Error('unsupported data type');
+  }
+}
+
 export function replaceObject<A>(dest: A, src: A): A {
   Object.keys(dest).forEach(x => delete dest[x]);
   return Object.assign(dest, src);

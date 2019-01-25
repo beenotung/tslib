@@ -16,8 +16,7 @@ export type ObjectType =
   | 'Function'
   | 'AsyncFunction'
   | 'Date'
-  | 'Uint8Array'
-  ;
+  | 'Uint8Array';
 
 export function getObjectType(o: any): ObjectType {
   return Object.prototype.toString.call(o).match(/^\[object (.*)]$/)[1];
