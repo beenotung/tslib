@@ -14,7 +14,10 @@ export type ObjectType =
   | 'Null'
   | 'Undefined'
   | 'Function'
-  | 'AsyncFunction';
+  | 'AsyncFunction'
+  | 'Date'
+  | 'Uint8Array'
+  ;
 
 export function getObjectType(o: any): ObjectType {
   return Object.prototype.toString.call(o).match(/^\[object (.*)]$/)[1];
