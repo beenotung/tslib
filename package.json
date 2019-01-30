@@ -50,7 +50,7 @@
     "rxjs": "^5.0.1"
   },
   "devDependencies": {
-    "@beenotung/gen-index": "^1.0.4",
+    "@beenotung/gen-index": "^1.0.7",
     "@types/axios": "^0.14.0",
     "@types/form-data": "^2.2.1",
     "@types/isomorphic-fetch": "^0.0.34",
