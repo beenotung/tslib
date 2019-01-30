@@ -1,4 +1,3 @@
-
 export let storeName = 'data';
 export let storeQuota: number;
 
@@ -30,6 +29,12 @@ export function getNodeStore(name: string, quota?: number): Storage {
   return typeof quota === 'number'
     ? new LocalStorage(name, quota)
     : new LocalStorage(name);
+}
+
+export function getLocalStorage(name: string, quota?: number): Storage {
+  return typeof localStorage === 'undefined' || localStorage === null
+    ? getNodeStore(name, quota)
+    : localStorage;
 }
 
 export function storeSet(key: string, value) {
