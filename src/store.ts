@@ -1,4 +1,6 @@
+
 export let storeName = 'data';
+export let storeQuota: number;
 
 let _store: Storage;
 
@@ -7,11 +9,15 @@ export function setStoreName(name: string) {
   _store = undefined;
 }
 
+export function setStoreQuota(quota: number) {
+  storeQuota = quota;
+  _store = undefined;
+}
+
 export function getStore() {
   if (!_store) {
     if (typeof localStorage === 'undefined' || localStorage === null) {
-      const { LocalStorage } = require('node-localstorage');
-      _store = new LocalStorage(storeName);
+      _store = getNodeStore(storeName, storeQuota);
     } else {
       _store = localStorage;
     }
@@ -19,9 +25,11 @@ export function getStore() {
   return _store;
 }
 
-export function getNodeStore(name: string): Storage {
+export function getNodeStore(name: string, quota?: number): Storage {
   const { LocalStorage } = require('node-localstorage');
-  return new LocalStorage(name);
+  return typeof quota === 'number'
+    ? new LocalStorage(name, quota)
+    : new LocalStorage(name);
 }
 
 export function storeSet(key: string, value) {
