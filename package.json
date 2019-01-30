@@ -26,7 +26,7 @@
   },
   "scripts": {
     "clean": "rm -rf dist",
-    "prebuild": "npm run clean && gen-index",
+    "prebuild": "npm run clean && gen-index && npm run format",
     "build": "tsc -p .",
     "postbuild": "rm src/index.ts",
     "lint": "tslint --project tsconfig.json -c tslint.json",
