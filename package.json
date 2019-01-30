@@ -21,9 +21,6 @@
     "url": "https://github.com/beenotung/tslib/issues"
   },
   "homepage": "https://github.com/beenotung/tslib#readme",
-  "directories": {
-    "test": "test"
-  },
   "scripts": {
     "clean": "rm -rf dist",
     "prebuild": "npm run clean && gen-index && npm run format",
