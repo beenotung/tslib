@@ -1,26 +1,39 @@
+import { AsyncStore } from './async-store';
 import { CountedCache } from './counted-cache';
 import { compare_number } from './number';
-import { Store } from './store';
+import { getLocalStorage, Store } from './store';
 
 /**
  * only cache object
  * raw string item are not cached
  * */
-export class CachedObjectStore implements Store {
-  objectCache = new CountedCache<{ size: number; value: any }>();
-  cacheSize = 0;
+export class CachedObjectStore {
+  private objectCache = new CountedCache<{ size: number; value: any }>();
+  private cacheSize = 0;
+  private store: Store;
+  private asyncStore: AsyncStore;
 
   constructor(
-    public store: Store,
-    public maxCacheSize = Number.MAX_SAFE_INTEGER,
-  ) {}
+    dirpath: string,
+    private maxCacheSize = Number.MAX_SAFE_INTEGER,
+    maxStorageSize = Number.MAX_SAFE_INTEGER,
+  ) {
+    this.store = new Store(getLocalStorage(dirpath, maxStorageSize));
+    this.asyncStore = new AsyncStore(dirpath);
+  }
 
   clear(): void {
-    this.store.clear();
+    this.asyncStore.clear();
     this.objectCache.clear();
     this.cacheSize = 0;
   }
 
+  clearCache() {
+    this.objectCache.clear();
+    this.cacheSize = 0;
+  }
+
+  // do not cache to reduce memory load
   getItem(key: string): string | null {
     return this.store.getItem(key);
   }
@@ -51,12 +64,12 @@ export class CachedObjectStore implements Store {
 
   removeItem(key: string): void {
     this.objectCache.remove(key);
-    this.store.removeItem(key);
+    this.asyncStore.removeItem(key);
   }
 
   setItem(key: string, value: string): void {
     this.objectCache.remove(key);
-    this.store.setItem(key, value);
+    this.asyncStore.setItem(key, value);
   }
 
   setObject(key: string, value): void {
@@ -72,6 +85,6 @@ export class CachedObjectStore implements Store {
       }
     }
     this.objectCache.set(key, { size: s.length, value });
-    this.store.setItem(key, s);
+    this.asyncStore.setItem(key, s);
   }
 }

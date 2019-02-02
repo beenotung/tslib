@@ -12,18 +12,18 @@ export function getLocalStorage(name: string, quota?: number): Storage {
 }
 
 export class Store implements Storage {
-  constructor(public store: Storage) {}
+  constructor(private storage: Storage) {}
 
   get length(): number {
-    return this.store.length;
+    return this.storage.length;
   }
 
   clear(): void {
-    return this.store.clear();
+    return this.storage.clear();
   }
 
   getItem(key: string): string | null {
-    return this.store.getItem(key);
+    return this.storage.getItem(key);
   }
 
   getObject<T>(key: string): T | null {
@@ -32,7 +32,8 @@ export class Store implements Storage {
   }
 
   key(index: number): string | null {
-    return this.store.key(index);
+    const value = this.storage.key(index);
+    return value === undefined ? null : value;
   }
 
   keys(): string[] {
@@ -45,11 +46,11 @@ export class Store implements Storage {
   }
 
   removeItem(key: string): void {
-    return this.store.removeItem(key);
+    return this.storage.removeItem(key);
   }
 
   setItem(key: string, value: string): void {
-    return this.store.setItem(key, value);
+    return this.storage.setItem(key, value);
   }
 
   setObject(key: string, value): void {
