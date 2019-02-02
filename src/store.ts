@@ -1,3 +1,67 @@
+export function getNodeStore(name: string, quota?: number): Storage {
+  const { LocalStorage } = require('node-localstorage');
+  return typeof quota === 'number'
+    ? new LocalStorage(name, quota)
+    : new LocalStorage(name);
+}
+
+export function getLocalStorage(name: string, quota?: number): Storage {
+  return typeof localStorage === 'undefined' || localStorage === null
+    ? getNodeStore(name, quota)
+    : localStorage;
+}
+
+export class Store implements Storage {
+  constructor(public store: Storage) {}
+
+  get length(): number {
+    return this.store.length;
+  }
+
+  clear(): void {
+    return this.store.clear();
+  }
+
+  getItem(key: string): string | null {
+    return this.store.getItem(key);
+  }
+
+  getObject<T>(key: string): T | null {
+    const value = this.getItem(key);
+    return value || JSON.parse(value);
+  }
+
+  key(index: number): string | null {
+    return this.store.key(index);
+  }
+
+  keys(): string[] {
+    const n = this.length;
+    const keys: string[] = new Array(n);
+    for (let i = 0; i < n; i++) {
+      keys[i] = this.key(i);
+    }
+    return keys;
+  }
+
+  removeItem(key: string): void {
+    return this.store.removeItem(key);
+  }
+
+  setItem(key: string, value: string): void {
+    return this.store.setItem(key, value);
+  }
+
+  setObject(key: string, value): void {
+    return this.setItem(key, JSON.stringify(value));
+  }
+}
+
+/**
+ * below are deprecated
+ * the impl below use global state, may have unintended side effect by other client
+ * */
+
 export let storeName = 'data';
 export let storeQuota: number;
 
@@ -22,19 +86,6 @@ export function getStore() {
     }
   }
   return _store;
-}
-
-export function getNodeStore(name: string, quota?: number): Storage {
-  const { LocalStorage } = require('node-localstorage');
-  return typeof quota === 'number'
-    ? new LocalStorage(name, quota)
-    : new LocalStorage(name);
-}
-
-export function getLocalStorage(name: string, quota?: number): Storage {
-  return typeof localStorage === 'undefined' || localStorage === null
-    ? getNodeStore(name, quota)
-    : localStorage;
 }
 
 export function storeSet(key: string, value) {
