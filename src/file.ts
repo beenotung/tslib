@@ -94,6 +94,7 @@ export interface SelectFileOptions {
   multiple?: boolean;
   accept?: BlobType;
   pattern?: string;
+  capture?: boolean;
 }
 
 export function selectFile(options?: SelectFileOptions): Promise<File[]> {
