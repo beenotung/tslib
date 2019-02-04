@@ -32,24 +32,9 @@ export function readFile(
   });
 }
 
-export type writeOptions =
-  | { encoding?: string | null; mode?: number | string; flag?: string }
-  | string
-  | undefined
-  | null;
-
-export function writeFile(
-  filename: string,
-  data,
-  options?: writeOptions,
-): Promise<any> {
-  return new Promise((resolve, reject) => {
-    fs.writeFile(filename, data, options, err => {
-      err ? reject(err) : resolve();
-    });
-  });
-}
-
+export let writeFile: typeof fs.writeFile.__promisify__ = util.promisify(
+  fs.writeFile,
+);
 export let readdir: typeof fs.readdir.__promisify__ = util.promisify(
   fs.readdir,
 );

@@ -1,3 +1,6 @@
+/// <reference types="./global" />
+Symbol.storage = Symbol.for('storage');
+
 export function getNodeStore(name: string, quota?: number): Storage {
   const { LocalStorage } = require('node-localstorage');
   return typeof quota === 'number'
@@ -11,28 +14,68 @@ export function getLocalStorage(name: string, quota?: number): Storage {
     : localStorage;
 }
 
-export class Store implements Storage {
-  constructor(private storage: Storage) {}
+export interface IStore<getItemResult, setItemResult> {
+  getItem(key: string): getItemResult;
 
+  setItem(key: string, value: string): setItemResult;
+}
+
+export function proxyStore<
+  getItemResult = string | null,
+  setItemResult = void,
+  Store extends IStore<getItemResult, setItemResult> = IStore<
+    getItemResult,
+    setItemResult
+  >
+>(store: Store) {
+  return new Proxy(store, {
+    get(target: Store, p: PropertyKey, receiver: any): any {
+      const value = Reflect.get(target, p, receiver);
+      if (
+        typeof p === 'symbol' ||
+        p === 'inspect' ||
+        typeof value === 'function'
+      ) {
+        return value;
+      }
+      return target.getItem(p as string);
+    },
+    set(target: Store, p: PropertyKey, value: any, receiver: any): boolean {
+      if (typeof p === 'symbol') {
+        return Reflect.set(target, p, value, receiver);
+      }
+      target.setItem(p as string, value);
+      return true;
+    },
+  });
+}
+
+export class Store implements Storage {
   get length(): number {
-    return this.storage.length;
+    return this[Symbol.storage].length;
+  }
+
+  [Symbol.storage]: Storage;
+
+  private constructor(storage: Storage) {
+    this[Symbol.storage] = storage;
   }
 
   clear(): void {
-    return this.storage.clear();
+    return this[Symbol.storage].clear();
   }
 
   getItem(key: string): string | null {
-    return this.storage.getItem(key);
+    return this[Symbol.storage].getItem(key);
   }
 
   getObject<T>(key: string): T | null {
     const value = this.getItem(key);
-    return value || JSON.parse(value);
+    return JSON.parse(value);
   }
 
   key(index: number): string | null {
-    const value = this.storage.key(index);
+    const value = this[Symbol.storage].key(index);
     return value === undefined ? null : value;
   }
 
@@ -46,15 +89,19 @@ export class Store implements Storage {
   }
 
   removeItem(key: string): void {
-    return this.storage.removeItem(key);
+    return this[Symbol.storage].removeItem(key);
   }
 
   setItem(key: string, value: string): void {
-    return this.storage.setItem(key, value);
+    return this[Symbol.storage].setItem(key, value);
   }
 
   setObject(key: string, value): void {
     return this.setItem(key, JSON.stringify(value));
+  }
+  static create(storage: Storage): Store {
+    const store = new Store(storage);
+    return proxyStore(store);
   }
 }
 
