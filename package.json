@@ -32,7 +32,7 @@
     "watch:lint": "chokidar src/**/*.ts -c \"run-s format lint\" --initial --verbose",
     "format": "prettier --write \"src/**/*.ts\"",
     "postformat": "tslint --fix -p .",
-    "test": "run-p build lint",
+    "test": "run-s build lint",
     "precommit": "run-s format test",
     "commit": "git commit $@",
     "prepublishOnly": "npm run build"
