@@ -43,9 +43,7 @@ export function strToCapWords(s: string): string {
 }
 
 export function string_to_chars(s: string): string[] {
-  const res: string[] = [];
-  forI(i => res.push(s[i]), s.length);
-  return res;
+  return s.split('');
 }
 
 /* source: https://stackoverflow.com/questions/1144783/how-to-replace-all-occurrences-of-a-string-in-javascript */
