@@ -1,5 +1,6 @@
 import * as fs from 'fs';
 import { WriteStream } from 'fs';
+import * as util from 'util';
 
 export type readOptions =
   | { encoding?: string | null; flag?: string }
@@ -31,23 +32,14 @@ export function readFile(
   });
 }
 
-export type writeOptions =
-  | { encoding?: string | null; mode?: number | string; flag?: string }
-  | string
-  | undefined
-  | null;
-
-export function writeFile(
-  filename: string,
-  data,
-  options?: writeOptions,
-): Promise<any> {
-  return new Promise((resolve, reject) => {
-    fs.writeFile(filename, data, options, err => {
-      err ? reject(err) : resolve();
-    });
-  });
-}
+export let writeFile: typeof fs.writeFile.__promisify__ = util.promisify(
+  fs.writeFile,
+);
+export let readdir: typeof fs.readdir.__promisify__ = util.promisify(
+  fs.readdir,
+);
+export let unlink: typeof fs.unlink.__promisify__ = util.promisify(fs.unlink);
+export let rename: typeof fs.rename.__promisify__ = util.promisify(fs.rename);
 
 export namespace writeStream {
   export function write(

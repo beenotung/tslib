@@ -1,4 +1,3 @@
-import { createDefer } from './async/defer';
 import { enum_only_string } from './enum';
 import { xor } from './logic';
 
@@ -27,13 +26,12 @@ export function imageToBase64(
 }
 
 export async function base64ToImage(data: string): Promise<HTMLImageElement> {
-  const defer = createDefer<HTMLImageElement, any>();
-  const image = new Image();
-  image.onload = () => {
-    defer.resolve(image);
-  };
-  image.src = data;
-  return defer.promise;
+  return new Promise<HTMLImageElement>((resolve, reject) => {
+    const image = new Image();
+    image.onload = () => resolve(image);
+    image.onerror = e => reject(e);
+    image.src = data;
+  });
 }
 
 /**

@@ -43,15 +43,7 @@ export function includes<A>(x: A, xs: A[]): boolean {
  * @return new array
  * */
 export function unique<A>(xs: A[]): A[] {
-  const res: A[] = [];
-  const set = new Set<A>();
-  for (const x of xs) {
-    if (!set.has(x)) {
-      set.add(x);
-      res.push(x);
-    }
-  }
-  return res;
+  return Array.from(new Set(xs));
 }
 
 export function rightMost<A>(n: number, xs: A[]): A[] {

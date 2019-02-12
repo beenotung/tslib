@@ -12,7 +12,7 @@ export function jsonToFormData(json, formData: FormData) {
         formData.append(key, value.toString());
         break;
       default:
-        if (value instanceof File) {
+        if (typeof File !== 'undefined' && value instanceof File) {
           formData.append(key, value);
         } else if (Array.isArray(value)) {
           value.forEach(value => formData.append(key, value));
