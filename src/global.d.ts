@@ -10,4 +10,5 @@ interface SymbolConstructor {
   store: symbol;
   asyncStore: symbol;
   maxCacheSize: symbol;
+  asyncStoreSetItemResults: symbol;
 }

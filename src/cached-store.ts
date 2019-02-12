@@ -1,4 +1,4 @@
-import { AsyncStore } from './async-store';
+import { AsyncStore, AsyncStoreSetItemResult } from './async-store';
 import { CountedCache } from './counted-cache';
 import { compare_number } from './number';
 import { getLocalStorage, proxyStore, Store } from './store';
@@ -8,6 +8,7 @@ Symbol.cacheSize = Symbol.for('cacheSize');
 Symbol.store = Symbol.for('store');
 Symbol.asyncStore = Symbol.for('asyncStore');
 Symbol.maxCacheSize = Symbol.for('maxCacheSize');
+Symbol.asyncStoreSetItemResults = Symbol.for('asyncStoreSetItemResults');
 
 /**
  * only cache object
@@ -40,6 +41,10 @@ export class CachedObjectStore implements Store {
   private [Symbol.store]: Store;
   private [Symbol.asyncStore]: AsyncStore;
   private [Symbol.maxCacheSize]: number;
+  private [Symbol.asyncStoreSetItemResults] = new Map<
+    string,
+    AsyncStoreSetItemResult
+  >();
 
   private constructor(
     dirpath: string,
@@ -97,7 +102,18 @@ export class CachedObjectStore implements Store {
 
   setItem(key: string, value: string): void {
     this[Symbol.objectCache].remove(key);
-    this[Symbol.asyncStore].setItem(key, value);
+    const tasks: Map<string, AsyncStoreSetItemResult> = this[
+      Symbol.asyncStoreSetItemResults
+    ];
+    if (tasks.has(key)) {
+      const task = tasks.get(key);
+      if (!task.hasDone) {
+        task.cancel();
+      }
+    }
+    const newTask = this[Symbol.asyncStore].setItem(key, value);
+    tasks.set(key, newTask);
+    newTask.then(() => tasks.delete(key));
   }
 
   setObject(key: string, value): void {
