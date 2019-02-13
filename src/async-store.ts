@@ -6,6 +6,7 @@ import { new_counter } from './uuid';
 
 Symbol.counter = Symbol.for('counter');
 Symbol.dirpath = Symbol.for('dirpath');
+Symbol.asyncStoreSetItemResults = Symbol.for('asyncStoreSetItemResults');
 
 export type AsyncStoreSetItemResult = Promise<void> & {
   hasCancel: boolean;
@@ -16,6 +17,10 @@ export type AsyncStoreSetItemResult = Promise<void> & {
 export class AsyncStore {
   private [Symbol.counter] = new_counter();
   private [Symbol.dirpath]: string;
+  private [Symbol.asyncStoreSetItemResults] = new Map<
+    string,
+    AsyncStoreSetItemResult
+  >();
 
   private constructor(dirpath: string) {
     if (!fs.existsSync(dirpath)) {
@@ -63,6 +68,16 @@ export class AsyncStore {
   }
 
   setItem(key: string, value: string): AsyncStoreSetItemResult {
+    const tasks: Map<string, AsyncStoreSetItemResult> = this[
+      Symbol.asyncStoreSetItemResults
+    ];
+    if (tasks.has(key)) {
+      const task = tasks.get(key);
+      if (!task.hasDone) {
+        task.cancel();
+      }
+    }
+
     const filepath = this.keyToPath(key);
     const tmpfile =
       filepath + '.' + Date.now() + '.' + this[Symbol.counter].next();
@@ -87,11 +102,14 @@ export class AsyncStore {
           return Promise.reject(e);
         });
     });
-    return Object.assign(p, status, {
+    const newTask = Object.assign(p, status, {
       cancel: () => {
         status.hasCancel = true;
       },
     });
+    tasks.set(key, newTask);
+    newTask.then(() => tasks.delete(key));
+    return newTask;
   }
 
   async setObject(key: string, value): Promise<void> {
