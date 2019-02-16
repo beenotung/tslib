@@ -15,10 +15,18 @@ export type MapKeyMapper<AK, AV, BK, BV> = (
   k: AK,
   xs: Map<AK, AV>,
 ) => BK;
+export type HtmlCollectionElementMapper<A extends Element, B> = (
+  a: A,
+  i: number,
+  xs: HTMLCollectionOf<A>,
+) => B;
 
 export namespace maps {
-  export const array = <A, B>(xs: A[], f: ArrayMapper<A, B>): B[] => xs.map(f);
-  export const object = <A, B>(x: A, f: ObjectMapper<A, B>): B => {
+  export function array<A, B>(xs: A[], f: ArrayMapper<A, B>): B[] {
+    return xs.map(f);
+  }
+
+  export function object<A, B>(x: A, f: ObjectMapper<A, B>): B {
     const y = new (x as any).constructor();
     /* tslint:disable:forin */
     for (const k in x) {
@@ -26,17 +34,19 @@ export namespace maps {
     }
     /* tslint:enable:forin */
     return y;
-  };
-  export const set = <A, B>(xs: Set<A>, f: SetMapper<A, B>) => {
+  }
+
+  export function set<A, B>(xs: Set<A>, f: SetMapper<A, B>) {
     const ys = new Set<B>();
     xs.forEach(x => ys.add(f(x, xs)));
     return ys;
-  };
-  export const map = <AK, AV, BK, BV>(
+  }
+
+  export function map<AK, AV, BK, BV>(
     xs: Map<AK, AV>,
     valueMapper: MapValueMapper<AK, AV, BK, BV>,
     keyMapper?: MapKeyMapper<AK, AV, BK, BV>,
-  ): Map<BK, BV> => {
+  ): Map<BK, BV> {
     const ys = new Map<BK, BV>();
     xs.forEach((av, ak) => {
       const bv = valueMapper(av, ak, xs);
@@ -44,10 +54,25 @@ export namespace maps {
       ys.set(bk, bv);
     });
     return ys;
-  };
-  export const any = (o, f: (a: any) => any): any => {
+  }
+
+  export function htmlCollection<A extends Element, B>(
+    xs: HTMLCollectionOf<A>,
+    f: HtmlCollectionElementMapper<A, B>,
+  ) {
+    const ys = new Array(xs.length);
+    for (let i = 0; i < xs.length; i++) {
+      ys[i] = f(xs.item(i), i, xs);
+    }
+    return ys;
+  }
+
+  export function any(o, f: (a: any) => any): any {
     if (Array.isArray(o)) {
       return array(o, f);
+    }
+    if (o instanceof HTMLCollection) {
+      return htmlCollection(o, f);
     }
     switch (getObjectType(o)) {
       case 'Array':
@@ -61,11 +86,12 @@ export namespace maps {
       default:
         return f(o);
     }
-  };
+  }
 }
 
 export const map_array = maps.array;
 export const map_object = maps.object;
 export const map_set = maps.set;
 export const map_map = maps.map;
+export const map_htmlCollection = maps.htmlCollection;
 export const map_any = maps.any;
