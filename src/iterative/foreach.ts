@@ -1,8 +1,8 @@
 import { getObjectType } from '../type';
 import {
   ArrayMapper,
-  HtmlCollectionElementMapper,
   MapValueMapper,
+  NodeListElementMapper,
   ObjectMapper,
   SetMapper,
 } from './map';
@@ -11,9 +11,10 @@ export type ArrayConsumer<A> = ArrayMapper<A, void>;
 export type ObjectConsumer<A> = ObjectMapper<A, void>;
 export type SetConsumer<A> = SetMapper<A, void>;
 export type MapValueConsumer<K, V> = MapValueMapper<K, V, void, void>;
-export type HtmlCollectionElementConsumer<
-  A extends Element
-> = HtmlCollectionElementMapper<A, void>;
+export type NodeListElementConsumer<A extends Element> = NodeListElementMapper<
+  A,
+  void
+>;
 
 export namespace foreachs {
   export function array<A>(xs: A[], f: ArrayConsumer<A>): void {
@@ -36,9 +37,9 @@ export namespace foreachs {
     xs.forEach(f);
   }
 
-  export function htmlCollection<A extends Element = Element>(
-    xs: HTMLCollectionOf<A>,
-    f: HtmlCollectionElementConsumer<A>,
+  export function nodeList<A extends Element = Element>(
+    xs: NodeListOf<A> | HTMLCollectionOf<A>,
+    f: NodeListElementConsumer<A>,
   ): void {
     for (let i = 0; i < xs.length; i++) {
       f(xs.item(i) as A, i, xs);
@@ -50,7 +51,7 @@ export namespace foreachs {
       return o.forEach(f);
     }
     if (o instanceof HTMLCollection) {
-      return htmlCollection(o, f);
+      return nodeList(o, f);
     }
     switch (getObjectType(o)) {
       case 'Array':
@@ -71,5 +72,5 @@ export const foreach_array = foreachs.array;
 export const foreach_object = foreachs.object;
 export const foreach_set = foreachs.set;
 export const foreach_map = foreachs.map;
-export const foreach_htmlCollection = foreachs.htmlCollection;
+export const foreach_nodeList = foreachs.nodeList;
 export const foreach_any = foreachs.any;

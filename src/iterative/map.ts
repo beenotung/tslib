@@ -15,10 +15,10 @@ export type MapKeyMapper<AK, AV, BK, BV> = (
   k: AK,
   xs: Map<AK, AV>,
 ) => BK;
-export type HtmlCollectionElementMapper<A extends Element, B> = (
+export type NodeListElementMapper<A extends Element, B> = (
   a: A,
   i: number,
-  xs: HTMLCollectionOf<A>,
+  xs: NodeListOf<A> | HTMLCollectionOf<A>,
 ) => B;
 
 export namespace maps {
@@ -56,9 +56,9 @@ export namespace maps {
     return ys;
   }
 
-  export function htmlCollection<A extends Element, B>(
-    xs: HTMLCollectionOf<A>,
-    f: HtmlCollectionElementMapper<A, B>,
+  export function nodeList<A extends Element, B>(
+    xs: NodeListOf<A> | HTMLCollectionOf<A>,
+    f: NodeListElementMapper<A, B>,
   ) {
     const ys = new Array(xs.length);
     for (let i = 0; i < xs.length; i++) {
@@ -71,8 +71,8 @@ export namespace maps {
     if (Array.isArray(o)) {
       return array(o, f);
     }
-    if (o instanceof HTMLCollection) {
-      return htmlCollection(o, f);
+    if (o instanceof NodeList || o instanceof HTMLCollection) {
+      return nodeList(o as NodeList, f);
     }
     switch (getObjectType(o)) {
       case 'Array':
@@ -93,5 +93,5 @@ export const map_array = maps.array;
 export const map_object = maps.object;
 export const map_set = maps.set;
 export const map_map = maps.map;
-export const map_htmlCollection = maps.htmlCollection;
+export const map_nodeList = maps.nodeList;
 export const map_any = maps.any;
