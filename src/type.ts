@@ -1,3 +1,8 @@
+/**
+ * opposite of Pick
+ *
+ * From T, pick a set of properties whose keys are not in the union K
+ * */
 export type Drop<T, K extends keyof T> = { [P in Exclude<keyof T, K>]: T[P] };
 
 export type BooleanString = 'true' | 'false';
