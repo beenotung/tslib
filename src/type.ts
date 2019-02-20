@@ -1,6 +1,5 @@
-/**
- * Created by beenotung on 6/16/17.
- */
+export type Drop<T, K extends keyof T> = { [P in Exclude<keyof T, K>]: T[P] };
+
 export type BooleanString = 'true' | 'false';
 
 export type ObjectType =
