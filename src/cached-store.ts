@@ -75,6 +75,9 @@ export class CachedObjectStore implements Store {
       }
     }
     const s = this.getItem(key);
+    if (s === null) {
+      return null;
+    }
     const value = JSON.parse(s);
     this[Symbol.objectCache].set(key, { size: s.length, value });
     return value;
