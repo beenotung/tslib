@@ -1,5 +1,5 @@
-import { Random, visibleLetters } from './random';
 import { JsonArray, JsonObject, JsonPrimitive, JsonValue } from './json';
+import { Random, visibleLetters } from './random';
 
 export function genNumber(): number {
   return Random.element([Random.nextInt, Random.nextFloat])();
@@ -14,11 +14,15 @@ export function genNull(): null {
 }
 
 export function genJsonPrimitive(length = 8): JsonPrimitive {
-  return Random.element<(length?: number) => JsonPrimitive>([genString, genNumber, genNull])(length);
+  return Random.element<(length?: number) => JsonPrimitive>([
+    genString,
+    genNumber,
+    genNull,
+  ])(length);
 }
 
 export function genJsonArray(length = 8): JsonArray {
-  let xs = new Array(length);
+  const xs = new Array(length);
   for (let i = 0; i < length; i++) {
     xs[i] = genJsonValue(length - 1);
   }
@@ -26,7 +30,7 @@ export function genJsonArray(length = 8): JsonArray {
 }
 
 export function genJsonObject(length = 8): JsonObject {
-  let o = {};
+  const o = {};
   for (let i = 0; i < length; i++) {
     o[genString(length)] = genJsonValue(length - 1);
   }

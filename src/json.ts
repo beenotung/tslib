@@ -1,22 +1,22 @@
-import { getObjectType } from './type';
 import { map_set } from './iterative/map';
+import { getObjectType } from './type';
 
 export type JsonPrimitive = string | number | null;
 
 export interface JsonObject {
-  [key: string]: JsonValue
+  [key: string]: JsonValue;
 }
 
 export interface JsonArray {
-  readonly length: number
+  readonly length: number;
 
-  [key: number]: JsonValue
+  [key: number]: JsonValue;
 }
 
 export type JsonValue = JsonPrimitive | JsonObject | JsonArray;
 
 export function jsonToString(o, visited = new Set()): string {
-  let type = getObjectType(o);
+  const type = getObjectType(o);
   switch (type) {
     case 'String':
     case 'Number':
@@ -33,10 +33,19 @@ export function jsonToString(o, visited = new Set()): string {
       visited.add(o);
       if (type === 'Array') {
         /* is array */
-        return '[' + (o as any[]).map(x => jsonToString(x, visited)).join(',') + ']';
+        return (
+          '[' + (o as any[]).map(x => jsonToString(x, visited)).join(',') + ']'
+        );
       } else {
         /* is object */
-        return '{' + Object.keys(o).sort().map(x => JSON.stringify(x) + ':' + jsonToString(o[x])).join(',') + '}';
+        return (
+          '{' +
+          Object.keys(o)
+            .sort()
+            .map(x => JSON.stringify(x) + ':' + jsonToString(o[x]))
+            .join(',') +
+          '}'
+        );
       }
     }
   }

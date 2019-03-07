@@ -24,8 +24,8 @@ export class KVMap<K, V> /* implements Map<K, V> */ {
 
   deleteKey(key: K): boolean {
     if (this.kvMap.has(key)) {
-      let value = this.kvMap.get(key);
-      let keys = this.vkMap.get(value);
+      const value = this.kvMap.get(key);
+      const keys = this.vkMap.get(value);
       remove(keys, key);
     }
     return this.kvMap.delete(key);
@@ -33,21 +33,30 @@ export class KVMap<K, V> /* implements Map<K, V> */ {
 
   deleteValue(value: V): boolean {
     if (this.vkMap.has(value)) {
-      let keys = this.vkMap.get(value);
+      const keys = this.vkMap.get(value);
       keys.forEach(key => this.kvMap.delete(key));
     }
     return this.vkMap.delete(value);
   }
 
-  forEach(callbackfn: (value: V, key: K, map: Map<K, V>) => void, thisArg?: any): void {
+  forEach(
+    callbackfn: (value: V, key: K, map: Map<K, V>) => void,
+    thisArg?: any,
+  ): void {
     this.forEachKV(callbackfn, thisArg);
   }
 
-  forEachKV(callbackfn: (value: V, key: K, map: Map<K, V>) => void, thisArg?: any): void {
+  forEachKV(
+    callbackfn: (value: V, key: K, map: Map<K, V>) => void,
+    thisArg?: any,
+  ): void {
     this.kvMap.forEach(callbackfn, thisArg);
   }
 
-  forEachVKs(callbackfn: (keys: K[], value: V, map: Map<V, K[]>) => void, thisArg?: any): void {
+  forEachVKs(
+    callbackfn: (keys: K[], value: V, map: Map<V, K[]>) => void,
+    thisArg?: any,
+  ): void {
     this.vkMap.forEach(callbackfn, thisArg);
   }
 
@@ -81,7 +90,7 @@ export class KVMap<K, V> /* implements Map<K, V> */ {
     }
     this.kvMap.set(key, value);
     if (this.vkMap.has(value)) {
-      let keys = this.vkMap.get(value);
+      const keys = this.vkMap.get(value);
       if (keys.indexOf(key) === -1) {
         keys.push(key);
       }
