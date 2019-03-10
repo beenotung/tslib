@@ -1,6 +1,6 @@
 import axios from 'axios';
-import FormData = require('form-data');
-import * as request from 'request';
+import * as FormData from 'form-data';
+import * as fetch from 'isomorphic-fetch';
 
 export function jsonToFormData(json, formData: FormData) {
   Object.keys(json).forEach(key => {
@@ -33,26 +33,37 @@ export function postMultipartFormData<T>(
   url: string,
   json,
 ): Promise<PostFormResponse<T>> {
+  const formData = new FormData();
+  jsonToFormData(json, formData);
   if (typeof window === 'undefined') {
     /* node.js */
-    return new Promise((resolve, reject) => {
-      const req = request.post(url, (error, response, body) => {
-        if (error) {
-          return reject(error);
-        }
-        resolve({
-          status: response.statusCode,
-          statusText: response.statusMessage,
-          data: body,
-        });
-      });
-      const formData = req.form();
-      jsonToFormData(json, formData);
+    return fetch(url, { method: 'POST', body: formData }).then(async res => {
+      const contentType = res.headers.get('content-type');
+      if (
+        contentType.startsWith('application/json') ||
+        contentType.startsWith('text/json')
+      ) {
+        return {
+          status: res.status,
+          statusText: res.statusText,
+          data: await res.json(),
+        };
+      }
+      if (contentType.startsWith('text')) {
+        return {
+          status: res.status,
+          statusText: res.statusText,
+          data: await res.text(),
+        };
+      }
+      return {
+        status: res.status,
+        statusText: res.statusText,
+        data: res.blob(),
+      };
     });
   }
   /* web browser */
-  const formData = new FormData();
-  jsonToFormData(json, formData);
   return axios({
     method: 'post',
     url,
