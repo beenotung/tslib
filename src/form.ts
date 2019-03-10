@@ -37,31 +37,40 @@ export function postMultipartFormData<T>(
   jsonToFormData(json, formData);
   if (typeof window === 'undefined') {
     /* node.js */
-    return fetch(url, { method: 'POST', body: formData }).then(async res => {
-      const contentType = res.headers.get('content-type');
-      if (
-        contentType.startsWith('application/json') ||
-        contentType.startsWith('text/json')
-      ) {
+    return fetch(url, { method: 'POST', body: formData as any }).then(
+      async res => {
+        const contentType = res.headers.get('content-type');
+        if (
+          contentType.startsWith('application/json') ||
+          contentType.startsWith('text/json')
+        ) {
+          return {
+            status: res.status,
+            statusText: res.statusText,
+            data: await res.json(),
+          };
+        }
+        if (contentType.indexOf('form') !== -1) {
+          return {
+            status: res.status,
+            statusText: res.statusText,
+            data: await res.formData(),
+          };
+        }
+        if (contentType.startsWith('text')) {
+          return {
+            status: res.status,
+            statusText: res.statusText,
+            data: await res.text(),
+          };
+        }
         return {
           status: res.status,
           statusText: res.statusText,
-          data: await res.json(),
+          data: await res.blob(),
         };
-      }
-      if (contentType.startsWith('text')) {
-        return {
-          status: res.status,
-          statusText: res.statusText,
-          data: await res.text(),
-        };
-      }
-      return {
-        status: res.status,
-        statusText: res.statusText,
-        data: res.blob(),
-      };
-    });
+      },
+    );
   }
   /* web browser */
   return axios({
