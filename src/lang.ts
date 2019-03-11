@@ -1,7 +1,6 @@
 /**
  * Created by beenotung on 12/26/16.
  */
-import { inspect } from 'util';
 import { createDefer } from './async/defer';
 import { Supplier } from './functional/types';
 import { F1 } from './typestub-curry';
@@ -258,8 +257,8 @@ export function isNumber(i: string | number): boolean {
   return Number.isFinite(+i) && i !== '';
 }
 
-const toString =
-  typeof inspect === 'function' ? inspect : JSON.stringify.bind(JSON);
+/** @deprecated */
+const toString = JSON.stringify.bind(JSON);
 
 export function toNumber(i: string | number): number {
   if (!isNumber(i)) {

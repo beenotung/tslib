@@ -1,4 +1,3 @@
-import { forI } from './lang';
 import { setMinus, setToArray } from './set';
 
 export function str_contains(
@@ -26,19 +25,19 @@ export function str_contains_any(
 export function strToCapWords(s: string): string {
   let res = '';
   let lastSpace = true;
-  forI(i => {
-    if (s[i] === ' ') {
+  for (const c of s) {
+    if (c === ' ') {
       lastSpace = true;
       res += ' ';
     } else {
       if (lastSpace) {
-        res += s[i].toUpperCase();
+        res += c.toUpperCase();
         lastSpace = false;
       } else {
-        res += s[i];
+        res += c;
       }
     }
-  }, s.length);
+  }
   return res;
 }
 
