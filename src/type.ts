@@ -20,6 +20,7 @@ export type ObjectType =
   | 'Function'
   | 'AsyncFunction'
   | 'Date'
+  | 'process'
   | 'Uint8Array';
 
 export function getObjectType(o: any): ObjectType {
