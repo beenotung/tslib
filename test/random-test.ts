@@ -1,4 +1,6 @@
-import { digits, Random } from '../src/random';
+import { base58Letters, digits, Random } from '../src/random';
+
+let ProgressBar = require('cli-progress').Bar;
 
 function testEnum() {
   enum E {
@@ -21,12 +23,14 @@ testEnum();
 function testProbability() {
   let xs = {};
   let n = 0;
-  let pool = digits;
-  let length = 4;
+  let pool = base58Letters;
+  let length = 3;
+  let progressBar = new ProgressBar();
+  progressBar.start(Math.pow(pool.length, length), 0);
+  let start = new Date();
   for (; ;) {
     if (n >= Math.pow(pool.length, length)) {
-      console.log('tried all combination');
-      return;
+      break;
     }
     let start = Date.now();
     let i = 0;
@@ -37,15 +41,22 @@ function testProbability() {
       if (!xs[s]) {
         xs[s] = true;
         n++;
+        if (progressBar) {
+          progressBar.increment();
+        } else {
+          let end = Date.now();
+          let used = end - start;
+          console.log(`n=${n}, i=${i}, used ${used} ms`);
+        }
         break;
       }
     }
-    let end = Date.now();
-    let used = end - start;
-    // if (Random.nextBool(0.25)) {
-      console.log(`n=${n}, i=${i}, used ${used} ms`);
-    // }
   }
+  if (progressBar) {
+    progressBar.stop();
+  }
+  console.log('tried all combination');
+  console.log(relativeTime.format(start));
 }
 
 testProbability();

@@ -5,6 +5,12 @@ export const HOUR = MINUTE * 60;
 export const DAY = HOUR * 24;
 export const WEEK = DAY * 7;
 
+/* in average, not exact */
+export const YEAR = 365.2425 * DAY;
+export const MONTH = YEAR / 12;
+export const DECADE = YEAR * 10;
+export const CENTURY = YEAR * 100;
+
 export namespace session {
   const intervals = {};
 

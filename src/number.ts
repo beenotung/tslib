@@ -1,6 +1,7 @@
 /**
  * Created by beenotung on 4/23/17.
  */
+
 export namespace CompareResult {
   export type Smaller = -1;
   export const Smaller: Smaller = -1;
