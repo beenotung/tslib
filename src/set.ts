@@ -6,6 +6,9 @@ export function toggleSet<A>(s: Set<A>, a: A) {
   }
 }
 
+/**
+ * @deprecated use Array.from(set) instead
+ * */
 export function setToArray<A>(s: Set<A>): A[] {
   return Array.from(s.values());
 }

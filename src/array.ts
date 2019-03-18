@@ -1,6 +1,6 @@
+import { CompareResult } from './compare';
 import { forI, mapI, Obj, objValues } from './lang';
 import { Maybe } from './maybe';
-import { CompareResult } from './number';
 
 /**
  * inplace delete all element from the array
