@@ -50,7 +50,6 @@ function test2() {
     return res;
   };
   const n = 10;
-  const level = 20;
   const l = (level) => {
     console.log('             ', '>>>>', 'level', '=', level, '<<<<');
     const f = (x): number => x < 0 ? x : f(heavy(n, level, x - 1));
