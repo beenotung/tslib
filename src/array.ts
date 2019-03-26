@@ -1,6 +1,7 @@
-import { CompareResult } from './compare';
+import { compare, CompareResult } from './compare';
 import { forI, mapI, Obj, objValues } from './lang';
 import { Maybe } from './maybe';
+import { compare_string } from './string';
 
 /**
  * inplace delete all element from the array
@@ -119,6 +120,13 @@ export function insert_sorted<A>(
   xs.push(x);
 }
 
+export let defaultComparator = (a, b): CompareResult => {
+  if (typeof a === 'string' && typeof b === 'string') {
+    return compare_string(a, b);
+  }
+  return compare(a, b);
+};
+
 /**
  * @return new array (not deep cloning elements)
  * */
@@ -129,6 +137,13 @@ export function sortBy<A>(
   const res: A[] = new Array(xs.length);
   xs.forEach(x => insert_sorted(res, comparator, x));
   return res;
+}
+
+/**
+ * in-place sort the array
+ * */
+export function sort<T>(xs: T[], comparator = defaultComparator): void {
+  xs.sort(comparator);
 }
 
 /**
@@ -339,4 +354,82 @@ export function asyncCountArray<A>(
   return Promise.all(
     xs.map((x, i, xs) => f(x, i, xs).then(b => (acc += b ? 1 : 0))),
   ).then(() => acc);
+}
+
+export function max<T>(xs: T[]): T {
+  return xs.reduce((acc, c) => (acc > c ? acc : c));
+}
+
+export function min<T>(xs: T[]): T {
+  return xs.reduce((acc, c) => (acc < c ? acc : c));
+}
+
+export function sum(xs: number[]): number {
+  return xs.reduce((acc, c) => acc + c, 0);
+}
+
+export function maxBy<T extends Record<K, number>, K extends keyof T>(
+  xs: T[],
+  key: K,
+): number {
+  return xs.reduce((acc, c) => (acc > c[key] ? acc : c[key]), xs[0][key]);
+}
+
+export function minBy<T extends Record<K, number>, K extends keyof T>(
+  xs: T[],
+  key: K,
+): number {
+  return xs.reduce((acc, c) => (acc < c[key] ? acc : c[key]), xs[0][key]);
+}
+
+export function sumBy<T extends Record<K, number>, K extends keyof T>(
+  xs: T[],
+  key: K,
+): number {
+  return xs.reduce((acc, c) => acc + c[key], 0);
+}
+
+/**
+ * side-effect: the array will be sorted in-place if instructed
+ * */
+export function median<T>(
+  xs: T[],
+  sort?: true | ((a, b) => -1 | 0 | 1),
+): T | [T, T] {
+  if (xs.length === 0) {
+    return undefined;
+  }
+  if (xs.length === 1) {
+    return xs[0];
+  }
+  if (sort) {
+    if (typeof sort === 'function') {
+      xs.sort(sort);
+    } else {
+      xs.sort(defaultComparator);
+    }
+  }
+  const m = Math.floor(xs.length / 2);
+  if (m % 2) {
+    return xs[m];
+  }
+  const a = xs[m];
+  const b = xs[m - 1];
+  if (typeof a === 'number' && typeof b === 'number') {
+    return ((a + b) / 2.0) as any;
+  }
+  return [a, b];
+}
+
+/* TODO FIXME */
+export function mode<T>(xs: T[]): T {
+  const counts = new Map<T, number>();
+  xs.forEach(x => {
+    if (counts.has(x)) {
+      counts.set(x, counts.get(x) + 1);
+    } else {
+      counts.set(x, 1);
+    }
+  });
+  return Array.from(xs.entries()).sort((a, b) => compare(a[0], b[0]))[0][1];
 }

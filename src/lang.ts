@@ -106,6 +106,9 @@ export function caseFunctionLookup<A, B>(
   return caseLookup(cases, target)();
 }
 
+/**
+ * @deprecated use compare() or compare_string() instead
+ * */
 export function compareString(a: string, b: string): -1 | 0 | 1 {
   if (a === b) {
     return 0;
