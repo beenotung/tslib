@@ -441,10 +441,7 @@ export function minByFunc<T>(
   return acc;
 }
 
-export function maxByField<T extends Record<K, number>, K extends keyof T>(
-  xs: T[],
-  key: K,
-): T {
+export function maxByField<T, K extends keyof T>(xs: T[], key: K): T {
   let acc = xs[0];
   const n = xs.length;
   for (let i = 1; i < n; i++) {
@@ -456,10 +453,7 @@ export function maxByField<T extends Record<K, number>, K extends keyof T>(
   return acc;
 }
 
-export function minByField<T extends Record<K, number>, K extends keyof T>(
-  xs: T[],
-  key: K,
-): T {
+export function minByField<T, K extends keyof T>(xs: T[], key: K): T {
   let acc = xs[0];
   const n = xs.length;
   for (let i = 1; i < n; i++) {
@@ -485,10 +479,15 @@ export function sumByField<T extends Record<K, number>, K extends keyof T>(
 
 /**
  * side-effect: the array will be sorted in-place if instructed
+ *
+ * default will sort the array
  * */
 export function median<T>(
   xs: T[],
-  sort: true | ((a, b) => -1 | 0 | 1) = true,
+  options?: {
+    sort?: boolean | typeof defaultComparator;
+    merger?: (a: T, b: T) => T;
+  },
 ): T | [T, T] {
   if (xs.length === 0) {
     return undefined;
@@ -496,12 +495,12 @@ export function median<T>(
   if (xs.length === 1) {
     return xs[0];
   }
-  if (sort) {
-    if (typeof sort === 'function') {
-      xs.sort(sort);
-    } else {
-      xs.sort(defaultComparator);
-    }
+  if (!options || options.sort !== false) {
+    xs.sort(
+      options && typeof options.sort === 'function'
+        ? options.sort
+        : defaultComparator,
+    );
   }
   const n = xs.length;
   if (n % 2) {
@@ -515,7 +514,10 @@ export function median<T>(
   if (typeof a === 'number' && typeof b === 'number') {
     return ((a + b) / 2.0) as any;
   }
-  return [a, b];
+  if (options && options.merger) {
+    return options.merger(a, b);
+  }
+  throw new Error('cannot find median of even array');
 }
 
 export function countElement<T>(xs: T[], x: T): number {
