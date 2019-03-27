@@ -1,5 +1,6 @@
 import { compare, CompareResult } from './compare';
 import { forI, mapI, Obj, objValues } from './lang';
+import { incMap } from './map';
 import { Maybe } from './maybe';
 import { compare_string } from './string';
 
@@ -128,9 +129,20 @@ export let defaultComparator = (a, b): CompareResult => {
 };
 
 /**
- * @return new array (not deep cloning elements)
+ *
+ * wrapper of slice, because it's confusing between slice and splice
+ *
+ * performance reference: https://jsperf.com/array-clone
  * */
-export function sortBy<A>(
+export function cloneArray<T>(xs: T[]): T[] {
+  return xs.slice();
+}
+
+/**
+ * @return new array (not deep cloning elements)
+ * @deprecated use clone() and array.sort() explicitly is better
+ * */
+export function insertSortBy<A>(
   xs: A[],
   comparator: (a: A, b: A) => CompareResult,
 ): A[] {
@@ -139,11 +151,14 @@ export function sortBy<A>(
   return res;
 }
 
+/**@deprecated*/
+export let sortBy = insertSortBy;
+
 /**
- * in-place sort the array
+ * @return in-place sorted, original array
  * */
-export function sort<T>(xs: T[], comparator = defaultComparator): void {
-  xs.sort(comparator);
+export function sort<T>(xs: T[], comparator = defaultComparator): T[] {
+  return xs.sort(comparator);
 }
 
 /**
@@ -343,7 +358,14 @@ export function countArray<A>(
   xs: A[],
   f: (a: A, i: number, xs: A[]) => boolean,
 ): number {
-  return xs.reduce((acc, x, i, xs) => acc + (f(x, i, xs) ? 1 : 0), 0);
+  let acc = 0;
+  const n = xs.length;
+  for (let i = 0; i < n; i++) {
+    if (f(xs[i], i, xs)) {
+      acc++;
+    }
+  }
+  return acc;
 }
 
 export function asyncCountArray<A>(
@@ -357,36 +379,108 @@ export function asyncCountArray<A>(
 }
 
 export function max<T>(xs: T[]): T {
-  return xs.reduce((acc, c) => (acc > c ? acc : c));
+  const n = xs.length;
+  let acc = xs[0];
+  for (let i = 1; i < n; i++) {
+    const c = xs[i];
+    if (acc < c) {
+      acc = c;
+    }
+  }
+  return acc;
 }
 
 export function min<T>(xs: T[]): T {
-  return xs.reduce((acc, c) => (acc < c ? acc : c));
+  const n = xs.length;
+  let acc = xs[0];
+  for (let i = 1; i < n; i++) {
+    const c = xs[i];
+    if (acc > c) {
+      acc = c;
+    }
+  }
+  return acc;
 }
 
 export function sum(xs: number[]): number {
-  return xs.reduce((acc, c) => acc + c, 0);
+  let acc = 0;
+  const n = xs.length;
+  for (let i = 0; i < n; i++) {
+    acc += xs[i];
+  }
+  return acc;
 }
 
-export function maxBy<T extends Record<K, number>, K extends keyof T>(
+export function maxByFunc<T>(
+  xs: T[],
+  comparator: (a: T, b: T) => CompareResult,
+): T {
+  let acc = xs[0];
+  const n = xs.length;
+  for (let i = 1; i < n; i++) {
+    const c = xs[i];
+    if (comparator(acc, c) < 0) {
+      acc = c;
+    }
+  }
+  return acc;
+}
+
+export function minByFunc<T>(
+  xs: T[],
+  comparator: (a: T, b: T) => CompareResult,
+): T {
+  let acc = xs[0];
+  const n = xs.length;
+  for (let i = 1; i < n; i++) {
+    const c = xs[i];
+    if (comparator(acc, c) > 0) {
+      acc = c;
+    }
+  }
+  return acc;
+}
+
+export function maxByField<T extends Record<K, number>, K extends keyof T>(
+  xs: T[],
+  key: K,
+): T {
+  let acc = xs[0];
+  const n = xs.length;
+  for (let i = 1; i < n; i++) {
+    const c = xs[i];
+    if (defaultComparator(acc[key], c[key]) < 0) {
+      acc = c;
+    }
+  }
+  return acc;
+}
+
+export function minByField<T extends Record<K, number>, K extends keyof T>(
+  xs: T[],
+  key: K,
+): T {
+  let acc = xs[0];
+  const n = xs.length;
+  for (let i = 1; i < n; i++) {
+    const c = xs[i];
+    if (defaultComparator(acc[key], c[key]) > 0) {
+      acc = c;
+    }
+  }
+  return acc;
+}
+
+export function sumByField<T extends Record<K, number>, K extends keyof T>(
   xs: T[],
   key: K,
 ): number {
-  return xs.reduce((acc, c) => (acc > c[key] ? acc : c[key]), xs[0][key]);
-}
-
-export function minBy<T extends Record<K, number>, K extends keyof T>(
-  xs: T[],
-  key: K,
-): number {
-  return xs.reduce((acc, c) => (acc < c[key] ? acc : c[key]), xs[0][key]);
-}
-
-export function sumBy<T extends Record<K, number>, K extends keyof T>(
-  xs: T[],
-  key: K,
-): number {
-  return xs.reduce((acc, c) => acc + c[key], 0);
+  let acc = 0;
+  const n = xs.length;
+  for (let i = 0; i < n; i++) {
+    acc += xs[i][key];
+  }
+  return acc;
 }
 
 /**
@@ -394,7 +488,7 @@ export function sumBy<T extends Record<K, number>, K extends keyof T>(
  * */
 export function median<T>(
   xs: T[],
-  sort?: true | ((a, b) => -1 | 0 | 1),
+  sort: true | ((a, b) => -1 | 0 | 1) = true,
 ): T | [T, T] {
   if (xs.length === 0) {
     return undefined;
@@ -409,27 +503,39 @@ export function median<T>(
       xs.sort(defaultComparator);
     }
   }
-  const m = Math.floor(xs.length / 2);
-  if (m % 2) {
-    return xs[m];
+  const n = xs.length;
+  if (n % 2) {
+    /* odd number */
+    return xs[(n - 1) / 2];
   }
-  const a = xs[m];
-  const b = xs[m - 1];
+  /* even number */
+  const m = n / 2;
+  const a = xs[m - 1];
+  const b = xs[m];
   if (typeof a === 'number' && typeof b === 'number') {
     return ((a + b) / 2.0) as any;
   }
   return [a, b];
 }
 
-/* TODO FIXME */
-export function mode<T>(xs: T[]): T {
-  const counts = new Map<T, number>();
-  xs.forEach(x => {
-    if (counts.has(x)) {
-      counts.set(x, counts.get(x) + 1);
-    } else {
-      counts.set(x, 1);
+export function countElement<T>(xs: T[], x: T): number {
+  let acc = 0;
+  const n = xs.length;
+  for (let i = 1; i < n; i++) {
+    if (xs[i] === x) {
+      acc++;
     }
-  });
-  return Array.from(xs.entries()).sort((a, b) => compare(a[0], b[0]))[0][1];
+  }
+  return acc;
+}
+
+export function countAll<T>(xs: T[]): Map<T, number> {
+  const counts = new Map<T, number>();
+  xs.forEach(x => incMap(counts, x));
+  return counts;
+}
+
+export function mode<T>(xs: T[]): T {
+  const counts = Array.from(countAll(xs).entries());
+  return maxByField(counts, 1)[0];
 }

@@ -51,3 +51,11 @@ export function mapGetOrSetDefault<K, V>(
   map.set(key, res);
   return res;
 }
+
+export function incMap<K>(map: Map<K, number>, key: K): void {
+  if (map.has(key)) {
+    map.set(key, map.get(key) + 1);
+  } else {
+    map.set(key, 1);
+  }
+}
