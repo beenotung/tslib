@@ -488,7 +488,7 @@ export function median<T>(
     sort?: boolean | typeof defaultComparator;
     merger?: (a: T, b: T) => T;
   },
-): T | [T, T] {
+): T {
   if (xs.length === 0) {
     return undefined;
   }
