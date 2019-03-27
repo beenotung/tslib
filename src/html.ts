@@ -91,3 +91,24 @@ export function displayJSON(o: any, mode: 'raw' | 'table' = 'table'): string {
     .join('');
   return `<table><tbody>${rows}</tbody></table>`;
 }
+
+function mkHtmlText(tagName: string, content: string) {
+  return `<${tagName}>${content}</${tagName}>`;
+}
+
+export function csv_to_table_html(rows: string[][]): string {
+  const thead = mkHtmlText(
+    'thead',
+    mkHtmlText('tr', rows[0].map(col => mkHtmlText('th', col)).join('')),
+  );
+  const tbody = mkHtmlText(
+    'tbody',
+    rows
+      .slice(1)
+      .map(cols =>
+        mkHtmlText('tr', cols.map(col => mkHtmlText('td', col)).join('')),
+      )
+      .join(''),
+  );
+  return mkHtmlText('table', thead + tbody);
+}

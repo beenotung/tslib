@@ -47,3 +47,35 @@ export function htmlCollectionToArray(es: HTMLCollection): Element[] {
 export let qa = (x, parent = document.body) => parent.querySelectorAll(x);
 /** @deprecated lost type hint */
 export let q = (x, parent = document.body) => parent.querySelector(x);
+
+export function csv_to_table_element(rows: string[][]): HTMLTableElement {
+  /* initialize */
+  const table = document.createElement('table');
+  const thead = document.createElement('thead');
+  const tbody = document.createElement('tbody');
+
+  /* create table head */
+  const tr = document.createElement('tr');
+  rows[0].forEach(row => {
+    const td = document.createElement('th');
+    td.textContent = row;
+    tr.appendChild(td);
+  });
+  thead.appendChild(tr);
+
+  /* create table body */
+  for (let i = 1; i < rows.length; i++) {
+    const tr = document.createElement('tr');
+    rows[i].forEach(col => {
+      const td = document.createElement('td');
+      td.textContent = col;
+      tr.appendChild(td);
+    });
+    tbody.appendChild(tr);
+  }
+
+  /* finalize */
+  table.appendChild(thead);
+  table.appendChild(tbody);
+  return table;
+}
