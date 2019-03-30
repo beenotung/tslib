@@ -537,7 +537,8 @@ export function countAll<T>(xs: T[]): Map<T, number> {
   return counts;
 }
 
-export function mode<T>(xs: T[]): T {
+export function mode<T>(xs: T[]): T | undefined {
   const counts = Array.from(countAll(xs).entries());
-  return maxByField(counts, 1)[0];
+  const maxCount = maxByField(counts, 1);
+  return maxCount ? maxCount[0] : undefined;
 }
