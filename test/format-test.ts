@@ -10,9 +10,9 @@ console.log('time (zh-hk):', format_datetime(Date.now(), { locales: 'zh-hk' }));
 // time (zh-hk): 2019 M03 11, Mon 11:56 AM
 
 console.log('time diff:', format_relative_time(12.5 * MINUTE));
-// time diff: after 12.5 minutes
+// time diff: 12.5 minutes hence
 console.log('time diff:', format_relative_time(76 * DAY));
-// time diff: after 2.5 months
+// time diff: 2.5 months hence
 console.log('time diff:', format_relative_time(-400 * DAY));
 // time diff: 1.1 years ago
 console.log('time diff:', format_relative_time(-1.5 * SECOND));

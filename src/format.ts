@@ -73,7 +73,8 @@ export function format_relative_time(delta: number, digit = 1) {
       }
     }
     if (delta > 0) {
-      return ['after', n, unit].join(' ');
+      // return ['after', n, unit].join(' ');
+      return [n, unit, 'hence'].join(' ');
     } else {
       return [n, unit, 'ago'].join(' ');
     }
