@@ -2,6 +2,7 @@ import { compare, CompareResult } from './compare';
 import { forI, mapI, Obj, objValues } from './lang';
 import { incMap } from './map';
 import { Maybe } from './maybe';
+import { Random } from './random';
 import { compare_string } from './string';
 
 /**
@@ -541,4 +542,88 @@ export function mode<T>(xs: T[]): T | undefined {
   const counts = Array.from(countAll(xs).entries());
   const maxCount = maxByField(counts, 1);
   return maxCount ? maxCount[0] : undefined;
+}
+
+export function shuffle<T>(xs: T[], n = xs.length): T[] {
+  xs = xs.slice();
+  for (let i = 0; i < n; i++) {
+    const a = i;
+    const b = Random.nextInt(n);
+    const t = xs[a];
+    xs[a] = xs[b];
+    xs[b] = t;
+  }
+  return xs;
+}
+
+export function shuffledBinArray<T>(
+  xs: T[],
+  binSize: number,
+  nSwap?: number,
+): T[][] {
+  return binArray(shuffle(xs, nSwap), binSize);
+}
+
+export function shuffledIndecies(n: number): number[] {
+  return shuffle(range(0, n - 1));
+}
+
+/**
+ * TODO assign a better name
+ * e.g. f [a,b,c] 1 ~~> [[a],[b],[c]]
+ * e.g. f [a,b,c] 2 ~~> [ [a,a],[a,b],[a,c],
+ *                        [b,a],[b,b],[b,c],
+ *                        [c,a],[c,b],[c,c] ]
+ * */
+export function genCombination<T>(cs: T[], size: number): T[][] {
+  if (size < 1) {
+    return [];
+  }
+  let xss = cs.map(c => [c]);
+  let i = 1;
+  for (;;) {
+    if (i === size) {
+      return xss;
+    }
+    i++;
+    const acc: T[][] = [];
+    const n = xss.length;
+    for (let x = 0; x < n; x++) {
+      const n = cs.length;
+      for (let c = 0; c < n; c++) {
+        const xs = xss[x].slice();
+        xs.push(cs[c]);
+        acc.push(xs);
+      }
+    }
+    xss = acc;
+  }
+}
+
+export type IoList<T> =
+  | T[]
+  | T[][]
+  | T[][][]
+  | T[][][][]
+  | T[][][][][]
+  | T[][][][][][]
+  | T[][][][][][][]
+  | any[];
+
+export function flattenAll<T>(xs: IoList<T>): T[] {
+  const ys: T[] = [];
+  flattenIoList(xs, ys);
+  return ys;
+}
+
+function flattenIoList<T>(xs: IoList<T>, ys: T[]): void {
+  const n = xs.length;
+  for (let i = 0; i < n; i++) {
+    const x = xs[i];
+    if (Array.isArray(x)) {
+      flattenIoList(x, ys);
+    } else {
+      ys.push(x);
+    }
+  }
 }

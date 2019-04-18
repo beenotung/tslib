@@ -1,3 +1,5 @@
+import { replaceArray } from './array';
+import { ApplyUndefinedType } from './assert';
 import { map_any, map_set } from './iterative/map';
 import { isDefined } from './lang';
 import { getObjectType } from './type';
@@ -186,4 +188,33 @@ export function ensureNonCyclic<A>(
         ensureNonCyclic(x, skip, placeholder, mapper, visited),
       );
   }
+}
+
+export function deleteUndefined(o: ApplyUndefinedType): void {
+  if (Array.isArray(o)) {
+    replaceArray(o, o.filter(x => x !== undefined));
+    o.forEach(x => deleteUndefined(x));
+    return;
+  }
+  if (o instanceof Map) {
+    o.forEach((value, key) => {
+      if (value === undefined) {
+        o.delete(key);
+      }
+      deleteUndefined(value);
+    });
+    return;
+  }
+  if (typeof o === 'object') {
+    Object.keys(o).map(s => {
+      if (o[s] === undefined) {
+        delete o[s];
+        return;
+      }
+      deleteUndefined(o[s]);
+    });
+    return;
+  }
+  // e.g. number, string
+  return;
 }
