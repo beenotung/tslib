@@ -60,7 +60,7 @@ export function format_datetime(
   });
 }
 
-export function format_relative_time(delta: number, digit = 1) {
+export function format_time_duration(delta: number, digit = 1): string {
   const diff = Math.abs(delta);
   const res = (n: number, unit: string): string => {
     const p = Math.pow(10, digit);
@@ -72,17 +72,24 @@ export function format_relative_time(delta: number, digit = 1) {
         unit = unit + 's';
       }
     }
-    if (delta > 0) {
-      // return ['after', n, unit].join(' ');
-      return [n, unit, 'hence'].join(' ');
-    } else {
-      return [n, unit, 'ago'].join(' ');
-    }
+    return n + ' ' + unit;
   };
   for (const [size, unit] of time_units) {
     if (diff > size) {
       return res(diff / size, unit);
     }
   }
-  return 'just now';
+  return 'instantly';
+}
+
+export function format_relative_time(delta: number, digit = 1): string {
+  const s = format_time_duration(delta, digit);
+  if (s === 'instantly') {
+    return 'just now';
+  }
+  if (delta > 0) {
+    return s + ' hence';
+  } else {
+    return s + ' ago';
+  }
 }
