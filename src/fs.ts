@@ -40,6 +40,10 @@ export let readdir: typeof fs.readdir.__promisify__ = util.promisify(
 );
 export let unlink: typeof fs.unlink.__promisify__ = util.promisify(fs.unlink);
 export let rename: typeof fs.rename.__promisify__ = util.promisify(fs.rename);
+/** Does not dereference symbolic links. */
+export let lstat: typeof fs.lstat.__promisify__ = util.promisify(fs.lstat);
+/** Does dereference symbolic links */
+export let stat: typeof fs.stat.__promisify__ = util.promisify(fs.stat);
 
 export namespace writeStream {
   export function write(
