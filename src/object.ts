@@ -1,7 +1,6 @@
 import { replaceArray } from './array';
 import { ApplyUndefinedType } from './assert';
 import { map_any, map_set } from './iterative/map';
-import { isDefined } from './lang';
 import { getObjectType } from './type';
 
 export function isObject(o: any): boolean {
@@ -98,24 +97,45 @@ export function replaceObject<A>(dest: A, src: A): A {
   return Object.assign(dest, src);
 }
 
+const SafeObject = Symbol.for('SafeObject');
+export const SafeObjectOptions = {
+  throwError: false,
+};
 const safeProxyHandler: ProxyHandler<any> = {
-  has: (target, p) => isDefined(target[p]),
   get: (target, p, receiver) => {
-    const res = target[p];
-    return isDefined(res) ? res : createSafeObject();
+    let value = Reflect.get(target, p, receiver);
+    if (typeof p === 'symbol' || p === 'inspect') {
+      return value;
+    }
+    if (SafeObjectOptions.throwError && !Reflect.has(target, p)) {
+      throw new TypeError(
+        JSON.stringify(p) + ' is not defined in ' + target.toString(),
+      );
+    }
+    if (value === null || value === undefined) {
+      value = createSafeObject();
+      target[p] = value;
+      return value;
+    }
+    if (typeof value === 'object') {
+      if (value[SafeObject] === true) {
+        return value;
+      }
+      value = createSafeObject(value);
+      target[p] = value;
+      return value;
+    } else {
+      return value;
+    }
   },
-  set: (target, p, value, receiver) => {
-    target[p] = value;
-    return true;
-  },
-  ownKeys: target => Object.keys(target).filter(p => isDefined(target[p])),
 };
 
 /**
  * make a loss object, very forgiving
  * */
-export function createSafeObject() {
-  return new Proxy({}, safeProxyHandler);
+export function createSafeObject(target = {}) {
+  target[SafeObject] = true;
+  return new Proxy(target, safeProxyHandler);
 }
 
 export const updateObject = dest => x => Object.assign(dest, x);
