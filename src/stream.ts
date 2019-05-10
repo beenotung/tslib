@@ -55,3 +55,24 @@ export function readStreamByLine(
 
   return _lineStream;
 }
+
+export function readStreamAllLine(
+  stream: NodeJS.ReadableStream,
+): Promise<string[]> {
+  return new Promise<string[]>((resolve, reject) => {
+    const lines: string[] = [];
+    readStreamByLine(
+      stream,
+      line => lines.push(line),
+      e => reject(e),
+      () => resolve(lines),
+    );
+  });
+}
+
+export function readStreamAsString(
+  stream: NodeJS.ReadableStream,
+  lineFeed = '\n',
+): Promise<string> {
+  return readStreamAllLine(stream).then(lines => lines.join(lineFeed));
+}
