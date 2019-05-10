@@ -27,5 +27,30 @@ export let lstat: typeof fs.lstat.__promisify__ = util.promisify(fs.lstat);
 /** Does dereference symbolic links */
 export let stat: typeof fs.stat.__promisify__ = util.promisify(fs.stat);
 
+function isNoFileError(e): true | Promise<any> {
+  if (e.code === 'ENOENT') {
+    return true;
+  }
+  return Promise.reject(e);
+}
+function not<T>(e: true | T): false | T {
+  return e === true ? false : e;
+}
+export function exist(filename: string): Promise<boolean> {
+  return stat(filename)
+    .then(() => true)
+    .catch(e => not(isNoFileError(e)));
+}
+export function hasFile(filename: string): Promise<boolean> {
+  return stat(filename)
+    .then(stat => stat.isFile())
+    .catch(e => not(isNoFileError(e)));
+}
+export function hasDirectory(filename: string): Promise<boolean> {
+  return stat(filename)
+    .then(stat => stat.isDirectory())
+    .catch(e => not(isNoFileError(e)));
+}
+
 /** @deprecated moved to write-stream.ts */
 export { writeStream } from './write-stream';
