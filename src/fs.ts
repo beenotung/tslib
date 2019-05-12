@@ -45,6 +45,8 @@ export let lstat: typeof fs.lstat.__promisify__ = util.promisify(fs.lstat);
 /** Does dereference symbolic links */
 export let stat: typeof fs.stat.__promisify__ = util.promisify(fs.stat);
 
+export let mkdir: typeof fs.mkdir.__promisify__ = util.promisify(fs.mkdir);
+
 export namespace writeStream {
   export function write(
     stream: WriteStream,
