@@ -1,7 +1,7 @@
 import { map_set } from './iterative/map';
 import { getObjectType } from './type';
 
-export type JsonPrimitive = string | number | null;
+export type JsonPrimitive = string | number | null | boolean;
 
 export interface JsonObject {
   [key: string]: JsonValue;

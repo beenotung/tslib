@@ -13,11 +13,16 @@ export function genNull(): null {
   return null;
 }
 
+export function getBoolean(): boolean {
+  return Random.nextBool();
+}
+
 export function genJsonPrimitive(length = 8): JsonPrimitive {
   return Random.element<(length?: number) => JsonPrimitive>([
     genString,
     genNumber,
     genNull,
+    getBoolean,
   ])(length);
 }
 
