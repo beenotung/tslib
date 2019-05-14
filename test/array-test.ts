@@ -1,3 +1,4 @@
+import { Bar } from 'cli-progress';
 import {
   binArray,
   cloneArray,
@@ -20,7 +21,16 @@ import {
 import * as test from 'tape';
 
 test('getMaxArraySize', t => {
-  console.log(getMaxArraySize());
+  const MaxArraySize = getMaxArraySize();
+  console.log({ MaxArraySize });
+  let xss = new Array(MaxArraySize);
+  const bar = new Bar({});
+  bar.start(MaxArraySize, 0);
+  for (let i = 0; i < 10000; i++) {
+    xss[i] = new Array(MaxArraySize);
+    bar.increment(1);
+  }
+  bar.stop();
   t.end();
 });
 
