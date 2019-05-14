@@ -1,3 +1,4 @@
+import { format_relative_time } from '../src/format';
 import { base58Letters, digits, Random } from '../src/random';
 
 let ProgressBar = require('cli-progress').Bar;
@@ -56,7 +57,7 @@ function testProbability() {
     progressBar.stop();
   }
   console.log('tried all combination');
-  console.log(relativeTime.format(start));
+  console.log(format_relative_time(start.getTime()));
 }
 
 testProbability();
