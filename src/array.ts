@@ -627,3 +627,39 @@ function flattenIoList<T>(xs: IoList<T>, ys: T[]): void {
     }
   }
 }
+
+function _getMaxArraySize() {
+  let i = 1;
+  try {
+    for (;;) {
+      /* tslint:disable:no-unused-expression */
+      new Array(i);
+      /* tslint:enable:no-unused-expression */
+      i += i;
+    }
+  } catch (e) {
+    let min = i / 2;
+    let max = i;
+    for (; min + 1 < max; ) {
+      const m = Math.round((min + max) / 2);
+      try {
+        /* tslint:disable:no-unused-expression */
+        new Array(m);
+        /* tslint:enable:no-unused-expression */
+        min = m;
+      } catch (e) {
+        max = m;
+      }
+    }
+    return min;
+  }
+}
+
+let MaxArraySize: number;
+
+export function getMaxArraySize() {
+  if (!MaxArraySize) {
+    MaxArraySize = _getMaxArraySize();
+  }
+  return MaxArraySize;
+}

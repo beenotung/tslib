@@ -4,6 +4,7 @@ import {
   countArray,
   countElement,
   defaultComparator,
+  getMaxArraySize,
   max,
   maxByField,
   maxByFunc,
@@ -17,6 +18,11 @@ import {
   sumByField,
 } from '../src/array';
 import * as test from 'tape';
+
+test('getMaxArraySize', t => {
+  console.log(getMaxArraySize());
+  t.end();
+});
 
 test('cloneArray', t => {
   let xs = [1, 3, 2];
