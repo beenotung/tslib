@@ -31,6 +31,10 @@ export class CheckedPromise<T> implements Promise<T> {
     this.hasCatch = true;
     return this.promise.catch(onrejected);
   }
+
+  public finally(onfinally?: (() => void) | undefined | null): Promise<T> {
+    return this.promise.finally(onfinally);
+  }
 }
 
 export function checkPromise<T>(p: Promise<T>) {

@@ -10,7 +10,8 @@
     "skipLibCheck": true,
     "lib": [
       "dom",
-      "es2015"
+      "es2015",
+      "es2018"
     ],
     "downlevelIteration": true,
     "module": "commonjs",

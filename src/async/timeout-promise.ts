@@ -32,6 +32,10 @@ export class TimeoutPromise<T> implements Promise<T> {
   ): Promise<T | TResult> {
     return this.promise.catch(onrejected);
   }
+
+  public finally(onfinally?: (() => void) | undefined | null): Promise<T> {
+    return this.promise.finally(onfinally);
+  }
 }
 
 export function timeoutPromise<T>(p: Promise<T>, timeout: number, context?) {
