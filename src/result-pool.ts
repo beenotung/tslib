@@ -1,11 +1,14 @@
-import { Result, then } from './result';
+import { getMaxArraySize } from './array';
+import { Result, then, thenF } from './result';
+import { RingBuffer } from './ring-buffer';
 
 export class VoidResultPool {
-  private fs: Array<() => Result<void>> = [];
+  private fs: RingBuffer<() => Result<void>> = new RingBuffer(
+    getMaxArraySize(),
+  );
   private running = 0;
 
-  constructor(public poolSize: number) {
-  }
+  constructor(public poolSize: number) {}
 
   run(f: () => Result<void>): void {
     this.fs.push(f);
@@ -14,7 +17,7 @@ export class VoidResultPool {
 
   private next(): void {
     if (this.fs.length > 0 && this.running < this.poolSize) {
-      const f = this.fs.pop();
+      const f = this.fs.dequeue();
       this.running++;
       let x: Result<void>;
       try {
@@ -34,11 +37,10 @@ export class VoidResultPool {
 }
 
 export class NonVoidResultPool {
-  private fs: Array<() => Result<any>> = [];
+  private fs: RingBuffer<() => void> = new RingBuffer(getMaxArraySize());
   private running = 0;
 
-  constructor(public poolSize: number, public logError = true) {
-  }
+  constructor(public poolSize: number, public logError = true) {}
 
   /**
    * @description error will be ignored
@@ -46,41 +48,54 @@ export class NonVoidResultPool {
   run<T>(f: () => Result<T>): Result<T> {
     if (this.running < this.poolSize) {
       this.running++;
-      try {
-        const x=f();
-        then(x,)
-        return f();
-      } catch (e) {
-        throw e;
-      } finally {
-        this.running--;
-        this.check();
-      }
+      return thenF(
+        f,
+        x => {
+          this.running--;
+          this.check();
+          return x;
+        },
+        e => {
+          this.running--;
+          this.check();
+        },
+      );
     }
     return this.queue(f);
   }
 
   private queue<T>(f: () => Result<T>): Result<T> {
     return new Promise<T>((resolve, reject) => {
-      const f1: () => Result<T> = (): Result<T> => {
-        try {
-          this.running++;
-          const x = f();
-          resolve(x);
-          return x;
-        } catch (e) {
-          reject(e);
-          throw e;
-        } finally {
-          this.running--;
-        }
-      };
-      this.fs.push(f1);
+      this.fs.push(() => {
+        this.running++;
+        return thenF(
+          f,
+          x => {
+            this.running--;
+            resolve(x);
+            this.check();
+            return x;
+          },
+          e => {
+            this.running--;
+            reject(e);
+            this.check();
+          },
+        );
+      });
     });
   }
 
   private check() {
+    if (this.fs.length > 0 && this.running < this.poolSize) {
+      const f = this.fs.dequeue();
+      try {
+        f();
+      } catch (e) {
+        if (this.logError) {
+          console.error(e);
+        }
+      }
+    }
   }
-
-
 }

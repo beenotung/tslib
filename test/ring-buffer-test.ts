@@ -1,9 +1,14 @@
 import { RingBuffer } from '../src/ring-buffer';
+import * as test from 'tape';
 
-const size = 100;
-const xs = new RingBuffer(size);
-for (let j = 0; j < size * 100; j++) {
-  xs.push(0);
-  xs.unshift();
-}
-console.log('without error, length:', xs.length);
+test('correct boundary', t => {
+  const size = 3;
+  const xs = new RingBuffer(size);
+  for (let x = 0; x < size * 5; x++) {
+    xs.push(x);
+    let y = xs.unshift();
+    t.equal(y, x);
+  }
+  t.equal(xs.length, 0);
+  t.end();
+});

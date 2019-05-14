@@ -8,6 +8,7 @@ export class RingBuffer<T> {
 
   constructor(public readonly size: number = getMaxArraySize()) {
     this.xs = new Array(size);
+    this.end = size - 1;
   }
 
   get length(): number {
