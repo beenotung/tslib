@@ -76,6 +76,8 @@ export function displayJSON(o: any, mode: 'raw' | 'table' = 'table'): string {
         .join(escape_space.repeat(2))
         .split('\t')
         .join(escape_space.repeat(4));
+    case 'number':
+      return o.toString();
     default:
       return `<pre>${JSON.stringify(o)}</pre>`;
   }
