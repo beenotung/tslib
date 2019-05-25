@@ -48,7 +48,6 @@
   },
   "devDependencies": {
     "@beenotung/gen-index": "^1.0.7",
-    "@types/axios": "^0.14.0",
     "@types/cli-progress": "^1.8.1",
     "@types/form-data": "^2.2.1",
     "@types/isomorphic-fetch": "^0.0.34",
