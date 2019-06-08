@@ -13,7 +13,7 @@ export function bindMethods<A extends Obj<Function | any>>(o: A): A {
   Object.keys(o).forEach(x => {
     const f = o[x];
     if (typeof f === 'function') {
-      o[x] = f.bind(o);
+      o[x as any] = f.bind(o);
     }
   });
   return o;
