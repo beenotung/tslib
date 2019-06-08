@@ -21,7 +21,7 @@ export type BlobType =
 
 function createAsyncFileReader(): [
   Defer<string | ArrayBuffer, any>,
-  FileReader
+  FileReader,
 ] {
   const defer = createDefer<string | ArrayBuffer, any>();
   const reader = new FileReader();
