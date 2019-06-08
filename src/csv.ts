@@ -7,6 +7,8 @@ export function from_csv(
   separator = COMMA,
   delimiter = DOUBLE_QUOTE,
 ): string[][] {
+  // to remove control char if got from network
+  s = s.trim();
   const rows: string[][] = [];
   let cols: string[] = [];
   let col = '';
