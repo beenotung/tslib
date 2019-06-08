@@ -1,5 +1,7 @@
 import * as fs from 'fs';
+import * as path from 'path';
 import * as util from 'util';
+import { Result } from './result';
 
 /** @deprecated use native typing instead */
 export type readOptions =
@@ -35,19 +37,23 @@ function isNoFileError(e): true | Promise<any> {
   }
   return Promise.reject(e);
 }
+
 function not<T>(e: true | T): false | T {
   return e === true ? false : e;
 }
+
 export function exist(filename: string): Promise<boolean> {
   return stat(filename)
     .then(() => true)
     .catch(e => not(isNoFileError(e)));
 }
+
 export function hasFile(filename: string): Promise<boolean> {
   return stat(filename)
     .then(stat => stat.isFile())
     .catch(e => not(isNoFileError(e)));
 }
+
 export function hasDirectory(filename: string): Promise<boolean> {
   return stat(filename)
     .then(stat => stat.isDirectory())
@@ -56,3 +62,42 @@ export function hasDirectory(filename: string): Promise<boolean> {
 
 /** @deprecated moved to write-stream.ts */
 export { writeStream } from './write-stream';
+
+export async function scanRecursively(args: {
+  entryPath: string;
+  onFile?: (filename: string, basename: string) => Result<void>;
+  onDir?: (dirname: string, basename: string) => Result<void>;
+  onComplete?: () => Result<void>;
+  dereferenceSymbolicLinks?: boolean;
+}) {
+  const {
+    entryPath,
+    onFile,
+    onDir,
+    onComplete,
+    dereferenceSymbolicLinks,
+  } = args;
+  const checkStat = dereferenceSymbolicLinks ? stat : lstat;
+  const check = async (pathname: string, basename: string) => {
+    const stat = await checkStat(pathname);
+    if (stat.isDirectory()) {
+      if (onDir) {
+        await onDir(pathname, basename);
+      }
+      const names = await readdir(pathname);
+      for (const basename of names) {
+        const childPathname = path.join(pathname, basename);
+        await check(childPathname, basename);
+      }
+      return;
+    }
+    if (onFile && stat.isFile()) {
+      await onFile(pathname, basename);
+      return;
+    }
+  };
+  await check(entryPath, path.basename(entryPath));
+  if (onComplete) {
+    await onComplete();
+  }
+}
