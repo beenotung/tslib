@@ -1,3 +1,7 @@
+/**
+ * For DOM
+ * */
+
 import { createDefer, Defer } from './async/defer';
 import { arrayBufferToString } from './blob';
 import { mapI } from './lang';
