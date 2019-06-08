@@ -1,4 +1,4 @@
-import * as fetch from 'isomorphic-fetch';
+import { fetch } from '../fetch';
 
 export function fetch_no_cache(url: string, method = 'GET'): Promise<Response> {
   const req: Request | string =

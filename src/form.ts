@@ -1,6 +1,6 @@
 import axios from 'axios';
 import * as FormData from 'form-data';
-import * as fetch from 'isomorphic-fetch';
+import { fetch } from './fetch';
 
 export function jsonToFormData(json, formData: FormData) {
   Object.keys(json).forEach(key => {
