@@ -6,22 +6,18 @@ import axios from 'axios';
 import * as fs from 'fs';
 
 /**
- * source: https://stackoverflow.com/a/51624229/3156509
+ * reference: https://stackoverflow.com/a/51624229/3156509
  * */
-export const download_file = (url: string, image_path: string) =>
+export const download_file = (url: string, file_path: string) =>
   axios({
     url,
     responseType: 'stream',
-  })
-    .then(response => {
-      response.data.pipe(fs.createWriteStream(image_path));
-
-      return {
-        status: true,
-        error: '',
-      };
-    })
-    .catch(error => ({
-      status: false,
-      error: 'Error: ' + error.message,
-    }));
+  }).then(
+    response =>
+      new Promise((resolve, reject) => {
+        response.data
+          .pipe(fs.createWriteStream(file_path))
+          .on('finish', () => resolve())
+          .on('error', e => reject(e));
+      }),
+  );
