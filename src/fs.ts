@@ -69,7 +69,7 @@ export async function scanRecursively(args: {
   onDir?: (dirname: string, basename: string) => Result<void>;
   onComplete?: () => Result<void>;
   dereferenceSymbolicLinks?: boolean;
-  skipDir?: (basename: string) => boolean;
+  skipDir?: (dirname: string, basename: string) => boolean;
 }) {
   const {
     entryPath,
@@ -86,7 +86,7 @@ export async function scanRecursively(args: {
       if (onDir) {
         await onDir(pathname, basename);
       }
-      if (skipDir && skipDir(pathname)) {
+      if (skipDir && skipDir(pathname, basename)) {
         return;
       }
       const names = await readdir(pathname);
