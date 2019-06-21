@@ -65,7 +65,7 @@ export { writeStream } from './write-stream';
 
 export async function scanRecursively(args: {
   entryPath: string;
-  onFile?: (filename: string, basename: string) => Result<void>;
+  onFile?: (dirname: string, basename: string) => Result<void>;
   onDir?: (dirname: string, basename: string) => Result<void>;
   onComplete?: () => Result<void>;
   dereferenceSymbolicLinks?: boolean;
