@@ -46,8 +46,8 @@ export const setProp = curry(
   },
 );
 export const length = curry(<A>(x: ArrayLike<A>): number => x.length);
-export const filter = curry(<A>(f: CurryF1<A, boolean>, xs: A[]): A[] =>
-  xs.filter(f),
+export const filter = curry(
+  <A>(f: CurryF1<A, boolean>, xs: A[]): A[] => xs.filter(f),
 );
 export const compose = curry(
   <A, B, C>(f: CurryF1<B, C>, g: CurryF1<A, B>, a: A): C => f(g(a)),
@@ -173,16 +173,17 @@ export const div = curry((a: number, b: number): number => Math.floor(b / a));
 /* tslint:disable no-bitwise */
 export const quot = curry((a: number, b: number): number => (b / a) | 0);
 /** faster */
-export const quotMod = curry((a: number, b: number): [number, number] => [
-  (b / a) | 0,
-  b % a,
-]);
+export const quotMod = curry(
+  (a: number, b: number): [number, number] => [(b / a) | 0, b % a],
+);
 /* tslint:enable no-bitwise */
 /* slower */
-export const divMod = curry((a: number, b: number): [number, number] => {
-  const d = Math.floor(b / a);
-  return [d, b - d * a];
-});
+export const divMod = curry(
+  (a: number, b: number): [number, number] => {
+    const d = Math.floor(b / a);
+    return [d, b - d * a];
+  },
+);
 export const and = defineSymbolF('&&', (a, b) => b && a);
 export const or = defineSymbolF('||', (a, b) => b || a);
 export const not = defineSymbolF('!', a => !a);
@@ -224,11 +225,13 @@ export function iteratorsToArray<A>(itrs: Array<IterableIterator<A>>): A[] {
   return xs;
 }
 
-export const concatWithoutDup = curry(<A>(as: A[], bs: A[]): A[] => {
-  const acc = new Set<A>();
-  doAll((as: A[]) => doAll((a: A) => acc.add(a), as), [as, bs]);
-  return iteratorsToArray<A>([acc.values()]);
-});
+export const concatWithoutDup = curry(
+  <A>(as: A[], bs: A[]): A[] => {
+    const acc = new Set<A>();
+    doAll((as: A[]) => doAll((a: A) => acc.add(a), as), [as, bs]);
+    return iteratorsToArray<A>([acc.values()]);
+  },
+);
 
 export const fmap = curry(<A, B>(f: CurryF1<A, B>, as: A[]): B[] => as.map(f));
 /**@deprecated*/
@@ -338,6 +341,8 @@ export const update = curry(<A>(f: Consumer<A>, as: A[]) => {
   return as;
 });
 
-export const map2 = curry(<A, B>(f: (a: A) => B, xss: A[][]): B[][] => {
-  return xss.map(xs => xs.map(f));
-});
+export const map2 = curry(
+  <A, B>(f: (a: A) => B, xss: A[][]): B[][] => {
+    return xss.map(xs => xs.map(f));
+  },
+);
