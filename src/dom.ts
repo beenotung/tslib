@@ -79,3 +79,12 @@ export function csv_to_table_element(rows: string[][]): HTMLTableElement {
   table.appendChild(tbody);
   return table;
 }
+
+export function copyToClipboard(text: string): void {
+  const input = document.createElement('input');
+  document.body.append(input);
+  input.value = text;
+  input.select();
+  document.execCommand('copy');
+  input.remove();
+}
