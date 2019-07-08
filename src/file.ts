@@ -110,6 +110,10 @@ export function selectFile(options?: SelectFileOptions): Promise<File[]> {
     const input = document.createElement('input');
     input.type = 'file';
     Object.keys(options).forEach(x => (input[x] = options[x]));
+    if (options.capture) {
+      input.capture = true;
+    }
+    // document.body.appendChild(input);
     input.onchange = e => {
       const nFile = input.files.length;
       if (nFile < 1) {
@@ -120,10 +124,29 @@ export function selectFile(options?: SelectFileOptions): Promise<File[]> {
           files[i] = input.files.item(i);
         }
         resolve(files);
+        // document.body.removeChild(input);
       }
     };
     input.click();
   });
+}
+export function selectImage(options?: SelectFileOptions): Promise<File[]> {
+  if (options && options.capture) {
+    options.accept = options.accept || 'image/*;capture=camera';
+  }
+  return selectFile(options);
+}
+export function selectVideo(options?: SelectFileOptions): Promise<File[]> {
+  if (options && options.capture) {
+    options.accept = options.accept || 'image/*;capture=camcorder';
+  }
+  return selectFile(options);
+}
+export function selectAudio(options?: SelectFileOptions): Promise<File[]> {
+  if (options && options.capture) {
+    options.accept = options.accept || 'image/*;capture=microphone';
+  }
+  return selectFile(options);
 }
 
 export function saveBlobToFile(blob: Blob, filename?: string) {
