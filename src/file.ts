@@ -39,6 +39,7 @@ export async function fileToBase64String(file: File): Promise<string> {
   reader.readAsDataURL(file);
   return defer.promise.then(arrayBufferToString);
 }
+
 export async function filesToBase64Strings(files: File[]): Promise<string[]> {
   return Promise.all(files.map(file => fileToBase64String(file)));
 }
@@ -111,7 +112,7 @@ export function selectFile(options?: SelectFileOptions): Promise<File[]> {
     input.type = 'file';
     Object.keys(options).forEach(x => (input[x] = options[x]));
     if (options.capture) {
-      input.capture = true;
+      (input as any).capture = true;
     }
     // document.body.appendChild(input);
     input.onchange = e => {
@@ -130,18 +131,21 @@ export function selectFile(options?: SelectFileOptions): Promise<File[]> {
     input.click();
   });
 }
+
 export function selectImage(options?: SelectFileOptions): Promise<File[]> {
   if (options && options.capture) {
     options.accept = options.accept || 'image/*;capture=camera';
   }
   return selectFile(options);
 }
+
 export function selectVideo(options?: SelectFileOptions): Promise<File[]> {
   if (options && options.capture) {
     options.accept = options.accept || 'image/*;capture=camcorder';
   }
   return selectFile(options);
 }
+
 export function selectAudio(options?: SelectFileOptions): Promise<File[]> {
   if (options && options.capture) {
     options.accept = options.accept || 'image/*;capture=microphone';
