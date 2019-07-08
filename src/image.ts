@@ -138,3 +138,82 @@ export async function resizeBase64WithRatio(
   );
   return imageToBase64(image, targetSize.width, targetSize.height);
 }
+
+// reference: image-file-to-base64-exif
+
+function getNewScale(
+  image: HTMLImageElement,
+  maxWidth: number,
+  maxHeight: number,
+) {
+  if (image.width <= maxWidth && image.height <= maxHeight) {
+    return 1;
+  }
+  if (image.width > image.height) {
+    return image.width / maxWidth;
+  } else {
+    return image.height / maxHeight;
+  }
+}
+
+export function resizeImage(
+  image: HTMLImageElement,
+  maxWidth = image.width,
+  maxHeight = image.height,
+  mimeType?: string,
+  quality?: number,
+) {
+  const scale = getNewScale(image, maxWidth, maxHeight);
+  const scaledWidth = image.width / scale;
+  const scaledHeight = image.height / scale;
+  const canvas = document.createElement('canvas') as HTMLCanvasElement;
+  canvas.width = scaledWidth;
+  canvas.height = scaledHeight;
+  const context = canvas.getContext('2d');
+  context.drawImage(image, 0, 0, scaledWidth, scaledHeight);
+  if (mimeType) {
+    return canvas.toDataURL(mimeType, quality || 1);
+  } else {
+    return canvas.toDataURL();
+  }
+}
+
+export type base64 = string;
+
+export function transformCentered(
+  image: HTMLImageElement,
+  flipXY: boolean,
+  f: (ctx: CanvasRenderingContext2D) => void,
+) {
+  const canvas = document.createElement('canvas') as HTMLCanvasElement;
+  canvas.width = flipXY ? image.height : image.width;
+  canvas.height = flipXY ? image.width : image.height;
+  const ctx = canvas.getContext('2d');
+  ctx.translate(canvas.width * 0.5, canvas.height * 0.5);
+  f(ctx);
+  ctx.translate(-image.width * 0.5, -image.height * 0.5);
+  ctx.drawImage(image, 0, 0);
+  // return canvas.toDataURL();
+  return canvas;
+}
+
+export function rotateImage(image: HTMLImageElement) {
+  return transformCentered(image, true, ctx => ctx.rotate(0.5 * Math.PI));
+}
+
+export function flipImage(image: HTMLImageElement) {
+  return transformCentered(image, false, ctx => ctx.scale(-1, 1));
+}
+
+export function compressImage(
+  image: HTMLImageElement,
+  mimeType = 'image/jpeg',
+  quality = 0.8,
+): base64 {
+  const canvas = document.createElement('canvas') as HTMLCanvasElement;
+  canvas.width = image.width;
+  canvas.height = image.height;
+  const ctx = canvas.getContext('2d');
+  ctx.drawImage(image, 0, 0);
+  return canvas.toDataURL(mimeType, quality);
+}
