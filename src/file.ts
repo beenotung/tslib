@@ -39,6 +39,9 @@ export async function fileToBase64String(file: File): Promise<string> {
   reader.readAsDataURL(file);
   return defer.promise.then(arrayBufferToString);
 }
+export async function filesToBase64Strings(files: File[]): Promise<string[]> {
+  return Promise.all(files.map(file => fileToBase64String(file)));
+}
 
 export async function fileToBinaryString(file: File): Promise<string> {
   const [defer, reader] = createAsyncFileReader();
