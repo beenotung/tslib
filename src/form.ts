@@ -26,7 +26,7 @@ export function jsonToFormData(json, formData: FormData) {
 export interface PostFormResponse<T> {
   status: number;
   statusText: string;
-  data: Buffer | string | any;
+  data: Buffer | string | T;
 }
 
 export function postMultipartFormData<T>(
