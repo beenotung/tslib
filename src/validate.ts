@@ -1,10 +1,16 @@
-import { isNumber } from './lang';
-
+/**
+ * 4, 7, 8 heading are allowed since 2018
+ * news: https://skypost.ulifestyle.com.hk/article/2006268/
+ * */
 export function is_hk_mobile_phone_prefix(s: string): boolean {
+  s = s.replace(/^\+852/, '').trim();
   switch (s[0]) {
-    case '6':
-    case '9':
+    case '4':
     case '5':
+    case '6':
+    case '7':
+    case '8':
+    case '9':
       return true;
     default:
       return false;
@@ -15,16 +21,7 @@ export function is_hk_mobile_phone_prefix(s: string): boolean {
  * with/without +852 prefix
  * */
 export function is_hk_mobile_phone(x: number | string): boolean {
-  if (!x) {
-    return false;
-  }
-  let s = x.toString();
-  if (s.length === 8 + 3 && s.startsWith('852')) {
-    s = s.substr(3);
-  } else if (s.length === 8 + 4 && s.startsWith('+852')) {
-    s = s.substr(4);
-  }
-  return s.length === 8 && is_hk_mobile_phone_prefix(s);
+  return to_full_hk_mobile_phone(x) !== '';
 }
 
 /**
@@ -39,7 +36,7 @@ export function to_full_hk_mobile_phone(s: string | number): string {
   }
   s = s
     .split('')
-    .filter(x => isNumber(x))
+    .filter(x => '0' <= x && x <= '9')
     .join('');
 
   if (s.length === 8 && is_hk_mobile_phone_prefix(s)) {
