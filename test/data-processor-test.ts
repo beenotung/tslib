@@ -43,9 +43,10 @@ catchMain(
 
 let rawSyncTest = (async (duration: number) => {
   console.log();
-  console.log('benchmarking raw sync TPS');
+  console.log('benchmarking sync version with delay');
   let startTime = Date.now();
   let last = -1;
+  let ranN = n;
   for (let i = 0; i < n; i++) {
     await later(delays[i]);
     let key = keys[i];
@@ -56,13 +57,32 @@ let rawSyncTest = (async (duration: number) => {
     last = key;
     process.stdout.write('\rprocessing: ' + key);
     if ((Date.now() - startTime) >= duration) {
-      n = i;
+      ranN = i;
       break;
     }
   }
   clearLine();
   let endTime = Date.now();
   let usedTime = endTime - startTime;
+  console.log('used:', format_time_duration(usedTime));
+  console.log('average TPS: ' + (ranN / (usedTime / 1000)));
+
+  console.log();
+  console.log('benchmarking sync version without delay');
+  startTime = Date.now();
+  last = -1;
+  for (let i = 0; i < n; i++) {
+    let key = keys[i];
+    let datum = i.toString().repeat(10000);
+    if (key < last) {
+      throw new Error('not in order');
+    }
+    last = key;
+    process.stdout.write('\rprocessing: ' + key);
+  }
+  clearLine();
+  endTime = Date.now();
+  usedTime = endTime - startTime;
   console.log('used:', format_time_duration(usedTime));
   console.log('average TPS: ' + (n / (usedTime / 1000)));
 });
