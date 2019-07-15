@@ -1,14 +1,15 @@
 import { then } from '../result';
 
 /**
- * auto adjust concurrent size to optimize concurrency
+ * TODO auto adjust concurrent size to optimize concurrency
+ * currently solely relay on maxConcurrent
  *
  * data loading can be in arbitrary order,
  * data processing must be in order
  *
  * this impl is faster than TaskPool for large number of keys
  *
- * maxConcurrent: manually adjust to avoid out of memory
+ * @param args.maxConcurrent: manually adjust to avoid out of memory
  * */
 export async function batchProcess<K, D>(args: {
   keys: K[];
