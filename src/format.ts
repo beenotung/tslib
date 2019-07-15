@@ -2,6 +2,7 @@
  * Created by beenotung on 3/9/17.
  */
 
+import { to_plural } from './en';
 import { getEnvLocale } from './locale';
 import {
   CENTURY,
@@ -68,11 +69,7 @@ export function format_time_duration(delta: number, digit = 1): string {
     const p = Math.pow(10, digit);
     n = Math.round(n * p) / p;
     if (n > 1) {
-      if (unit.endsWith('y')) {
-        unit = unit.replace(/y$/, 'ies');
-      } else {
-        unit = unit + 's';
-      }
+      unit = to_plural(unit);
     }
     return n + ' ' + unit;
   };

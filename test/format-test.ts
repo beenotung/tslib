@@ -1,6 +1,6 @@
 import * as test from 'tape';
 import { format_2_digit, format_byte, format_datetime, format_n_digit, format_relative_time } from '../src/format';
-import { DAY, MINUTE, SECOND } from '../src/time';
+import { CENTURY, DAY, MINUTE, SECOND } from '../src/time';
 
 test('format_byte', t => {
   t.equal(format_byte(412.5 * 1024 * 1024), '412.50 MB', 'format size');
@@ -19,6 +19,8 @@ test('format_datetime', t => {
 
 test('format_relative_time', t => {
   t.equal(format_relative_time(12.5 * MINUTE), '12.5 minutes hence');
+  t.equal(format_relative_time(4 * DAY), '4 days hence');
+  t.equal(format_relative_time(4 * CENTURY), '4 centuries hence');
   t.equal(format_relative_time(76 * DAY), '2.5 months hence');
   t.equal(format_relative_time(-400 * DAY), '1.1 years ago');
   t.equal(format_relative_time(-1.5 * SECOND), '1.5 seconds ago');
