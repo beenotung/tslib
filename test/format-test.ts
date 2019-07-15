@@ -1,23 +1,29 @@
+import * as test from 'tape';
 import { format_byte, format_datetime, format_relative_time } from '../src/format';
 import { DAY, MINUTE, SECOND } from '../src/time';
 
-console.log('size:', format_byte(412.5 * 1024 * 1024));
-// size: 412.50 MB
+test('format_byte', t => {
+  t.equal(format_byte(412.5 * 1024 * 1024), '412.50 MB', 'format size');
+  t.end();
+});
 
-console.log('time (default):', format_datetime(Date.now()));
-// time (default): Mon, Mar 11, 2019, 11:56 AM
-console.log('time (zh-hk):', format_datetime(Date.now(), { locales: 'zh-hk' }));
-// time (zh-hk): 2019 M03 11, Mon 11:56 AM
+test('format_datetime', t => {
+  let time = new Date('2019-03-11T03:56:00.000Z').getTime();
+  t.equal(format_datetime(time), 'Mon, Mar 11, 2019, 11:56 AM', 'format time (default)');
+  // node v10
+  t.equal(format_datetime(time, { locales: 'zh-hk' }), 'Mon, Mar 11, 2019, 11:56 AM', 'format time (zh-hk)');
+  // node v8
+  // t.equal( format_datetime(time, { locales: 'zh-hk' }), '2019 Mar 11, Mon 11:56 AM','format time (zh-hk)');
+  t.end();
+});
 
-console.log('time diff:', format_relative_time(12.5 * MINUTE));
-// time diff: 12.5 minutes hence
-console.log('time diff:', format_relative_time(76 * DAY));
-// time diff: 2.5 months hence
-console.log('time diff:', format_relative_time(-400 * DAY));
-// time diff: 1.1 years ago
-console.log('time diff:', format_relative_time(-1.5 * SECOND));
-// time diff: 1.5 seconds ago
-console.log('time diff:', format_relative_time(-1024 * SECOND));
-// time diff: 17.1 minutes ago
+test('format_relative_time', t => {
+  t.equal(format_relative_time(12.5 * MINUTE), '12.5 minutes hence');
+  t.equal(format_relative_time(76 * DAY), '2.5 months hence');
+  t.equal(format_relative_time(-400 * DAY), '1.1 years ago');
+  t.equal(format_relative_time(-1.5 * SECOND), '1.5 seconds ago');
+  t.equal(format_relative_time(-1024 * SECOND), '17.1 minutes ago');
+  t.end();
+});
 
 

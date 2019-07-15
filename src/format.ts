@@ -2,6 +2,7 @@
  * Created by beenotung on 3/9/17.
  */
 
+import { getEnvLocale } from './locale';
 import {
   CENTURY,
   DAY,
@@ -49,7 +50,8 @@ export function format_datetime(
   if (!time) {
     return options.empty || '-';
   }
-  return new Date(time).toLocaleString(options.locales || 'en', {
+  const locales = options.locales || getEnvLocale() || 'en';
+  return new Date(time).toLocaleString(locales, {
     weekday: 'short',
     year: 'numeric',
     month: 'short',
