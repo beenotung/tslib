@@ -27,7 +27,7 @@ catchMain(
         throw new Error('not processing in order');
       }
       last = key;
-      // process.stdout.write('\rprocessing: ' + key);
+      process.stdout.write('\rprocessing: ' + key);
     },
   }).then(() => {
     clearLine();
