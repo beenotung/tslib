@@ -1,5 +1,5 @@
 import * as test from 'tape';
-import { format_byte, format_datetime, format_relative_time } from '../src/format';
+import { format_2_digit, format_byte, format_datetime, format_n_digit, format_relative_time } from '../src/format';
 import { DAY, MINUTE, SECOND } from '../src/time';
 
 test('format_byte', t => {
@@ -26,4 +26,15 @@ test('format_relative_time', t => {
   t.end();
 });
 
+test('format_digit', t => {
+  t.equal(format_2_digit(12), '12');
+  t.equal(format_2_digit(6), '06');
 
+  t.equal(format_n_digit(6, 2), '06');
+  t.equal(format_n_digit(6, 4), '0006');
+  t.equal(format_n_digit(6, 1), '6');
+  t.equal(format_n_digit(6, 0), '6');
+  t.equal(format_n_digit(6, -10), '6');
+
+  t.end();
+});

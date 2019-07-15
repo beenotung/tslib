@@ -95,3 +95,28 @@ export function format_relative_time(delta: number, digit = 1): string {
     return s + ' ago';
   }
 }
+
+/**
+ * mainly for formatting month, date, hour, minute, and second
+ * @param x: [0..60]
+ * */
+export function format_2_digit(x: number): string {
+  if (x < 10) {
+    return '0' + x;
+  }
+  return x.toString();
+}
+
+export function format_n_digit(x: number, n: number): string {
+  let s = Math.abs(x).toString();
+  if (x < 0) {
+    n--;
+  }
+  if (s.length < n) {
+    s = '0'.repeat(n - s.length) + s;
+  }
+  if (x < 0) {
+    s = '-' + s;
+  }
+  return s;
+}
