@@ -1,3 +1,25 @@
+/**
+
+ In this example of ~1000ms data loading tasks, using data-processor can
+ speed up 31555 times compare to one-by-one sync version
+ archived ~25% of 'pure processing' performance
+
+ |===
+ | mode | average TPS* |
+
+ | sync version with delay
+ |      1.77
+
+ | data-processor pipeline
+ |  55872.16
+
+ | sync version without delay
+ | 222816.40
+
+ |===
+ *: rounded to 2 decimal places
+
+ * */
 import { later } from '../src/async/wait';
 import { format_time_duration } from '../src/format';
 import { catchMain } from '../src/node';
