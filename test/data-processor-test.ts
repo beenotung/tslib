@@ -10,11 +10,14 @@ let delay = 1000;
 let keys = new Array(n).fill(0).map((x, i) => i);
 let startTime = Date.now();
 let last = -1;
+let delays = keys.map(() => delay * Math.random());
+
+console.log('benchmarking data-processor pipeline');
 catchMain(
   batchProcess({
     maxConcurrent: 1000 * 100,
     keys,
-    loader: key => later(delay * Math.random()).then(() => {
+    loader: key => later(delays[key]).then(() => {
       return ({
         key,
         value: key.toString().repeat(10000),
@@ -35,5 +38,31 @@ catchMain(
     let usedTime = endTime - startTime;
     console.log('used: ', format_time_duration(usedTime));
     console.log('average TPS: ' + (n / (usedTime / 1000)));
+    return rawSyncTest(usedTime);
   }));
 
+let rawSyncTest = (async (duration: number) => {
+  console.log();
+  console.log('benchmarking raw sync TPS');
+  let startTime = Date.now();
+  let last = -1;
+  for (let i = 0; i < n; i++) {
+    await later(delays[i]);
+    let key = keys[i];
+    let datum = i.toString().repeat(10000);
+    if (key < last) {
+      throw new Error('not in order');
+    }
+    last = key;
+    process.stdout.write('\rprocessing: ' + key);
+    if ((Date.now() - startTime) >= duration) {
+      n = i;
+      break;
+    }
+  }
+  clearLine();
+  let endTime = Date.now();
+  let usedTime = endTime - startTime;
+  console.log('used:', format_time_duration(usedTime));
+  console.log('average TPS: ' + (n / (usedTime / 1000)));
+});
