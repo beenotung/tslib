@@ -6,6 +6,8 @@ export function to_plural(word: string): string {
       case 'i':
       case 'o':
       case 'u':
+        break;
+      default:
         return word.replace(/y$/, 'ies');
     }
   }
