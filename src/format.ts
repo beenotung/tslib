@@ -2,7 +2,7 @@
  * Created by beenotung on 3/9/17.
  */
 
-import { to_plural } from './en';
+import { isEngChar, to_plural } from './en';
 import { getEnvLocale } from './locale';
 import {
   CENTURY,
@@ -17,19 +17,61 @@ import {
 } from './time';
 
 const size_units = ['B', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'];
-const time_units: Array<[number, string]> = [
+const time_units_en: Array<[number, string]> = [
   [CENTURY, 'century'],
   [DECADE, 'decade'],
   [YEAR, 'year'],
   [MONTH, 'month'],
-  [WEEK, 'week'],
-  [365 * DAY, 'month'],
   [WEEK, 'week'],
   [DAY, 'day'],
   [HOUR, 'hour'],
   [MINUTE, 'minute'],
   [SECOND, 'second'],
 ];
+const time_units_zh: Array<[number, string]> = [
+  [CENTURY, '世紀'],
+  [YEAR, '年'],
+  [MONTH, '月'],
+  [WEEK, '週'],
+  [DAY, '日'],
+  [HOUR, '小時'],
+  [MINUTE, '分鐘'],
+  [SECOND, '秒'],
+];
+/* tslint:disable:quotemark */
+const word_en = {
+  "instantly": 'instantly',
+  'just now': 'just now',
+  "hence": 'hence',
+  "ago": 'ago',
+};
+const word_zh = {
+  "instantly": '頃刻',
+  'just now': '剛剛',
+  "hence": '後',
+  "ago": '前',
+};
+/* tslint:enable:quotemark */
+let word = word_en;
+
+let time_units: Array<[number, string]> = time_units_en;
+
+export function setLang(lang: 'en' | 'zh') {
+  if (lang === 'zh') {
+    time_units = time_units_zh;
+    word = word_zh;
+  } else {
+    time_units = time_units_en;
+    word = word_en;
+  }
+}
+
+function concatWords(a: string, b: string): string {
+  if (isEngChar(a[a.length - 1]) || isEngChar(b[0])) {
+    return a + ' ' + b;
+  }
+  return a + b;
+}
 
 export function format_byte(n_byte: number, n_decimal = 2): string {
   let acc = n_byte;
@@ -78,18 +120,18 @@ export function format_time_duration(delta: number, digit = 1): string {
       return res(diff / size, unit);
     }
   }
-  return 'instantly';
+  return word.instantly;
 }
 
 export function format_relative_time(delta: number, digit = 1): string {
   const s = format_time_duration(delta, digit);
-  if (s === 'instantly') {
-    return 'just now';
+  if (s === word.instantly) {
+    return word['just now'];
   }
   if (delta > 0) {
-    return s + ' hence';
+    return concatWords(s, word.hence);
   } else {
-    return s + ' ago';
+    return concatWords(s, word.ago);
   }
 }
 

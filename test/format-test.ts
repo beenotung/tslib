@@ -1,5 +1,5 @@
 import * as test from 'tape';
-import { format_2_digit, format_byte, format_datetime, format_n_digit, format_relative_time } from '../src/format';
+import { format_2_digit, format_byte, format_datetime, format_n_digit, format_relative_time, setLang } from '../src/format';
 import { CENTURY, DAY, MINUTE, SECOND } from '../src/time';
 
 test('format_byte', t => {
@@ -17,7 +17,7 @@ test('format_datetime', t => {
   t.end();
 });
 
-test('format_relative_time', t => {
+test('format_relative_time (default)', t => {
   t.equal(format_relative_time(12.5 * MINUTE), '12.5 minutes hence');
   t.equal(format_relative_time(4 * DAY), '4 days hence');
   t.equal(format_relative_time(4 * CENTURY), '4 centuries hence');
@@ -25,6 +25,16 @@ test('format_relative_time', t => {
   t.equal(format_relative_time(-400 * DAY), '1.1 years ago');
   t.equal(format_relative_time(-1.5 * SECOND), '1.5 seconds ago');
   t.equal(format_relative_time(-1024 * SECOND), '17.1 minutes ago');
+  t.end();
+});
+test('format_relative_time (zh)', t => {
+  setLang('zh');
+  t.equal(format_relative_time(12.5 * MINUTE), '12.5 分鐘後');
+  t.end();
+});
+test('format_relative_time (en)', t => {
+  setLang('en');
+  t.equal(format_relative_time(12.5 * MINUTE), '12.5 minutes hence');
   t.end();
 });
 
