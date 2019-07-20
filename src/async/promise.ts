@@ -35,3 +35,13 @@ export function genPromiseCallback<A>(): PromiseCallback<A> {
   };
   return Object.assign(cb, { promise: p });
 }
+
+export async function runFinally<A>(p: Promise<A>, cb: () => void): Promise<A> {
+  try {
+    return await p;
+  } catch (e) {
+    return Promise.reject(e);
+  } finally {
+    cb();
+  }
+}
