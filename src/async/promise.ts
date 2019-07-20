@@ -3,7 +3,7 @@ export async function promisify<A>(
   args: any[] = [],
 ): Promise<A> {
   return new Promise<A>((resolve, reject) => {
-    (f as any).call(...args, (err, res: A) => {
+    f(...args, (err, res: A) => {
       if (err) {
         reject(err);
       } else {
