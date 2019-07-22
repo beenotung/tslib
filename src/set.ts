@@ -22,3 +22,17 @@ export function setMinus<A>(a: Set<A>, b: Set<A>): Set<A> {
   });
   return res;
 }
+
+export function setAdd<A>(a: Set<A>, b: Set<A>): Set<A> {
+  const res = new Set<A>(a);
+  b.forEach(x => res.add(x));
+  return res;
+}
+
+export function setMinusInplace<A>(to: Set<A>, from: Set<A>): void {
+  from.forEach(x => to.delete(x));
+}
+
+export function setAddInplace<A>(to: Set<A>, from: Set<A>): void {
+  from.forEach(x => to.add(x));
+}
