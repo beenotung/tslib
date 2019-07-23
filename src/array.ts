@@ -412,6 +412,15 @@ export function sum(xs: number[]): number {
   return acc;
 }
 
+export function sumByFunc<T>(xs: T[], mapper: (x: T) => number) {
+  let acc = 0;
+  const n = xs.length;
+  for (let i = 0; i < n; i++) {
+    acc += mapper(xs[i]);
+  }
+  return acc;
+}
+
 export function maxByFunc<T>(
   xs: T[],
   comparator: (a: T, b: T) => CompareResult,
