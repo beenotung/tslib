@@ -40,16 +40,16 @@ const time_units_zh: Array<[number, string]> = [
 ];
 /* tslint:disable:quotemark */
 const word_en = {
-  "instantly": 'instantly',
+  instantly: 'instantly',
   'just now': 'just now',
-  "hence": 'hence',
-  "ago": 'ago',
+  hence: 'hence',
+  ago: 'ago',
 };
 const word_zh = {
-  "instantly": '頃刻',
+  instantly: '頃刻',
   'just now': '剛剛',
-  "hence": '後',
-  "ago": '前',
+  hence: '後',
+  ago: '前',
 };
 /* tslint:enable:quotemark */
 let word = word_en;
