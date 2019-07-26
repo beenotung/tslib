@@ -1,16 +1,13 @@
 {
   "extends": [
-    "tslint:recommended"
-  ],
-  "rulesDirectory": [
-    "node_modules/tslint-eslint-rules/dist/rules"
+    "tslint:recommended",
+    "tslint-eslint-rules",
+    "tslint-config-prettier"
   ],
   "rules": {
     "no-reference": true,
     "only-arrow-functions": false,
-    "max-classes-per-file": [
-      true
-    ],
+    "max-classes-per-file": false,
     "no-namespace": false,
     "align": [
       true,

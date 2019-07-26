@@ -23,7 +23,7 @@ export class MapMap<K, V> {
     return this.m.has(k);
   }
 
-  public get(k: K): V {
+  public get(k: K): V | undefined {
     return this.m.get(k);
   }
 
@@ -31,12 +31,12 @@ export class MapMap<K, V> {
     return this.m.set(k, v);
   }
 
-  public getMap(k: K): V & MapMap<any, any> {
+  public getMap(k: K): (V | undefined) & MapMap<any, any> {
     if (this.m.has(k)) {
       return this.m.get(k) as any;
     }
-    const res = new MapMap();
-    this.set(k, res as any);
+    const res = new MapMap<any, any>();
+    this.m.set(k, (res as any) as V);
     return res as any;
   }
 
@@ -55,7 +55,7 @@ export class SimpleMapMap<K extends PropertyKey, V> {
     return k in this.o;
   }
 
-  public get(k: K): V {
+  public get(k: K): V | undefined {
     return this.o[k as string];
   }
 
@@ -63,13 +63,13 @@ export class SimpleMapMap<K extends PropertyKey, V> {
     this.o[k as string] = v;
   }
 
-  public getMap(k: K): V {
+  public getMap(k: K): (V | undefined) & SimpleMapMap<any, any> {
     if (k in this.o) {
-      return this.o[k as string];
+      return this.o[k as string] as any;
     }
     const res = new SimpleMapMap<K, V>();
     this.o[k as string] = (res as any) as V;
-    return (res as any) as V;
+    return res as any;
   }
 
   public clear() {

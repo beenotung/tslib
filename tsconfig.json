@@ -6,8 +6,8 @@
     "declaration": true,
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
-    "noImplicitThis": true,
     "skipLibCheck": true,
+    "strict": true,
     "lib": [
       "dom",
       "es2015",
