@@ -16,9 +16,9 @@ export function fetch_no_cache(url: string, method = 'GET'): Promise<Response> {
 
 export const fetch_retry = (
   url: string,
-  num_remind = 1,
+  num_remain = 1,
   e?,
 ): Promise<Response> =>
-  num_remind <= 0
+  num_remain <= 0
     ? Promise.reject(e)
-    : fetch(url).catch(e => fetch_retry(url, num_remind - 1, e));
+    : fetch(url).catch(e => fetch_retry(url, num_remain - 1, e));
