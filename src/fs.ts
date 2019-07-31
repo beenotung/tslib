@@ -30,6 +30,7 @@ export let lstat: typeof fs.lstat.__promisify__ = util.promisify(fs.lstat);
 /** Does dereference symbolic links */
 export let stat: typeof fs.stat.__promisify__ = util.promisify(fs.stat);
 export let mkdir: typeof fs.mkdir.__promisify__ = util.promisify(fs.mkdir);
+export let exists: typeof fs.exists.__promisify__ = util.promisify(fs.exists);
 
 function isNoFileError(e): true | Promise<any> {
   if (e.code === 'ENOENT') {
@@ -42,6 +43,7 @@ function not<T>(e: true | T): false | T {
   return e === true ? false : e;
 }
 
+/**@deprecated*/
 export function exist(filename: string): Promise<boolean> {
   return stat(filename)
     .then(() => true)
