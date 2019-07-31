@@ -35,7 +35,7 @@ export function genJsonArray(length = 8): JsonArray {
 }
 
 export function genJsonObject(length = 8): JsonObject {
-  const o = {};
+  const o: any = {};
   for (let i = 0; i < length; i++) {
     o[genString(length)] = genJsonValue(length - 1);
   }

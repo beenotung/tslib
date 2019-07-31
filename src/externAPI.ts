@@ -9,7 +9,7 @@ export namespace externalAPI {
   export interface HostRecord {
     name: string;
     ip: string;
-    port: number;
+    port?: number;
   }
 
   /**
@@ -36,7 +36,7 @@ export namespace externalAPI {
   export async function getHostByName(name: string): Promise<HostRecord> {
     const text = await fetch(hostListUrl).then(x => x.text());
     /* not using `getHostList().filter()` for speed */
-    let found: HostRecord;
+    let found: HostRecord | undefined;
     const defer = createDefer<HostRecord, any>();
     try {
       text
@@ -45,13 +45,14 @@ export namespace externalAPI {
         .forEach(line => {
           let xs = line.split(' ');
           if (xs[1] === name) {
-            found = {} as HostRecord;
-            found.name = xs[1];
+            const name = xs[1];
+            let port: number | undefined;
             xs = xs[0].split(':');
             if (xs.length === 2) {
-              found.port = Number(xs[1]);
+              port = Number(xs[1]);
             }
-            found.ip = xs[0];
+            const ip = xs[0];
+            found = { name, ip, port };
             throw new Error('found');
           }
         });

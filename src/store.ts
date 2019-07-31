@@ -71,7 +71,7 @@ export class Store implements Storage {
 
   getObject<T>(key: string): T | null {
     const value = this.getItem(key);
-    return JSON.parse(value);
+    return JSON.parse(value as string);
   }
 
   key(index: number): string | null {
@@ -83,7 +83,7 @@ export class Store implements Storage {
     const n = this.length;
     const keys: string[] = new Array(n);
     for (let i = 0; i < n; i++) {
-      keys[i] = this.key(i);
+      keys[i] = this.key(i) as string;
     }
     return keys;
   }
@@ -96,9 +96,10 @@ export class Store implements Storage {
     return this[Symbol.storage].setItem(key, value);
   }
 
-  setObject(key: string, value): void {
+  setObject(key: string, value: any): void {
     return this.setItem(key, JSON.stringify(value));
   }
+
   static create(storage: Storage): Store {
     const store = new Store(storage);
     return proxyStore(store);
@@ -113,7 +114,7 @@ export class Store implements Storage {
 export let storeName = 'data';
 export let storeQuota: number;
 
-let _store: Storage;
+let _store: Storage | undefined;
 
 export function setStoreName(name: string) {
   storeName = name;
@@ -125,7 +126,7 @@ export function setStoreQuota(quota: number) {
   _store = undefined;
 }
 
-export function getStore() {
+export function getStore(): Storage {
   if (!_store) {
     if (typeof localStorage === 'undefined' || localStorage === null) {
       _store = getNodeStore(storeName, storeQuota);
@@ -136,14 +137,14 @@ export function getStore() {
   return _store;
 }
 
-export function storeSet(key: string, value) {
+export function storeSet(key: string, value: any) {
   getStore().setItem(key, JSON.stringify(value));
 }
 
 export function storeGet(key: string) {
   const s = getStore().getItem(key);
   try {
-    return JSON.parse(s);
+    return JSON.parse(s as string);
   } catch (e) {
     return s;
   }
@@ -162,7 +163,7 @@ export function storeKeys(): string[] {
   const n = store.length;
   const keys: string[] = new Array(n);
   for (let i = 0; i < n; i++) {
-    keys[i] = store.key(i);
+    keys[i] = store.key(i) as string;
   }
   return keys;
 }

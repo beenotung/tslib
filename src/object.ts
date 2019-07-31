@@ -8,7 +8,7 @@ export function isObject(o: any): boolean {
 }
 
 export function hasFunction(o: object | any[], name: PropertyKey): boolean {
-  return typeof o[name] === 'function';
+  return typeof (o as any)[name] === 'function';
 }
 
 export function deepClone<A>(o: A): A {
@@ -19,12 +19,12 @@ export function deepClone<A>(o: A): A {
     return ((o.map(deepClone) as any[]) as any) as A;
   } else {
     const res = {} as A;
-    Object.keys(o).forEach(x => (res[x] = deepClone(o[x])));
+    Object.keys(o).forEach(x => ((res as any)[x] = deepClone((o as any)[x])));
     return res;
   }
 }
 
-export function deepEqual(a, b): boolean {
+export function deepEqual(a: any, b: any): boolean {
   if (a === b) {
     return true;
   }
@@ -93,7 +93,7 @@ export function deepEqual(a, b): boolean {
 }
 
 export function replaceObject<A>(dest: A, src: A): A {
-  Object.keys(dest).forEach(x => delete dest[x]);
+  Object.keys(dest).forEach(x => delete (dest as any)[x]);
   return Object.assign(dest, src);
 }
 
@@ -133,24 +133,25 @@ const safeProxyHandler: ProxyHandler<any> = {
 /**
  * make a loss object, very forgiving
  * */
-export function createSafeObject(target = {}) {
-  target[SafeObject] = true;
+export function createSafeObject(target: object = {}) {
+  (target as any)[SafeObject] = true;
   return new Proxy(target, safeProxyHandler);
 }
 
-export const updateObject = dest => x => Object.assign(dest, x);
+export const updateObject = <T, U>(dest: T) => (x: U): T & U =>
+  Object.assign(dest, x);
 
-export const isNull = (x): boolean =>
+export const isNull = (x: any): boolean =>
   !(x === null || x === undefined || x === '');
 
-export function removeNull(o) {
+export function removeNull<A>(o: A): A {
   if (Array.isArray(o)) {
     return o
       .filter(x => !(x === null || x === undefined || x === ''))
-      .map(x => removeNull(x));
+      .map(x => removeNull(x)) as any;
   }
   if (o instanceof Set) {
-    return new Set(removeNull(Array.from(o)));
+    return new Set(removeNull(Array.from(o))) as any;
   }
   if (o instanceof Date) {
     return o;
@@ -158,9 +159,9 @@ export function removeNull(o) {
   if (typeof o === 'object' && o !== null) {
     o = Object.assign({}, o);
     for (const k of Object.keys(o)) {
-      const v = o[k];
+      const v = (o as any)[k];
       if (v === null || v === undefined || v === '') {
-        delete o[k];
+        delete (o as any)[k];
       }
     }
   }
@@ -226,13 +227,13 @@ export function deleteUndefined(o: ApplyUndefinedType): void {
     return;
   }
   if (typeof o === 'object') {
-    Object.keys(o).map(s => {
-      if (o[s] === undefined) {
-        delete o[s];
-        return;
+    for (const s of Object.keys(o)) {
+      if ((o as any)[s] === undefined) {
+        delete (o as any)[s];
+        continue;
       }
-      deleteUndefined(o[s]);
-    });
+      deleteUndefined((o as any)[s]);
+    }
     return;
   }
   // e.g. number, string

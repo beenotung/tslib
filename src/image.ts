@@ -1,5 +1,4 @@
 import { enum_only_string } from './enum';
-import { xor } from './logic';
 
 /**
  * reference : https://stackoverflow.com/questions/20958078/resize-a-base-64-image-in-javascript-without-using-canvas
@@ -11,6 +10,9 @@ export function imageToCanvas(
 ): HTMLCanvasElement {
   const canvas = document.createElement('canvas');
   const ctx = canvas.getContext('2d');
+  if (ctx === null) {
+    throw new Error('unsupported');
+  }
   canvas.width = width;
   canvas.height = height;
   ctx.drawImage(img, 0, 0, width, height);
@@ -46,6 +48,7 @@ export function checkBase64ImagePrefix(s: string): string {
 /**
  * data type conversion
  * also work for resizing
+ * FIXME wrap width and height into options object
  * */
 export async function base64ToCanvas(
   data: string,
@@ -53,19 +56,28 @@ export async function base64ToCanvas(
   height?: number,
 ): Promise<HTMLCanvasElement> {
   const image = await base64ToImage(data);
-  if (xor(width, height)) {
-    if (width) {
-      /* height is not defined */
-      height = (image.naturalHeight / image.naturalWidth) * width;
-    } else {
-      /* width is not defined */
-      width = (image.naturalWidth / image.naturalHeight) * height;
-    }
+  let w: number;
+  let h: number;
+  if (width && height) {
+    w = width;
+    h = height;
   } else if (!width && !height) {
-    width = image.naturalWidth;
-    height = image.naturalHeight;
+    w = image.naturalWidth;
+    h = image.naturalHeight;
+  } else if (width) {
+    // height is not defined
+    w = width;
+    h = (image.naturalHeight / image.naturalWidth) * width;
+  } else if (height) {
+    // width is not defined
+    w = (image.naturalWidth / image.naturalHeight) * height;
+    h = height;
+  } else {
+    throw new Error(
+      'logic error, missing edge case:' + JSON.stringify({ width, height }),
+    );
   }
-  return imageToCanvas(image, width, height);
+  return imageToCanvas(image, w, h);
 }
 
 export async function resizeBase64Image(
@@ -170,6 +182,9 @@ export function resizeImage(
   canvas.width = scaledWidth;
   canvas.height = scaledHeight;
   const context = canvas.getContext('2d');
+  if (context === null) {
+    throw new Error('not supported');
+  }
   context.drawImage(image, 0, 0, scaledWidth, scaledHeight);
   if (mimeType) {
     return canvas.toDataURL(mimeType, quality || 1);
@@ -189,6 +204,9 @@ export function transformCentered(
   canvas.width = flipXY ? image.height : image.width;
   canvas.height = flipXY ? image.width : image.height;
   const ctx = canvas.getContext('2d');
+  if (ctx === null) {
+    throw new Error('not supported');
+  }
   ctx.translate(canvas.width * 0.5, canvas.height * 0.5);
   f(ctx);
   ctx.translate(-image.width * 0.5, -image.height * 0.5);
@@ -214,6 +232,9 @@ export function compressImage(
   canvas.width = image.width;
   canvas.height = image.height;
   const ctx = canvas.getContext('2d');
+  if (ctx === null) {
+    throw new Error('not supported');
+  }
   ctx.drawImage(image, 0, 0);
   return canvas.toDataURL(mimeType, quality);
 }

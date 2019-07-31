@@ -1,5 +1,5 @@
 export class CheckedPromise<T> implements Promise<T> {
-  public [Symbol.toStringTag];
+  public [Symbol.toStringTag]: any;
   private hasCatch = false;
   private promise: Promise<T>;
 

@@ -46,9 +46,6 @@ export function memorize<F extends Function>(f: F): F & { clear: () => void } {
 export class MemorizePool<A> {
   public cache = new MapMap<number, MapMap<any, any>>();
 
-  /**
-   * @return [has_or_not, result]
-   * */
   public get(args: IArguments): undefined | [A] {
     const map = this.getLastMap(args);
     const last = args[0];
@@ -59,7 +56,7 @@ export class MemorizePool<A> {
     }
   }
 
-  public set(args: IArguments, res) {
+  public set(args: IArguments, res: any) {
     this.getLastMap(args).set(args[0], res);
   }
 

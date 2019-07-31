@@ -6,10 +6,10 @@ import { Lazy } from './lazy';
 export class LazyList<A> extends Lazy<A> {
   private isHead?: true;
   private tail?: LazyList<A>;
-  private mapper?: (x) => A;
+  private mapper?: (x: any) => A;
 
-  constructor(value?: () => A, tail?: LazyList<A>, mapper?: (x) => A) {
-    super(value);
+  constructor(value?: () => A, tail?: LazyList<A>, mapper?: (x: any) => A) {
+    super(value || (() => undefined as any));
     if (arguments.length === 0) {
       this.isHead = true;
     }
@@ -32,7 +32,7 @@ export class LazyList<A> extends Lazy<A> {
   /** @description non-lazy */
   public toArray(thisArg: LazyList<A> = this): A[] {
     const xs: A[] = [];
-    for (let c = thisArg; !c.isHead; c = c.tail) {
+    for (let c: undefined | LazyList<A> = thisArg; c && !c.isHead; c = c.tail) {
       if (c.mapper) {
         xs.push(c.mapper(c.value()));
       } else {
@@ -45,8 +45,9 @@ export class LazyList<A> extends Lazy<A> {
   /** @override */
   public map<B>(f: (a: A) => B): LazyList<B> {
     if (this.mapper) {
+      const mapper = this.mapper;
       return new LazyList<B>(() => this.value() as any, this.tail as any, a =>
-        f(this.mapper(a)),
+        f(mapper(a)),
       );
     } else {
       return new LazyList<B>(() => this.value() as any, this.tail as any, f);

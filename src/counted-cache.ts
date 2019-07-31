@@ -11,6 +11,7 @@ export class CountedCache<T = any> {
     return this.count;
   }
 
+  // return Array<[key, {count: number, data: T}]>
   getAll(): Array<[string, CacheItem<T>]> {
     return Object.keys(this.caches).map(
       key => [key, this.caches[key]] as [string, CacheItem<T>],

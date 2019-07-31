@@ -7,7 +7,7 @@ export type Enum<E> =
 
 /* tslint:enable:ban-types */
 
-function is_enum_key(x) {
+function is_enum_key(x: any) {
   /* tslint:disable */
   return x != +x;
   /* tslint:enable */
@@ -25,7 +25,7 @@ export function enum_i2s<E>(e: E, i: keyof E): E[keyof E] {
 }
 
 export function enum_s2i<E>(e: E, s: E[keyof E]): keyof E {
-  const res = e[s as any];
+  const res = (e as any)[s as any];
   if (res === void 0) {
     throw new TypeError(`Invalid key '${s}' in enum`);
   }
@@ -33,7 +33,7 @@ export function enum_s2i<E>(e: E, s: E[keyof E]): keyof E {
 }
 
 export function enum_next_i<E>(e: E, i: number & keyof E): keyof E {
-  const res = e[e[i + 1]];
+  const res = (e as any)[(e as any)[i + 1]];
   if (res === void 0) {
     throw new TypeError(`Enum of index '${i}' don't have next value`);
   }
@@ -41,7 +41,7 @@ export function enum_next_i<E>(e: E, i: number & keyof E): keyof E {
 }
 
 export function enum_next_s<E>(e: E, s: E[keyof E]): E[keyof E] {
-  const res = e[e[s as any] + 1];
+  const res = (e as any)[(e as any)[s as any] + 1];
   if (res === void 0) {
     throw new TypeError(`Enum of key '${s}' don't have next value`);
   }
@@ -70,11 +70,11 @@ export function enum_indices<E>(e: Enum<E>): Array<keyof E> {
  *    stringified enum -> string values
  * */
 export function enum_values<E>(e: Enum<E>): E[] {
-  return enum_keys(e).map(s => e[s as any]) as any[];
+  return enum_keys(e).map(s => (e as any)[s as any]) as any[];
 }
 
 export function enum_last_i<E>(e: Enum<E>): E & number {
-  return e[enum_last_s(e) as string];
+  return (e as any)[enum_last_s(e) as string];
 }
 
 export function enum_last_s<E>(e: Enum<E>): keyof E & string {
@@ -117,7 +117,7 @@ export function enum_not_equals<E1, E2>(e1: E1, e2: E2): boolean {
 export function enum_set_string<E>(e: E): E {
   Object.keys(e)
     .filter(is_enum_key)
-    .forEach(s => (e[s] = e[e[s]]));
+    .forEach(s => ((e as any)[s] = (e as any)[(e as any)[s]]));
   return e;
 }
 
@@ -129,9 +129,9 @@ export function enum_only_string<E>(e: E) {
     /* tslint:disable */
     if ((i as any) == +i) {
       /* tslint:enable */
-      const s = e[i];
-      e[s] = s;
-      delete e[i];
+      const s = (e as any)[i];
+      (e as any)[s] = s;
+      delete (e as any)[i];
     }
   });
   return e;

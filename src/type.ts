@@ -24,5 +24,13 @@ export type ObjectType =
   | 'Uint8Array';
 
 export function getObjectType(o: any): ObjectType {
-  return Object.prototype.toString.call(o).match(/^\[object (.*)]$/)[1];
+  const type = Object.prototype.toString.call(o);
+  const match = type.match(/^\[object (.*)]$/);
+  if (match) {
+    const res = match[1];
+    if (res) {
+      return res as any;
+    }
+  }
+  return type.replace(/^\[/, '').replace(/]$/, '') as any;
 }

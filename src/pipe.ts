@@ -23,12 +23,12 @@ export type PipeArg<A, B> = [(a: A) => B, A[]] | [(a: A) => B];
 export const pipe = curry(
   <A, B>(ps: Array<PipeArg<A, B>>, acc: A): B => {
     for (const p of ps) {
-      if (p[1]) {
-        /* no extra args */
-        acc = ((p[0](acc) as B) as any) as A;
+      if (p.length === 2) {
+        // has extra args
+        acc = (((p[0] as (...xs: A[]) => B)(acc, ...p[1]) as B) as any) as A;
       } else {
-        /* has extra args */
-        acc = p[0].call(null, acc, ...(p[1] as A[]));
+        // no extra args
+        acc = ((p[0](acc) as B) as any) as A;
       }
     }
     return ((acc as A) as any) as B;
@@ -60,11 +60,11 @@ export interface Chain<A> {
 
 export function createChain<A>(a: A): Chain<A> {
   const res = {
-    use: f => {
+    use: (f: (a: A) => any) => {
       f(a);
       return res;
     },
-    map: f => createChain(f(a)),
+    map: <B>(f: (a: A) => B): Chain<B> => createChain(f(a)),
     unwrap: () => a,
   };
   return res;

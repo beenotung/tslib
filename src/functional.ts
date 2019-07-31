@@ -16,7 +16,7 @@ import { CurryF1, CurryF2, F1, F2 } from './typestub-curry';
 export const apply = curry(
   <A, B>(f: (...args: A[]) => B) =>
     function() {
-      return id(f.apply(null, arguments));
+      return id(f.apply(null, arguments as any));
     },
 );
 
@@ -184,12 +184,16 @@ export const divMod = curry(
     return [d, b - d * a];
   },
 );
-export const and = defineSymbolF('&&', (a, b) => b && a);
-export const or = defineSymbolF('||', (a, b) => b || a);
-export const not = defineSymbolF('!', a => !a);
-export const notnot = defineSymbolF('!!', a => !!a);
+export const and = defineSymbolF('&&', (a: any, b: any) => b && a);
+export const or = defineSymbolF('||', (a: any, b: any) => b || a);
+export const not = defineSymbolF('!', (a: any) => !a);
+export const notnot = defineSymbolF('!!', (a: any) => !!a);
 export const symbolF = curry(
-  <A, B, C>(name: string): CurryF2<A, B, C> => symbolFs.get(name),
+  <A, B, C>(name: string): CurryF2<A, B, C> =>
+    symbolFs.get(name) ||
+    (() => {
+      throw new Error('symbol ' + name + ' is not defined');
+    })(),
 );
 export const composeFs = curry(<A>(fs: Array<CurryF1<A, A>>, acc: A) => {
   for (let i = fs.length - 1; i >= 0; i--) {
@@ -241,7 +245,7 @@ export const map = fmap;
 export const getOrSetDefault = curry(
   <K, V>(v: V, k: K, m: Map<K, V>): V => {
     if (m.has(k)) {
-      return m.get(k);
+      return m.get(k) as V;
     }
     m.set(k, v);
     return v;

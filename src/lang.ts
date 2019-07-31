@@ -17,7 +17,7 @@ export function deepGetProp<A>(name: string, o: any): A {
   }
   const topLevelName = xs.shift();
   const nextLevelName = xs.join('.');
-  return deepGetProp(nextLevelName, o[topLevelName]);
+  return deepGetProp(nextLevelName, o[topLevelName as string]);
 }
 
 export function hasProp<A>(k: ObjKey, o: Obj<A>): boolean {

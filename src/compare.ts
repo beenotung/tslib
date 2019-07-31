@@ -15,7 +15,7 @@ export enum CompareResult {
   Larger = 1,
 }
 
-export function compare(a, b): CompareResult {
+export function compare<A extends number | string>(a: A, b: A): CompareResult {
   return a < b
     ? CompareResult.Smaller
     : a > b

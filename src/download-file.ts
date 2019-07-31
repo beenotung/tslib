@@ -18,6 +18,6 @@ export const download_file = (url: string, file_path: string) =>
         response.data
           .pipe(fs.createWriteStream(file_path))
           .on('finish', () => resolve())
-          .on('error', e => reject(e));
+          .on('error', (e: any) => reject(e));
       }),
   );

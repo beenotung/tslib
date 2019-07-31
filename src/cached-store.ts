@@ -1,6 +1,6 @@
 import { AsyncStore } from './async-store';
-import { CountedCache } from './counted-cache';
-import { compare_number } from './number';
+import { compare } from './compare';
+import { CacheItem, CountedCache } from './counted-cache';
 import { getLocalStorage, proxyStore, Store } from './store';
 
 Symbol.objectCache = Symbol.for('objectCache');
@@ -103,18 +103,20 @@ export class CachedObjectStore implements Store {
     this[Symbol.asyncStore].setItem(key, value);
   }
 
-  setObject(key: string, value): void {
+  setObject(key: string, value: any): void {
     const s = JSON.stringify(value);
     this[Symbol.cacheSize] += s.length;
     if (this[Symbol.cacheSize] > this[Symbol.maxCacheSize]) {
-      const caches = this[Symbol.objectCache].getAll();
-      caches.sort((a, b) => compare_number(a[1].count, b[1].count));
+      const caches: Array<[string, CacheItem<any>]> = this[
+        Symbol.objectCache
+      ].getAll();
+      caches.sort((a, b) => compare(a[1].count, b[1].count));
       for (
         ;
         this[Symbol.cacheSize] > this[Symbol.maxCacheSize] && caches.length > 0;
 
       ) {
-        const [key, cache] = caches.pop();
+        const [key, cache] = caches.pop() as [string, CacheItem<any>];
         this[Symbol.cacheSize] -= cache.data.size;
         this[Symbol.objectCache].remove(key);
       }

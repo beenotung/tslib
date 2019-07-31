@@ -5,7 +5,9 @@ export function removeNode(node: Node & { remove?: () => void }) {
   if (typeof node.remove === 'function') {
     return node.remove();
   }
-  return node.parentNode.removeChild(node);
+  if (node.parentNode) {
+    return node.parentNode.removeChild(node);
+  }
 }
 
 /**
@@ -44,9 +46,10 @@ export function htmlCollectionToArray(es: HTMLCollection): Element[] {
 }
 
 /** @deprecated lost type hint */
-export let qa = (x, parent = document.body) => parent.querySelectorAll(x);
+export let qa = (x: string, parent = document.body) =>
+  parent.querySelectorAll(x);
 /** @deprecated lost type hint */
-export let q = (x, parent = document.body) => parent.querySelector(x);
+export let q = (x: string, parent = document.body) => parent.querySelector(x);
 
 export function csv_to_table_element(rows: string[][]): HTMLTableElement {
   /* initialize */

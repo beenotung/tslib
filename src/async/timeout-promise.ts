@@ -1,13 +1,13 @@
 export class TimeoutError extends Error {
-  constructor(public context?) {
+  constructor(public context?: any) {
     super();
     this.name = 'TimeoutError';
   }
 }
 
 export class TimeoutPromise<T> implements Promise<T> {
-  public [Symbol.toStringTag];
-  private promise;
+  public [Symbol.toStringTag]: any;
+  private promise: Promise<T>;
 
   constructor(
     executor: (
@@ -15,7 +15,7 @@ export class TimeoutPromise<T> implements Promise<T> {
       reject: (e?: any) => void,
     ) => void,
     timeout: number,
-    context?,
+    context?: any,
   ) {
     this.promise = timeoutPromise(new Promise<any>(executor), timeout, context);
   }
@@ -38,8 +38,12 @@ export class TimeoutPromise<T> implements Promise<T> {
   }
 }
 
-export function timeoutPromise<T>(p: Promise<T>, timeout: number, context?) {
-  let timer;
+export function timeoutPromise<T>(
+  p: Promise<T>,
+  timeout: number,
+  context?: any,
+): Promise<T> {
+  let timer: any;
   const timerPromise = new Promise<never>((resolve, reject) => {
     if (typeof timeout === 'number') {
       timer = setTimeout(() => {

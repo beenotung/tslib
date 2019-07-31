@@ -15,7 +15,7 @@ export interface JsonArray {
 
 export type JsonValue = JsonPrimitive | JsonObject | JsonArray;
 
-export function jsonToString(o, visited = new Set()): string {
+export function jsonToString(o: any, visited = new Set()): string {
   const type = getObjectType(o);
   switch (type) {
     case 'String':
@@ -48,5 +48,7 @@ export function jsonToString(o, visited = new Set()): string {
         );
       }
     }
+    default:
+      throw new TypeError('unsupported data type');
   }
 }

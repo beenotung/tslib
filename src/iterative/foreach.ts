@@ -46,7 +46,7 @@ export namespace foreachs {
     }
   }
 
-  export function any(o, f): void {
+  export function any(o: any, f: (a: any) => void): void {
     if (Array.isArray(o)) {
       return o.forEach(f);
     }

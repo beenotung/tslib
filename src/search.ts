@@ -14,16 +14,18 @@ export namespace search {
   }
 
   export function object_contain_str(
-    base,
-    query: string,
+    base: string | object,
+    query: string | object,
     caseInsensitive = true,
   ) {
-    if (typeof base === 'string') {
+    if (typeof base === 'string' && typeof query === 'string') {
       return str_contains(base, query, caseInsensitive);
     }
-    // for (const k in base) {
+    if (typeof base !== 'object') {
+      return base === query;
+    }
     for (const k of Object.keys(base)) {
-      const v = base[k];
+      const v: any = (base as any)[k];
       if (typeof v === 'string' && typeof query === 'string') {
         if (str_contains(v, query, caseInsensitive)) {
           return true;
@@ -76,8 +78,10 @@ export namespace search {
       }
       case 'Object':
         return Object.keys(query).some(key =>
-          partialMatch(query[key], target[key]),
+          partialMatch((query as any)[key], (target as any)[key]),
         );
+      default:
+        return query === target;
     }
   }
 }

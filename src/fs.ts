@@ -32,7 +32,7 @@ export let stat: typeof fs.stat.__promisify__ = util.promisify(fs.stat);
 export let mkdir: typeof fs.mkdir.__promisify__ = util.promisify(fs.mkdir);
 export let exists: typeof fs.exists.__promisify__ = util.promisify(fs.exists);
 
-function isNoFileError(e): true | Promise<any> {
+function isNoFileError(e: any): true | Promise<any> {
   if (e.code === 'ENOENT') {
     return true;
   }

@@ -82,7 +82,8 @@ export namespace Random {
    * @return value of enum (not key of enum)
    * */
   export function nextEnum<E>(e: Enum<E>): E {
-    return e[Random.element(enum_keys<E>(e)) as any] as any;
+    const key = Random.element(enum_keys<E>(e));
+    return (e as any)[key as any] as any;
   }
 
   export function nextEnumKey<E>(e: Enum<E>): string & keyof E {

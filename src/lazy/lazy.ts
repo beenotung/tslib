@@ -19,33 +19,33 @@ export class Lazy<A> {
     return new Lazy<B>(() => f(this.value()));
   }
 
-  public add(b) {
-    return this.map(a => a + b);
+  public add(b: string | number) {
+    return this.map(a => a + (b as string));
   }
 
-  public minus(b) {
+  public minus(b: number) {
     return this.map(a => (a as any) - b);
   }
 
-  public mult(b) {
+  public mult(b: number) {
     return this.map(a => (a as any) * b);
   }
 
-  public rem(b) {
+  public rem(b: number) {
     return this.map(a => (a as any) % b);
   }
 
-  public div(b) {
+  public div(b: number) {
     return this.map(a => (a as any) / b);
   }
 
-  public quot(b) {
+  public quot(b: number) {
     /* tslint:disable no-bitwise */
     return this.map(a => ((a as any) / b) | 0);
     /* tslint:enable no-bitwise */
   }
 
-  public quotRem(b) {
+  public quotRem(b: number) {
     return this.map((a: any) => {
       /* tslint:disable no-bitwise */
       return [(a / b) | 0, a % b];
@@ -53,11 +53,11 @@ export class Lazy<A> {
     });
   }
 
-  public and(b) {
+  public and(b: boolean | any) {
     return this.map(a => a && b);
   }
 
-  public or(b) {
+  public or(b: boolean | any) {
     return this.map(a => a || b);
   }
 

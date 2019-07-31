@@ -1,8 +1,9 @@
 import axios from 'axios';
 import * as FormData from 'form-data';
 import { fetch } from './fetch';
+import { JsonObject } from './json';
 
-export function jsonToFormData(json, formData: FormData) {
+export function jsonToFormData(json: JsonObject, formData: FormData) {
   Object.keys(json).forEach(key => {
     const value = json[key];
     switch (typeof value) {
@@ -31,7 +32,7 @@ export interface PostFormResponse<T> {
 
 export function postMultipartFormData<T>(
   url: string,
-  json,
+  json: JsonObject,
 ): Promise<PostFormResponse<T>> {
   const formData = new FormData();
   jsonToFormData(json, formData);
@@ -40,29 +41,31 @@ export function postMultipartFormData<T>(
     return fetch(url, { method: 'POST', body: formData as any }).then(
       async res => {
         const contentType = res.headers.get('content-type');
-        if (
-          contentType.startsWith('application/json') ||
-          contentType.startsWith('text/json')
-        ) {
-          return {
-            status: res.status,
-            statusText: res.statusText,
-            data: await res.json(),
-          };
-        }
-        if (contentType.indexOf('form') !== -1) {
-          return {
-            status: res.status,
-            statusText: res.statusText,
-            data: await res.formData(),
-          };
-        }
-        if (contentType.startsWith('text')) {
-          return {
-            status: res.status,
-            statusText: res.statusText,
-            data: await res.text(),
-          };
+        if (contentType) {
+          if (
+            contentType.startsWith('application/json') ||
+            contentType.startsWith('text/json')
+          ) {
+            return {
+              status: res.status,
+              statusText: res.statusText,
+              data: await res.json(),
+            };
+          }
+          if (contentType.indexOf('form') !== -1) {
+            return {
+              status: res.status,
+              statusText: res.statusText,
+              data: await res.formData(),
+            };
+          }
+          if (contentType.startsWith('text')) {
+            return {
+              status: res.status,
+              statusText: res.statusText,
+              data: await res.text(),
+            };
+          }
         }
         return {
           status: res.status,

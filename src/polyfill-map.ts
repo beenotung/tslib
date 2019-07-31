@@ -3,7 +3,7 @@ import { Type } from './lang';
 import { getWindowOrGlobal } from './runtime';
 
 export class PolyfillMap<K, V> implements Map<K, V> {
-  public [Symbol.toStringTag];
+  public [Symbol.toStringTag]: any;
 
   public ks: K[] = [];
   public vs: V[] = [];
@@ -29,11 +29,8 @@ export class PolyfillMap<K, V> implements Map<K, V> {
 
   public forEach(
     callbackfn: (value: V, key: K, map: Map<K, V>) => void,
-    thisArg?: PolyfillMap<K, V>,
+    thisArg: PolyfillMap<K, V> = this,
   ): void {
-    if (arguments.length <= 1) {
-      thisArg = this;
-    }
     for (let i = thisArg.size; i >= 0; i--) {
       callbackfn(thisArg.vs[i], thisArg.ks[i], thisArg);
     }
@@ -64,13 +61,14 @@ export class PolyfillMap<K, V> implements Map<K, V> {
 
     return {
       next: () => {
-        if (idx < this.size) {
-          const value: [K, V] = [this.ks[idx], this.vs[idx]];
-          const res = { value, done: false };
-          idx++;
-          return res;
-        }
-        return { done: true, value: undefined };
+        const k: K = this.ks[idx];
+        const v: V = this.vs[idx];
+        idx++;
+        const value: [K, V] = [k, v];
+        return {
+          done: idx >= this.size,
+          value,
+        };
       },
       [Symbol.iterator]() {
         return this;

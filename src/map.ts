@@ -45,7 +45,7 @@ export function mapGetOrSetDefault<K, V>(
   f: () => V,
 ): V {
   if (map.has(key)) {
-    return map.get(key);
+    return map.get(key) as V;
   }
   const res = f();
   map.set(key, res);
@@ -54,7 +54,7 @@ export function mapGetOrSetDefault<K, V>(
 
 export function incMap<K>(map: Map<K, number>, key: K): void {
   if (map.has(key)) {
-    map.set(key, map.get(key) + 1);
+    map.set(key, (map.get(key) as number) + 1);
   } else {
     map.set(key, 1);
   }

@@ -46,7 +46,7 @@ export function createUnit<M extends Monad<A>, A>(
     const bind = <B>(
       f: (a: A, ...args: any[]) => Monad<B>,
       args?: ArrayLike<any>,
-    ): Monad<B> => f.call(void 0, value, ...toArray(args));
+    ): Monad<B> => f.call(void 0, value, ...toArray(args || []));
 
     const map = <B>(
       f: (a: A, ...args: any[]) => B,

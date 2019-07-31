@@ -2,7 +2,8 @@
  * be aware of s[s.length] --> undefined
  * */
 
-const isBetween = (l, m, r) => l <= m && m <= r;
+const isBetween = <A extends string | number>(l: A, m: A, r: A) =>
+  l <= m && m <= r;
 export type CharChecker = (c: string) => boolean;
 export const isDigit: CharChecker = c => isBetween('0', c, '9');
 export const isLowerCase: CharChecker = c => isBetween('a', c, 'z');

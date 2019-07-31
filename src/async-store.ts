@@ -40,7 +40,7 @@ export class AsyncStore {
   }
 
   async getObject<T>(key: string): Promise<T | null> {
-    return JSON.parse(await this.getItem(key));
+    return JSON.parse((await this.getItem(key)) as string);
   }
 
   async key(index: number): Promise<string | null> {
@@ -73,7 +73,7 @@ export class AsyncStore {
     ];
     if (tasks.has(key)) {
       const task = tasks.get(key);
-      if (!task.hasDone) {
+      if (task && !task.hasDone) {
         task.cancel();
       }
     }
@@ -112,7 +112,7 @@ export class AsyncStore {
     return newTask;
   }
 
-  async setObject(key: string, value): Promise<void> {
+  async setObject(key: string, value: any): Promise<void> {
     if (value === undefined) {
       return this.removeItem(key);
     }

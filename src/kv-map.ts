@@ -24,8 +24,8 @@ export class KVMap<K, V> /* implements Map<K, V> */ {
 
   deleteKey(key: K): boolean {
     if (this.kvMap.has(key)) {
-      const value = this.kvMap.get(key);
-      const keys = this.vkMap.get(value);
+      const value = this.kvMap.get(key) as V;
+      const keys = this.vkMap.get(value) || [];
       remove(keys, key);
     }
     return this.kvMap.delete(key);
@@ -33,7 +33,7 @@ export class KVMap<K, V> /* implements Map<K, V> */ {
 
   deleteValue(value: V): boolean {
     if (this.vkMap.has(value)) {
-      const keys = this.vkMap.get(value);
+      const keys = this.vkMap.get(value) as K[];
       keys.forEach(key => this.kvMap.delete(key));
     }
     return this.vkMap.delete(value);
@@ -60,16 +60,16 @@ export class KVMap<K, V> /* implements Map<K, V> */ {
     this.vkMap.forEach(callbackfn, thisArg);
   }
 
-  get(key: K): V {
+  get(key: K): V | undefined {
     return this.getValue(key);
   }
 
-  getValue(key: K): V {
+  getValue(key: K): V | undefined {
     return this.kvMap.get(key);
   }
 
   getKeys(value: V): K[] {
-    return this.vkMap.get(value);
+    return this.vkMap.get(value) || [];
   }
 
   has(key: K): boolean {
@@ -81,7 +81,7 @@ export class KVMap<K, V> /* implements Map<K, V> */ {
   }
 
   hasValue(value: V): boolean {
-    return this.vkMap.has(value) && this.vkMap.get(value).length > 0;
+    return this.vkMap.has(value) && (this.vkMap.get(value) as K[]).length > 0;
   }
 
   set(key: K, value: V): this {
@@ -90,7 +90,7 @@ export class KVMap<K, V> /* implements Map<K, V> */ {
     }
     this.kvMap.set(key, value);
     if (this.vkMap.has(value)) {
-      const keys = this.vkMap.get(value);
+      const keys = this.vkMap.get(value) as K[];
       if (keys.indexOf(key) === -1) {
         keys.push(key);
       }

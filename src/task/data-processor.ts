@@ -29,7 +29,7 @@ export async function batchProcess<K, D>(args: {
   */
   return new Promise<void>((resolve, reject) => {
     let nLoading = 0;
-    const fail = e => {
+    const fail = (e: any) => {
       nLoading = Number.MAX_SAFE_INTEGER;
       reject(e);
     };
@@ -45,10 +45,13 @@ export async function batchProcess<K, D>(args: {
           nextProcessIndex++;
           if (nextProcessIndex >= keys.length) {
             resolve();
-          } else if (loadedDataBuffer.has(nextProcessIndex)) {
-            const { key, datum } = loadedDataBuffer.get(nextProcessIndex);
-            loadedDataBuffer.delete(nextProcessIndex);
-            onLoad(datum, key);
+          } else {
+            const record = loadedDataBuffer.get(nextProcessIndex);
+            if (record) {
+              const { key, datum } = record;
+              loadedDataBuffer.delete(nextProcessIndex);
+              onLoad(datum, key);
+            }
           }
         },
         fail,

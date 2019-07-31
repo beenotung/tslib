@@ -102,14 +102,12 @@ export function to_csv(
   return res.join('');
 }
 
-export function csv_to_json(rows: string[][], titles?: string[]) {
-  let dataRows = rows;
-  if (!titles) {
-    dataRows = rows.slice(1);
-    titles = rows.slice(0, 1)[0];
-  }
+export function csv_to_json(
+  rows: string[][],
+  titles: string[] = rows.shift() || [],
+) {
   const n = titles.length;
-  return dataRows.map(cols => {
+  return rows.map(cols => {
     const res: { [title: string]: string } = {};
     for (let i = 0; i < n; i++) {
       res[titles[i]] = cols[i];
@@ -120,7 +118,7 @@ export function csv_to_json(rows: string[][], titles?: string[]) {
 
 export function json_to_csv(xs: any[]): string[][] {
   const titles: string[] = [];
-  const titleCache = {};
+  const titleCache: { [title: string]: boolean } = {};
   const rows: string[][] = [titles];
 
   /* build title list */

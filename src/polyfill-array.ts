@@ -9,7 +9,7 @@ if (!Array.isArray) {
 }
 
 export interface PolyfillArray<A> extends Array<A> {
-  peek(f: (element: A, index?: number) => void);
+  peek(f: (element: A, index?: number) => void): this;
 }
 
 export namespace PolyfillArray {
@@ -26,7 +26,7 @@ export namespace PolyfillArray {
     {},
     _prototype,
     Array.prototype,
-  );
+  ) as any;
 
   export function fromArray<A>(xs: A[]): PolyfillArray<A> {
     return xs as PolyfillArray<A>;

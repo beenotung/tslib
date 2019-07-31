@@ -3,7 +3,11 @@ import { getObjectType } from '../type';
 
 export type Mapper<A, B> = (a: A) => B;
 export type ArrayMapper<A, B> = (a: A, i: number, xs: A[]) => B;
-export type ObjectMapper<A, B> = (a: A[keyof A], key: keyof A, A) => B;
+export type ObjectMapper<A, B> = (
+  value: A[keyof A],
+  key: keyof A,
+  object: A,
+) => B;
 export type SetMapper<A, B> = (a: A, xs: Set<A>) => B;
 export type MapValueMapper<AK, AV, BK, BV> = (
   v: AV,
@@ -62,17 +66,17 @@ export namespace maps {
   ) {
     const ys = new Array(xs.length);
     for (let i = 0; i < xs.length; i++) {
-      ys[i] = f(xs.item(i), i, xs);
+      ys[i] = f(xs.item(i) as A, i, xs);
     }
     return ys;
   }
 
-  export function any(o, f: (a: any) => any): any {
+  export function any(o: any, f: (a: any) => any): any {
     if (Array.isArray(o)) {
       return array(o, f);
     }
     if (o instanceof NodeList || o instanceof HTMLCollection) {
-      return nodeList(o as NodeList, f);
+      return nodeList(o as any, f);
     }
     switch (getObjectType(o)) {
       case 'Array':

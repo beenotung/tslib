@@ -19,7 +19,7 @@ export let rl: ReadLine;
         isNew = false;
         Object.assign(target, getRL());
       }
-      return target[p];
+      return (target as any)[p];
     },
   });
 }
@@ -53,7 +53,7 @@ export namespace IO {
   ): Promise<A[]> {
     return new Promise<A[]>((resolve, reject) => {
       try {
-        const res = [];
+        const res: A[] = [];
         forEachLine(
           (line, lineNum) => res.push(f(line, lineNum)),
           () => resolve(res),

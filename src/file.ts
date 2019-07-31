@@ -29,7 +29,12 @@ function createAsyncFileReader(): [
 ] {
   const defer = createDefer<string | ArrayBuffer, any>();
   const reader = new FileReader();
-  reader.onload = () => defer.resolve(reader.result);
+  reader.onload = () => {
+    if (reader.result === null) {
+      return defer.reject('unexpected null reader.result');
+    }
+    return defer.resolve(reader.result);
+  };
   reader.onerror = defer.reject;
   return [defer, reader];
 }
@@ -62,7 +67,7 @@ export async function fileToArrayBuffer(file: File): Promise<ArrayBuffer> {
     if (typeof x === 'string') {
       const xs = new ArrayBuffer(x.length);
       for (let i = 0, n = x.length; i < n; i++) {
-        xs[i] = x[i];
+        (xs as any)[i] = x[i];
       }
       return xs;
     } else {
@@ -71,13 +76,14 @@ export async function fileToArrayBuffer(file: File): Promise<ArrayBuffer> {
   });
 }
 
-/* reference: https://ausdemmaschinenraum.wordpress.com/2012/12/06/how-to-save-a-file-from-a-url-with-javascript/ */
-export async function downloadFile(url: string, filename?: string) {
+// reference: https://ausdemmaschinenraum.wordpress.com/2012/12/06/how-to-save-a-file-from-a-url-with-javascript/
+//
+// if filename is not given, will get from url
+export async function downloadFile(
+  url: string,
+  filename: string = url.substring(url.lastIndexOf('/') + 1).split('?')[0],
+) {
   const defer = createDefer();
-  if (!filename) {
-    // Get file name from url.
-    filename = url.substring(url.lastIndexOf('/') + 1).split('?')[0];
-  }
   const xhr = new XMLHttpRequest();
   xhr.responseType = 'blob';
   xhr.onload = function() {
@@ -105,24 +111,29 @@ export interface SelectFileOptions {
   capture?: boolean;
 }
 
-export function selectFile(options?: SelectFileOptions): Promise<File[]> {
-  options = options || {};
+export function selectFile(options: SelectFileOptions = {}): Promise<File[]> {
   return new Promise<File[]>((resolve, reject) => {
     const input = document.createElement('input');
     input.type = 'file';
-    Object.keys(options).forEach(x => (input[x] = options[x]));
+    Object.keys(options).forEach(
+      x => ((input as any)[x] = (options as any)[x]),
+    );
     if (options.capture) {
       (input as any).capture = true;
     }
     // document.body.appendChild(input);
     input.onchange = e => {
+      if (!input.files) {
+        reject();
+        return;
+      }
       const nFile = input.files.length;
       if (nFile < 1) {
         reject();
       } else {
         const files: File[] = new Array(nFile);
         for (let i = 0; i < nFile; i++) {
-          files[i] = input.files.item(i);
+          files[i] = input.files.item(i) as File;
         }
         resolve(files);
         // document.body.removeChild(input);

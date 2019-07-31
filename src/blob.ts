@@ -1,9 +1,11 @@
-import * as arraybufferToBuffer from 'arraybuffer-to-buffer';
+// tslint:disable:no-var-requires
+const arrayBufferToBuffer = require('arraybuffer-to-buffer');
+// tslint:enable:no-var-requires
 
 export async function blobToBuffer(blob: Blob): Promise<Uint8Array> {
   return new Promise<Uint8Array>((resolve, reject) => {
     const reader = new FileReader();
-    reader.onload = () => resolve(arraybufferToBuffer(reader.result));
+    reader.onload = () => resolve(arrayBufferToBuffer(reader.result));
     reader.onerror = e => reject(e);
     reader.readAsArrayBuffer(blob);
   });
@@ -12,7 +14,12 @@ export async function blobToBuffer(blob: Blob): Promise<Uint8Array> {
 export function blobToText(blob: Blob): Promise<string | ArrayBuffer> {
   return new Promise<string | ArrayBuffer>((resolve, reject) => {
     const reader = new FileReader();
-    reader.onload = () => resolve(reader.result);
+    reader.onload = () => {
+      if (reader.result === null) {
+        return reject('unexpected null reader.result');
+      }
+      return resolve(reader.result);
+    };
     reader.onerror = e => reject(e);
     reader.readAsText(blob);
   });

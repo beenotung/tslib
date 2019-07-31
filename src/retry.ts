@@ -4,7 +4,7 @@ export const tryN = <A>(
   n: number,
   f: () => Promise<A>,
   interval = 0,
-  e?,
+  e?: any,
 ): Promise<A> =>
   n < 0
     ? Promise.reject(e)

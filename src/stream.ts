@@ -21,7 +21,7 @@ export function readStreamByLine(
       _onLine(line, _lineNum);
     }
   };
-  const onError = e => {
+  const onError = (e: any) => {
     _lineStream.emit('error', e);
     if (_onError) {
       _onError(e);

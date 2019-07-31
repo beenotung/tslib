@@ -1,4 +1,4 @@
-export type json = object | string | number | boolean;
+export type json = object | string | number | boolean | null;
 
 /**
  * 1. resolve nested object as undefined
@@ -12,15 +12,15 @@ export function toJson(o: any, visited: Set<any>): json {
   if (o === null) {
     return null;
   }
-  if (typeof o === 'object' && o !== null) {
+  if (typeof o === 'object') {
     if (visited.has(o)) {
       // console.log('duplicated visit of:', o);
-      return undefined;
+      return undefined as any;
     } else {
       visited.add(o);
     }
   }
-  const res = {};
+  const res: any = {};
   switch (typeof o) {
     case 'string':
     case 'number':

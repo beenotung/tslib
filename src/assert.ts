@@ -22,7 +22,7 @@ export function assertNoUndefined(
     return;
   }
   if (typeof o === 'object') {
-    Object.keys(o).forEach(x => assertNoUndefined(o[x], visited));
+    Object.keys(o).forEach(x => assertNoUndefined((o as any)[x], visited));
     return;
   }
   // e.g. number, string

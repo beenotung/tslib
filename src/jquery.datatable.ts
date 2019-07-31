@@ -6,6 +6,7 @@ export interface JQuery {
   DataTable: Function;
   dataTable: Function;
 }
+
 /* tslint:enable:ban-types */
 
 export interface DataTableOption {
@@ -30,7 +31,7 @@ export function initDatatable(e: HTMLTableElement, option?: DataTableOption) {
         if (x !== -1) {
           return x;
         } else {
-          return option.allText;
+          return (option as DataTableOption).allText;
         }
       }),
     ],

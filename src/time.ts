@@ -12,7 +12,7 @@ export const DECADE = YEAR * 10;
 export const CENTURY = YEAR * 100;
 
 export namespace session {
-  const intervals = {};
+  const intervals: { [interval: number]: number } = {};
 
   export function now(interval = 1000): number {
     const now = Date.now();

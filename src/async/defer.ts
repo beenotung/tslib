@@ -24,7 +24,7 @@ export function createDefer<A, E>(): Defer<A, E> {
 export async function resolveDefer<A, E>(
   defer: Defer<A, E>,
   a: A,
-  f: () => E | Promise<E> = () => undefined,
+  f: () => E | Promise<E>,
 ) {
   if (isDefined(a)) {
     defer.resolve(a);

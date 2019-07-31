@@ -31,7 +31,7 @@ export function replaceArray<A>(dest: A[], src: A[]): A[] {
  * @deprecated same as clear
  * */
 export function takeAll<A>(xs: A[]): A[] {
-  const res = [].concat(xs);
+  const res = ([] as A[]).concat(xs);
   clear(xs);
   return res;
 }
@@ -89,7 +89,7 @@ export function maybeLast<A>(xs: A[]): Maybe<A> {
 }
 
 export function fromFileList(files: FileList): File[] {
-  return mapI(i => files.item(i), files.length);
+  return mapI(i => files.item(i) as File, files.length);
 }
 
 export function array_contains<A>(xs: A[], x: A) {
@@ -101,6 +101,8 @@ export function insert<A>(xs: A[], index: number, x: A): void {
 }
 
 export type OrderType = 'ascending' | 'descending';
+
+export type Comparator<A> = (a: A, b: A) => CompareResult;
 
 /**
  * insert into Ascending sorted array
@@ -122,7 +124,10 @@ export function insert_sorted<A>(
   xs.push(x);
 }
 
-export let defaultComparator = (a, b): CompareResult => {
+export let defaultComparator: Comparator<any> = <A extends number | string>(
+  a: A,
+  b: A,
+): CompareResult => {
   if (typeof a === 'string' && typeof b === 'string') {
     return compare_string(a, b);
   }
@@ -158,7 +163,10 @@ export let sortBy = insertSortBy;
 /**
  * @return in-place sorted, original array
  * */
-export function sort<T>(xs: T[], comparator = defaultComparator): T[] {
+export function sort<T>(
+  xs: T[],
+  comparator: Comparator<T> = defaultComparator as Comparator<any>,
+): T[] {
   return xs.sort(comparator);
 }
 
@@ -228,7 +236,7 @@ export function insertNoDup<A>(acc: A[], newXs: A[]): A[] {
  * */
 export function insertNoDupWithKey<A>(acc: A[], newXs: A[], key: string): A[] {
   newXs.forEach(newX => {
-    if (!acc.find(x => x[key] === newX[key])) {
+    if (!acc.find(x => (x as any)[key] === (newX as any)[key])) {
       acc.push(newX);
     }
   });
@@ -241,7 +249,7 @@ export function insertNoDupWithKey<A>(acc: A[], newXs: A[], key: string): A[] {
  * */
 export function removeDupByKey<A>(xs: A[], key: string | number): A[] {
   const t: Obj<A> = {};
-  xs.map(x => (t[x[key]] = x));
+  xs.map(x => (t[(x as any)[key]] = x));
   replaceArray(xs, objValues(t));
   return xs;
 }
@@ -255,7 +263,10 @@ export function removeByKey<A>(
   key: string | number,
   keys: Array<string | number>,
 ): A[] {
-  return replaceArray(xs, xs.filter(x => !array_contains(keys, x[key])));
+  return replaceArray(
+    xs,
+    xs.filter(x => !array_contains(keys, (x as any)[key])),
+  );
 }
 
 /**
@@ -270,16 +281,16 @@ export function range(start: number, end: number, step = 1): number[] {
 }
 
 export function filterByKey<A>(src: A[], key: string, keys: string[]): A[] {
-  return src.filter(x => keys.indexOf(x[key]) !== -1);
+  return src.filter(x => keys.indexOf((x as any)[key]) !== -1);
 }
 
 export function toArray<A>(xs: ArrayLike<A>): A[] {
   // return mapI(i => xs[i], xs.length);
-  return Array.prototype.concat.apply([], arguments);
+  return Array.prototype.concat.apply([], xs as any[]);
 }
 
 export function flatten<A>(xss: A[][]): A[] {
-  return [].concat(...xss);
+  return ([] as A[]).concat(...xss);
 }
 
 /**
@@ -451,7 +462,7 @@ export function minByFunc<T>(
   return acc;
 }
 
-export function maxByField<T, K extends keyof T>(xs: T[], key: K): T {
+export function maxByField<T, K extends keyof T>(xs: [T, ...T[]], key: K): T {
   let acc = xs[0];
   const n = xs.length;
   for (let i = 1; i < n; i++) {
@@ -498,7 +509,7 @@ export function median<T>(
     sort?: boolean | typeof defaultComparator;
     merger?: (a: T, b: T) => T;
   },
-): T {
+): T | undefined {
   if (xs.length === 0) {
     return undefined;
   }
@@ -549,7 +560,11 @@ export function countAll<T>(xs: T[]): Map<T, number> {
 
 export function mode<T>(xs: T[]): T | undefined {
   const counts = Array.from(countAll(xs).entries());
-  const maxCount = maxByField(counts, 1);
+  if (counts.length === 0) {
+    return undefined;
+  }
+  type t = typeof counts[number];
+  const maxCount = maxByField(counts as [t, ...t[]], 1);
   return maxCount ? maxCount[0] : undefined;
 }
 

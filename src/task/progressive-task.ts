@@ -1,7 +1,6 @@
 import { Subject } from 'rxjs/Subject';
 import { remove } from '../array';
 import { createDefer, Defer } from '../async/defer';
-import { ensureNumber, ensureString } from '../strict-type';
 
 /**@deprecated*/
 export class ProgressiveTask<A> {
@@ -33,8 +32,10 @@ export interface ProgressiveTaskPoolOptions {
   mode?: ProgressiveTaskPoolMode;
 }
 
-export const defaultProgressiveTaskPoolOptions: ProgressiveTaskPoolOptions = {
-  limit: undefined,
+export const defaultProgressiveTaskPoolOptions: {
+  report_progress: ProgressiveTaskPoolOptions['report_progress'];
+  mode: ProgressiveTaskPoolMode;
+} = {
   report_progress: true,
   mode: 'FILO',
 };
@@ -52,9 +53,8 @@ export class ProgressiveTaskPool<A> {
   public mode: ProgressiveTaskPoolMode;
 
   constructor(options: ProgressiveTaskPoolOptions) {
-    options = Object.assign({}, defaultProgressiveTaskPoolOptions, options);
-    this.limit = ensureNumber(options.limit);
-    this.mode = ensureString(options.mode);
+    this.limit = options.limit;
+    this.mode = options.mode || defaultProgressiveTaskPoolOptions.mode;
     if (options.report_progress) {
       this.progress = new Subject<ProgressiveTaskPoolProgress>();
     }
@@ -102,7 +102,9 @@ export class ProgressiveTaskPool<A> {
           this.mode === 'FILO'
             ? this.pendingTasks.pop() /* first in last out */
             : this.pendingTasks.shift() /* first in first out */;
-      this.runTask(task);
+      if (task) {
+        this.runTask(task);
+      }
       this.check();
     }
   }

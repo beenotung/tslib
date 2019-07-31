@@ -17,10 +17,10 @@ export class HashedArray<A> {
   ) {
     this.array = array;
     this.mapper = mapper;
-    if (isDefined(o)) {
+    if (o) {
       this.o = o;
     } else {
-      o = {};
+      const o: any = {};
       array.forEach(x => (o[mapper(x) as string] = x));
       this.o = o;
     }
