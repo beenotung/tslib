@@ -146,13 +146,13 @@ export function format_2_digit(x: number): string {
   return x.toString();
 }
 
-export function format_n_digit(x: number, n: number): string {
+export function format_n_digit(x: number, n: number, prefix = '0'): string {
   let s = Math.abs(x).toString();
   if (x < 0) {
     n--;
   }
   if (s.length < n) {
-    s = '0'.repeat(n - s.length) + s;
+    s = prefix.repeat(n - s.length) + s;
   }
   if (x < 0) {
     s = '-' + s;
