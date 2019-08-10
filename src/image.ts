@@ -223,6 +223,28 @@ export function flipImage(image: HTMLImageElement) {
   return transformCentered(image, false, ctx => ctx.scale(-1, 1));
 }
 
+/**
+ * convert base64/URLEncoded data component to raw binary data held in a string
+ * e.g. data:image/jpeg;base64,...
+ * */
+export function dataURItoBlob(dataURI: string): Blob {
+  const [format, payload] = dataURI.split(',');
+  const [mimeType /*, encodeType*/] = format.replace(/^data:/, '').split(';');
+  let byteString: string;
+  if (dataURI.startsWith('data:')) {
+    byteString = atob(payload);
+  } else {
+    byteString = unescape(payload);
+  }
+  const n = byteString.length;
+  const buffer = new Uint8Array(n);
+  for (let i = 0; i < n; i++) {
+    buffer[i] = byteString.charCodeAt(i);
+  }
+  return new Blob([buffer], { type: mimeType });
+}
+
+/**@deprecated use compressImageToBase64() compressImageToBlob() instead */
 export function compressImage(
   image: HTMLImageElement,
   mimeType?: string,
@@ -239,9 +261,163 @@ export function compressImage(
   if (mimeType) {
     return canvas.toDataURL(mimeType, quality);
   }
-  let png = canvas.toDataURL('image/png', quality);
-  let jpeg = canvas.toDataURL('image/jpeg', quality);
+  const png = canvas.toDataURL('image/png', quality);
+  const jpeg = canvas.toDataURL('image/jpeg', quality);
   return jpeg.length < png.length ? jpeg : png;
 }
-  return canvas.toDataURL(mimeType, quality);
+
+function populateCompressArgs(args: {
+  image: HTMLImageElement;
+  canvas?: HTMLCanvasElement;
+  ctx?: CanvasRenderingContext2D;
+  maximumSize?: number;
+  quality?: number;
+}): {
+  image: HTMLImageElement;
+  canvas: HTMLCanvasElement;
+  ctx: CanvasRenderingContext2D;
+  maximumSize?: number;
+  quality?: number;
+} {
+  const image: HTMLImageElement = args.image;
+  const canvas: HTMLCanvasElement =
+    args.canvas || document.createElement('canvas');
+  const ctx: CanvasRenderingContext2D =
+    args.ctx ||
+    canvas.getContext('2d') ||
+    (() => {
+      throw new Error('not supported');
+    })();
+  let maximumSize = args.maximumSize;
+  let quality = args.quality;
+  if (!maximumSize && !quality) {
+    maximumSize = 1024 * 768; // 768KB
+    quality = 0.8;
+  }
+  return {
+    image,
+    canvas,
+    ctx,
+    maximumSize,
+    quality,
+  };
+}
+
+export function compressImageToBase64(args: {
+  image: HTMLImageElement;
+  canvas?: HTMLCanvasElement;
+  ctx?: CanvasRenderingContext2D;
+  mimeType?: string;
+  maximumLength?: number;
+  quality?: number;
+}): base64 {
+  const { image, canvas, ctx, maximumSize, quality } = populateCompressArgs({
+    ...args,
+    maximumSize: args.maximumLength,
+  });
+  canvas.width = image.width;
+  canvas.height = image.height;
+  ctx.drawImage(image, 0, 0);
+  let mimeType: string;
+  let dataURL: string;
+  if (args.mimeType) {
+    mimeType = args.mimeType;
+    dataURL = canvas.toDataURL(mimeType, quality);
+  } else {
+    const png = canvas.toDataURL('image/png', quality);
+    const jpeg = canvas.toDataURL('image/jpeg', quality);
+    if (jpeg < png) {
+      mimeType = 'image/jpeg';
+      dataURL = jpeg;
+    } else {
+      mimeType = 'image/png';
+      dataURL = png;
+    }
+  }
+  if (!maximumSize) {
+    return dataURL;
+  }
+  for (; dataURL.length > maximumSize; ) {
+    const ratio = Math.sqrt(maximumSize / dataURL.length);
+    const new_width = Math.round(canvas.width * ratio);
+    const new_height = Math.round(canvas.height * ratio);
+    if (new_width === canvas.width && new_height === canvas.height) {
+      break;
+    }
+    canvas.width = new_width;
+    canvas.height = new_height;
+    ctx.drawImage(image, 0, 0, new_width, new_height);
+    dataURL = canvas.toDataURL(mimeType, quality);
+  }
+  return dataURL;
+}
+
+export function canvasToBlob(
+  canvas: HTMLCanvasElement,
+  mimeType?: string,
+  quality?: number,
+): Promise<Blob> {
+  return new Promise<Blob>((resolve, reject) =>
+    canvas.toBlob(
+      blob => {
+        if (blob) {
+          resolve(blob);
+        } else {
+          reject('not supported');
+        }
+      },
+      mimeType,
+      quality,
+    ),
+  );
+}
+
+export async function compressImageToBlob(args: {
+  image: HTMLImageElement;
+  canvas?: HTMLCanvasElement;
+  ctx?: CanvasRenderingContext2D;
+  mimeType?: string;
+  maximumSize?: number;
+  quality?: number;
+}): Promise<Blob> {
+  const { image, canvas, ctx, maximumSize, quality } = populateCompressArgs(
+    args,
+  );
+  canvas.width = image.width;
+  canvas.height = image.height;
+  ctx.drawImage(image, 0, 0);
+  let mimeType: string;
+  let blob: Blob;
+  if (args.mimeType) {
+    mimeType = args.mimeType;
+    blob = await canvasToBlob(canvas, mimeType, quality);
+  } else {
+    const [png, jpeg] = await Promise.all([
+      canvasToBlob(canvas, 'image/png', quality),
+      canvasToBlob(canvas, 'image/jpeg', quality),
+    ]);
+    if (jpeg.size < png.size) {
+      mimeType = 'image/jpeg';
+      blob = jpeg;
+    } else {
+      mimeType = 'image/png';
+      blob = png;
+    }
+  }
+  if (!maximumSize) {
+    return blob;
+  }
+  for (; blob.size > maximumSize; ) {
+    const ratio = Math.sqrt(maximumSize / blob.size);
+    const new_width = Math.round(canvas.width * ratio);
+    const new_height = Math.round(canvas.height * ratio);
+    if (new_width === canvas.width && new_height === canvas.height) {
+      break;
+    }
+    canvas.width = new_width;
+    canvas.height = new_height;
+    ctx.drawImage(image, 0, 0, new_width, new_height);
+    blob = await canvasToBlob(canvas, mimeType, quality);
+  }
+  return blob;
 }
