@@ -225,7 +225,7 @@ export function flipImage(image: HTMLImageElement) {
 
 export function compressImage(
   image: HTMLImageElement,
-  mimeType = 'image/jpeg',
+  mimeType?: string,
   quality = 0.8,
 ): base64 {
   const canvas = document.createElement('canvas') as HTMLCanvasElement;
@@ -236,5 +236,12 @@ export function compressImage(
     throw new Error('not supported');
   }
   ctx.drawImage(image, 0, 0);
+  if (mimeType) {
+    return canvas.toDataURL(mimeType, quality);
+  }
+  let png = canvas.toDataURL('image/png', quality);
+  let jpeg = canvas.toDataURL('image/jpeg', quality);
+  return jpeg.length < png.length ? jpeg : png;
+}
   return canvas.toDataURL(mimeType, quality);
 }
