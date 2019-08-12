@@ -69,7 +69,7 @@
     "no-empty": true,
     "no-empty-interface": true,
     "no-eval": true,
-    "no-inferrable-types": true,
+    "no-inferrable-types": false,
     "no-shadowed-variable": false,
     "no-string-literal": true,
     "no-string-throw": true,
