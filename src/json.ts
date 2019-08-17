@@ -22,6 +22,7 @@ export function jsonToString(o: any, visited = new Set()): string {
     case 'Number':
     case 'Null':
     case 'Undefined':
+    case 'Boolean':
       return JSON.stringify(o);
     case 'Array':
     case 'Object': {
@@ -49,6 +50,7 @@ export function jsonToString(o: any, visited = new Set()): string {
       }
     }
     default:
+      console.error('unsupported data type:', type);
       throw new TypeError('unsupported data type');
   }
 }
