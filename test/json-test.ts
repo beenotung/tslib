@@ -5,12 +5,13 @@ import { getObjectType } from '../src/type';
 
 let CliProgress = require('cli-progress').Bar;
 
-function jsonSize(o): number {
+function jsonSize(o: any): number {
   switch (getObjectType(o)) {
     case 'String':
     case 'Number':
     case 'Null':
     case 'Undefined':
+    case 'Boolean':
       return 1;
     case 'Array': {
       let xs: any[] = o;
@@ -20,6 +21,10 @@ function jsonSize(o): number {
       let xs = Object.keys(o);
       return xs.map(x => jsonSize(o[x])).reduce((acc, c) => acc + c, xs.length);
     }
+    default:
+      console.error('unknown json type:', o);
+      process.exit(1);
+      throw new Error('unknown json type');
   }
 }
 
