@@ -1,4 +1,0 @@
-#!/bin/bash
-set -e
-hash npm-check 2>/dev/null || npm i -g npm-check
-echo 'install-dev done.'
