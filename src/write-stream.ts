@@ -9,11 +9,11 @@ export namespace writeStream {
   ): Promise<boolean> {
     return new Promise((resolve, reject) => {
       if (encoding) {
-        const res = stream.write(chunk, encoding, (err: any) =>
+        const res: boolean = stream.write(chunk, encoding, (err: any) =>
           err ? reject(err) : resolve(res),
         );
       } else {
-        const res = stream.write(chunk, (err: any) =>
+        const res: boolean = stream.write(chunk, (err: any) =>
           err ? reject(err) : resolve(res),
         );
       }
