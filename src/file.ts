@@ -45,8 +45,20 @@ export async function fileToBase64String(file: File): Promise<string> {
   return defer.promise.then(arrayBufferToString);
 }
 
-export async function filesToBase64Strings(files: File[]): Promise<string[]> {
-  return Promise.all(files.map(file => fileToBase64String(file)));
+export async function filesToBase64Strings(
+  files: FileList | File[],
+): Promise<string[]> {
+  if (Array.isArray(files)) {
+    return Promise.all(files.map(file => fileToBase64String(file)));
+  }
+  const ps = new Array(files.length);
+  for (let i = 0; i < files.length; i++) {
+    const file = files.item(i);
+    if (file) {
+      ps[i] = fileToBase64String(file);
+    }
+  }
+  return Promise.all(ps);
 }
 
 export async function fileToBinaryString(file: File): Promise<string> {
