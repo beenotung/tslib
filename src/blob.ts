@@ -1,8 +1,7 @@
-// tslint:disable:no-var-requires
-const arrayBufferToBuffer = require('arraybuffer-to-buffer');
-// tslint:enable:no-var-requires
-
 export async function blobToBuffer(blob: Blob): Promise<Uint8Array> {
+  // tslint:disable:no-var-requires
+  const arrayBufferToBuffer = require('arraybuffer-to-buffer');
+  // tslint:enable:no-var-requires
   return new Promise<Uint8Array>((resolve, reject) => {
     const reader = new FileReader();
     reader.onload = () => resolve(arrayBufferToBuffer(reader.result));
