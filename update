@@ -1,5 +1,0 @@
-#!/bin/bash
-set -e
-## check npm packages update
-./auto-init
-npm-check -u

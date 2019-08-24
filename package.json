@@ -1,6 +1,6 @@
 {
   "name": "@beenotung/tslib",
-  "version": "14.32.0",
+  "version": "14.33.1",
   "description": "utils library in Typescript",
   "keywords": [
     "Typescript",
@@ -51,7 +51,7 @@
     "@types/cli-progress": "^1.8.1",
     "@types/form-data": "^2.2.1",
     "@types/isomorphic-fetch": "^0.0.34",
-    "@types/node": "8",
+    "@types/node": "*",
     "@types/tape": "^4.2.33",
     "chokidar": "^1.7.0",
     "chokidar-cli": "^1.2.0",
