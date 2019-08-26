@@ -1,5 +1,4 @@
-import { compare } from './compare';
-import { CompareResult } from './number';
+import { compare, CompareResult } from './compare';
 import { setMinus } from './set';
 
 export function str_contains(
