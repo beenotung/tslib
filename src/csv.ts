@@ -149,3 +149,64 @@ export function json_to_csv(xs: any[]): string[][] {
 
   return rows;
 }
+
+function to_width(s: string, len: number, repeatChar: string): string {
+  const diff = len - s.length;
+  if (diff > 0) {
+    s += repeatChar.repeat(diff / repeatChar.length);
+    s += repeatChar.slice(0, len - s.length);
+  }
+  return s;
+}
+
+export function csv_to_table_text(
+  rows: string[][],
+  options?: {
+    col_separator?: '  ' | string;
+    header_line_char?: '-' | string;
+    show_total?: false | boolean;
+  },
+): string {
+  let col_separator = '  ';
+  let header_line_char = '-';
+  let show_total = false;
+  if (options) {
+    if (options.col_separator) {
+      col_separator = options.col_separator;
+    }
+    if (options.header_line_char) {
+      header_line_char = options.header_line_char;
+    }
+    if (options.show_total) {
+      show_total = options.show_total;
+    }
+  }
+  const titles = rows[0];
+  const contents = rows.slice(1);
+  const n = titles.length;
+  const lengths = new Array(n).fill(0);
+  for (const cols of rows) {
+    for (let i = 0; i < n; i++) {
+      const col = cols[i];
+      lengths[i] = Math.max(lengths[i], col.length);
+    }
+  }
+  let acc = '';
+  acc += titles.map((s, i) => to_width(s, lengths[i], ' ')).join(col_separator);
+  acc += '\n';
+  acc += titles
+    .map((s, i) => to_width('', lengths[i], header_line_char))
+    .join(col_separator);
+  acc += '\n';
+  acc += contents
+    .map(cols =>
+      cols.map((s, i) => to_width(s, lengths[i], ' ')).join(col_separator),
+    )
+    .join('\n');
+  if (show_total) {
+    acc += '\n';
+    acc += '\n';
+    acc += 'total: ' + contents.length;
+  }
+  return acc;
+}
