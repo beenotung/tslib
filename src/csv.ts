@@ -188,7 +188,9 @@ export function csv_to_table_text(
   for (const cols of rows) {
     for (let i = 0; i < n; i++) {
       const col = cols[i];
-      lengths[i] = Math.max(lengths[i], col.length);
+      if (col) {
+        lengths[i] = Math.max(lengths[i], col.length);
+      }
     }
   }
   let acc = '';
