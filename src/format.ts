@@ -159,3 +159,7 @@ export function format_n_digit(x: number, n: number, prefix = '0'): string {
   }
   return s;
 }
+
+export function format_percentage(p: number, n_decimal: number = 2): string {
+  return Math.round(p * Math.pow(10, 2 + n_decimal)) / 100 + '%';
+}
