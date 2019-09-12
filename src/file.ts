@@ -45,20 +45,38 @@ export async function fileToBase64String(file: File): Promise<string> {
   return defer.promise.then(arrayBufferToString);
 }
 
+export async function fileToText(file: File): Promise<string> {
+  const [defer, reader] = createAsyncFileReader();
+  reader.readAsText(file);
+  return defer.promise.then();
+}
+
+export function filesForEach(
+  files: FileList | File[],
+  f: (file: File, i: number, files: FileList | File[]) => void,
+) {
+  if (Array.isArray(files)) {
+    files.forEach(f);
+  } else {
+    for (let i = 0; i < files.length; i++) {
+      f(files.item(i)!, i, files);
+    }
+  }
+}
+
+export function filesMap<A>(
+  files: FileList | File[],
+  f: (file: File, i: number, files: FileList | File[]) => A,
+): A[] {
+  const xs: A[] = new Array(files.length);
+  filesForEach(files, (file, i, files) => (xs[i] = f(file, i, files)));
+  return xs;
+}
+
 export async function filesToBase64Strings(
   files: FileList | File[],
 ): Promise<string[]> {
-  if (Array.isArray(files)) {
-    return Promise.all(files.map(file => fileToBase64String(file)));
-  }
-  const ps = new Array(files.length);
-  for (let i = 0; i < files.length; i++) {
-    const file = files.item(i);
-    if (file) {
-      ps[i] = fileToBase64String(file);
-    }
-  }
-  return Promise.all(ps);
+  return Promise.all(filesMap(files, file => fileToBase64String(file)));
 }
 
 export async function fileToBinaryString(file: File): Promise<string> {
