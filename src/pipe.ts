@@ -51,6 +51,10 @@ export function peek<A>(f: (a: A) => any): (a: A) => A {
 export const echo = peek;
 
 export interface Chain<A> {
+  /**
+   * a.k.a. peek
+   * will not affect the value, can perform side effect
+   * */
   use(f: (a: A) => any): Chain<A>;
 
   map<B>(f: (a: A) => B): Chain<B>;
