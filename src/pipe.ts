@@ -62,14 +62,23 @@ export interface Chain<A> {
   unwrap(): A;
 }
 
+export class Chain<A> {
+  constructor(private value: A) {}
+
+  use(f: (a: A) => any): this {
+    f(this.value);
+    return this;
+  }
+
+  map<B>(f: (a: A) => B): Chain<B> {
+    return new Chain<B>(f(this.value));
+  }
+
+  unwrap(): A {
+    return this.value;
+  }
+}
+
 export function createChain<A>(a: A): Chain<A> {
-  const res = {
-    use: (f: (a: A) => any) => {
-      f(a);
-      return res;
-    },
-    map: <B>(f: (a: A) => B): Chain<B> => createChain(f(a)),
-    unwrap: () => a,
-  };
-  return res;
+  return new Chain<A>(a);
 }
