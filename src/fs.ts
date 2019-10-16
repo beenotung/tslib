@@ -108,3 +108,47 @@ export async function scanRecursively(args: {
     await onComplete();
   }
 }
+
+export function scanRecursivelySync(args: {
+  entryPath: string;
+  onFile?: (filename: string, basename: string) => void;
+  onDir?: (dirname: string, basename: string) => void;
+  onComplete?: () => void;
+  dereferenceSymbolicLinks?: boolean;
+  skipDir?: (dirname: string, basename: string) => boolean;
+}) {
+  const {
+    entryPath,
+    onFile,
+    onDir,
+    onComplete,
+    dereferenceSymbolicLinks,
+    skipDir,
+  } = args;
+  const checkStat = dereferenceSymbolicLinks ? fs.statSync : fs.lstatSync;
+  const check = (pathname: string, basename: string) => {
+    const stat = checkStat(pathname);
+    if (stat.isDirectory()) {
+      if (onDir) {
+        onDir(pathname, basename);
+      }
+      if (skipDir && skipDir(pathname, basename)) {
+        return;
+      }
+      const names = fs.readdirSync(pathname);
+      for (const basename of names) {
+        const childPathname = path.join(pathname, basename);
+        check(childPathname, basename);
+      }
+      return;
+    }
+    if (onFile && stat.isFile()) {
+      onFile(pathname, basename);
+      return;
+    }
+  };
+  check(entryPath, path.basename(entryPath));
+  if (onComplete) {
+    onComplete();
+  }
+}
