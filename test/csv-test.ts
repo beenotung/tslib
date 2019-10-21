@@ -18,16 +18,16 @@ if (JSON.stringify(testData) !== JSON.stringify(csvData)) {
 }
 
 let genRows = (size: number): string[][] => {
-  let rows = [];
+  let rows: string[][] = [];
   for (let row = 0; row < size; row++) {
-    let cols = rows[row] = [];
+    let cols: string[] = rows[row] = [];
     for (let col = 0; col < size; col++) {
       cols[col] = Random.nextString(size, visibleLetters);
     }
   }
   return rows;
 };
-let test = size => {
+let test = (size: number) => {
   let rows = genRows(size);
   let encoded = to_csv(rows);
   let decoded = from_csv(encoded);
