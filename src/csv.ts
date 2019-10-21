@@ -167,6 +167,9 @@ export function csv_to_table_text(
     show_total?: false | boolean;
   },
 ): string {
+  if (rows.length === 0) {
+    return '';
+  }
   let col_separator = '  ';
   let header_line_char = '-';
   let show_total = false;
@@ -181,9 +184,7 @@ export function csv_to_table_text(
       show_total = options.show_total;
     }
   }
-  const titles = rows[0];
-  const contents = rows.slice(1);
-  const n = titles.length;
+  const n = rows[0].length;
   const lengths = new Array(n).fill(0);
   for (const cols of rows) {
     for (let i = 0; i < n; i++) {
@@ -193,6 +194,8 @@ export function csv_to_table_text(
       }
     }
   }
+  const titles = rows[0];
+  const contents = rows.slice(1);
   let acc = '';
   acc += titles.map((s, i) => to_width(s, lengths[i], ' ')).join(col_separator);
   acc += '\n';
