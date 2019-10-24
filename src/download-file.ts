@@ -15,6 +15,7 @@ export const download_file = (url: string, file_path: string) =>
     const callback = (response: IncomingMessage) =>
       response
         .pipe(fs.createWriteStream(file_path))
+        // fs error
         .on('error', (err: any) => {
           reject(err);
         })
@@ -22,9 +23,19 @@ export const download_file = (url: string, file_path: string) =>
           resolve();
         });
     if (url.startsWith('http://')) {
-      return http.get(url, callback);
+      return (
+        http
+          .get(url, callback)
+          // network error
+          .once('error', error => reject(error))
+      );
     } else if (url.startsWith('https://')) {
-      return https.get(url, callback);
+      return (
+        https
+          .get(url, callback)
+          // network error
+          .once('error', error => reject(error))
+      );
     } else {
       console.error('unknown protocol on url:', url);
       throw new Error('unknown protocol');
