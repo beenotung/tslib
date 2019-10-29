@@ -1,4 +1,8 @@
-import { exec as _exec, spawn as _spawn } from 'child_process';
+import {
+  exec as _exec,
+  spawn as _spawn,
+  SpawnOptionsWithoutStdio,
+} from 'child_process';
 import * as util from 'util';
 
 export let exec = util.promisify(_exec);
@@ -6,6 +10,7 @@ export let exec = util.promisify(_exec);
 export function spawn(options: {
   cmd: string;
   args?: string[];
+  options?: SpawnOptionsWithoutStdio;
   on_stdout?: (chunk: any) => void;
   on_stderr?: (chunk: any) => void;
   on_error?: (error: any) => void;
@@ -16,7 +21,7 @@ export function spawn(options: {
     cmd = args.shift()!;
   }
   return new Promise((resolve, reject) => {
-    const child = _spawn(cmd, args);
+    const child = _spawn(cmd, args, options.options);
     child.stdout.setEncoding('utf8');
     child.stdout.on(
       'data',
