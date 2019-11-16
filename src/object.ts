@@ -213,7 +213,10 @@ export function ensureNonCyclic<A>(
 
 export function deleteUndefined(o: ApplyUndefinedType): void {
   if (Array.isArray(o)) {
-    replaceArray(o, o.filter(x => x !== undefined));
+    replaceArray(
+      o,
+      o.filter(x => x !== undefined),
+    );
     o.forEach(x => deleteUndefined(x));
     return;
   }

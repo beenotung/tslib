@@ -71,10 +71,7 @@ export const liftError = curry(
 export const liftError_noarg = curry(<E extends Error, A>(e: E) => (): A => {
   throw e;
 });
-export const compose2 = compose(
-  compose,
-  compose,
-);
+export const compose2 = compose(compose, compose);
 export const odd = curry((x: number) => x % 2 === 1);
 export const even = curry((x: number) => x % 2 === 0);
 export const countWhere = curry(compose2(length, filter));

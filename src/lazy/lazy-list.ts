@@ -46,8 +46,10 @@ export class LazyList<A> extends Lazy<A> {
   public map<B>(f: (a: A) => B): LazyList<B> {
     if (this.mapper) {
       const mapper = this.mapper;
-      return new LazyList<B>(() => this.value() as any, this.tail as any, a =>
-        f(mapper(a)),
+      return new LazyList<B>(
+        () => this.value() as any,
+        this.tail as any,
+        a => f(mapper(a)),
       );
     } else {
       return new LazyList<B>(() => this.value() as any, this.tail as any, f);
