@@ -2,7 +2,7 @@ import { ensureNumber, ensureString } from './strict-type';
 
 /* tslint:disable:ban-types */
 export type Enum<E> =
-  | { [value: number]: keyof E } & { [key: string]: E }
+  | ({ [value: number]: keyof E } & { [key: string]: E })
   | Object;
 
 /* tslint:enable:ban-types */

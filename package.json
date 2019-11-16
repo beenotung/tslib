@@ -23,9 +23,11 @@
   "homepage": "https://github.com/beenotung/tslib#readme",
   "scripts": {
     "clean": "rm -rf dist",
-    "prebuild": "npm run clean && gen-index && npm run format",
+    "pregen-index": "tsc-macro",
+    "gen-index": "gen-index",
+    "prebuild": "run-s clean gen-index format",
     "build": "tsc -p .",
-    "postbuild": "rm src/index.ts",
+    "postbuild": "rm src/index.ts && find dist -name '*.macro.*' -delete",
     "lint": "tslint --project tsconfig.json -c tslint.json",
     "dev": "run-p watch:*",
     "watch:build": "tsc -p . --watch",
@@ -46,7 +48,7 @@
     "tape": "^4.10.1"
   },
   "devDependencies": {
-    "@beenotung/gen-index": "^1.0.7",
+    "@beenotung/gen-index": "^1.0.9",
     "@types/cli-progress": "^1.8.1",
     "@types/isomorphic-fetch": "^0.0.34",
     "@types/node": "*",
@@ -56,6 +58,7 @@
     "cli-progress": "^2.1.1",
     "npm-run-all": "^4.1.5",
     "prettier": "^1.18.2",
+    "tsc-macro": "^0.0.2",
     "tslint": "^5.12.1",
     "tslint-config-prettier": "^1.18.0",
     "tslint-eslint-rules": "^5.3.1",
