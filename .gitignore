@@ -18,6 +18,7 @@ node_modules
 npm-debug.log*
 package-lock.json
 pnpm-lock.yaml
+*.tgz
 
 # Yarn
 yarn-error.log
