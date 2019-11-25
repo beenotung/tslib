@@ -1,7 +1,8 @@
-import { scanRecursively, scanRecursivelySync } from '../src/fs';
+import { createFSPool } from '../src/concurrent-fs';
 import { catchMain } from '../src/node';
 import * as path from 'path';
 
+const { scanRecursively } = createFSPool(20);
 // let separator = ' | ';
 let start = Date.now();
 let dir = 0;
@@ -12,7 +13,7 @@ let report = () => {
   let t = Date.now() - start;
   process.stdout.write(`\r dir: ${dir} (${format(dir / t)}/s) file: ${file} (${format(file / t)}/s) total: ${total} (${format(total / t)}/s)`);
 };
-(scanRecursivelySync({
+catchMain(scanRecursively({
   // entryPath: path.join(process.env.HOME!, 'Music'),
   // entryPath: path.join(process.env.HOME!, 'workspace'),
   // entryPath: path.join('node_modules'),
