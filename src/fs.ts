@@ -3,6 +3,10 @@ import * as path from 'path';
 import * as util from 'util';
 import { Result } from './result';
 
+export let copyFile: typeof fs.copyFile.__promisify__ = util.promisify(
+  fs.copyFile,
+);
+
 /** @deprecated use native typing instead */
 export type readOptions =
   | { encoding?: string | null; flag?: string }
