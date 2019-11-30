@@ -11,7 +11,8 @@
     "lib": [
       "dom",
       "es2015",
-      "es2018"
+      "es2018",
+      "es2015.collection"
     ],
     "downlevelIteration": true,
     "module": "commonjs",
