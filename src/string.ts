@@ -153,3 +153,10 @@ export function compare_string(a: string, b: string): CompareResult {
   }
   return compare(as.length, bs.length);
 }
+
+export function extract_lines(s: string): string[] {
+  return s
+    .split('\n')
+    .map(s => s.trim())
+    .filter(s => s);
+}
