@@ -91,7 +91,7 @@
     ],
     "prefer-const": true,
     "quotemark": [
-      true,
+      false,
       "single",
       "avoid-escape"
     ],
