@@ -55,9 +55,13 @@ const word_zh = {
 let word = word_en;
 
 let time_units: Array<[number, string]> = time_units_en;
+let locale = getEnvLocale() || 'en';
 
-export function setLang(lang: 'en' | 'zh') {
-  if (lang === 'zh') {
+export function setLang(
+  lang: 'en' | 'en-US' | 'en-GK' | 'zh' | 'zh-HK' | 'zh-TW',
+) {
+  locale = lang;
+  if (lang.includes('zh')) {
     time_units = time_units_zh;
     word = word_zh;
   } else {
@@ -65,6 +69,8 @@ export function setLang(lang: 'en' | 'zh') {
     word = word_en;
   }
 }
+
+setLang(locale as any);
 
 function concatWords(a: string, b: string): string {
   if (isEngChar(a[a.length - 1]) || isEngChar(b[0])) {
@@ -93,7 +99,7 @@ export function format_datetime(
   if (!time) {
     return options.empty || '-';
   }
-  const locales = options.locales || getEnvLocale() || 'en';
+  const locales = options.locales || getEnvLocale() || locale;
   return new Date(time).toLocaleString(locales, {
     weekday: 'short',
     year: 'numeric',
@@ -105,31 +111,46 @@ export function format_datetime(
   });
 }
 
-const roundUnits = [SECOND, MINUTE, HOUR, DAY].reverse();
+const roundUnits = time_units_en.map(([unit]) => unit).sort((a, b) => b - a);
 
-function roundTime(time: number): number {
-  const sign = Math.abs(time) / time;
-  time = Math.abs(time);
+function roundTime(timeDiff: number): number {
+  const absDiff = Math.abs(timeDiff);
   for (const unit of roundUnits) {
-    if (time > unit) {
-      return sign * Math.round(time / unit) * unit;
+    if (absDiff > unit) {
+      if (timeDiff > 0) {
+        return Math.floor(timeDiff / unit) * unit;
+      } else {
+        return Math.ceil(timeDiff / unit) * unit;
+      }
     }
   }
-  return sign * time;
+  return timeDiff;
 }
 
-export function format_long_short_time(time: number) {
+export function format_long_short_time(
+  time: number,
+  options?: {
+    threshold?: number; // default WEEK
+    locales?: string;
+    empty?: string;
+  },
+) {
   // if within 1-week, format relative time, else format absolute time
   const diff = time - Date.now();
-  if (Math.abs(diff) < WEEK) {
+  if (Math.abs(diff) < (options?.threshold || WEEK)) {
     return format_relative_time(roundTime(diff));
   }
-  const s = format_datetime(time);
-  const ss = s.split(',');
-  if (ss.length === 4) {
-    ss.shift();
-  }
-  return ss.join(',');
+  return format_datetime(time);
+  /*
+  return new Intl.DateTimeFormat('zh-HK', {
+    month: 'short',
+    day: 'numeric',
+    hour: 'numeric',
+    minute: 'numeric',
+    year: 'numeric',
+    // hour12: true,
+  }).format(new Date());
+  */
 }
 
 export function format_time_duration(delta: number, digit = 1): string {

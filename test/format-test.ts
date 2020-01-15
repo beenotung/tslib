@@ -1,6 +1,14 @@
 import * as test from 'tape';
-import { format_2_digit, format_byte, format_datetime, format_n_digit, format_relative_time, setLang } from '../src/format';
-import { CENTURY, DAY, MINUTE, SECOND } from '../src/time';
+import {
+  format_2_digit,
+  format_byte,
+  format_datetime,
+  format_long_short_time,
+  format_n_digit,
+  format_relative_time,
+  setLang,
+} from '../src/format';
+import { CENTURY, DAY, MINUTE, SECOND, WEEK } from '../src/time';
 
 test('format_byte', t => {
   t.equal(format_byte(412.5 * 1024 * 1024), '412.50 MB', 'format size');
@@ -35,6 +43,14 @@ test('format_relative_time (zh)', t => {
 test('format_relative_time (en)', t => {
   setLang('en');
   t.equal(format_relative_time(12.5 * MINUTE), '12.5 minutes hence');
+  t.end();
+});
+test('format_long_short_time', t => {
+  let now = Date.now();
+  t.equal(format_long_short_time(now - 4.5 * DAY), '4 days ago');
+  t.equal(format_long_short_time(now + 4.5 * DAY), '4 days hence');
+  t.notEqual(format_long_short_time(now - 4.5 * WEEK), '4 weeks ago');
+  t.notEqual(format_long_short_time(now + 4.5 * WEEK), '4 weeks hence');
   t.end();
 });
 
