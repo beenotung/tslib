@@ -91,7 +91,7 @@ export function to_csv(
         res.push(col);
       } else {
         res.push(delimiter);
-        for (const c of col) {
+        for (const c of col || '') {
           if (c === delimiter) {
             res.push(delimiter, delimiter);
           } else {

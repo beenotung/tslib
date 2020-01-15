@@ -70,3 +70,12 @@ let fs = require('fs');
 console.log('write to test.csv');
 fs.writeFileSync('test.csv', text);
 console.log('finished write');
+
+let rows: string[][] = [];
+rows[0] = [];
+rows[0][0] = 'a';
+rows[0][2] = 'c';
+if (to_csv(rows).trim() !== 'a,"",c') {
+  console.error(`to_csv() failed to handle empty cell`);
+  process.exit(1);
+}
