@@ -102,6 +102,18 @@ export function to_csv(
   return res.join('');
 }
 
+export function regular_csv(rows: string[][]): void {
+  // to make each rows with same number of columns
+  // for to_csv() to insert ending commas
+  let maxCol = 0;
+  rows.forEach(cols => (maxCol = Math.max(maxCol, cols.length)));
+  rows.forEach(cols => {
+    while (cols.length < maxCol) {
+      cols.push('');
+    }
+  });
+}
+
 export function csv_to_json(
   rows: string[][],
   titles: string[] = rows.shift() || [],
