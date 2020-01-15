@@ -100,6 +100,7 @@ export class ProcessPool {
   }
 
   close(signal: NodeJS.Signals | number = os.constants.signals.SIGTERM) {
-    this.workers.forEach(worker => worker.process.kill(signal as string));
+    // cast as any for @type/node compatibility
+    this.workers.forEach(worker => worker.process.kill(signal as any));
   }
 }
