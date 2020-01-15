@@ -6,7 +6,7 @@ function defaultWeights(): number[] {
   return os.cpus().map(cpu => cpu.speed);
 }
 
-export type WeightedWorker = {
+export type WeightedProcessWorker = {
   weight: number;
   process: ChildProcess;
 };
@@ -19,7 +19,7 @@ export type WeightedWorker = {
  * */
 export class ProcessPool {
   totalWeights: number;
-  workers: WeightedWorker[];
+  workers: WeightedProcessWorker[];
 
   dispatch: {
     <T, R>(inputs: T[], cb: (err: any, outputs: R[]) => void): void;
@@ -64,7 +64,7 @@ export class ProcessPool {
           overload?: number;
         }
       | {
-          workers: WeightedWorker[];
+          workers: WeightedProcessWorker[];
         },
   ) {
     if ('workers' in options) {
