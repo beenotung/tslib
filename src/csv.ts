@@ -83,7 +83,11 @@ export function to_csv(
       } else {
         res.push(separator);
       }
-      if (col.indexOf(delimiter) === -1 && col.indexOf(separator) === -1) {
+      if (
+        col &&
+        col.indexOf(delimiter) === -1 &&
+        col.indexOf(separator) === -1
+      ) {
         res.push(col);
       } else {
         res.push(delimiter);
@@ -103,13 +107,15 @@ export function to_csv(
 }
 
 export function regular_csv(rows: string[][]): void {
-  // to make each rows with same number of columns
-  // for to_csv() to insert ending commas
+  /**
+   * to make each rows with same number of columns
+   * for to_csv() to insert ending commas
+   * */
   let maxCol = 0;
   rows.forEach(cols => (maxCol = Math.max(maxCol, cols.length)));
   rows.forEach(cols => {
-    while (cols.length < maxCol) {
-      cols.push('');
+    for (let i = cols.length; i < maxCol; i++) {
+      cols.push();
     }
   });
 }
