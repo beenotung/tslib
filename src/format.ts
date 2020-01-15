@@ -105,6 +105,33 @@ export function format_datetime(
   });
 }
 
+const roundUnits = [SECOND, MINUTE, HOUR, DAY].reverse();
+
+function roundTime(time: number): number {
+  const sign = Math.abs(time) / time;
+  time = Math.abs(time);
+  for (const unit of roundUnits) {
+    if (time > unit) {
+      return sign * Math.round(time / unit) * unit;
+    }
+  }
+  return sign * time;
+}
+
+export function format_long_short_time(time: number) {
+  // if within 1-week, format relative time, else format absolute time
+  const diff = time - Date.now();
+  if (Math.abs(diff) < WEEK) {
+    return format_relative_time(roundTime(diff));
+  }
+  const s = format_datetime(time);
+  const ss = s.split(',');
+  if (ss.length === 4) {
+    ss.shift();
+  }
+  return ss.join(',');
+}
+
 export function format_time_duration(delta: number, digit = 1): string {
   const diff = Math.abs(delta);
   const res = (n: number, unit: string): string => {
