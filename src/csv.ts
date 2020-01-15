@@ -120,15 +120,16 @@ export function regular_csv(rows: string[][]): void {
   });
 }
 
-export function csv_to_json(
-  rows: string[][],
-  titles: string[] = rows.shift() || [],
-) {
+export function csv_to_json(rows: string[][], titles?: string[]) {
+  if (!titles) {
+    rows = rows.slice();
+    titles = rows.shift() || [];
+  }
   const n = titles.length;
   return rows.map(cols => {
     const res: { [title: string]: string } = {};
     for (let i = 0; i < n; i++) {
-      res[titles[i]] = cols[i];
+      res[titles![i]] = cols[i];
     }
     return res;
   });

@@ -13,7 +13,7 @@ if (jsonData[0].name !== 'beeno') {
 }
 let csvData = json_to_csv(jsonData);
 if (JSON.stringify(testData) !== JSON.stringify(csvData)) {
-  console.error('json_to_csv() failed', { csvData });
+  console.error('json_to_csv() failed', { testData, csvData });
   process.exit(1);
 }
 
