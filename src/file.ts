@@ -173,23 +173,26 @@ export function selectFile(options: SelectFileOptions = {}): Promise<File[]> {
   });
 }
 
-export function selectImage(options?: SelectFileOptions): Promise<File[]> {
-  if (options && options.capture) {
-    options.accept = options.accept || 'image/*;capture=camera';
+export function selectImage(options: SelectFileOptions = {}): Promise<File[]> {
+  options.accept = options.accept || 'image/*';
+  if (options.capture && !options.accept.includes('camera')) {
+    options.accept += ';capture=camera';
   }
   return selectFile(options);
 }
 
-export function selectVideo(options?: SelectFileOptions): Promise<File[]> {
-  if (options && options.capture) {
-    options.accept = options.accept || 'image/*;capture=camcorder';
+export function selectVideo(options: SelectFileOptions = {}): Promise<File[]> {
+  options.accept = options.accept || 'video/mp4,video/x-m4v,video/*';
+  if (options.capture && !options.accept.includes('camcorder')) {
+    options.accept += ';capture=camcorder';
   }
   return selectFile(options);
 }
 
-export function selectAudio(options?: SelectFileOptions): Promise<File[]> {
-  if (options && options.capture) {
-    options.accept = options.accept || 'image/*;capture=microphone';
+export function selectAudio(options: SelectFileOptions = {}): Promise<File[]> {
+  options.accept = options.accept || 'audio/*';
+  if (options.capture && !options.accept.includes('microphone')) {
+    options.accept += ';capture=microphone';
   }
   return selectFile(options);
 }
