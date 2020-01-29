@@ -4,7 +4,7 @@
 utils library in Typescript
 
 ## Why tslib
-My original lib [jslib](https://github.com/beenotung/jslib) was build before ES6 was popular, it has a number of ES6-like classes and polyfill which is not following the standard.
+My original lib [jslib](https://github.com/beenotung/jslib) was build before ES6 was popular, it has a number of ES6-like classes and polyfill which is not compatible with the standard.
 
 This lib is base on ES6 (and Typescript ES7) which should gain more native performance.
 
