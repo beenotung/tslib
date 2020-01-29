@@ -63,9 +63,6 @@
     "no-construct": true,
     "no-debugger": true,
     "no-duplicate-variable": true,
-    "no-unused-variable": [
-      true
-    ],
     "no-empty": true,
     "no-empty-interface": true,
     "no-eval": true,
