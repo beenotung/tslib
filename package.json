@@ -42,7 +42,7 @@
   "dependencies": {
     "axios": "^0.18.0",
     "form-data": "^3.0.0",
-    "isomorphic-fetch": "2.2.1",
+    "isomorphic-fetch": "^2.2.1",
     "node-localstorage": "^2.1.5",
     "rxjs": "^5.0.1",
     "tape": "^4.10.1"
@@ -50,7 +50,7 @@
   "devDependencies": {
     "@beenotung/gen-index": "^1.0.9",
     "@types/cli-progress": "^3.4.1",
-    "@types/isomorphic-fetch": "^0.0.34",
+    "@types/isomorphic-fetch": "^0.0.35",
     "@types/node": "*",
     "@types/tape": "^4.2.33",
     "chokidar": "^3.3.1",
