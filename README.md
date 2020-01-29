@@ -9,7 +9,6 @@ My original lib [jslib](https://github.com/beenotung/jslib) was build before ES6
 This lib is base on ES6 (and Typescript ES7) which should gain more native performance.
 
 This library is influenced by ramda, elixir, haskell.
-It also contains utils functions for rxjs and ng2-chart.
 
 ## Installation
 
