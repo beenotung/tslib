@@ -51,14 +51,14 @@ export function proxyStore<
 }
 
 export class Store implements Storage {
-  get length(): number {
-    return this[Symbol.storage].length;
-  }
-
   [Symbol.storage]: Storage;
 
   private constructor(storage: Storage) {
     this[Symbol.storage] = storage;
+  }
+
+  get length(): number {
+    return this[Symbol.storage].length;
   }
 
   clear(): void {

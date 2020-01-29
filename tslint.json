@@ -5,6 +5,10 @@
     "tslint-config-prettier"
   ],
   "rules": {
+    "array-type": [
+      true,
+      "array-simple"
+    ],
     "interface-over-type-literal": false,
     "no-reference": true,
     "only-arrow-functions": false,
@@ -76,7 +80,6 @@
       true,
       "allow-fast-null-checks"
     ],
-    "no-use-before-declare": true,
     "no-var-keyword": true,
     "object-literal-sort-keys": false,
     "one-line": [

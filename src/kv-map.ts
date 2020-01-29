@@ -13,6 +13,18 @@ export class KVMap<K, V> /* implements Map<K, V> */ {
     this.vkMap = new Map();
   }
 
+  get size(): number {
+    return this.keySize;
+  }
+
+  get keySize(): number {
+    return this.kvMap.size;
+  }
+
+  get valueSize(): number {
+    return this.vkMap.size;
+  }
+
   clear(): void {
     this.kvMap.clear();
     this.vkMap.clear();
@@ -98,18 +110,6 @@ export class KVMap<K, V> /* implements Map<K, V> */ {
       this.vkMap.set(value, [key]);
     }
     return this;
-  }
-
-  get size(): number {
-    return this.keySize;
-  }
-
-  get keySize(): number {
-    return this.kvMap.size;
-  }
-
-  get valueSize(): number {
-    return this.vkMap.size;
   }
 
   [Symbol.iterator](): IterableIterator<[K, V]> {

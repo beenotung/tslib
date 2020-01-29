@@ -14,24 +14,6 @@ Symbol.maxCacheSize = Symbol.for('maxCacheSize');
  * raw string item are not cached
  * */
 export class CachedObjectStore implements Store {
-  get [Symbol.storage](): Storage {
-    return this[Symbol.store][Symbol.storage];
-  }
-
-  set storage(storage: Storage) {
-    const dirpath = storage._location;
-    if (typeof dirpath !== 'string') {
-      throw new Error('cannot swap storage instance without storage._location');
-    }
-    this[Symbol.store][Symbol.storage] = storage;
-    this[Symbol.asyncStore][Symbol.dirpath] = dirpath;
-  }
-
-  // cannot be cached, require too much effort to monitor every setItem and removeItem
-  get length(): number {
-    return this[Symbol.store].length;
-  }
-
   private [Symbol.objectCache] = new CountedCache<{
     size: number;
     value: any;
@@ -49,6 +31,24 @@ export class CachedObjectStore implements Store {
     this[Symbol.store] = Store.create(getLocalStorage(dirpath, maxStorageSize));
     this[Symbol.asyncStore] = AsyncStore.create(dirpath);
     this[Symbol.maxCacheSize] = maxCacheSize;
+  }
+
+  get [Symbol.storage](): Storage {
+    return this[Symbol.store][Symbol.storage];
+  }
+
+  set storage(storage: Storage) {
+    const dirpath = storage._location;
+    if (typeof dirpath !== 'string') {
+      throw new Error('cannot swap storage instance without storage._location');
+    }
+    this[Symbol.store][Symbol.storage] = storage;
+    this[Symbol.asyncStore][Symbol.dirpath] = dirpath;
+  }
+
+  // cannot be cached, require too much effort to monitor every setItem and removeItem
+  get length(): number {
+    return this[Symbol.store].length;
   }
 
   clear(): void {
