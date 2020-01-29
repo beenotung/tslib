@@ -44,7 +44,7 @@
     "form-data": "^3.0.0",
     "isomorphic-fetch": "^2.2.1",
     "node-localstorage": "^2.1.5",
-    "rxjs": "^6.5.4",
+    "rxjs": "^5.0.1",
     "tape": "^4.10.1"
   },
   "devDependencies": {
