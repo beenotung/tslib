@@ -1,4 +1,4 @@
-import { Subject } from 'rxjs/Subject';
+import { Subject } from 'rxjs';
 import { remove } from '../array';
 import { createDefer, Defer } from '../async/defer';
 
