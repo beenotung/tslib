@@ -29,6 +29,10 @@ export class PolyfillIterable<T> implements Iterable<T> {
     });
   }
 
+  toArray(): T[] {
+    return Array.from(this.iterable);
+  }
+
   static from<T>(iterable: Iterable<T>): PolyfillIterable<T> {
     return new PolyfillIterable<T>(iterable);
   }
