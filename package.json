@@ -43,7 +43,8 @@
     "axios": "^0.18.0",
     "form-data": "^3.0.0",
     "isomorphic-fetch": "^2.2.1",
-    "node-localstorage": "^2.1.5"
+    "node-localstorage": "^2.1.5",
+    "tslib": "^1.10.0"
   },
   "devDependencies": {
     "@beenotung/gen-index": "^1.0.9",

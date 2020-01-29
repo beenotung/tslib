@@ -8,13 +8,12 @@
     "experimentalDecorators": true,
     "skipLibCheck": true,
     "strict": true,
+    "downlevelIteration": false,
+    "importHelpers": true,
     "lib": [
       "dom",
-      "es2015",
-      "es2018",
-      "es2015.collection"
+      "es2018"
     ],
-    "downlevelIteration": true,
     "module": "es2015",
     "moduleResolution": "node",
     "target": "es2015",
