@@ -26,7 +26,7 @@ export class ProcessPool {
     <T, R>(inputs: T[]): Promise<R[]>;
   } = promisify(<T, R>(inputs: T[], cb: (err: any, outputs: R[]) => void) => {
     const n = inputs.length;
-    const outputs = new Array(n);
+    const outputs = new Array<R>(n);
     let offset = 0;
     let pending = 0;
     for (const worker of this.workers) {
@@ -36,7 +36,7 @@ export class ProcessPool {
       offset = end;
       const xs = inputs.slice(start, end);
       pending++;
-      worker.process.once('message', ys => {
+      worker.process.once('message', (ys: R[]) => {
         for (let o = start, c = 0; o < end; o++, c++) {
           outputs[o] = ys[c];
         }
