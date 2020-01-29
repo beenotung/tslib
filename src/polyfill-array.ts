@@ -9,6 +9,7 @@ if (!Array.isArray) {
   };
 }
 
+// tslint:disable
 export interface PolyfillArray<T> extends Array<T> {
   /** extended methods */
   peek(callbackfn: (value: number, index: number, array: this) => void, thisArg?: any): this;
@@ -81,10 +82,12 @@ export interface PolyfillArrayConstructor extends ArrayConstructor {
 
   of<T>(...items: T[]): PolyfillArray<T>;
 }
+// tslint:enable
 
-let prototype = Object.assign({
+const prototype = Object.assign({
   peek: function peek(callbackfn: (value: number, index: number, array: PolyfillArray<any>) => void, thisArg?: any): PolyfillArray<any> {
-    let self: PolyfillArray<any> = thisArg || this;
+    // tslint:disable-next-line:no-invalid-this
+    const self: PolyfillArray<any> = thisArg || this;
     self.forEach((value, index, array) => {
       callbackfn(value, index, array as PolyfillArray<any>);
     }, self);
