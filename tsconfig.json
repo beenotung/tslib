@@ -14,9 +14,9 @@
       "dom",
       "es2018"
     ],
-    "module": "es2015",
+    "module": "commonjs",
     "moduleResolution": "node",
-    "target": "es2015",
+    "target": "es5",
     "outDir": "dist"
   },
   "include": [
