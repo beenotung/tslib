@@ -36,10 +36,10 @@ let delays = keys.map(() => delay * Math.random());
 
 console.log('benchmarking data-processor pipeline');
 catchMain(
-  batchProcess({
+  batchProcess<number, { key: number, value: string }>({
     maxConcurrent: 1000 * 100,
     keys,
-    loader: key => later(delays[key]).then(() => {
+    loader: (key: number) => later(delays[key]).then(() => {
       return ({
         key,
         value: key.toString().repeat(10000),
