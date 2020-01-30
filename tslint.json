@@ -2,9 +2,11 @@
   "extends": [
     "tslint:recommended",
     "tslint-eslint-rules",
+    "tslint-etc",
     "tslint-config-prettier"
   ],
   "rules": {
+    "no-unused-declaration": true,
     "array-type": [
       true,
       "array-simple"
