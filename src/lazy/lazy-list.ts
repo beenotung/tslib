@@ -57,6 +57,7 @@ export class LazyList<A> extends Lazy<A> {
   }
 }
 
+// eslint-disable-next-line no-redeclare
 export namespace LazyList {
   export const headSymbol = Symbol.for('head');
   export const empty = <A>(): LazyList<A> => new LazyList<A>();

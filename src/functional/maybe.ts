@@ -10,6 +10,7 @@ export const MaybeUnit: Unit<MaybeMonad<any>, any> = createUnit<
   any
 >((monad, value) => {
   if (!isDefined(value)) {
+    // eslint-disable-next-line @typescript-eslint/unbound-method
     monad.bind = _ => monad;
   }
 });

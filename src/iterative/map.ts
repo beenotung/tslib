@@ -30,13 +30,13 @@ export namespace maps {
     return xs.map(f);
   }
 
-  export function object<A, B>(x: A, f: ObjectMapper<A, B>): B {
+  export function object<A extends object, B>(x: A, f: ObjectMapper<A, B>): B {
     const y = new (x as any).constructor();
-    /* tslint:disable:forin */
     for (const k in x) {
-      y[k] = f(x[k], k, x);
+      if (x.hasOwnProperty(k)) {
+        y[k] = f(x[k], k, x);
+      }
     }
-    /* tslint:enable:forin */
     return y;
   }
 
