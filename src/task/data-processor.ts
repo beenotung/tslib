@@ -28,9 +28,7 @@ export async function batchProcess<K, D>(args: {
   return Promise.all(keys.map(key => loader(key))).then(data => data.forEach(datum => processor(datum)));
   */
   return new Promise<void>((resolve, reject) => {
-    let nLoading = 0;
     const fail = (e: any) => {
-      nLoading = Number.MAX_SAFE_INTEGER;
       reject(e);
     };
     let nextLoadIndex = 0;

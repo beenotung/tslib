@@ -53,7 +53,14 @@ module.exports = {
         "@typescript-eslint/no-misused-new": "error",
         "@typescript-eslint/no-namespace": "off",
         "@typescript-eslint/no-parameter-properties": "off",
-        "@typescript-eslint/no-use-before-define": "error",
+        "@typescript-eslint/no-use-before-define": ["error", {
+            "functions": false,
+            "classes": false,
+            "typedefs": false,
+        }],
+        "@typescript-eslint/no-unused-vars": ["error", {
+            "argsIgnorePattern": "^_"
+        }],
         "@typescript-eslint/no-var-requires": "error",
         "@typescript-eslint/prefer-for-of": "error",
         "@typescript-eslint/prefer-function-type": "error",
@@ -181,6 +188,7 @@ module.exports = {
         ],
         "prefer-arrow/prefer-arrow-functions": "off",
         "prefer-const": "error",
+        "prefer-rest-params": "off",
         "quote-props": "off",
         "radix": "error",
         "space-before-function-paren": "off",

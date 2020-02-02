@@ -21,12 +21,12 @@ export namespace foreachs {
     xs.forEach(f);
   }
 
-  export function object<A>(x: A, f: ObjectConsumer<A>): void {
-    /* tslint:disable:forin */
+  export function object<A extends object>(x: A, f: ObjectConsumer<A>): void {
     for (const k in x) {
-      f(x[k], k, x);
+      if (x.hasOwnProperty(k)) {
+        f(x[k], k, x);
+      }
     }
-    /* tslint:enable:forin */
   }
 
   export function set<A>(xs: Set<A>, f: SetConsumer<A>): void {
