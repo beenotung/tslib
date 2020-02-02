@@ -2,7 +2,7 @@ import { Subject } from 'rxjs/Subject';
 import { remove } from '../array';
 import { createDefer, Defer } from '../async/defer';
 
-/**@deprecated*/
+/** @deprecated*/
 export class ProgressiveTask<A> {
   public readonly f: () => Promise<A>;
   public res?: A;
@@ -42,7 +42,7 @@ export const defaultProgressiveTaskPoolOptions: {
 
 export type ProgressiveTaskPoolMode = 'FIFO' | 'FILO';
 
-/**@deprecated*/
+/** @deprecated*/
 export class ProgressiveTaskPool<A> {
   public readonly pendingTasks: Array<ProgressiveTask<A>> = [];
   public readonly runningTasks: Array<ProgressiveTask<A>> = [];

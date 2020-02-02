@@ -46,11 +46,12 @@ export class Lazy<A> {
   }
 
   public quotRem(b: number) {
-    return this.map((a: any) => {
-      /* tslint:disable no-bitwise */
-      return [(a / b) | 0, a % b];
+    return this.map(
+      (a: any) =>
+        /* tslint:disable no-bitwise */
+        [(a / b) | 0, a % b],
       /* tslint:enable no-bitwise */
-    });
+    );
   }
 
   public and(b: boolean | any) {
