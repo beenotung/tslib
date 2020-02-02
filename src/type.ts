@@ -25,7 +25,7 @@ export type ObjectType =
 
 export function getObjectType(o: any): ObjectType {
   const type = Object.prototype.toString.call(o);
-  const match = type.match(/^\[object (.*)]$/);
+  const match = /^\[object (.*)]$/.exec(type);
   if (match) {
     const res = match[1];
     if (res) {

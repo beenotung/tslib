@@ -46,10 +46,10 @@ export function htmlCollectionToArray(es: HTMLCollection): Element[] {
 }
 
 /** @deprecated lost type hint */
-export let qa = (x: string, parent = document.body) =>
+export const qa = (x: string, parent = document.body) =>
   parent.querySelectorAll(x);
 /** @deprecated lost type hint */
-export let q = (x: string, parent = document.body) => parent.querySelector(x);
+export const q = (x: string, parent = document.body) => parent.querySelector(x);
 
 export function csv_to_table_element(rows: string[][]): HTMLTableElement {
   /* initialize */

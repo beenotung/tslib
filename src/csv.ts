@@ -83,11 +83,7 @@ export function to_csv(
       } else {
         res.push(separator);
       }
-      if (
-        col &&
-        col.indexOf(delimiter) === -1 &&
-        col.indexOf(separator) === -1
-      ) {
+      if (col && !col.includes(delimiter) && !col.includes(separator)) {
         res.push(col);
       } else {
         res.push(delimiter);

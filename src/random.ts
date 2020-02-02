@@ -83,7 +83,7 @@ export namespace Random {
    * */
   export function nextEnum<E>(e: Enum<E>): E {
     const key = Random.element(enum_keys<E>(e));
-    return (e as any)[key as any] as any;
+    return (e as any)[key as any];
   }
 
   export function nextEnumKey<E>(e: Enum<E>): string & keyof E {

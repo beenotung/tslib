@@ -10,7 +10,7 @@ export function calcPhi() {
 }
 
 let phi: number;
-export let math: { phi: number } = {
+export const math: { phi: number } = {
   get phi(): number {
     return phi || (phi = calcPhi());
   },

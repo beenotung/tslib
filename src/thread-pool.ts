@@ -101,6 +101,7 @@ export class ThreadPool {
   }
 
   close() {
+    // eslint-disable-next-line @typescript-eslint/no-misused-promises
     this.workers.forEach(worker => worker.worker.terminate());
   }
 }

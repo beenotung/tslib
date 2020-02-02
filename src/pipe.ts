@@ -25,13 +25,13 @@ export const pipe = curry(
     for (const p of ps) {
       if (p.length === 2) {
         // has extra args
-        acc = (((p[0] as (...xs: A[]) => B)(acc, ...p[1]) as B) as any) as A;
+        acc = ((p[0] as (...xs: A[]) => B)(acc, ...p[1]) as any) as A;
       } else {
         // no extra args
-        acc = ((p[0](acc) as B) as any) as A;
+        acc = (p[0](acc) as any) as A;
       }
     }
-    return ((acc as A) as any) as B;
+    return (acc as any) as B;
   },
 );
 

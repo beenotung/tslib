@@ -23,7 +23,9 @@ module.exports = {
     "rules": {
         "camelcase": "off",
         "@typescript-eslint/camelcase": "off",
+        "@typescript-eslint/interface-name-prefix": "off",
         "prefer-rest-params": "off",
+        "prefer-spread": "off",
         "@typescript-eslint/array-type": [
             "error",
             {
@@ -31,6 +33,7 @@ module.exports = {
                 "readonly": "array-simple",
             },
         ],
+        "@typescript-eslint/no-inferrable-types": "off",
         "@typescript-eslint/no-namespace": "off",
         "@typescript-eslint/no-use-before-define": ["error", {
             "functions": false,
@@ -42,6 +45,9 @@ module.exports = {
         }],
         "@typescript-eslint/explicit-function-return-type": "off",
         "@typescript-eslint/no-explicit-any": "off",
+        "@typescript-eslint/no-this-alias": "off",
+        'linebreak-style': "off",
+        'operator-linebreak': "off",
         "@typescript-eslint/tslint/config": [
             "error",
             {

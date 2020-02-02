@@ -14,7 +14,7 @@ export function wrapFunction<F extends Function>(
   /* tslint:enable:ban-types */
   const args = mapArray(new Array(n), (x, i) => 'a' + i).join(',');
   /* tslint:disable */
-  let newF: F = undefined as any;
+  const newF: F = undefined as any;
   eval(
     `newF=function ${name}(${args}){return ${f_name}.apply(null,arguments);}`,
   );

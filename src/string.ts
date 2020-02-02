@@ -9,7 +9,7 @@ export function str_contains(
   if (ignore_case) {
     return str_contains(pattern.toLowerCase(), target.toLowerCase());
   }
-  return target.indexOf(pattern) !== -1;
+  return target.includes(pattern);
 }
 
 export function str_contains_any(

@@ -7,9 +7,9 @@ export namespace search {
     caseInsensitive = true,
   ) {
     if (caseInsensitive) {
-      return base.toLocaleLowerCase().indexOf(query.toLocaleLowerCase()) !== -1;
+      return base.toLocaleLowerCase().includes(query.toLocaleLowerCase());
     } else {
-      return base.indexOf(query) !== -1;
+      return base.includes(query);
     }
   }
 
@@ -42,7 +42,7 @@ export namespace search {
   }
 
   /**@deprecated*/
-  export let object_contains = object_contain_str;
+  export const object_contains = object_contain_str;
 
   export function partialMatch<T>(query: Partial<T>, target: T): boolean {
     const queryType = getObjectType(query);
@@ -60,8 +60,8 @@ export namespace search {
       case 'String':
         return query === target;
       case 'Array':
-        return ((target as any) as any[]).some(
-          t => ((query as any) as any[]).indexOf(t) !== -1,
+        return ((target as any) as any[]).some(t =>
+          ((query as any) as any[]).includes(t),
         );
       case 'Set':
         return partialMatch(

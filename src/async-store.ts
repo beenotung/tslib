@@ -85,23 +85,21 @@ export class AsyncStore {
       hasCancel: false,
       hasDone: false,
     };
-    const p = new Promise<void>((resolve, reject) => {
-      writeFile(tmpfile, value)
-        .then(() => {
-          if (status.hasCancel) {
-            return unlink(tmpfile);
-          } else {
-            return rename(tmpfile, filepath);
-          }
-        })
-        .then(() => {
-          status.hasDone = true;
-        })
-        .catch(e => {
-          status.hasDone = true;
-          return Promise.reject(e);
-        });
-    });
+    const p: Promise<void> = writeFile(tmpfile, value)
+      .then(() => {
+        if (status.hasCancel) {
+          return unlink(tmpfile);
+        } else {
+          return rename(tmpfile, filepath);
+        }
+      })
+      .then(() => {
+        status.hasDone = true;
+      })
+      .catch(e => {
+        status.hasDone = true;
+        return Promise.reject(e);
+      });
     const newTask = Object.assign(p, status, {
       cancel: () => {
         status.hasCancel = true;

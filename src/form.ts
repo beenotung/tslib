@@ -52,7 +52,7 @@ export function postMultipartFormData<T>(
               data: await res.json(),
             };
           }
-          if (contentType.indexOf('form') !== -1) {
+          if (contentType.includes('form')) {
             return {
               status: res.status,
               statusText: res.statusText,

@@ -28,7 +28,7 @@ export const deepProp = curry(
     if (o[name] !== void 0) {
       return o[name];
     } else {
-      return (name as string).split('.').reduce((acc, c) => acc[c], o as any);
+      return (name as string).split('.').reduce((acc, c) => acc[c], o);
     }
   },
 );

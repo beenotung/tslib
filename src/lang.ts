@@ -25,7 +25,7 @@ export function hasProp<A>(k: ObjKey, o: Obj<A>): boolean {
     return true;
   }
   if (Array.isArray(o)) {
-    return (o as any[]).indexOf(k) !== -1;
+    return (o as any[]).includes(k);
   }
   return Object.keys(o).filter(x => x === k).length !== 0;
 }

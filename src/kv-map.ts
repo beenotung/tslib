@@ -103,7 +103,7 @@ export class KVMap<K, V> /* implements Map<K, V> */ {
     this.kvMap.set(key, value);
     if (this.vkMap.has(value)) {
       const keys = this.vkMap.get(value) as K[];
-      if (keys.indexOf(key) === -1) {
+      if (!keys.includes(key)) {
         keys.push(key);
       }
     } else {
