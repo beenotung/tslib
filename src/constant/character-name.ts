@@ -1,4 +1,4 @@
-export let allNames = [
+export const allNames = [
   'Alice',
   'Bob',
   'Charlie',
@@ -20,7 +20,7 @@ export let allNames = [
   'Wendy',
 ];
 
-export let names = {
+export const names = {
   Alice: 'Alice',
   Bob: 'Bob',
   Charlie: 'Charlie',

@@ -13,16 +13,24 @@ export interface ParallelArray<A> {
 
 export namespace ParallelArray {
   export function wrap<A>(xs: A[]): ParallelArray<A> {
-    const res: ParallelArray<A> = {} as any;
-    res.map = f => wrapPromise(parallel_map(xs, f));
-    res.unwrap = () => Promise.resolve(xs);
-    return res;
+    return {
+      map<B>(f: (a: A) => Promise<B>): ParallelArray<B> {
+        return wrapPromise(parallel_map(xs, f));
+      },
+      unwrap(): Promise<A[]> {
+        return Promise.resolve(xs);
+      },
+    };
   }
 
   export function wrapPromise<A>(xs: Promise<A[]>): ParallelArray<A> {
-    const res: ParallelArray<A> = {} as any;
-    res.map = f => wrapPromise(xs.then(xs => parallel_map(xs, f)));
-    res.unwrap = () => xs;
-    return res;
+    return {
+      map<B>(f: (a: A) => Promise<B>): ParallelArray<B> {
+        return wrapPromise(xs.then(xs => parallel_map(xs, f)));
+      },
+      unwrap(): Promise<A[]> {
+        return xs;
+      },
+    };
   }
 }

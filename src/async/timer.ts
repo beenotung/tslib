@@ -1,6 +1,6 @@
-/* tslint:disable no-empty */
-function noop() {}
-/* tslint:enable no-empty */
+function noop() {
+  // placeholder, do not do anything
+}
 
 export function clearAllTimer() {
   let i = setInterval(noop);

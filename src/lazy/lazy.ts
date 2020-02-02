@@ -11,6 +11,7 @@ export class Lazy<A> {
   public value(): A {
     const res = this.f();
     delete this.f;
+    // eslint-disable-next-line @typescript-eslint/unbound-method
     this.value = () => res;
     return res;
   }
@@ -41,16 +42,21 @@ export class Lazy<A> {
 
   public quot(b: number) {
     /* tslint:disable no-bitwise */
+    /* eslint-disable no-bitwise */
     return this.map(a => ((a as any) / b) | 0);
     /* tslint:enable no-bitwise */
+    /* eslint-enable no-bitwise */
   }
 
   public quotRem(b: number) {
-    return this.map((a: any) => {
-      /* tslint:disable no-bitwise */
-      return [(a / b) | 0, a % b];
+    return this.map(
+      (a: any) =>
+        /* tslint:disable no-bitwise */
+        /* eslint-disable no-bitwise */
+        [(a / b) | 0, a % b],
       /* tslint:enable no-bitwise */
-    });
+      /* eslint-enable no-bitwise */
+    );
   }
 
   public and(b: boolean | any) {

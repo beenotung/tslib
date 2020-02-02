@@ -38,5 +38,6 @@ export class CheckedPromise<T> implements Promise<T> {
 }
 
 export function checkPromise<T>(p: Promise<T>) {
+  // eslint-disable-next-line @typescript-eslint/no-misused-promises
   return new CheckedPromise((resolve, reject) => p.then(resolve).catch(reject));
 }
