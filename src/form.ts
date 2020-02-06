@@ -1,5 +1,5 @@
 import axios from 'axios';
-import * as FormData from 'form-data';
+import FormData from 'form-data';
 import { fetch } from './fetch';
 import { JsonObject } from './json';
 

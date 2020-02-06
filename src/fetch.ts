@@ -1,3 +1,3 @@
-import * as fetch_ from 'isomorphic-fetch';
+import fetch_ from 'isomorphic-fetch';
 
 export let fetch: Window['fetch'] = fetch_;
