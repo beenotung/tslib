@@ -132,7 +132,7 @@ export async function downloadFile(
 }
 
 /**@deprecated*/
-export let saveFile = downloadFile;
+export const saveFile = downloadFile;
 
 export interface SelectFileOptions {
   multiple?: boolean;

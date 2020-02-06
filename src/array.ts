@@ -36,8 +36,9 @@ export function takeAll<A>(xs: A[]): A[] {
   return res;
 }
 
+/** @deprecated to native impl or polyfill instead */
 export function includes<A>(x: A, xs: A[]): boolean {
-  return xs.indexOf(x) !== -1;
+  return xs.includes(x);
 }
 
 /**
@@ -92,8 +93,9 @@ export function fromFileList(files: FileList): File[] {
   return mapI(i => files.item(i) as File, files.length);
 }
 
+/** @deprecated to native impl or polyfill instead */
 export function array_contains<A>(xs: A[], x: A) {
-  return xs.indexOf(x) !== -1;
+  return xs.includes(x);
 }
 
 export function insert<A>(xs: A[], index: number, x: A): void {
@@ -124,7 +126,7 @@ export function insert_sorted<A>(
   xs.push(x);
 }
 
-export let defaultComparator: Comparator<any> = <A extends number | string>(
+export const defaultComparator: Comparator<any> = <A extends number | string>(
   a: A,
   b: A,
 ): CompareResult => {
@@ -158,14 +160,14 @@ export function insertSortBy<A>(
 }
 
 /**@deprecated*/
-export let sortBy = insertSortBy;
+export const sortBy = insertSortBy;
 
 /**
  * @return in-place sorted, original array
  * */
 export function sort<T>(
   xs: T[],
-  comparator: Comparator<T> = defaultComparator as Comparator<any>,
+  comparator: Comparator<T> = defaultComparator,
 ): T[] {
   return xs.sort(comparator);
 }
@@ -281,7 +283,7 @@ export function range(start: number, end: number, step = 1): number[] {
 }
 
 export function filterByKey<A>(src: A[], key: string, keys: string[]): A[] {
-  return src.filter(x => keys.indexOf((x as any)[key]) !== -1);
+  return src.filter(x => keys.includes((x as any)[key]));
 }
 
 export function toArray<A>(xs: ArrayLike<A>): A[] {

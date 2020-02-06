@@ -25,7 +25,7 @@ export function toString(o: any): string {
     return dateFormatter(o);
   }
   if (o instanceof Set) {
-    return toString(Array.from(o as Set<any>));
+    return toString(Array.from(o));
   }
   return JSON.stringify(o, undefined, 2);
 }
@@ -42,9 +42,7 @@ export function displayJSON(o: any, mode: 'raw' | 'table' = 'table'): string {
       if (Array.isArray(o)) {
         return (
           '<ol>' +
-          (o as any[])
-            .map(x => '<li>' + displayJSON(x, mode) + '</li>')
-            .join('') +
+          o.map(x => '<li>' + displayJSON(x, mode) + '</li>').join('') +
           '</ol>'
         );
       }
@@ -66,7 +64,7 @@ export function displayJSON(o: any, mode: 'raw' | 'table' = 'table'): string {
       }
       break;
     case 'string':
-      const s = o as string;
+      const s = o;
       return s
         .split('\r')
         .join('')

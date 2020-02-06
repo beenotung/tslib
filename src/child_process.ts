@@ -5,7 +5,7 @@ import {
 } from 'child_process';
 import * as util from 'util';
 
-export let exec = util.promisify(_exec);
+export const exec = util.promisify(_exec);
 
 export function spawn(options: {
   cmd: string;

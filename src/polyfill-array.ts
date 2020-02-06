@@ -15,9 +15,9 @@ export interface PolyfillArray<T> extends Array<T> {
   peek(callbackfn: (value: number, index: number, array: this) => void, thisArg?: any): this;
 
   /** from es5 */
-  concat(...items: ConcatArray<T>[]): PolyfillArray<T>;
+  concat(...items: Array<ConcatArray<T>>): PolyfillArray<T>;
 
-  concat(...items: (T | ConcatArray<T>)[]): PolyfillArray<T>;
+  concat(...items: Array<T | ConcatArray<T>>): PolyfillArray<T>;
 
   reverse(): PolyfillArray<T>;
 
@@ -89,11 +89,11 @@ const prototype = Object.assign({
     // tslint:disable-next-line:no-invalid-this
     const self: PolyfillArray<any> = thisArg || this;
     self.forEach((value, index, array) => {
-      callbackfn(value, index, array as PolyfillArray<any>);
+      callbackfn(value, index, array);
     }, self);
     return self;
   },
 }, Array.prototype);
-export let PolyfillArray: PolyfillArrayConstructor = Array as any;
+export const PolyfillArray: PolyfillArrayConstructor = Array as any;
 PolyfillArray.fromArray = PolyfillArray.from;
 Object.assign(PolyfillArray.prototype, prototype);

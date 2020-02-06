@@ -178,7 +178,7 @@ export function resizeImage(
   const scale = getNewScale(image, maxWidth, maxHeight);
   const scaledWidth = image.width / scale;
   const scaledHeight = image.height / scale;
-  const canvas = document.createElement('canvas') as HTMLCanvasElement;
+  const canvas = document.createElement('canvas');
   canvas.width = scaledWidth;
   canvas.height = scaledHeight;
   const context = canvas.getContext('2d');
@@ -200,7 +200,7 @@ export function transformCentered(
   flipXY: boolean,
   f: (ctx: CanvasRenderingContext2D) => void,
 ) {
-  const canvas = document.createElement('canvas') as HTMLCanvasElement;
+  const canvas = document.createElement('canvas');
   canvas.width = flipXY ? image.height : image.width;
   canvas.height = flipXY ? image.width : image.height;
   const ctx = canvas.getContext('2d');
@@ -250,7 +250,7 @@ export function compressImage(
   mimeType?: string,
   quality = 0.8,
 ): base64 {
-  const canvas = document.createElement('canvas') as HTMLCanvasElement;
+  const canvas = document.createElement('canvas');
   canvas.width = image.width;
   canvas.height = image.height;
   const ctx = canvas.getContext('2d');

@@ -1,11 +1,13 @@
 import { ensureNumber, ensureString } from './strict-type';
 
 /* tslint:disable:ban-types */
+/* eslint-disable @typescript-eslint/ban-types */
 export type Enum<E> =
   | ({ [value: number]: keyof E } & { [key: string]: E })
   | Object;
 
 /* tslint:enable:ban-types */
+/* eslint-enable @typescript-eslint/ban-types */
 
 function is_enum_key(x: any) {
   /* tslint:disable */
@@ -29,7 +31,7 @@ export function enum_s2i<E>(e: E, s: E[keyof E]): keyof E {
   if (res === void 0) {
     throw new TypeError(`Invalid key '${s}' in enum`);
   }
-  return ensureNumber(res as any);
+  return ensureNumber(res);
 }
 
 export function enum_next_i<E>(e: E, i: number & keyof E): keyof E {
@@ -70,7 +72,7 @@ export function enum_indices<E>(e: Enum<E>): Array<keyof E> {
  *    stringified enum -> string values
  * */
 export function enum_values<E>(e: Enum<E>): E[] {
-  return enum_keys(e).map(s => (e as any)[s as any]) as any[];
+  return enum_keys(e).map(s => (e as any)[s as any]);
 }
 
 export function enum_last_i<E>(e: Enum<E>): E & number {

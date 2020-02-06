@@ -14,9 +14,9 @@ export async function promisify<A>(
 }
 
 export interface PromiseCallback<A> {
-  (err: any, res: A): any;
-
   promise: Promise<A>;
+
+  (err: any, res: A): any;
 }
 
 export function genPromiseCallback<A>(): PromiseCallback<A> {

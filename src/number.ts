@@ -6,4 +6,4 @@ import { compare } from './compare';
 /**@deprecated*/
 export { CompareResult } from './compare';
 /**@deprecated*/
-export let compare_number = compare;
+export const compare_number = compare;
