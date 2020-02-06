@@ -26,9 +26,11 @@ export function wrapConsoleLog(filename = genLogFilename()) {
   // Or 'w' to truncate the file every time the process starts.
   const logStdout = process.stdout;
 
+  // eslint-disable @typescript-eslint/unbound-method
   console.log = function() {
     logFile.write(util.format.apply(null, arguments) + '\n');
     logStdout.write(util.format.apply(null, arguments) + '\n');
   };
   console.error = console.log;
+  // eslint-enable @typescript-eslint/unbound-method
 }

@@ -18,6 +18,7 @@ export function spawn(options: {
   let { cmd, args } = options;
   if (!args) {
     args = cmd.split(' ');
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     cmd = args.shift()!;
   }
   return new Promise((resolve, reject) => {

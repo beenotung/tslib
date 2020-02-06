@@ -61,10 +61,10 @@ export const flip = curry(
 /**
  * lift :: a -> b -> a
  * */
-export const lift = curry(<A, B>(a: A, b?: B): A => a);
+export const lift = curry(<A, B>(a: A, _b?: B): A => a);
 export const lift_noarg = curry(<A>(a: A) => (): A => a);
 export const liftError = curry(
-  <E extends Error, A, B>(e: E, b: B): A => {
+  <E extends Error, A, B>(e: E, _b: B): A => {
     throw e;
   },
 );
@@ -115,7 +115,7 @@ export const just = curry(<A>(x: A) => [x]);
 /**
  * none :: * -> []
  * */
-export const none = curry(<A>(x: A): any[] => []);
+export const none = curry(<A>(_x: A): any[] => []);
 export const eq = curry(<A>(a: A, b: A): boolean => b === a);
 export const neq = curry(<A>(a: A, b: A): boolean => b !== a);
 export const gt = curry(

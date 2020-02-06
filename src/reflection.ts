@@ -1,5 +1,6 @@
 import { mapArray } from './array';
 
+// eslint-disable-next-line prefer-const
 let f_name: string;
 
 /* tslint:disable:ban-types */

@@ -59,6 +59,7 @@ export function filesForEach(
     files.forEach(f);
   } else {
     for (let i = 0; i < files.length; i++) {
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
       f(files.item(i)!, i, files);
     }
   }
@@ -152,7 +153,7 @@ export function selectFile(options: SelectFileOptions = {}): Promise<File[]> {
       (input as any).capture = true;
     }
     // document.body.appendChild(input);
-    input.onchange = e => {
+    input.onchange = _event => {
       if (!input.files) {
         reject();
         return;

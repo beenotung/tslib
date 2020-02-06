@@ -3,6 +3,9 @@
  * Updated by beenotung on 29/1/19.
  * Date format: d/m/y
  */
+
+/* eslint-disable @typescript-eslint/unbound-method */
+
 if (!Array.isArray) {
   Array.isArray = function isArray(arg: any): arg is any[] {
     return Object.prototype.toString.call(arg) === '[object Array]';
@@ -97,3 +100,5 @@ const prototype = Object.assign({
 export const PolyfillArray: PolyfillArrayConstructor = Array as any;
 PolyfillArray.fromArray = PolyfillArray.from;
 Object.assign(PolyfillArray.prototype, prototype);
+
+/* eslint-enable @typescript-eslint/unbound-method */

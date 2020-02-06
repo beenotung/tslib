@@ -46,7 +46,7 @@ export function left<L, R>(l: L): Either<L, R> {
     getRight: () => {
       throw new TypeError('get right on left Either');
     },
-    mmap: <L2, R2>(fl: (l: L) => L2, fr: (r: R) => R2): Either<L2, R2> =>
+    mmap: <L2, R2>(fl: (l: L) => L2, _fr: (r: R) => R2): Either<L2, R2> =>
       left<L2, R2>(fl(l)),
     mapLeft: <L2>(f: (l: L) => L2) => left<L2, R>(f(l)),
     mapRight: <R2>(_f: (r: R) => R2) =>

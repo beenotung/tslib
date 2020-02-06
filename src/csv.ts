@@ -125,6 +125,7 @@ export function csv_to_json(rows: string[][], titles?: string[]) {
   return rows.map(cols => {
     const res: { [title: string]: string } = {};
     for (let i = 0; i < n; i++) {
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
       res[titles![i]] = cols[i];
     }
     return res;

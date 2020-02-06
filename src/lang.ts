@@ -361,14 +361,8 @@ export function applyIf<A, B>(
   }
 }
 
-/* tslint:disable no-empty */
-export function gen_noop<A>(): (a: A) => void {
-  return () => {};
-}
-
-export const noop: (...args: any[]) => void = () => {};
-
-/* tslint:enable no-empty */
+/**@deprecated moved to noop.ts*/
+export { gen_noop, noop } from './noop';
 
 export function cast(o: any): any {
   return o;

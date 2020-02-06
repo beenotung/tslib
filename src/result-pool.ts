@@ -55,7 +55,7 @@ export class NonVoidResultPool {
           this.check();
           return x;
         },
-        e => {
+        () => {
           this.running--;
           this.check();
         },
@@ -66,6 +66,7 @@ export class NonVoidResultPool {
 
   private queue<T>(f: () => Result<T>): Result<T> {
     return new Promise<T>((resolve, reject) => {
+      // eslint-disable-next-line @typescript-eslint/no-misused-promises
       this.fs.push(() => {
         this.running++;
         return thenF(

@@ -20,6 +20,36 @@ export interface Maybe<A> {
   toEither<E>(e: E): Either<E, A>;
 }
 
+function fromNullable<A>(a: A): Maybe<A> {
+  if (isDefined(a)) {
+    return {
+      get: () => a,
+      isJust: true,
+      isNothing: false,
+      map: <B>(f: (a: A) => B): Maybe<B> => fromNullable(f(a)),
+      withDefault: _ => fromNullable(a),
+      then: (f: (a: A) => void) => {
+        f(a);
+        return fromNullable(a);
+      },
+      otherwise: _ => fromNullable(a),
+      toEither: <E>(_e: E): Either<E, A> => right<E, A>(a),
+    };
+  } else {
+    return Nothing;
+  }
+}
+
+function or<A>(a: Maybe<A>, b: Maybe<A>): Maybe<A> {
+  return a.isJust ? a : b.isJust ? b : Nothing;
+}
+
+function and<A, B>(a: Maybe<A>, b: Maybe<B>): Maybe<[A, B]> {
+  return a.isJust && b.isJust
+    ? fromNullable<[A, B]>([a.get(), b.get()])
+    : Nothing;
+}
+
 export const Nothing: Maybe<any> = {
   get() {
     throw new Error('Cannot get value from Nothing.');
@@ -27,7 +57,7 @@ export const Nothing: Maybe<any> = {
   isJust: false,
   isNothing: true,
   map: () => Nothing,
-  withDefault: a => Maybe.fromNullable(a),
+  withDefault: a => fromNullable(a),
   then: () => {
     return Nothing;
   },
@@ -37,34 +67,10 @@ export const Nothing: Maybe<any> = {
   },
   toEither: <E>(e: E): Either<E, any> => left(e),
 };
-export namespace Maybe {
-  export function fromNullable<A>(a: A): Maybe<A> {
-    if (isDefined(a)) {
-      return {
-        get: () => a,
-        isJust: true,
-        isNothing: false,
-        map: <B>(f: (a: A) => B): Maybe<B> => fromNullable(f(a)),
-        withDefault: _ => fromNullable(a),
-        then: (f: (a: A) => void) => {
-          f(a);
-          return fromNullable(a);
-        },
-        otherwise: _ => fromNullable(a),
-        toEither: <E>(e: E): Either<E, A> => right<E, A>(a),
-      };
-    } else {
-      return Nothing;
-    }
-  }
 
-  export function or<A>(a: Maybe<A>, b: Maybe<A>): Maybe<A> {
-    return a.isJust ? a : b.isJust ? b : Nothing;
-  }
-
-  export function and<A, B>(a: Maybe<A>, b: Maybe<B>): Maybe<[A, B]> {
-    return a.isJust && b.isJust
-      ? fromNullable<[A, B]>([a.get(), b.get()])
-      : Nothing;
-  }
-}
+export const Maybe = {
+  fromNullable,
+  or,
+  and,
+  Nothing,
+};

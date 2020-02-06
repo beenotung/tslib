@@ -20,7 +20,11 @@ module.exports = {
         "@typescript-eslint/tslint",
         "eslint-plugin-import"
     ],
+    "ignorePatterns": [
+        "*.macro.ts",
+    ],
     "rules": {
+        "@typescript-eslint/no-var-requires": "off",
         "camelcase": "off",
         "@typescript-eslint/camelcase": "off",
         "@typescript-eslint/interface-name-prefix": "off",
@@ -39,6 +43,7 @@ module.exports = {
             "functions": false,
             "classes": false,
             "typedefs": false,
+            "variables": false,
         }],
         "@typescript-eslint/no-unused-vars": ["error", {
             "argsIgnorePattern": "^_",
