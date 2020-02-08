@@ -194,6 +194,19 @@ export function format_2_digit(x: number): string {
   return x.toString();
 }
 
+/**
+ * format: YYYYMMDD-HHMM
+ * */
+export function format_time_code(time: number, separator = '-') {
+  const t = new Date(time);
+  const y = t.getFullYear();
+  const m = format_2_digit(t.getMonth() + 1);
+  const d = format_2_digit(t.getDate());
+  const H = format_2_digit(t.getHours());
+  const M = format_2_digit(t.getMinutes());
+  return y + m + d + separator + H + M;
+}
+
 export function format_n_digit(x: number, n: number, prefix = '0'): string {
   let s = Math.abs(x).toString();
   if (x < 0) {
