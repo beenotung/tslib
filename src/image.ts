@@ -154,7 +154,7 @@ export async function resizeBase64WithRatio(
 // reference: image-file-to-base64-exif
 
 function getNewScale(
-  image: HTMLImageElement,
+  image: { width: number; height: number },
   maxWidth: number,
   maxHeight: number,
 ) {
