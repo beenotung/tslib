@@ -5,9 +5,11 @@ FHD 1920x1080
  HD 1280x720
 VGA  640x480
 
-iPhone5  320x568
-iPhone6  375x667
-GalaxyS5 360x640
+iPhone5     320x568
+iPhone6     375x667
+iPhoneX     375x812
+GalaxyS5    360x640
+GalaxyNote9 414x846
 `;
  const code =  sizes
     .split('\n')

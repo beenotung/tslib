@@ -10,4 +10,6 @@ export const HD: Dimension = { width: 1280, height: 720 };
 export const VGA: Dimension = { width: 640, height: 480 };
 export const iPhone5: Dimension = { width: 320, height: 568 };
 export const iPhone6: Dimension = { width: 375, height: 667 };
+export const iPhoneX: Dimension = { width: 375, height: 812 };
 export const GalaxyS5: Dimension = { width: 360, height: 640 };
+export const GalaxyNote9: Dimension = { width: 414, height: 846 };
