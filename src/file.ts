@@ -171,12 +171,12 @@ export function selectFile(options: SelectFileOptions = {}): Promise<File[]> {
     // document.body.appendChild(input);
     input.onchange = e => {
       if (!input.files) {
-        reject();
+        reject('user canceled');
         return;
       }
       const nFile = input.files.length;
       if (nFile < 1) {
-        reject();
+        reject('no files selected');
       } else {
         const files: File[] = new Array(nFile);
         for (let i = 0; i < nFile; i++) {
