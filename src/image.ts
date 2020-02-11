@@ -1,4 +1,5 @@
 import { enum_only_string } from './enum';
+import { KB } from './size';
 
 /**
  * reference : https://stackoverflow.com/questions/20958078/resize-a-base-64-image-in-javascript-without-using-canvas
@@ -174,7 +175,7 @@ export function resizeImage(
   maxHeight = image.height,
   mimeType?: string,
   quality?: number,
-) {
+): base64 {
   const scale = getNewScale(image, maxWidth, maxHeight);
   const scaledWidth = image.width / scale;
   const scaledHeight = image.height / scale;
@@ -291,7 +292,7 @@ function populateCompressArgs(args: {
   let maximumSize = args.maximumSize;
   let quality = args.quality;
   if (!maximumSize && !quality) {
-    maximumSize = 1024 * 768; // 768KB
+    maximumSize = 768 * KB; // 768KB
     quality = 0.8;
   }
   return {
