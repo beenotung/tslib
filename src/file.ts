@@ -160,14 +160,14 @@ function captureMode(capture: CaptureOption): 'album' | 'camera' | 'both' {
 
 export function selectFile(options: SelectFileOptions = {}): Promise<File[]> {
   return new Promise<File[]>((resolve, reject) => {
+    if (!options.capture) {
+      delete options.capture;
+    }
     const input = document.createElement('input');
     input.type = 'file';
     Object.keys(options).forEach(
       x => ((input as any)[x] = (options as any)[x]),
     );
-    if (!options.capture) {
-      delete options.capture;
-    }
     // document.body.appendChild(input);
     input.onchange = e => {
       if (!input.files) {
