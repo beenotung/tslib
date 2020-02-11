@@ -227,6 +227,20 @@ export function flipImage(image: HTMLImageElement) {
 }
 
 /**
+ * extract mime type from base64/URLEncoded data component
+ * e.g. data:image/jpeg;base64,... -> image/jpeg
+ * */
+export function dataURItoMimeType(dataURI: string): string {
+  const idx = dataURI.indexOf(',');
+  if (idx === -1) {
+    throw new Error('data uri prefix not found');
+  }
+  const prefix = dataURI.substr(0, idx);
+  const [mimeType] = prefix.replace(/^data:/, '').split(';');
+  return mimeType;
+}
+
+/**
  * convert base64/URLEncoded data component to raw binary data held in a string
  * e.g. data:image/jpeg;base64,...
  * */
