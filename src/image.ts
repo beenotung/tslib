@@ -136,7 +136,7 @@ export function resizeWithRatio(
 
 export async function resizeBase64WithRatio(
   data: string,
-  preferedSize: ISize,
+  preferredSize: ISize,
   mode: ResizeType,
 ): Promise<string> {
   const image = await base64ToImage(data);
@@ -145,7 +145,7 @@ export async function resizeBase64WithRatio(
       width: image.naturalWidth,
       height: image.naturalHeight,
     },
-    preferedSize,
+    preferredSize,
     mode,
   );
   return imageToBase64(image, targetSize.width, targetSize.height);
