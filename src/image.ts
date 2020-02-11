@@ -1,4 +1,3 @@
-import { GalaxyNote9 } from './constant/dimension';
 import { enum_only_string } from './enum';
 import { fileToBase64String } from './file';
 import { Result, then } from './result';
