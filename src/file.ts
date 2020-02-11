@@ -134,11 +134,28 @@ export async function downloadFile(
 /**@deprecated*/
 export let saveFile = downloadFile;
 
+/**
+ * true: must from camera
+ * false: must from album
+ * undefined: both camera and album are allowed
+ * */
+export type CaptureOption = true | false | undefined;
+
 export interface SelectFileOptions {
   multiple?: boolean;
   accept?: BlobType;
   pattern?: string;
-  capture?: boolean;
+  capture?: CaptureOption;
+}
+
+function captureMode(capture: CaptureOption): 'album' | 'camera' | 'both' {
+  if (capture === true) {
+    return 'camera';
+  }
+  if (capture === false) {
+    return 'album';
+  }
+  return 'both';
 }
 
 export function selectFile(options: SelectFileOptions = {}): Promise<File[]> {
@@ -148,8 +165,8 @@ export function selectFile(options: SelectFileOptions = {}): Promise<File[]> {
     Object.keys(options).forEach(
       x => ((input as any)[x] = (options as any)[x]),
     );
-    if (options.capture) {
-      (input as any).capture = true;
+    if (!options.capture) {
+      delete options.capture;
     }
     // document.body.appendChild(input);
     input.onchange = e => {
@@ -173,9 +190,22 @@ export function selectFile(options: SelectFileOptions = {}): Promise<File[]> {
   });
 }
 
+/**
+ * must from album
+ * <input type="file" accept="image/*">
+ *
+ * must from camera
+ * <input type="file" accept="image/*" capture="">
+ *
+ * both album and camera
+ * <input type="file" accept="image/*;capture=camera">
+ * */
 export function selectImage(options: SelectFileOptions = {}): Promise<File[]> {
   options.accept = options.accept || 'image/*';
-  if (options.capture && !options.accept.includes('camera')) {
+  if (
+    captureMode(options.capture) === 'both' &&
+    !options.accept.includes('camera')
+  ) {
     options.accept += ';capture=camera';
   }
   return selectFile(options);
@@ -183,7 +213,10 @@ export function selectImage(options: SelectFileOptions = {}): Promise<File[]> {
 
 export function selectVideo(options: SelectFileOptions = {}): Promise<File[]> {
   options.accept = options.accept || 'video/mp4,video/x-m4v,video/*';
-  if (options.capture && !options.accept.includes('camcorder')) {
+  if (
+    captureMode(options.capture) === 'both' &&
+    !options.accept.includes('camcorder')
+  ) {
     options.accept += ';capture=camcorder';
   }
   return selectFile(options);
@@ -191,7 +224,10 @@ export function selectVideo(options: SelectFileOptions = {}): Promise<File[]> {
 
 export function selectAudio(options: SelectFileOptions = {}): Promise<File[]> {
   options.accept = options.accept || 'audio/*';
-  if (options.capture && !options.accept.includes('microphone')) {
+  if (
+    captureMode(options.capture) === 'both' &&
+    !options.accept.includes('microphone')
+  ) {
     options.accept += ';capture=microphone';
   }
   return selectFile(options);
