@@ -1,3 +1,7 @@
+/**
+ * for Node.js
+ * */
+
 function to2Dig(n: number) {
   if (n < 10) {
     return '0' + n;
@@ -19,16 +23,24 @@ export function genLogFilename(name = 'log', ext = 'txt') {
   return [name, dateText, ext].join('.');
 }
 
+function formatLog(args: IArguments) {
+  const util = require('util');
+  return util.format.apply(null, args);
+}
+
 export function wrapConsoleLog(filename = genLogFilename()) {
   const fs = require('fs');
-  const util = require('util');
-  const logFile = fs.createWriteStream(filename, { flags: 'a' });
   // Or 'w' to truncate the file every time the process starts.
-  const logStdout = process.stdout;
+  const logFile = fs.createWriteStream(filename, { flags: 'a' });
 
   console.log = function() {
-    logFile.write(util.format.apply(null, arguments) + '\n');
-    logStdout.write(util.format.apply(null, arguments) + '\n');
+    const text = formatLog(arguments) + '\n';
+    logFile.write(text);
+    process.stdout.write(text);
   };
-  console.error = console.log;
+  console.error = function() {
+    const text = formatLog(arguments) + '\n';
+    logFile.write(text);
+    process.stderr.write(text);
+  };
 }
