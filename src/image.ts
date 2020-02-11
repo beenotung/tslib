@@ -1,4 +1,7 @@
+import { GalaxyNote9 } from './constant/dimension';
 import { enum_only_string } from './enum';
+import { fileToBase64String } from './file';
+import { Result, then } from './result';
 import { KB } from './size';
 
 /**
@@ -421,4 +424,33 @@ export async function compressImageToBlob(args: {
     blob = await canvasToBlob(canvas, mimeType, quality);
   }
   return blob;
+}
+
+export function toImage(
+  image: base64 | File | HTMLImageElement,
+): Result<HTMLImageElement> {
+  if (typeof image === 'string') {
+    // base64
+    return base64ToImage(image);
+  }
+  if (image instanceof File) {
+    return fileToBase64String(image).then(base64 => toImage(base64));
+  }
+  if (image instanceof HTMLImageElement) {
+    return image;
+  }
+  console.error('unknown image type:', image);
+  throw new TypeError('unknown image type');
+}
+
+const DefaultMaximumMobilePhotoSize = 300 * KB; // 300KB
+
+export async function compressMobilePhoto(args: {
+  image: base64 | File | HTMLImageElement;
+  maximumSize?: number;
+}): Promise<base64> {
+  const maximumLength = args.maximumSize || DefaultMaximumMobilePhotoSize;
+  return then(toImage(args.image), image =>
+    compressImageToBase64({ image, maximumLength }),
+  );
 }
