@@ -1,5 +1,5 @@
-import * as test from 'tape';
-import { pipe } from '../src';
+import test from 'tape';
+import { pipe } from '../src/pipe';
 
 test('pipe', t => {
   t.equal(pipe([
