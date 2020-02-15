@@ -46,6 +46,7 @@ export function startTimer(options: StartTimerOptions) {
     // tslint:disable-next-line no-console
     console.time(name);
   };
+  start();
   const end = () => {
     print('');
     writeStream.moveCursor(-name.length, 0);
@@ -57,7 +58,6 @@ export function startTimer(options: StartTimerOptions) {
   const progress = (msg: string) => {
     print(msg);
   };
-  start();
   return {
     end,
     next(newName: string) {
