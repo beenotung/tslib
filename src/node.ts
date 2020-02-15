@@ -23,7 +23,7 @@ export type StartTimerOptions =
 const defaultWriteStream = () => process.stdout;
 
 export function startTimer(options: StartTimerOptions) {
-  let name: string;
+  let name: string | undefined;
   let writeStream: NodeJS.WriteStream;
   if (typeof options === 'string') {
     name = options;
@@ -48,10 +48,14 @@ export function startTimer(options: StartTimerOptions) {
   };
   start();
   const end = () => {
+    if (!name) {
+      return; // already ended before
+    }
     print('');
     writeStream.moveCursor(-name.length, 0);
     // tslint:disable-next-line no-console
     console.timeEnd(name);
+    name = undefined;
   };
   let total = 0;
   let tick = 0;

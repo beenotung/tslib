@@ -8,9 +8,11 @@ async function main() {
   timer.setProgress(2);
   await later(1500);
   timer.tick();
-  await later(1000)
-  timer.tick()
-  await later(500)
+  await later(1000);
+  timer.tick();
+  await later(500);
+  timer.end();
+  console.log('some extra information');
   timer.next('last task');
   await later(200);
   timer.end();
