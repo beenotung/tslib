@@ -1,6 +1,6 @@
 #!/bin/bash
 set -e
-hash pnpm 2>/dev/null && pnpm i || npm i
+hash pnpm 2>/dev/null && pnpm i --prefer-offline || npm i
 npm run build
 node ./mk-package.js > dist/package.json
 cp README.md LICENSE dist/
