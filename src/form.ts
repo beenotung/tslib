@@ -1,9 +1,12 @@
-import axios from 'axios';
 import FormData from 'form-data';
 import { fetch } from './fetch';
 import { JsonObject } from './json';
+import { decodeResponse } from './response';
 
-export function jsonToFormData(json: JsonObject, formData: FormData) {
+export function jsonToFormData(
+  json: JsonObject,
+  formData: FormData = new FormData(),
+) {
   Object.keys(json).forEach(key => {
     const value = json[key];
     switch (typeof value) {
@@ -22,6 +25,7 @@ export function jsonToFormData(json: JsonObject, formData: FormData) {
         }
     }
   });
+  return formData;
 }
 
 export interface PostFormResponse<T> {
@@ -36,56 +40,15 @@ export function postMultipartFormData<T>(
 ): Promise<PostFormResponse<T>> {
   const formData = new FormData();
   jsonToFormData(json, formData);
-  if (typeof window === 'undefined') {
-    /* node.js */
-    return fetch(url, { method: 'POST', body: formData as any }).then(
-      async res => {
-        const contentType = res.headers.get('content-type');
-        if (contentType) {
-          if (
-            contentType.startsWith('application/json') ||
-            contentType.startsWith('text/json')
-          ) {
-            return {
-              status: res.status,
-              statusText: res.statusText,
-              data: await res.json(),
-            };
-          }
-          if (contentType.indexOf('form') !== -1) {
-            return {
-              status: res.status,
-              statusText: res.statusText,
-              data: await res.formData(),
-            };
-          }
-          if (contentType.startsWith('text')) {
-            return {
-              status: res.status,
-              statusText: res.statusText,
-              data: await res.text(),
-            };
-          }
-        }
+  return fetch(url, { method: 'POST', body: formData as any }).then(res =>
+    decodeResponse(res).then(
+      (data): PostFormResponse<T> => {
         return {
           status: res.status,
           statusText: res.statusText,
-          data: await res.blob(),
+          data: data as any,
         };
       },
-    );
-  }
-  /* web browser */
-  return axios({
-    method: 'post',
-    url,
-    data: formData,
-    headers: {
-      'Content-Type': 'multipart/form-data',
-    },
-  }).then(res => ({
-    status: res.status,
-    statusText: res.statusText,
-    data: res.data,
-  }));
+    ),
+  );
 }
