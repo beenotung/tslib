@@ -1,10 +1,23 @@
 import FormData from 'form-data';
 import { fetch } from './fetch';
-import { JsonObject } from './json';
 import { decodeResponse } from './response';
 
+export type FormPrimitive = string | number | boolean | null | File;
+
+export interface FormObject {
+  [key: string]: FormValue;
+}
+
+export interface FormArray {
+  readonly length: number;
+
+  [key: number]: FormValue;
+}
+
+export type FormValue = FormPrimitive | FormObject | FormArray;
+
 export function jsonToFormData(
-  json: JsonObject,
+  json: FormObject,
   formData: FormData = new FormData(),
 ) {
   Object.keys(json).forEach(key => {
@@ -36,7 +49,7 @@ export interface PostFormResponse<T> {
 
 export function postMultipartFormData<T>(
   url: string,
-  json: JsonObject,
+  json: FormObject,
 ): Promise<PostFormResponse<T>> {
   const formData = new FormData();
   jsonToFormData(json, formData);
