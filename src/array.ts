@@ -390,7 +390,7 @@ export function asyncCountArray<A>(
   ).then(() => acc);
 }
 
-export function max<T>(xs: T[]): T {
+export function max<T>(xs: T[]): T | undefined {
   const n = xs.length;
   let acc = xs[0];
   for (let i = 1; i < n; i++) {
@@ -402,7 +402,7 @@ export function max<T>(xs: T[]): T {
   return acc;
 }
 
-export function min<T>(xs: T[]): T {
+export function min<T>(xs: T[]): T | undefined {
   const n = xs.length;
   let acc = xs[0];
   for (let i = 1; i < n; i++) {
@@ -435,7 +435,7 @@ export function sumByFunc<T>(xs: T[], mapper: (x: T) => number) {
 export function maxByFunc<T>(
   xs: T[],
   comparator: (a: T, b: T) => CompareResult,
-): T {
+): T | undefined {
   let acc = xs[0];
   const n = xs.length;
   for (let i = 1; i < n; i++) {
@@ -450,7 +450,7 @@ export function maxByFunc<T>(
 export function minByFunc<T>(
   xs: T[],
   comparator: (a: T, b: T) => CompareResult,
-): T {
+): T | undefined {
   let acc = xs[0];
   const n = xs.length;
   for (let i = 1; i < n; i++) {
@@ -462,7 +462,10 @@ export function minByFunc<T>(
   return acc;
 }
 
-export function maxByField<T, K extends keyof T>(xs: [T, ...T[]], key: K): T {
+export function maxByField<T, K extends keyof T>(
+  xs: T[],
+  key: K,
+): T | undefined {
   let acc = xs[0];
   const n = xs.length;
   for (let i = 1; i < n; i++) {
@@ -474,7 +477,10 @@ export function maxByField<T, K extends keyof T>(xs: [T, ...T[]], key: K): T {
   return acc;
 }
 
-export function minByField<T, K extends keyof T>(xs: T[], key: K): T {
+export function minByField<T, K extends keyof T>(
+  xs: T[],
+  key: K,
+): T | undefined {
   let acc = xs[0];
   const n = xs.length;
   for (let i = 1; i < n; i++) {
@@ -588,9 +594,12 @@ export function shuffledBinArray<T>(
   return binArray(shuffle(xs, nSwap), binSize);
 }
 
-export function shuffledIndecies(n: number): number[] {
+export function shuffledIndices(n: number): number[] {
   return shuffle(range(0, n - 1));
 }
+
+/**@deprecated typo in function name, renamed to shuffledIndices*/
+export let shuffledIndecies = shuffledIndices;
 
 /**
  * TODO assign a better name
