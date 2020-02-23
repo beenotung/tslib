@@ -29,3 +29,14 @@ test('sort object array by key', t => {
   );
   t.end();
 });
+
+test('sort object with non-numeric key', t => {
+  let user = {
+    name: 'Alice',
+    age: 20,
+    other_field: true
+  };
+  // should compile without complaining the boolean field
+  [user].sort(compare_by_keys(['name', 'age']));
+  t.end();
+});

@@ -21,21 +21,21 @@ export function compare<A extends Comparable>(a: A, b: A): CompareResult {
     : CompareResult.Equal;
 }
 
-export type SortKey<T extends object> = {
-  key: keyof T;
+export type SortKey<K> = {
+  key: K;
   order: 'asc' | 'desc';
 };
 
-export function compare_by_keys<T extends object>(
-  _keys: Array<SortKey<T> | keyof T>,
+export function compare_by_keys<T extends object, K extends keyof T = keyof T>(
+  _keys: Array<SortKey<K> | K>,
 ) {
-  const keys: Array<SortKey<T>> = _keys.map(key => {
+  const keys: Array<SortKey<K>> = _keys.map(key => {
     if (typeof key === 'object') {
       return key;
     }
     return { key, order: 'asc' };
   });
-  return <R extends Record<keyof T, Comparable>>(a: R, b: R): CompareResult => {
+  return <R extends Record<K, Comparable>>(a: R, b: R): CompareResult => {
     for (const { key, order } of keys) {
       const cmp = compare(a[key], b[key]);
       if (cmp !== 0) {
