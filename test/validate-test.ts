@@ -1,4 +1,4 @@
-import * as test from 'tape';
+import test from 'tape';
 import { is_email } from '../src/validate';
 
 test('validate email', t => {

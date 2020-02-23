@@ -1,5 +1,5 @@
 import { getSemverDiffType, SemverDiffType, to_semver } from '../src/semver';
-import * as test from 'tape';
+import test from 'tape';
 
 test('semver', t => {
   t.equal(getSemverDiffType(

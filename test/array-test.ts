@@ -18,7 +18,7 @@ import {
   sum,
   sumByField,
 } from '../src/array';
-import * as test from 'tape';
+import test from 'tape';
 
 test('getMaxArraySize', t => {
   const MaxArraySize = getMaxArraySize();

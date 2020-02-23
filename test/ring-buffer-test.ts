@@ -1,5 +1,5 @@
 import { RingBuffer } from '../src/ring-buffer';
-import * as test from 'tape';
+import test from 'tape';
 
 test('correct boundary', t => {
   const size = 3;
