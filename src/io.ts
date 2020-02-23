@@ -2,7 +2,7 @@ import { createInterface, ReadLine, ReadLineOptions } from 'readline';
 import { createLazy } from './lazy';
 
 export function createRL(
-  options: ReadLineOptions = { input: process.stdin },
+  options: ReadLineOptions = { input: process.stdin, output: process.stdout },
 ): ReadLine {
   return createInterface(options);
 }
