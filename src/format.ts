@@ -196,6 +196,7 @@ export function format_2_digit(x: number): string {
 
 /**
  * format: YYYYMMDD-HHMM
+ * less accurate, for human reading
  * */
 export function format_time_code(time: number, separator = '-') {
   const t = new Date(time);
@@ -205,6 +206,22 @@ export function format_time_code(time: number, separator = '-') {
   const H = format_2_digit(t.getHours());
   const M = format_2_digit(t.getMinutes());
   return y + m + d + separator + H + M;
+}
+
+/**
+ * format: YYYYMMDD-HHMM-SS-sss
+ * more accurate, for filename
+ * */
+export function format_timestamp_code(time: number, separator = '-') {
+  const t = new Date(time);
+  const y = t.getFullYear();
+  const m = format_2_digit(t.getMonth() + 1);
+  const d = format_2_digit(t.getDate());
+  const H = format_2_digit(t.getHours());
+  const M = format_2_digit(t.getMinutes());
+  const S = format_2_digit(t.getSeconds());
+  const s = format_n_digit(t.getMilliseconds(), 3);
+  return y + m + d + separator + H + M + separator + S + separator + s;
 }
 
 export function format_n_digit(x: number, n: number, prefix = '0'): string {
