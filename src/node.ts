@@ -10,7 +10,9 @@ export function eraseChars(writeStream: NodeJS.WriteStream, n: number) {
     return;
   }
   writeStream.write(' '.repeat(n));
-  writeStream.moveCursor(-n, 0);
+  if (writeStream.moveCursor) {
+    writeStream.moveCursor(-n, 0);
+  }
 }
 
 export type StartTimerOptions =
@@ -34,7 +36,9 @@ export function startTimer(options: StartTimerOptions) {
   }
   let msgLen = 0;
   const print = (msg: string) => {
-    writeStream.moveCursor(-msgLen, 0);
+    if (writeStream.moveCursor) {
+      writeStream.moveCursor(-msgLen, 0);
+    }
     writeStream.write(msg);
     const newMsgLen = msg.length;
     eraseChars(writeStream, msgLen - newMsgLen);
@@ -52,7 +56,9 @@ export function startTimer(options: StartTimerOptions) {
       return; // already ended before
     }
     print('');
-    writeStream.moveCursor(-name.length, 0);
+    if (writeStream.moveCursor) {
+      writeStream.moveCursor(-name.length, 0);
+    }
     // tslint:disable-next-line no-console
     console.timeEnd(name);
     name = undefined;
