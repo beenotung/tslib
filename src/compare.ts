@@ -3,8 +3,12 @@ export type Comparable = number | string;
 /**
  * inclusive
  * */
-export function isBetween<A extends Comparable>(a: A, b: A, c: A): boolean {
-  return a <= b && b <= c;
+export function isBetween<A extends Comparable>(
+  lowerBound: A,
+  value: A,
+  upperBound: A,
+): boolean {
+  return lowerBound <= value && value <= upperBound;
 }
 
 export enum CompareResult {
