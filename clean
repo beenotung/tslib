@@ -1,5 +1,0 @@
-#!/bin/bash
-set -e
-rm -f *.d.ts *.js *.js.map
-cd src
-find -type d | grep '/' | sed 's,./,,' | xargs -I {} rm -rf ../{}

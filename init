@@ -1,5 +1,0 @@
-#!/bin/bash
-set -e
-pnpm i || npm i
-./gu
-echo 'init done.'
