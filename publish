@@ -7,7 +7,7 @@ if [ "$res" != 1 ]; then
   exit 1
 fi
 
-./auto-init
+hash pnpm 2>/dev/null && pnpm i --prefer-offline || npm i
 
 if [ $# == 1 ]; then
   t=$1
