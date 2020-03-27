@@ -21,12 +21,12 @@
     "outDir": "dist"
   },
   "include": [
-    "src/**/*.ts"
+    "dist/src/**/*.ts"
   ],
   "exclude": [
     "node_modules",
-    "src/**/*.macro.ts",
-    "src/**/*.spec.ts"
+    "dist/src/**/*.macro.ts",
+    "dist/src/**/*.spec.ts"
   ],
   "compileOnSave": false,
   "atom": {
