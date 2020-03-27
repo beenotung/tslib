@@ -63,11 +63,8 @@ export function mapGetSet<K, V extends Set<any>>(map: Map<K, V>, key: K): V {
   return mapGetOrSetDefault(map, key, () => new Set() as V);
 }
 
-export function mapGetArray<K, V extends Array<any>>(
-  map: Map<K, V>,
-  key: K,
-): V {
-  return mapGetOrSetDefault(map, key, () => ([] as Array<any>) as V);
+export function mapGetArray<K, V extends any[]>(map: Map<K, V>, key: K): V {
+  return mapGetOrSetDefault(map, key, () => ([] as any[]) as V);
 }
 
 export function incMap<K>(map: Map<K, number>, key: K): void {
