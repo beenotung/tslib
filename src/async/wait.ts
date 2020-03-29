@@ -15,6 +15,41 @@ export async function waitFor<A>(
   });
 }
 
+export function wait<A>(
+  args:
+    | {
+        for: () => A;
+        interval?: number;
+      }
+    | {
+        when: () => boolean | any;
+        then: () => A;
+        interval?: number;
+      },
+): Promise<A> {
+  return new Promise<A>(resolve => {
+    const check =
+      'for' in args
+        ? () => {
+            const result = args.for();
+            if (result) {
+              resolve(result);
+              return;
+            }
+            setTimeout(check, args.interval);
+          }
+        : () => {
+            const ready = args.when();
+            if (ready) {
+              resolve(args.then());
+              return;
+            }
+            setTimeout(check, args.interval);
+          };
+    check();
+  });
+}
+
 export async function later(delay = 0) {
   return new Promise(resolve => setTimeout(resolve, delay));
 }
