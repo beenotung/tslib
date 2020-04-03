@@ -55,3 +55,5 @@ plugins/ios.json
 www/
 .cache/
 /data/
+
+.last
