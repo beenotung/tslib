@@ -14,6 +14,9 @@ import {
   minByField,
   minByFunc,
   mode,
+  push,
+  pushBackward,
+  pushForward,
   range,
   sum,
   sumByField,
@@ -106,3 +109,15 @@ test('counting', t => {
   t.end();
 });
 
+test('push', t => {
+  let xs = [1, 2, 3];
+  pushBackward(xs, 4);
+  t.deepEqual(xs, [1, 2, 3, 4]);
+  pushBackward(xs, 2);
+  t.deepEqual(xs, [1, 3, 2, 4]);
+  pushForward(xs, 2);
+  t.deepEqual(xs, [1, 2, 3, 4]);
+  pushForward(xs, 0);
+  t.deepEqual(xs, [0, 1, 2, 3, 4]);
+  t.end();
+});

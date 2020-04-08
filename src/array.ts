@@ -696,3 +696,31 @@ export function getMaxArraySize() {
   }
   return MaxArraySize;
 }
+
+export function pushForward<T>(xs: T[], x: T) {
+  const idx = xs.indexOf(x);
+  if (idx === -1) {
+    xs.unshift(x);
+    return;
+  }
+  if (idx === 0) {
+    return; // already at head
+  }
+  const t = xs[idx - 1];
+  xs[idx - 1] = x;
+  xs[idx] = t;
+}
+
+export function pushBackward<T>(xs: T[], x: T) {
+  const idx = xs.indexOf(x);
+  if (idx === -1) {
+    xs.push(x);
+    return;
+  }
+  if (idx === xs.length - 1) {
+    return; // already at tail
+  }
+  const t = xs[idx + 1];
+  xs[idx + 1] = x;
+  xs[idx] = t;
+}
