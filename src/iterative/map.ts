@@ -71,7 +71,11 @@ export namespace maps {
     if (Array.isArray(o)) {
       return array(o, f)
     }
-    if (o instanceof NodeList || o instanceof HTMLCollection) {
+    // skip this data type if in node.js
+    if (
+      (typeof NodeList !== 'undefined' && o instanceof NodeList) ||
+      (typeof HTMLCollection !== 'undefined' && o instanceof HTMLCollection)
+    ) {
       return nodeList(o as any, f)
     }
     switch (getObjectType(o)) {
