@@ -1,14 +1,15 @@
 try {
-  throw new Error('testing error');
+  throw new Error('testing error')
 } catch (e) {
-
+  //
 } finally {
-  console.log('finally with error');
+  console.log('finally with error')
 }
 
 try {
+  //
 } catch (e) {
-
+  //
 } finally {
-  console.log('finally without error');
+  console.log('finally without error')
 }

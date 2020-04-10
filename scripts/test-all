@@ -1,0 +1,25 @@
+#!/bin/bash
+set -e
+set -o pipefail
+for f in test/*-test.ts
+do
+  if [ -f "$f" ]
+  then
+    case $f in
+      test/io-test.ts|\
+      test/image-test.ts)
+        continue # skip IO/DOM depending tests
+        ;;
+    esac
+    case $f in
+      test/data-processor-test.ts|\
+      test/json-test.ts|\
+      test/concurrent-fs-test.ts|\
+      test/fs-test.ts)
+        continue # skip time consumping tests
+        ;;
+    esac
+    echo "$f"
+    ts-node "$f"
+  fi
+done

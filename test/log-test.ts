@@ -1,3 +1,3 @@
-import {genLogFilename} from "../src/log";
+import { genLogFilename } from '../src/log'
 
-console.log(genLogFilename());
+console.log(genLogFilename())

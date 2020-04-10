@@ -1,4 +1,3 @@
-import { detectMobilePlatform } from '../src/platform';
+import { detectMobilePlatform } from '../src/platform'
 
-console.log('platform: ' + detectMobilePlatform());
-
+console.log('platform: ' + detectMobilePlatform())

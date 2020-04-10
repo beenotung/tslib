@@ -1,45 +1,51 @@
-import { genJsonValue } from '../src/gen-json';
-import { jsonToString, jsonToValues, jsonToValuesString, valuesStringToJson } from '../src/json';
-import { deepEqual } from '../src/object';
-import { getObjectType } from '../src/type';
+import { genJsonValue } from '../src/gen-json'
+import {
+  jsonToString,
+  jsonToValues,
+  jsonToValuesString,
+  valuesStringToJson,
+} from '../src/json'
+import { deepEqual } from '../src/object'
+import { getObjectType } from '../src/type'
 
-console.log('test nested object reference');
-let user = { name: 'Alice', posts: [] as any[] };
-let post = { title: 'hi', author: user };
-user.posts.push(post);
-user.posts[-1.1] = post;
-let index = {
+console.log('test nested object reference')
+const user = { name: 'Alice', posts: [] as any[] }
+const post = { title: 'hi', author: user }
+user.posts.push(post)
+user.posts[-1.1] = post
+const index = {
   users: [user],
   posts: [post],
-};
-try {
-  JSON.stringify(index);
-  // should has error
-  console.error('should has TypeError: Converting circular structure to JSON');
-  process.exit(1);
-} catch (e) {
 }
-let text = jsonToValuesString(index);
-console.log('='.repeat(32));
-console.log(jsonToValues(index));
-console.log('-'.repeat(32));
-console.log(JSON.parse(text));
-console.log('='.repeat(32));
-let json = valuesStringToJson(text);
+try {
+  JSON.stringify(index)
+  // should has error
+  console.error('should has TypeError: Converting circular structure to JSON')
+  process.exit(1)
+} catch (e) {
+  // exception is expected
+}
+const text = jsonToValuesString(index)
+console.log('='.repeat(32))
+console.log(jsonToValues(index))
+console.log('-'.repeat(32))
+console.log(JSON.parse(text))
+console.log('='.repeat(32))
+const json = valuesStringToJson(text)
 if (!(json.posts[0].author === json.users[0])) {
-  console.error('failed to encode/decode nested json object');
-  process.exit(1);
+  console.error('failed to encode/decode nested json object')
+  process.exit(1)
 }
 if (!json.users[0].posts[-1.1]) {
-  console.error('failed to encode array element with non-positive integer key');
-  process.exit(1);
+  console.error('failed to encode array element with non-positive integer key')
+  process.exit(1)
 }
 if (!Array.isArray(json.posts)) {
-  console.error('lost array type');
-  process.exit(1);
+  console.error('lost array type')
+  process.exit(1)
 }
 
-let CliProgress = require('cli-progress').Bar;
+import { Bar } from 'cli-progress'
 
 function jsonSize(o: any): number {
   switch (getObjectType(o)) {
@@ -48,51 +54,50 @@ function jsonSize(o: any): number {
     case 'Null':
     case 'Undefined':
     case 'Boolean':
-      return 1;
+      return 1
     case 'Array': {
-      let xs: any[] = o;
-      return xs.map(x => jsonSize(x)).reduce((acc, c) => acc + c, xs.length);
+      const xs: any[] = o
+      return xs.map(x => jsonSize(x)).reduce((acc, c) => acc + c, xs.length)
     }
     case 'Object': {
-      let xs = Object.keys(o);
-      return xs.map(x => jsonSize(o[x])).reduce((acc, c) => acc + c, xs.length);
+      const xs = Object.keys(o)
+      return xs.map(x => jsonSize(o[x])).reduce((acc, c) => acc + c, xs.length)
     }
     default:
-      console.error('unknown json type:', o);
-      process.exit(1);
-      throw new Error('unknown json type');
+      console.error('unknown json type:', o)
+      process.exit(1)
+      throw new Error('unknown json type')
   }
 }
 
 function test() {
-  let o = genJsonValue();
+  const o = genJsonValue()
   // let s = JSON.stringify(o);
   if (!'size') {
-    console.log('size:', jsonSize(o));
-    return;
+    console.log('size:', jsonSize(o))
+    return
   }
-  let strOwn = jsonToString(o);
-  let strNative = JSON.stringify(o);
+  const strOwn = jsonToString(o)
+  const strNative = JSON.stringify(o)
   if (strOwn.length !== strNative.length) {
-    console.log('not match');
+    console.log('not match')
   }
   if (strOwn !== strNative) {
     // console.log('not same?');
-    let oOwn = JSON.parse(strOwn);
-    let oNative = JSON.parse(strNative);
+    const oOwn = JSON.parse(strOwn)
+    const oNative = JSON.parse(strNative)
     if (!deepEqual(oOwn, oNative)) {
-      console.log('not same');
+      console.log('not same')
     }
   }
 }
 
-console.log('test if genJsonValue will deadloop');
-let n = 1000;
-let progress = new CliProgress();
-progress.start(n, 0);
+console.log('test if genJsonValue will deadloop')
+const n = 1000
+const progress = new Bar({})
+progress.start(n, 0)
 for (let i = 0; i < n; i++) {
-  progress.update(i);
-  test();
+  progress.update(i)
+  test()
 }
-progress.stop();
-
+progress.stop()

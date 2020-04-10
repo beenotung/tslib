@@ -1,3 +1,3 @@
-import { combinations } from '../src/combination';
+import { combinations } from '../src/combination'
 
-console.log(combinations('abcd'.split('')));
+console.log(combinations('abcd'.split('')))
