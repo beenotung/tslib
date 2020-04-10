@@ -1,4 +1,4 @@
-import { Obj, Type } from './lang';
+import { Obj, Type } from './lang'
 
 /**
  * Created by beenotung on 6/21/17.
@@ -11,12 +11,12 @@ import { Obj, Type } from './lang';
 /* tslint:disable:ban-types */
 export function bindMethods<A extends Obj<Function | any>>(o: A): A {
   Object.keys(o).forEach(x => {
-    const f = o[x];
+    const f = o[x]
     if (typeof f === 'function') {
-      o[x as any] = f.bind(o);
+      o[x as any] = f.bind(o)
     }
-  });
-  return o;
+  })
+  return o
 }
 /* tslint:enable:ban-types */
 
@@ -24,5 +24,5 @@ export function bindMethods<A extends Obj<Function | any>>(o: A): A {
  * cast object to class with class methods
  * */
 export function withMethod<A>(c: Type<A>, o: A): A {
-  return Object.assign(new c(), o);
+  return Object.assign(new c(), o)
 }

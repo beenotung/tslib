@@ -1,34 +1,34 @@
-type Callback = () => void;
+type Callback = () => void
 
 export class WaitGroup {
-  total = 0;
-  done = 0;
-  callbacks: Callback[] = [];
+  total = 0
+  done = 0
+  callbacks: Callback[] = []
 
   add(): Callback {
-    this.total++;
+    this.total++
     return () => {
-      this.done++;
-      this.check();
-    };
+      this.done++
+      this.check()
+    }
   }
 
   waitAll(cb: Callback) {
     if (this.total === this.done) {
-      cb();
-      return;
+      cb()
+      return
     }
-    this.callbacks.push(cb);
+    this.callbacks.push(cb)
   }
 
   private check() {
     if (this.total === this.done) {
-      this.noticeAll();
+      this.noticeAll()
     }
   }
 
   private noticeAll() {
-    this.callbacks.forEach(cb => cb());
-    this.callbacks = [];
+    this.callbacks.forEach(cb => cb())
+    this.callbacks = []
   }
 }

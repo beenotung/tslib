@@ -1,40 +1,40 @@
-import { getObjectType } from '../type';
+import { getObjectType } from '../type'
 import {
   ArrayMapper,
   MapValueMapper,
   NodeListElementMapper,
   ObjectMapper,
   SetMapper,
-} from './map';
+} from './map'
 
-export type ArrayConsumer<A> = ArrayMapper<A, void>;
-export type ObjectConsumer<A> = ObjectMapper<A, void>;
-export type SetConsumer<A> = SetMapper<A, void>;
-export type MapValueConsumer<K, V> = MapValueMapper<K, V, void, void>;
+export type ArrayConsumer<A> = ArrayMapper<A, void>
+export type ObjectConsumer<A> = ObjectMapper<A, void>
+export type SetConsumer<A> = SetMapper<A, void>
+export type MapValueConsumer<K, V> = MapValueMapper<K, V, void, void>
 export type NodeListElementConsumer<A extends Element> = NodeListElementMapper<
   A,
   void
->;
+>
 
 export namespace foreachs {
   export function array<A>(xs: A[], f: ArrayConsumer<A>): void {
-    xs.forEach(f);
+    xs.forEach(f)
   }
 
   export function object<A>(x: A, f: ObjectConsumer<A>): void {
     /* tslint:disable:forin */
     for (const k in x) {
-      f(x[k], k, x);
+      f(x[k], k, x)
     }
     /* tslint:enable:forin */
   }
 
   export function set<A>(xs: Set<A>, f: SetConsumer<A>): void {
-    xs.forEach(x => f(x, xs));
+    xs.forEach(x => f(x, xs))
   }
 
   export function map<K, V>(xs: Map<K, V>, f: MapValueConsumer<K, V>): void {
-    xs.forEach(f);
+    xs.forEach(f)
   }
 
   export function nodeList<A extends Element = Element>(
@@ -42,35 +42,35 @@ export namespace foreachs {
     f: NodeListElementConsumer<A>,
   ): void {
     for (let i = 0; i < xs.length; i++) {
-      f(xs.item(i) as A, i, xs);
+      f(xs.item(i) as A, i, xs)
     }
   }
 
   export function any(o: any, f: (a: any) => void): void {
     if (Array.isArray(o)) {
-      return o.forEach(f);
+      return o.forEach(f)
     }
     if (o instanceof HTMLCollection) {
-      return nodeList(o, f);
+      return nodeList(o, f)
     }
     switch (getObjectType(o)) {
       case 'Array':
-        return array(o, f);
+        return array(o, f)
       case 'Set':
-        return set(o, f);
+        return set(o, f)
       case 'Map':
-        return map(o, f);
+        return map(o, f)
       case 'Object':
-        return object(o, f);
+        return object(o, f)
       default:
-        return f(o);
+        return f(o)
     }
   }
 }
 
-export const foreach_array = foreachs.array;
-export const foreach_object = foreachs.object;
-export const foreach_set = foreachs.set;
-export const foreach_map = foreachs.map;
-export const foreach_nodeList = foreachs.nodeList;
-export const foreach_any = foreachs.any;
+export const foreach_array = foreachs.array
+export const foreach_object = foreachs.object
+export const foreach_set = foreachs.set
+export const foreach_map = foreachs.map
+export const foreach_nodeList = foreachs.nodeList
+export const foreach_any = foreachs.any

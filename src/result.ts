@@ -1,6 +1,6 @@
-export type Result<T> = T | Promise<T>;
+export type Result<T> = T | Promise<T>
 
-const PromiseString = Promise.resolve().toString();
+const PromiseString = Promise.resolve().toString()
 
 export function isPromise(x: any): boolean {
   return (
@@ -8,7 +8,7 @@ export function isPromise(x: any): boolean {
     typeof x === 'object' &&
     typeof x.toString === 'function' &&
     x.toString() === PromiseString
-  );
+  )
 }
 
 export function then<T, R>(
@@ -17,13 +17,13 @@ export function then<T, R>(
   onError?: (e: any) => void,
 ): Result<R> {
   if (isPromise(x)) {
-    const res = (x as Promise<T>).then(f);
+    const res = (x as Promise<T>).then(f)
     if (onError) {
-      res.catch(onError);
+      res.catch(onError)
     }
-    return res;
+    return res
   }
-  return f(x as T);
+  return f(x as T)
 }
 
 export function thenF<T, R>(
@@ -32,12 +32,12 @@ export function thenF<T, R>(
   onError?: (e: any) => void,
 ): Result<R> {
   try {
-    const x = f();
-    return then(x, q, onError);
+    const x = f()
+    return then(x, q, onError)
   } catch (e) {
     if (typeof onError === 'function') {
-      onError(e);
+      onError(e)
     }
-    return Promise.reject(e);
+    return Promise.reject(e)
   }
 }

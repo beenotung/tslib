@@ -1,13 +1,13 @@
-import { AsyncStore } from './async-store';
-import { compare } from './compare';
-import { CacheItem, CountedCache } from './counted-cache';
-import { getLocalStorage, proxyStore, Store } from './store';
+import { AsyncStore } from './async-store'
+import { compare } from './compare'
+import { CacheItem, CountedCache } from './counted-cache'
+import { getLocalStorage, proxyStore, Store } from './store'
 
-Symbol.objectCache = Symbol.for('objectCache');
-Symbol.cacheSize = Symbol.for('cacheSize');
-Symbol.store = Symbol.for('store');
-Symbol.asyncStore = Symbol.for('asyncStore');
-Symbol.maxCacheSize = Symbol.for('maxCacheSize');
+Symbol.objectCache = Symbol.for('objectCache')
+Symbol.cacheSize = Symbol.for('cacheSize')
+Symbol.store = Symbol.for('store')
+Symbol.asyncStore = Symbol.for('asyncStore')
+Symbol.maxCacheSize = Symbol.for('maxCacheSize')
 
 /**
  * only cache object
@@ -15,114 +15,114 @@ Symbol.maxCacheSize = Symbol.for('maxCacheSize');
  * */
 export class CachedObjectStore implements Store {
   private [Symbol.objectCache] = new CountedCache<{
-    size: number;
-    value: any;
-  }>();
-  private [Symbol.cacheSize] = 0;
-  private [Symbol.store]: Store;
-  private [Symbol.asyncStore]: AsyncStore;
-  private [Symbol.maxCacheSize]: number;
+    size: number
+    value: any
+  }>()
+  private [Symbol.cacheSize] = 0
+  private [Symbol.store]: Store
+  private [Symbol.asyncStore]: AsyncStore
+  private [Symbol.maxCacheSize]: number
 
   private constructor(
     dirpath: string,
     maxCacheSize = Number.MAX_SAFE_INTEGER,
     maxStorageSize = Number.MAX_SAFE_INTEGER,
   ) {
-    this[Symbol.store] = Store.create(getLocalStorage(dirpath, maxStorageSize));
-    this[Symbol.asyncStore] = AsyncStore.create(dirpath);
-    this[Symbol.maxCacheSize] = maxCacheSize;
+    this[Symbol.store] = Store.create(getLocalStorage(dirpath, maxStorageSize))
+    this[Symbol.asyncStore] = AsyncStore.create(dirpath)
+    this[Symbol.maxCacheSize] = maxCacheSize
   }
 
   get [Symbol.storage](): Storage {
-    return this[Symbol.store][Symbol.storage];
+    return this[Symbol.store][Symbol.storage]
   }
 
   set storage(storage: Storage) {
-    const dirpath = storage._location;
+    const dirpath = storage._location
     if (typeof dirpath !== 'string') {
-      throw new Error('cannot swap storage instance without storage._location');
+      throw new Error('cannot swap storage instance without storage._location')
     }
-    this[Symbol.store][Symbol.storage] = storage;
-    this[Symbol.asyncStore][Symbol.dirpath] = dirpath;
+    this[Symbol.store][Symbol.storage] = storage
+    this[Symbol.asyncStore][Symbol.dirpath] = dirpath
   }
 
   // cannot be cached, require too much effort to monitor every setItem and removeItem
   get length(): number {
-    return this[Symbol.store].length;
+    return this[Symbol.store].length
   }
 
   clear(): void {
-    this[Symbol.asyncStore].clear();
-    this[Symbol.objectCache].clear();
-    this[Symbol.cacheSize] = 0;
+    this[Symbol.asyncStore].clear()
+    this[Symbol.objectCache].clear()
+    this[Symbol.cacheSize] = 0
   }
 
   clearCache() {
-    this[Symbol.objectCache].clear();
-    this[Symbol.cacheSize] = 0;
+    this[Symbol.objectCache].clear()
+    this[Symbol.cacheSize] = 0
   }
 
   // do not cache to reduce memory load
   getItem(key: string): string | null {
-    return this[Symbol.store].getItem(key);
+    return this[Symbol.store].getItem(key)
   }
 
   getObject<T>(key: string): T | null {
     if (this[Symbol.objectCache].has(key)) {
-      const data = this[Symbol.objectCache].get(key);
+      const data = this[Symbol.objectCache].get(key)
       if (data !== null) {
-        return data.value;
+        return data.value
       }
     }
-    const s = this.getItem(key);
+    const s = this.getItem(key)
     if (s === null) {
-      return null;
+      return null
     }
-    const value = JSON.parse(s);
-    this[Symbol.objectCache].set(key, { size: s.length, value });
-    return value;
+    const value = JSON.parse(s)
+    this[Symbol.objectCache].set(key, { size: s.length, value })
+    return value
   }
 
   // cannot be cached, require too much effort to monitor every setItem and removeItem
   key(index: number): string | null {
-    return this[Symbol.store].key(index);
+    return this[Symbol.store].key(index)
   }
 
   // cannot be cached, require too much effort to monitor every setItem and removeItem
   keys(): string[] {
-    return this[Symbol.store].keys();
+    return this[Symbol.store].keys()
   }
 
   removeItem(key: string): void {
-    this[Symbol.objectCache].remove(key);
-    this[Symbol.asyncStore].removeItem(key);
+    this[Symbol.objectCache].remove(key)
+    this[Symbol.asyncStore].removeItem(key)
   }
 
   setItem(key: string, value: string): void {
-    this[Symbol.objectCache].remove(key);
-    this[Symbol.asyncStore].setItem(key, value);
+    this[Symbol.objectCache].remove(key)
+    this[Symbol.asyncStore].setItem(key, value)
   }
 
   setObject(key: string, value: any): void {
-    const s = JSON.stringify(value);
-    this[Symbol.cacheSize] += s.length;
+    const s = JSON.stringify(value)
+    this[Symbol.cacheSize] += s.length
     if (this[Symbol.cacheSize] > this[Symbol.maxCacheSize]) {
       const caches: Array<[string, CacheItem<any>]> = this[
         Symbol.objectCache
-      ].getAll();
-      caches.sort((a, b) => compare(a[1].count, b[1].count));
+      ].getAll()
+      caches.sort((a, b) => compare(a[1].count, b[1].count))
       for (
         ;
         this[Symbol.cacheSize] > this[Symbol.maxCacheSize] && caches.length > 0;
 
       ) {
-        const [key, cache] = caches.pop() as [string, CacheItem<any>];
-        this[Symbol.cacheSize] -= cache.data.size;
-        this[Symbol.objectCache].remove(key);
+        const [key, cache] = caches.pop() as [string, CacheItem<any>]
+        this[Symbol.cacheSize] -= cache.data.size
+        this[Symbol.objectCache].remove(key)
       }
     }
-    this[Symbol.objectCache].set(key, { size: s.length, value });
-    this[Symbol.asyncStore].setItem(key, s);
+    this[Symbol.objectCache].set(key, { size: s.length, value })
+    this[Symbol.asyncStore].setItem(key, s)
   }
 
   static create(
@@ -130,7 +130,7 @@ export class CachedObjectStore implements Store {
     maxCacheSize = Number.MAX_SAFE_INTEGER,
     maxStorageSize = Number.MAX_SAFE_INTEGER,
   ): CachedObjectStore {
-    const store = new CachedObjectStore(dirpath, maxCacheSize, maxStorageSize);
-    return proxyStore(store);
+    const store = new CachedObjectStore(dirpath, maxCacheSize, maxStorageSize)
+    return proxyStore(store)
   }
 }

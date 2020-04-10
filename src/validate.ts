@@ -3,7 +3,7 @@
  * news: https://skypost.ulifestyle.com.hk/article/2006268/
  * */
 export function is_hk_mobile_phone_prefix(s: string): boolean {
-  s = s.replace(/^\+852/, '').trim();
+  s = s.replace(/^\+852/, '').trim()
   switch (s[0]) {
     case '4':
     case '5':
@@ -11,9 +11,9 @@ export function is_hk_mobile_phone_prefix(s: string): boolean {
     case '7':
     case '8':
     case '9':
-      return true;
+      return true
     default:
-      return false;
+      return false
   }
 }
 
@@ -21,7 +21,7 @@ export function is_hk_mobile_phone_prefix(s: string): boolean {
  * with/without +852 prefix
  * */
 export function is_hk_mobile_phone(x: number | string): boolean {
-  return to_full_hk_mobile_phone(x) !== '';
+  return to_full_hk_mobile_phone(x) !== ''
 }
 
 /**
@@ -32,52 +32,52 @@ export function is_hk_mobile_phone(x: number | string): boolean {
  * */
 export function to_full_hk_mobile_phone(s: string | number): string {
   if (typeof s === 'number') {
-    s = s.toString();
+    s = s.toString()
   }
   s = s
     .split('')
     .filter(x => '0' <= x && x <= '9')
-    .join('');
+    .join('')
 
   if (s.length === 8 && is_hk_mobile_phone_prefix(s)) {
-    return '+852' + s;
+    return '+852' + s
   }
   if (
     s.length === 8 + 3 &&
     s.startsWith('852') &&
     is_hk_mobile_phone_prefix(s.substr(3))
   ) {
-    return '+' + s;
+    return '+' + s
   }
   if (
     s.length === 8 + 4 &&
     s.startsWith('+852') &&
     is_hk_mobile_phone_prefix(s.substr(4))
   ) {
-    return s;
+    return s
   }
-  return '';
+  return ''
 }
 
 export function is_email(s: string): boolean {
   if (!s) {
-    return false;
+    return false
   }
-  const ss = s.split('@');
+  const ss = s.split('@')
   if (ss.length !== 2) {
-    return false;
+    return false
   }
-  const domain = ss[1];
+  const domain = ss[1]
   if (domain !== domain.trim()) {
-    return false;
+    return false
   }
-  const names = domain.split('.');
+  const names = domain.split('.')
   if (names.some(s => !s) || names.length < 2) {
-    return false;
+    return false
   }
-  const username = ss[0];
+  const username = ss[0]
   if (username !== username.trim()) {
-    return false;
+    return false
   }
-  return username.length > 0;
+  return username.length > 0
 }

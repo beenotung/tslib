@@ -1,4 +1,4 @@
-import { PolyfillMap } from './polyfill-map';
+import { PolyfillMap } from './polyfill-map'
 
 /**
  * map of value or map, aka nested map
@@ -9,39 +9,39 @@ import { PolyfillMap } from './polyfill-map';
  * K can be any type
  * */
 export class MapMap<K, V> {
-  private m: Map<K, V>;
+  private m: Map<K, V>
 
   constructor() {
     if (typeof Map === 'function') {
-      this.m = new Map<K, V>();
+      this.m = new Map<K, V>()
     } else {
-      this.m = new PolyfillMap<K, V>();
+      this.m = new PolyfillMap<K, V>()
     }
   }
 
   public has(k: K): boolean {
-    return this.m.has(k);
+    return this.m.has(k)
   }
 
   public get(k: K): V | undefined {
-    return this.m.get(k);
+    return this.m.get(k)
   }
 
   public set(k: K, v: V) {
-    return this.m.set(k, v);
+    return this.m.set(k, v)
   }
 
   public getMap(k: K): (V | undefined) & MapMap<any, any> {
     if (this.m.has(k)) {
-      return this.m.get(k) as any;
+      return this.m.get(k) as any
     }
-    const res = new MapMap<any, any>();
-    this.m.set(k, (res as any) as V);
-    return res as any;
+    const res = new MapMap<any, any>()
+    this.m.set(k, (res as any) as V)
+    return res as any
   }
 
   public clear() {
-    this.m.clear();
+    this.m.clear()
   }
 }
 
@@ -49,30 +49,30 @@ export class MapMap<K, V> {
  * Key can only be number, string or symbol
  * */
 export class SimpleMapMap<K extends PropertyKey, V> {
-  private o: { [k: string]: V } = {};
+  private o: { [k: string]: V } = {}
 
   public has(k: K): boolean {
-    return k in this.o;
+    return k in this.o
   }
 
   public get(k: K): V | undefined {
-    return this.o[k as string];
+    return this.o[k as string]
   }
 
   public set(k: K, v: V) {
-    this.o[k as string] = v;
+    this.o[k as string] = v
   }
 
   public getMap(k: K): (V | undefined) & SimpleMapMap<any, any> {
     if (k in this.o) {
-      return this.o[k as string] as any;
+      return this.o[k as string] as any
     }
-    const res = new SimpleMapMap<K, V>();
-    this.o[k as string] = (res as any) as V;
-    return res as any;
+    const res = new SimpleMapMap<K, V>()
+    this.o[k as string] = (res as any) as V
+    return res as any
   }
 
   public clear() {
-    this.o = {};
+    this.o = {}
   }
 }

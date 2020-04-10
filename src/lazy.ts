@@ -1,23 +1,23 @@
 export function createLazy<A>(f: () => A): () => A {
-  let a: A;
-  let done = false;
+  let a: A
+  let done = false
   return () => {
     if (!done) {
-      a = f();
-      done = true;
+      a = f()
+      done = true
     }
-    return a;
-  };
+    return a
+  }
 }
 
 export function createAsyncLazy<A>(f: () => Promise<A>): () => Promise<A> {
-  let promise: Promise<A>;
-  let done = false;
+  let promise: Promise<A>
+  let done = false
   return () => {
     if (!done) {
-      promise = f();
-      done = true;
+      promise = f()
+      done = true
     }
-    return promise;
-  };
+    return promise
+  }
 }

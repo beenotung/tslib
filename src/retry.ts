@@ -1,4 +1,4 @@
-import { later } from './async/wait';
+import { later } from './async/wait'
 
 export const tryN = <A>(
   n: number,
@@ -9,6 +9,6 @@ export const tryN = <A>(
   n < 0
     ? Promise.reject(e)
     : f().catch(e => {
-        const h = () => tryN(n - 1, f, interval, e);
-        return interval ? later(interval).then(h) : h();
-      });
+        const h = () => tryN(n - 1, f, interval, e)
+        return interval ? later(interval).then(h) : h()
+      })

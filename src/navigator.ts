@@ -1,4 +1,4 @@
-export type json = object | string | number | boolean | null;
+export type json = object | string | number | boolean | null
 
 /**
  * 1. resolve nested object as undefined
@@ -10,55 +10,55 @@ export type json = object | string | number | boolean | null;
  * */
 export function toJson(o: any, visited: Set<any>): json {
   if (o === null) {
-    return null;
+    return null
   }
   if (typeof o === 'object') {
     if (visited.has(o)) {
       // console.log('duplicated visit of:', o);
-      return undefined as any;
+      return undefined as any
     } else {
-      visited.add(o);
+      visited.add(o)
     }
   }
-  const res: any = {};
+  const res: any = {}
   switch (typeof o) {
     case 'string':
     case 'number':
     case 'boolean':
-      return o;
+      return o
   }
   /* tslint:disable:forin */
   for (const k in o) {
     /* tslint:enable:forin */
-    const type = typeof o[k];
+    const type = typeof o[k]
     switch (type) {
       case 'string':
       case 'number':
       case 'boolean':
-        res[k] = o[k];
-        break;
+        res[k] = o[k]
+        break
       case 'function':
-        break;
+        break
       case 'undefined':
-        break;
+        break
       case 'object':
-        const v = o[k];
+        const v = o[k]
         if (Array.isArray(v)) {
-          res[k] = v.map(o => toJson(o, visited));
+          res[k] = v.map(o => toJson(o, visited))
         } else {
-          const x = toJson(v, visited);
+          const x = toJson(v, visited)
           if (x === null || (x !== undefined && Object.keys(x).length > 0)) {
-            res[k] = x;
+            res[k] = x
           }
         }
-        break;
+        break
       default:
-        console.log({ type, k, v: o[k] });
+        console.log({ type, k, v: o[k] })
     }
   }
-  return res;
+  return res
 }
 
 export function mkNavigator(): json {
-  return toJson(window.navigator, new Set<any>());
+  return toJson(window.navigator, new Set<any>())
 }

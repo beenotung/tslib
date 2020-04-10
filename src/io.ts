@@ -1,27 +1,27 @@
-import { createInterface, ReadLine, ReadLineOptions } from 'readline';
-import { createLazy } from './lazy';
+import { createInterface, ReadLine, ReadLineOptions } from 'readline'
+import { createLazy } from './lazy'
 
 export function createRL(
   options: ReadLineOptions = { input: process.stdin, output: process.stdout },
 ): ReadLine {
-  return createInterface(options);
+  return createInterface(options)
 }
 
-export let getRL: () => ReadLine = createLazy(createRL);
+export let getRL: () => ReadLine = createLazy(createRL)
 
 /**@deprecated*/
-export let rl: ReadLine;
+export let rl: ReadLine
 {
-  let isNew = true;
+  let isNew = true
   rl = new Proxy({} as ReadLine, {
     get: (target, p) => {
       if (isNew) {
-        isNew = false;
-        Object.assign(target, getRL());
+        isNew = false
+        Object.assign(target, getRL())
       }
-      return (target as any)[p];
+      return (target as any)[p]
     },
-  });
+  })
 }
 
 export namespace IO {
@@ -32,16 +32,16 @@ export namespace IO {
     onnext: (line: string, lineNum: number) => void,
     oncomplete?: () => void,
   ) {
-    const rl = getRL();
-    let lineNum = -1;
+    const rl = getRL()
+    let lineNum = -1
     rl.on('line', line => {
-      lineNum++;
+      lineNum++
       if (line) {
-        onnext(line, lineNum);
+        onnext(line, lineNum)
       }
-    });
+    })
     if (typeof oncomplete === 'function') {
-      rl.on('close', oncomplete);
+      rl.on('close', oncomplete)
     }
   }
 
@@ -53,18 +53,18 @@ export namespace IO {
   ): Promise<A[]> {
     return new Promise<A[]>((resolve, reject) => {
       try {
-        const res: A[] = [];
+        const res: A[] = []
         forEachLine(
           (line, lineNum) => res.push(f(line, lineNum)),
           () => resolve(res),
-        );
+        )
       } catch (e) {
-        reject(e);
+        reject(e)
       }
-    });
+    })
   }
 
   export async function collect(): Promise<string[]> {
-    return mapLine(x => x);
+    return mapLine(x => x)
   }
 }

@@ -1,4 +1,4 @@
-import { then } from '../result';
+import { then } from '../result'
 
 /**
  * TODO auto adjust concurrent size to optimize concurrency
@@ -12,15 +12,15 @@ import { then } from '../result';
  * @param args.maxConcurrent: manually adjust to avoid out of memory
  * */
 export async function batchProcess<K, D>(args: {
-  keys: K[];
-  loader: (key: K) => Promise<D>;
-  processor: (datum: D, key: K) => void | Promise<void>;
-  maxConcurrent?: number;
+  keys: K[]
+  loader: (key: K) => Promise<D>
+  processor: (datum: D, key: K) => void | Promise<void>
+  maxConcurrent?: number
 }): Promise<void> {
-  const { keys, loader, processor } = args;
-  const maxConcurrent = args.maxConcurrent || Number.MAX_SAFE_INTEGER;
+  const { keys, loader, processor } = args
+  const maxConcurrent = args.maxConcurrent || Number.MAX_SAFE_INTEGER
   if (maxConcurrent < 1) {
-    throw new Error('require at least 1 maxConcurrent');
+    throw new Error('require at least 1 maxConcurrent')
   }
   /*
   // this is bad, because it will hold all the data in memory before consuming them
@@ -29,54 +29,54 @@ export async function batchProcess<K, D>(args: {
   */
   return new Promise<void>((resolve, reject) => {
     const fail = (e: any) => {
-      reject(e);
-    };
-    let nextLoadIndex = 0;
-    let nextProcessIndex = 0;
+      reject(e)
+    }
+    let nextLoadIndex = 0
+    let nextProcessIndex = 0
 
-    const loadedDataBuffer = new Map<number, { key: K; datum: D }>();
+    const loadedDataBuffer = new Map<number, { key: K; datum: D }>()
     const onLoad = (datum: D, key: K): void => {
       then(
         processor(datum, key),
         () => {
           // finished processing
-          nextProcessIndex++;
+          nextProcessIndex++
           if (nextProcessIndex >= keys.length) {
-            resolve();
+            resolve()
           } else {
-            const record = loadedDataBuffer.get(nextProcessIndex);
+            const record = loadedDataBuffer.get(nextProcessIndex)
             if (record) {
-              const { key, datum } = record;
-              loadedDataBuffer.delete(nextProcessIndex);
-              onLoad(datum, key);
+              const { key, datum } = record
+              loadedDataBuffer.delete(nextProcessIndex)
+              onLoad(datum, key)
             }
           }
         },
         fail,
-      );
-    };
+      )
+    }
     const load = () => {
       if (nextLoadIndex >= keys.length) {
-        return;
+        return
       }
-      const loadingIndex = nextLoadIndex;
-      nextLoadIndex++;
-      const key = keys[loadingIndex];
+      const loadingIndex = nextLoadIndex
+      nextLoadIndex++
+      const key = keys[loadingIndex]
       loader(key)
         .then(datum => {
           if (loadingIndex === nextProcessIndex) {
             // can process immediately
-            onLoad(datum, key);
+            onLoad(datum, key)
           } else {
             // cannot process yet, store to buffer
-            loadedDataBuffer.set(loadingIndex, { key, datum });
+            loadedDataBuffer.set(loadingIndex, { key, datum })
           }
-          load();
+          load()
         })
-        .catch(fail);
-    };
-    for (let i = 0; i < maxConcurrent; i++) {
-      load();
+        .catch(fail)
     }
-  });
+    for (let i = 0; i < maxConcurrent; i++) {
+      load()
+    }
+  })
 }

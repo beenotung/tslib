@@ -18,7 +18,7 @@ export let allNames = [
   'Ted',
   'Victor',
   'Wendy',
-];
+]
 
 export let names = {
   Alice: 'Alice',
@@ -40,4 +40,4 @@ export let names = {
   Ted: 'Ted',
   Victor: 'Victor',
   Wendy: 'Wendy',
-};
+}

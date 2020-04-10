@@ -1,5 +1,5 @@
-import { MapMap } from './map-map';
-import { wrapFunction } from './reflection';
+import { MapMap } from './map-map'
+import { wrapFunction } from './reflection'
 
 /* tslint:disable:ban-types */
 /**
@@ -20,62 +20,62 @@ import { wrapFunction } from './reflection';
 export function memorize<F extends Function>(f: F): F & { clear: () => void } {
   /* tslint:enable:ban-types */
   /* length => ...args */
-  const cache = new MapMap<number, MapMap<any, any>>();
+  const cache = new MapMap<number, MapMap<any, any>>()
   return Object.assign(
     wrapFunction<F>(
       function() {
-        let map = cache.getMap(arguments.length);
+        let map = cache.getMap(arguments.length)
         for (let i = arguments.length - 1; i > 0; i--) {
-          map = map.getMap(arguments[i]);
+          map = map.getMap(arguments[i])
         }
-        const last = arguments[0];
+        const last = arguments[0]
         if (map.has(last)) {
-          return map.get(last);
+          return map.get(last)
         }
-        const res = f.apply(null, arguments);
-        map.set(last, res);
-        return res;
+        const res = f.apply(null, arguments)
+        map.set(last, res)
+        return res
       } as any,
       f.length,
       f.name,
     ),
     { clear: () => cache.clear() },
-  );
+  )
 }
 
 export class MemorizePool<A> {
-  public cache = new MapMap<number, MapMap<any, any>>();
+  public cache = new MapMap<number, MapMap<any, any>>()
 
   public get(args: IArguments): undefined | [A] {
-    const map = this.getLastMap(args);
-    const last = args[0];
+    const map = this.getLastMap(args)
+    const last = args[0]
     if (map.has(last)) {
-      return [map.get(last) as any];
+      return [map.get(last) as any]
     } else {
-      return undefined;
+      return undefined
     }
   }
 
   public set(args: IArguments, res: any) {
-    this.getLastMap(args).set(args[0], res);
+    this.getLastMap(args).set(args[0], res)
   }
 
   public getOrCalc(args: IArguments, f: () => A) {
-    const map = this.getLastMap(args);
-    const last = args[0];
+    const map = this.getLastMap(args)
+    const last = args[0]
     if (map.has(last)) {
-      return map.get(last);
+      return map.get(last)
     }
-    const res = f();
-    map.set(last, res);
-    return res;
+    const res = f()
+    map.set(last, res)
+    return res
   }
 
   private getLastMap(args: IArguments): MapMap<any, A> {
-    let map = this.cache.getMap(args.length);
+    let map = this.cache.getMap(args.length)
     for (let i = args.length - 1; i > 0; i--) {
-      map = map.getMap(args[i]);
+      map = map.getMap(args[i])
     }
-    return map;
+    return map
   }
 }

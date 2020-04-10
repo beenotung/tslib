@@ -1,15 +1,15 @@
-import * as os from 'os';
-import { promisify } from 'util';
-import { Worker } from 'worker_threads';
+import * as os from 'os'
+import { promisify } from 'util'
+import { Worker } from 'worker_threads'
 
 function defaultWeights(): number[] {
-  return os.cpus().map(cpu => cpu.speed);
+  return os.cpus().map(cpu => cpu.speed)
 }
 
 export type WeightedWorker = {
-  weight: number;
-  worker: Worker;
-};
+  weight: number
+  worker: Worker
+}
 
 /**
  *
@@ -19,88 +19,88 @@ export type WeightedWorker = {
  * DO NOT support multiple interlaced concurrent batches
  * */
 export class ThreadPool {
-  totalWeights: number;
-  workers: WeightedWorker[];
+  totalWeights: number
+  workers: WeightedWorker[]
 
   dispatch: {
-    <T, R>(inputs: T[], cb: (err: any, outputs: R[]) => void): void;
-    <T, R>(inputs: T[]): Promise<R[]>;
+    <T, R>(inputs: T[], cb: (err: any, outputs: R[]) => void): void
+    <T, R>(inputs: T[]): Promise<R[]>
   } = promisify(<T, R>(inputs: T[], cb: (err: any, outputs: R[]) => void) => {
-    const n = inputs.length;
-    const outputs = new Array(n);
-    let offset = 0;
-    let pending = 0;
+    const n = inputs.length
+    const outputs = new Array(n)
+    let offset = 0
+    let pending = 0
     for (const worker of this.workers) {
-      const start = offset;
-      const count = Math.ceil((worker.weight / this.totalWeights) * n);
-      const end = offset + count;
-      offset = end;
-      const xs = inputs.slice(start, end);
-      pending++;
+      const start = offset
+      const count = Math.ceil((worker.weight / this.totalWeights) * n)
+      const end = offset + count
+      offset = end
+      const xs = inputs.slice(start, end)
+      pending++
       worker.worker.once('message', ys => {
         for (let o = start, c = 0; o < end; o++, c++) {
-          outputs[o] = ys[c];
+          outputs[o] = ys[c]
         }
-        pending--;
+        pending--
         if (pending === 0) {
-          cb(undefined, outputs);
+          cb(undefined, outputs)
         }
-      });
-      worker.worker.postMessage(xs);
+      })
+      worker.worker.postMessage(xs)
       if (end >= n) {
-        break;
+        break
       }
     }
-  });
+  })
 
   constructor(
     options:
       | {
-          modulePath: string;
-          weights?: number[];
+          modulePath: string
+          weights?: number[]
           /**
            * number of worker = (number of core / weights) * overload
            * default to 1.0
            * */
-          overload?: number;
+          overload?: number
         }
       | {
-          workers: WeightedWorker[];
+          workers: WeightedWorker[]
         },
   ) {
     if ('workers' in options) {
       if (options.workers.length === 0) {
-        throw new Error('require at least 1 workers');
+        throw new Error('require at least 1 workers')
       }
-      this.workers = options.workers;
-      this.totalWeights = 0;
-      this.workers.forEach(x => (this.totalWeights += x.weight));
-      return;
+      this.workers = options.workers
+      this.totalWeights = 0
+      this.workers.forEach(x => (this.totalWeights += x.weight))
+      return
     }
-    let { weights, overload } = options;
+    let { weights, overload } = options
     if (!weights) {
-      weights = defaultWeights();
+      weights = defaultWeights()
     }
     if (weights.length === 0) {
-      throw new Error('require at least 1 weights');
+      throw new Error('require at least 1 weights')
     }
     if (!overload) {
-      overload = 1;
+      overload = 1
     }
-    const n = weights.length * overload;
-    this.workers = new Array(n);
-    this.totalWeights = 0;
+    const n = weights.length * overload
+    this.workers = new Array(n)
+    this.totalWeights = 0
     for (let i = 0; i < n; i++) {
-      const weight = weights[i % weights.length];
-      this.totalWeights += weight;
+      const weight = weights[i % weights.length]
+      this.totalWeights += weight
       this.workers[i] = {
         weight,
         worker: new Worker(options.modulePath),
-      };
+      }
     }
   }
 
   close() {
-    this.workers.forEach(worker => worker.worker.terminate());
+    this.workers.forEach(worker => worker.worker.terminate())
   }
 }

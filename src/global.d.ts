@@ -1,14 +1,14 @@
 interface SymbolConstructor {
   /* used by Store */
-  storage: symbol;
+  storage: symbol
   /* used by AsyncStore */
-  counter: symbol;
-  dirpath: symbol;
+  counter: symbol
+  dirpath: symbol
   /* used by CachedObjectStore */
-  objectCache: symbol;
-  cacheSize: symbol;
-  store: symbol;
-  asyncStore: symbol;
-  maxCacheSize: symbol;
-  asyncStoreSetItemResults: symbol;
+  objectCache: symbol
+  cacheSize: symbol
+  store: symbol
+  asyncStore: symbol
+  maxCacheSize: symbol
+  asyncStoreSetItemResults: symbol
 }

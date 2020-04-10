@@ -1,23 +1,23 @@
 /// <reference types="./global" />
-Symbol.storage = Symbol.for('storage');
+Symbol.storage = Symbol.for('storage')
 
 export function getNodeStore(name: string, quota?: number): Storage {
-  const { LocalStorage } = require('node-localstorage');
+  const { LocalStorage } = require('node-localstorage')
   return typeof quota === 'number'
     ? new LocalStorage(name, quota)
-    : new LocalStorage(name);
+    : new LocalStorage(name)
 }
 
 export function getLocalStorage(name: string, quota?: number): Storage {
   return typeof localStorage === 'undefined' || localStorage === null
     ? getNodeStore(name, quota)
-    : localStorage;
+    : localStorage
 }
 
 export interface IStore<getItemResult, setItemResult> {
-  getItem(key: string): getItemResult;
+  getItem(key: string): getItemResult
 
-  setItem(key: string, value: string): setItemResult;
+  setItem(key: string, value: string): setItemResult
 }
 
 export function proxyStore<
@@ -30,79 +30,79 @@ export function proxyStore<
 >(store: Store) {
   return new Proxy(store, {
     get(target: Store, p: PropertyKey, receiver: any): any {
-      const value = Reflect.get(target, p, receiver);
+      const value = Reflect.get(target, p, receiver)
       if (
         typeof p === 'symbol' ||
         p === 'inspect' ||
         typeof value === 'function'
       ) {
-        return value;
+        return value
       }
-      return target.getItem(p as string);
+      return target.getItem(p as string)
     },
     set(target: Store, p: PropertyKey, value: any, receiver: any): boolean {
       if (typeof p === 'symbol') {
-        return Reflect.set(target, p, value, receiver);
+        return Reflect.set(target, p, value, receiver)
       }
-      target.setItem(p as string, value);
-      return true;
+      target.setItem(p as string, value)
+      return true
     },
-  });
+  })
 }
 
 export class Store implements Storage {
-  [Symbol.storage]: Storage;
+  [Symbol.storage]: Storage
 
   private constructor(storage: Storage) {
-    this[Symbol.storage] = storage;
+    this[Symbol.storage] = storage
   }
 
   get length(): number {
-    return this[Symbol.storage].length;
+    return this[Symbol.storage].length
   }
 
   clear(): void {
-    return this[Symbol.storage].clear();
+    return this[Symbol.storage].clear()
   }
 
   getItem(key: string): string | null {
-    return this[Symbol.storage].getItem(key);
+    return this[Symbol.storage].getItem(key)
   }
 
   getObject<T>(key: string): T | null {
-    const value = this.getItem(key);
-    return JSON.parse(value as string);
+    const value = this.getItem(key)
+    return JSON.parse(value as string)
   }
 
   key(index: number): string | null {
-    const value = this[Symbol.storage].key(index);
-    return value === undefined ? null : value;
+    const value = this[Symbol.storage].key(index)
+    return value === undefined ? null : value
   }
 
   keys(): string[] {
-    const n = this.length;
-    const keys: string[] = new Array(n);
+    const n = this.length
+    const keys: string[] = new Array(n)
     for (let i = 0; i < n; i++) {
-      keys[i] = this.key(i) as string;
+      keys[i] = this.key(i) as string
     }
-    return keys;
+    return keys
   }
 
   removeItem(key: string): void {
-    return this[Symbol.storage].removeItem(key);
+    return this[Symbol.storage].removeItem(key)
   }
 
   setItem(key: string, value: string): void {
-    return this[Symbol.storage].setItem(key, value);
+    return this[Symbol.storage].setItem(key, value)
   }
 
   setObject(key: string, value: any): void {
-    return this.setItem(key, JSON.stringify(value));
+    return this.setItem(key, JSON.stringify(value))
   }
 
   static create(storage: Storage): Store {
-    const store = new Store(storage);
-    return proxyStore(store);
+    const store = new Store(storage)
+    return proxyStore(store)
   }
 }
 
@@ -111,59 +111,59 @@ export class Store implements Storage {
  * the impl below use global state, may have unintended side effect by other client
  * */
 
-export let storeName = 'data';
-export let storeQuota: number;
+export let storeName = 'data'
+export let storeQuota: number
 
-let _store: Storage | undefined;
+let _store: Storage | undefined
 
 export function setStoreName(name: string) {
-  storeName = name;
-  _store = undefined;
+  storeName = name
+  _store = undefined
 }
 
 export function setStoreQuota(quota: number) {
-  storeQuota = quota;
-  _store = undefined;
+  storeQuota = quota
+  _store = undefined
 }
 
 export function getStore(): Storage {
   if (!_store) {
     if (typeof localStorage === 'undefined' || localStorage === null) {
-      _store = getNodeStore(storeName, storeQuota);
+      _store = getNodeStore(storeName, storeQuota)
     } else {
-      _store = localStorage;
+      _store = localStorage
     }
   }
-  return _store;
+  return _store
 }
 
 export function storeSet(key: string, value: any) {
-  getStore().setItem(key, JSON.stringify(value));
+  getStore().setItem(key, JSON.stringify(value))
 }
 
 export function storeGet(key: string) {
-  const s = getStore().getItem(key);
+  const s = getStore().getItem(key)
   try {
-    return JSON.parse(s as string);
+    return JSON.parse(s as string)
   } catch (e) {
-    return s;
+    return s
   }
 }
 
 export function storeLength(): number {
-  return getStore().length;
+  return getStore().length
 }
 
 export function storeKey(index: number): string | null {
-  return getStore().key(index);
+  return getStore().key(index)
 }
 
 export function storeKeys(): string[] {
-  const store = getStore();
-  const n = store.length;
-  const keys: string[] = new Array(n);
+  const store = getStore()
+  const n = store.length
+  const keys: string[] = new Array(n)
   for (let i = 0; i < n; i++) {
-    keys[i] = store.key(i) as string;
+    keys[i] = store.key(i) as string
   }
-  return keys;
+  return keys
 }
