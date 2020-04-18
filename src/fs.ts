@@ -154,3 +154,11 @@ export function scanRecursivelySync(args: {
     onComplete()
   }
 }
+
+export function readJsonFile(file: string): Promise<any> {
+  return readFile(file).then(buffer => JSON.parse(buffer.toString()))
+}
+
+export function readJsonFileSync(file: string): any {
+  return JSON.parse(fs.readFileSync(file).toString())
+}
