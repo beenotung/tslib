@@ -1,7 +1,7 @@
-import { facebook } from './facebook';
-import { ionic } from './ionic';
-import { notification } from './notification';
-import { number } from './number';
+import { facebook } from './facebook'
+import { ionic } from './ionic'
+import { notification } from './notification'
+import { number } from './number'
 
 export const constant = Object.assign(
   {},
@@ -9,4 +9,4 @@ export const constant = Object.assign(
   notification.constant,
   facebook.constant,
   number.constant,
-);
+)

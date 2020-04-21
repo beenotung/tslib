@@ -1,24 +1,24 @@
-import { createDefer } from './async/defer';
+import { createDefer } from './async/defer'
 
 export function isSupportNotification(): boolean {
-  return 'Notification' in window;
+  return 'Notification' in window
 }
 
 export async function requireNotification(): Promise<boolean> {
   if (!isSupportNotification()) {
-    return false;
+    return false
   }
-  const defer = createDefer<boolean, any>();
+  const defer = createDefer<boolean, any>()
   Notification.requestPermission(res => {
     if (res === 'granted') {
-      defer.resolve(true);
+      defer.resolve(true)
     } else if (res === 'denied') {
-      defer.resolve(false);
+      defer.resolve(false)
     } else {
-      defer.reject(new Error('unexpected result:' + res));
+      defer.reject(new Error('unexpected result:' + res))
     }
-  });
-  return defer.promise;
+  })
+  return defer.promise
 }
 
 /**
@@ -31,9 +31,9 @@ export async function showNotification(
 ) {
   function fallback() {
     if (useAlert) {
-      return alert(msg);
+      return alert(msg)
     } else {
-      throw new Error('Notification is not supported');
+      throw new Error('Notification is not supported')
     }
   }
 
@@ -41,15 +41,15 @@ export async function showNotification(
     !(await requireNotification()) ||
     !('ServiceWorkerRegistration' in window)
   ) {
-    return fallback();
+    return fallback()
   }
   try {
-    return ServiceWorkerRegistration.prototype.showNotification(msg, options);
+    return ServiceWorkerRegistration.prototype.showNotification(msg, options)
   } catch (e) {
     try {
-      return new Notification(msg, options);
+      return new Notification(msg, options)
     } catch (e) {
-      return fallback();
+      return fallback()
     }
   }
 }

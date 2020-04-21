@@ -1,3 +1,3 @@
-import {IO} from "../src/io";
+import { IO } from '../src/io'
 
-IO.forEachLine(line => console.log(line));
+IO.forEachLine(line => console.log(line))

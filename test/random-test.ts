@@ -1,63 +1,66 @@
-import { format_relative_time } from '../src/format';
-import { base58Letters, digits, Random } from '../src/random';
+import { format_relative_time } from '../src/format'
+import { base58Letters, Random } from '../src/random'
 
-let ProgressBar = require('cli-progress').Bar;
+import { Bar } from 'cli-progress'
 
 function testEnum() {
   enum E {
-    a, b, c,
+    a,
+    b,
+    c,
   }
 
-  let e: E = Random.nextEnum(E);
-  console.log('enum values:');
-  console.log(Random.nextEnum<E>(E));
-  console.log(Random.nextEnum<E>(E));
-  console.log(Random.nextEnum<E>(E));
-  console.log('enum keys:');
-  console.log(Random.nextEnumKey(E));
-  console.log(Random.nextEnumKey(E));
-  console.log(Random.nextEnumKey(E));
+  const e = Random.nextEnum(E) as E
+  console.log(e)
+  console.log('enum values:')
+  console.log(Random.nextEnum<E>(E))
+  console.log(Random.nextEnum<E>(E))
+  console.log(Random.nextEnum<E>(E))
+  console.log('enum keys:')
+  console.log(Random.nextEnumKey(E))
+  console.log(Random.nextEnumKey(E))
+  console.log(Random.nextEnumKey(E))
 }
 
-testEnum();
+testEnum()
 
 function testProbability() {
-  let xs = {};
-  let n = 0;
-  let pool = base58Letters;
-  let length = 3;
-  let progressBar = new ProgressBar();
-  progressBar.start(Math.pow(pool.length, length), 0);
-  let start = new Date();
-  for (; ;) {
+  const xs = {} as Record<string, boolean>
+  let n = 0
+  const pool = base58Letters
+  const length = 3
+  const progressBar = new Bar({})
+  progressBar.start(Math.pow(pool.length, length), 0)
+  const start = new Date()
+  for (;;) {
     if (n >= Math.pow(pool.length, length)) {
-      break;
+      break
     }
-    let start = Date.now();
-    let i = 0;
-    for (; ;) {
-      i++;
+    const start = Date.now()
+    let i = 0
+    for (;;) {
+      i++
       // let s = Math.random().toString(36).substr(2);
-      let s = Random.nextString(length, pool);
+      const s = Random.nextString(length, pool)
       if (!xs[s]) {
-        xs[s] = true;
-        n++;
+        xs[s] = true
+        n++
         if (progressBar) {
-          progressBar.increment();
+          progressBar.increment(1)
         } else {
-          let end = Date.now();
-          let used = end - start;
-          console.log(`n=${n}, i=${i}, used ${used} ms`);
+          const end = Date.now()
+          const used = end - start
+          console.log(`n=${n}, i=${i}, used ${used} ms`)
         }
-        break;
+        break
       }
     }
   }
   if (progressBar) {
-    progressBar.stop();
+    progressBar.stop()
   }
-  console.log('tried all combination');
-  console.log(format_relative_time(start.getTime()));
+  console.log('tried all combination')
+  console.log(format_relative_time(start.getTime()))
 }
 
-testProbability();
+testProbability()

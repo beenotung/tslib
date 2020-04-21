@@ -1,7 +1,7 @@
-import * as lib from '../../src/index';
-import { setWindowProp } from '../../src';
-import { Stream } from 'stream';
+import { Stream } from 'stream'
+import { setWindowProp } from '../../src'
+import * as lib from '../../src/index'
 
-setWindowProp('lib', lib);
+setWindowProp('lib', lib)
 
-setWindowProp('Stream', Stream);
+setWindowProp('Stream', Stream)

@@ -1,13 +1,13 @@
 export class TimeoutError extends Error {
   constructor(public context?: any) {
-    super();
-    this.name = 'TimeoutError';
+    super()
+    this.name = 'TimeoutError'
   }
 }
 
 export class TimeoutPromise<T> implements Promise<T> {
-  public [Symbol.toStringTag]: any;
-  private promise: Promise<T>;
+  public [Symbol.toStringTag]: any
+  private promise: Promise<T>
 
   constructor(
     executor: (
@@ -17,24 +17,24 @@ export class TimeoutPromise<T> implements Promise<T> {
     timeout: number,
     context?: any,
   ) {
-    this.promise = timeoutPromise(new Promise<any>(executor), timeout, context);
+    this.promise = timeoutPromise(new Promise<any>(executor), timeout, context)
   }
 
   public then<R, E>(
     onfulfilled?: (value: T) => PromiseLike<R> | R,
     onrejected?: (reason: any) => PromiseLike<E> | E,
   ): Promise<R | E> {
-    return this.promise.then(onfulfilled, onrejected);
+    return this.promise.then(onfulfilled, onrejected)
   }
 
   public catch<TResult>(
     onrejected?: (reason: any) => PromiseLike<TResult> | TResult,
   ): Promise<T | TResult> {
-    return this.promise.catch(onrejected);
+    return this.promise.catch(onrejected)
   }
 
   public finally(onfinally?: (() => void) | undefined | null): Promise<T> {
-    return this.promise.finally(onfinally);
+    return this.promise.finally(onfinally)
   }
 }
 
@@ -43,21 +43,21 @@ export function timeoutPromise<T>(
   timeout: number,
   context?: any,
 ): Promise<T> {
-  let timer: any;
+  let timer: any
   const timerPromise = new Promise<never>((resolve, reject) => {
     if (typeof timeout === 'number') {
       timer = setTimeout(() => {
-        reject(new TimeoutError(context));
-      }, timeout);
+        reject(new TimeoutError(context))
+      }, timeout)
     }
-  });
+  })
   return Promise.race([p, timerPromise])
     .then(x => {
-      clearTimeout(timer);
-      return x;
+      clearTimeout(timer)
+      return x
     })
     .catch(e => {
-      clearTimeout(timer);
-      return Promise.reject(e);
-    });
+      clearTimeout(timer)
+      return Promise.reject(e)
+    })
 }

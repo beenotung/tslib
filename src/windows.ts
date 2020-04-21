@@ -10,5 +10,5 @@ export function fixWindowsFilename(s: string): string {
       .replace(/\*/g, '＊')
       .replace(/"/g, "''")
       .replace('', '')
-  );
+  )
 }

@@ -1,1 +1,1 @@
-export type Runnable<A> = () => A | Promise<A>;
+export type Runnable<A> = () => A | Promise<A>

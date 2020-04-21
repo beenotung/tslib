@@ -5,8 +5,8 @@
  */
 if (!Array.isArray) {
   Array.isArray = function isArray(arg: any): arg is any[] {
-    return Object.prototype.toString.call(arg) === '[object Array]';
-  };
+    return Object.prototype.toString.call(arg) === '[object Array]'
+  }
 }
 
 // tslint:disable
@@ -87,13 +87,13 @@ export interface PolyfillArrayConstructor extends ArrayConstructor {
 const prototype = Object.assign({
   peek: function peek(callbackfn: (value: number, index: number, array: PolyfillArray<any>) => void, thisArg?: any): PolyfillArray<any> {
     // tslint:disable-next-line:no-invalid-this
-    const self: PolyfillArray<any> = thisArg || this;
+    const self: PolyfillArray<any> = thisArg || this
     self.forEach((value, index, array) => {
-      callbackfn(value, index, array as PolyfillArray<any>);
-    }, self);
-    return self;
+      callbackfn(value, index, array as PolyfillArray<any>)
+    },           self)
+    return self
   },
-}, Array.prototype);
-export let PolyfillArray: PolyfillArrayConstructor = Array as any;
-PolyfillArray.fromArray = PolyfillArray.from;
-Object.assign(PolyfillArray.prototype, prototype);
+},                              Array.prototype)
+export let PolyfillArray: PolyfillArrayConstructor = Array as any
+PolyfillArray.fromArray = PolyfillArray.from
+Object.assign(PolyfillArray.prototype, prototype)

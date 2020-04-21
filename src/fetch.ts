@@ -1,11 +1,11 @@
-import fetch_ from 'cross-fetch';
-import { getWindowOrGlobal } from './runtime';
+import fetch_ from 'cross-fetch'
+import { getWindowOrGlobal } from './runtime'
 
-export let fetch: Window['fetch'] = fetch_;
+export let fetch: Window['fetch'] = fetch_
 
 export function polyfillFetch() {
-  const win = getWindowOrGlobal() as any;
-  win.fetch = win.fetch || fetch;
+  const win = getWindowOrGlobal() as any
+  win.fetch = win.fetch || fetch
 }
 
 /**
@@ -17,15 +17,15 @@ export function checkedFetch<T>({
   on2xx,
   non2xx,
 }: {
-  input: RequestInfo;
-  init?: RequestInit;
-  on2xx: (response: Response) => T | Promise<T>;
-  non2xx: (response: Response) => T | Promise<T>;
+  input: RequestInfo
+  init?: RequestInit
+  on2xx: (response: Response) => T | Promise<T>
+  non2xx: (response: Response) => T | Promise<T>
 }): Promise<T> {
   return fetch(input, init).then(res => {
     if (200 <= res.status && res.status < 300) {
-      return on2xx(res);
+      return on2xx(res)
     }
-    return non2xx(res);
-  });
+    return non2xx(res)
+  })
 }

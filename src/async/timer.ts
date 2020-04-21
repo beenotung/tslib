@@ -3,9 +3,9 @@ function noop() {}
 /* tslint:enable no-empty */
 
 export function clearAllTimer() {
-  let i = setInterval(noop);
+  let i = setInterval(noop)
   for (; i > 0; i--) {
-    clearTimeout(i);
-    clearInterval(i);
+    clearTimeout(i)
+    clearInterval(i)
   }
 }

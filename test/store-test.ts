@@ -1,11 +1,11 @@
-import {getLocalStorage, Store, storeGet, storeSet} from '../src/store';
+import { getLocalStorage, Store, storeGet, storeSet } from '../src/store'
 
-let key = 'store-test';
-let x = storeGet(key);
-console.log({x});
-let y = x + 1;
-storeSet(key, y);
+const key = 'store-test'
+const x = storeGet(key)
+console.log({ x })
+const y = x + 1
+storeSet(key, y)
 
-let store = Store.create(getLocalStorage('data'));
-console.log(store['now'] = Date.now());
-console.log(store['now'] == store.getItem('now'));
+const store: any = Store.create(getLocalStorage('data'))
+console.log((store.now = Date.now()))
+console.log(store.now === store.getItem('now'))

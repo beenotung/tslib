@@ -1,6 +1,6 @@
-import { mapArray } from './array';
+import { mapArray } from './array'
 
-let f_name: string;
+let f_name: string
 
 /* tslint:disable:ban-types */
 /**
@@ -12,20 +12,20 @@ export function wrapFunction<F extends Function>(
   name = _host_function_.name,
 ): F {
   /* tslint:enable:ban-types */
-  const args = mapArray(new Array(n), (x, i) => 'a' + i).join(',');
+  const args = mapArray(new Array(n), (x, i) => 'a' + i).join(',')
   /* tslint:disable */
-  let newF: F = undefined as any;
+  let newF: F = undefined as any
   eval(
     `newF=function ${name}(${args}){return ${f_name}.apply(null,arguments);}`,
-  );
-  return newF as any;
+  )
+  return newF as any
   /* tslint:enable */
 }
 
 f_name = wrapFunction
   .toString()
   .split('(')[1]
-  .split(',')[0];
+  .split(',')[0]
 
 /* tslint:disable:ban-types */
 /**
@@ -37,7 +37,7 @@ export function safeWrapFunction<F extends Function>(
   name = _host_function_.name,
 ): F {
   /* tslint:enable:ban-types */
-  const args = mapArray(new Array(n), (x, i) => 'a' + i).join(',');
+  const args = mapArray(new Array(n), (x, i) => 'a' + i).join(',')
   /* tslint:disable */
   return eval(`(function() {
     return function(f) {
@@ -45,6 +45,6 @@ export function safeWrapFunction<F extends Function>(
         return f.apply(null, arguments);
       };
     };
-  })()`)(_host_function_);
+  })()`)(_host_function_)
   /* tslint:enable */
 }

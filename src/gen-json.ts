@@ -1,20 +1,20 @@
-import { JsonArray, JsonObject, JsonPrimitive, JsonValue } from './json';
-import { Random, visibleLetters } from './random';
+import { JsonArray, JsonObject, JsonPrimitive, JsonValue } from './json'
+import { Random, visibleLetters } from './random'
 
 export function genNumber(): number {
-  return Random.element([Random.nextInt, Random.nextFloat])();
+  return Random.element([Random.nextInt, Random.nextFloat])()
 }
 
 export function genString(length = 8): string {
-  return Random.nextString(length, visibleLetters);
+  return Random.nextString(length, visibleLetters)
 }
 
 export function genNull(): null {
-  return null;
+  return null
 }
 
 export function getBoolean(): boolean {
-  return Random.nextBool();
+  return Random.nextBool()
 }
 
 export function genJsonPrimitive(length = 8): JsonPrimitive {
@@ -23,23 +23,23 @@ export function genJsonPrimitive(length = 8): JsonPrimitive {
     genNumber,
     genNull,
     getBoolean,
-  ])(length);
+  ])(length)
 }
 
 export function genJsonArray(length = 8): JsonArray {
-  const xs = new Array(length);
+  const xs = new Array(length)
   for (let i = 0; i < length; i++) {
-    xs[i] = genJsonValue(length - 1);
+    xs[i] = genJsonValue(length - 1)
   }
-  return xs;
+  return xs
 }
 
 export function genJsonObject(length = 8): JsonObject {
-  const o: any = {};
+  const o: any = {}
   for (let i = 0; i < length; i++) {
-    o[genString(length)] = genJsonValue(length - 1);
+    o[genString(length)] = genJsonValue(length - 1)
   }
-  return o;
+  return o
 }
 
 export function genJsonValue(length = 8): JsonValue {
@@ -47,5 +47,5 @@ export function genJsonValue(length = 8): JsonValue {
     genJsonPrimitive,
     genJsonArray,
     genJsonObject,
-  ])(length);
+  ])(length)
 }

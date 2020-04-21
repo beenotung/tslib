@@ -1,7 +1,7 @@
-import { enum_only_string } from './enum';
-import { fileToBase64String } from './file';
-import { Result, then } from './result';
-import { KB } from './size';
+import { enum_only_string } from './enum'
+import { fileToBase64String } from './file'
+import { Result, then } from './result'
+import { KB } from './size'
 
 /**
  * reference : https://stackoverflow.com/questions/20958078/resize-a-base-64-image-in-javascript-without-using-canvas
@@ -11,15 +11,15 @@ export function imageToCanvas(
   width: number,
   height: number,
 ): HTMLCanvasElement {
-  const canvas = document.createElement('canvas');
-  const ctx = canvas.getContext('2d');
+  const canvas = document.createElement('canvas')
+  const ctx = canvas.getContext('2d')
   if (ctx === null) {
-    throw new Error('unsupported');
+    throw new Error('unsupported')
   }
-  canvas.width = width;
-  canvas.height = height;
-  ctx.drawImage(img, 0, 0, width, height);
-  return canvas;
+  canvas.width = width
+  canvas.height = height
+  ctx.drawImage(img, 0, 0, width, height)
+  return canvas
 }
 
 export function imageToBase64(
@@ -27,16 +27,16 @@ export function imageToBase64(
   width: number,
   height: number,
 ): string {
-  return imageToCanvas(img, width, height).toDataURL();
+  return imageToCanvas(img, width, height).toDataURL()
 }
 
 export async function base64ToImage(data: string): Promise<HTMLImageElement> {
   return new Promise<HTMLImageElement>((resolve, reject) => {
-    const image = new Image();
-    image.onload = () => resolve(image);
-    image.onerror = e => reject(e);
-    image.src = data;
-  });
+    const image = new Image()
+    image.onload = () => resolve(image)
+    image.onerror = e => reject(e)
+    image.src = data
+  })
 }
 
 /**
@@ -45,7 +45,7 @@ export async function base64ToImage(data: string): Promise<HTMLImageElement> {
 export function checkBase64ImagePrefix(s: string): string {
   return typeof s === 'string' && s.startsWith('/9j/')
     ? 'data:image/jpeg;base64,' + s
-    : s;
+    : s
 }
 
 /**
@@ -58,29 +58,29 @@ export async function base64ToCanvas(
   width?: number,
   height?: number,
 ): Promise<HTMLCanvasElement> {
-  const image = await base64ToImage(data);
-  let w: number;
-  let h: number;
+  const image = await base64ToImage(data)
+  let w: number
+  let h: number
   if (width && height) {
-    w = width;
-    h = height;
+    w = width
+    h = height
   } else if (!width && !height) {
-    w = image.naturalWidth;
-    h = image.naturalHeight;
+    w = image.naturalWidth
+    h = image.naturalHeight
   } else if (width) {
     // height is not defined
-    w = width;
-    h = (image.naturalHeight / image.naturalWidth) * width;
+    w = width
+    h = (image.naturalHeight / image.naturalWidth) * width
   } else if (height) {
     // width is not defined
-    w = (image.naturalWidth / image.naturalHeight) * height;
-    h = height;
+    w = (image.naturalWidth / image.naturalHeight) * height
+    h = height
   } else {
     throw new Error(
       'logic error, missing edge case:' + JSON.stringify({ width, height }),
-    );
+    )
   }
-  return imageToCanvas(image, w, h);
+  return imageToCanvas(image, w, h)
 }
 
 export async function resizeBase64Image(
@@ -88,20 +88,20 @@ export async function resizeBase64Image(
   targetWidth: number,
   targetHeight: number,
 ): Promise<string> {
-  return (await base64ToCanvas(data, targetWidth, targetHeight)).toDataURL();
+  return (await base64ToCanvas(data, targetWidth, targetHeight)).toDataURL()
 }
 
 export interface ISize {
-  width: number;
-  height: number;
+  width: number
+  height: number
 }
 
 export async function getWidthHeightFromBase64(data: string): Promise<ISize> {
-  const image = await base64ToImage(data);
+  const image = await base64ToImage(data)
   return {
     width: image.naturalWidth,
     height: image.naturalHeight,
-  };
+  }
 }
 
 export enum ResizeType {
@@ -111,30 +111,30 @@ export enum ResizeType {
   at_least,
 }
 
-enum_only_string(ResizeType);
+enum_only_string(ResizeType)
 
 export function resizeWithRatio(
   oriSize: ISize,
   targetSize: ISize,
   mode: ResizeType,
 ): ISize {
-  const widthRate = targetSize.width / oriSize.width;
-  const heightRate = targetSize.height / oriSize.height;
-  let rate: number;
+  const widthRate = targetSize.width / oriSize.width
+  const heightRate = targetSize.height / oriSize.height
+  let rate: number
   switch (mode) {
     case ResizeType.with_in:
-      rate = Math.min(widthRate, heightRate);
-      break;
+      rate = Math.min(widthRate, heightRate)
+      break
     case ResizeType.at_least:
-      rate = Math.max(widthRate, heightRate);
-      break;
+      rate = Math.max(widthRate, heightRate)
+      break
     default:
-      throw new TypeError(`unsupported type: ${mode}`);
+      throw new TypeError(`unsupported type: ${mode}`)
   }
   return {
     width: oriSize.width * rate,
     height: oriSize.height * rate,
-  };
+  }
 }
 
 export async function resizeBase64WithRatio(
@@ -142,7 +142,7 @@ export async function resizeBase64WithRatio(
   preferredSize: ISize,
   mode: ResizeType,
 ): Promise<string> {
-  const image = await base64ToImage(data);
+  const image = await base64ToImage(data)
   const targetSize = resizeWithRatio(
     {
       width: image.naturalWidth,
@@ -150,8 +150,8 @@ export async function resizeBase64WithRatio(
     },
     preferredSize,
     mode,
-  );
-  return imageToBase64(image, targetSize.width, targetSize.height);
+  )
+  return imageToBase64(image, targetSize.width, targetSize.height)
 }
 
 // reference: image-file-to-base64-exif
@@ -162,12 +162,12 @@ function getNewScale(
   maxHeight: number,
 ) {
   if (image.width <= maxWidth && image.height <= maxHeight) {
-    return 1;
+    return 1
   }
   if (image.width > image.height) {
-    return image.width / maxWidth;
+    return image.width / maxWidth
   } else {
-    return image.height / maxHeight;
+    return image.height / maxHeight
   }
 }
 
@@ -178,52 +178,52 @@ export function resizeImage(
   mimeType?: string,
   quality?: number,
 ): base64 {
-  const scale = getNewScale(image, maxWidth, maxHeight);
-  const scaledWidth = image.width / scale;
-  const scaledHeight = image.height / scale;
-  const canvas = document.createElement('canvas') as HTMLCanvasElement;
-  canvas.width = scaledWidth;
-  canvas.height = scaledHeight;
-  const context = canvas.getContext('2d');
+  const scale = getNewScale(image, maxWidth, maxHeight)
+  const scaledWidth = image.width / scale
+  const scaledHeight = image.height / scale
+  const canvas = document.createElement('canvas') as HTMLCanvasElement
+  canvas.width = scaledWidth
+  canvas.height = scaledHeight
+  const context = canvas.getContext('2d')
   if (context === null) {
-    throw new Error('not supported');
+    throw new Error('not supported')
   }
-  context.drawImage(image, 0, 0, scaledWidth, scaledHeight);
+  context.drawImage(image, 0, 0, scaledWidth, scaledHeight)
   if (mimeType) {
-    return canvas.toDataURL(mimeType, quality || 1);
+    return canvas.toDataURL(mimeType, quality || 1)
   } else {
-    return canvas.toDataURL();
+    return canvas.toDataURL()
   }
 }
 
-export type base64 = string;
+export type base64 = string
 
 export function transformCentered(
   image: HTMLImageElement,
   flipXY: boolean,
   f: (ctx: CanvasRenderingContext2D) => void,
 ) {
-  const canvas = document.createElement('canvas') as HTMLCanvasElement;
-  canvas.width = flipXY ? image.height : image.width;
-  canvas.height = flipXY ? image.width : image.height;
-  const ctx = canvas.getContext('2d');
+  const canvas = document.createElement('canvas') as HTMLCanvasElement
+  canvas.width = flipXY ? image.height : image.width
+  canvas.height = flipXY ? image.width : image.height
+  const ctx = canvas.getContext('2d')
   if (ctx === null) {
-    throw new Error('not supported');
+    throw new Error('not supported')
   }
-  ctx.translate(canvas.width * 0.5, canvas.height * 0.5);
-  f(ctx);
-  ctx.translate(-image.width * 0.5, -image.height * 0.5);
-  ctx.drawImage(image, 0, 0);
+  ctx.translate(canvas.width * 0.5, canvas.height * 0.5)
+  f(ctx)
+  ctx.translate(-image.width * 0.5, -image.height * 0.5)
+  ctx.drawImage(image, 0, 0)
   // return canvas.toDataURL();
-  return canvas;
+  return canvas
 }
 
 export function rotateImage(image: HTMLImageElement) {
-  return transformCentered(image, true, ctx => ctx.rotate(0.5 * Math.PI));
+  return transformCentered(image, true, ctx => ctx.rotate(0.5 * Math.PI))
 }
 
 export function flipImage(image: HTMLImageElement) {
-  return transformCentered(image, false, ctx => ctx.scale(-1, 1));
+  return transformCentered(image, false, ctx => ctx.scale(-1, 1))
 }
 
 /**
@@ -231,13 +231,13 @@ export function flipImage(image: HTMLImageElement) {
  * e.g. data:image/jpeg;base64,... -> image/jpeg
  * */
 export function dataURItoMimeType(dataURI: string): string {
-  const idx = dataURI.indexOf(',');
+  const idx = dataURI.indexOf(',')
   if (idx === -1) {
-    throw new Error('data uri prefix not found');
+    throw new Error('data uri prefix not found')
   }
-  const prefix = dataURI.substr(0, idx);
-  const [mimeType] = prefix.replace(/^data:/, '').split(';');
-  return mimeType;
+  const prefix = dataURI.substr(0, idx)
+  const [mimeType] = prefix.replace(/^data:/, '').split(';')
+  return mimeType
 }
 
 /**
@@ -245,20 +245,20 @@ export function dataURItoMimeType(dataURI: string): string {
  * e.g. data:image/jpeg;base64,...
  * */
 export function dataURItoBlob(dataURI: string): Blob {
-  const [format, payload] = dataURI.split(',');
-  const [mimeType /*, encodeType*/] = format.replace(/^data:/, '').split(';');
-  let byteString: string;
+  const [format, payload] = dataURI.split(',')
+  const [mimeType /*, encodeType*/] = format.replace(/^data:/, '').split(';')
+  let byteString: string
   if (dataURI.startsWith('data:')) {
-    byteString = atob(payload);
+    byteString = atob(payload)
   } else {
-    byteString = unescape(payload);
+    byteString = unescape(payload)
   }
-  const n = byteString.length;
-  const buffer = new Uint8Array(n);
+  const n = byteString.length
+  const buffer = new Uint8Array(n)
   for (let i = 0; i < n; i++) {
-    buffer[i] = byteString.charCodeAt(i);
+    buffer[i] = byteString.charCodeAt(i)
   }
-  return new Blob([buffer], { type: mimeType });
+  return new Blob([buffer], { type: mimeType })
 }
 
 /**@deprecated use compressImageToBase64() compressImageToBlob() instead */
@@ -267,49 +267,49 @@ export function compressImage(
   mimeType?: string,
   quality = 0.8,
 ): base64 {
-  const canvas = document.createElement('canvas') as HTMLCanvasElement;
-  canvas.width = image.width;
-  canvas.height = image.height;
-  const ctx = canvas.getContext('2d');
+  const canvas = document.createElement('canvas') as HTMLCanvasElement
+  canvas.width = image.width
+  canvas.height = image.height
+  const ctx = canvas.getContext('2d')
   if (ctx === null) {
-    throw new Error('not supported');
+    throw new Error('not supported')
   }
-  ctx.drawImage(image, 0, 0);
+  ctx.drawImage(image, 0, 0)
   if (mimeType) {
-    return canvas.toDataURL(mimeType, quality);
+    return canvas.toDataURL(mimeType, quality)
   }
-  const png = canvas.toDataURL('image/png', quality);
-  const jpeg = canvas.toDataURL('image/jpeg', quality);
-  return jpeg.length < png.length ? jpeg : png;
+  const png = canvas.toDataURL('image/png', quality)
+  const jpeg = canvas.toDataURL('image/jpeg', quality)
+  return jpeg.length < png.length ? jpeg : png
 }
 
 function populateCompressArgs(args: {
-  image: HTMLImageElement;
-  canvas?: HTMLCanvasElement;
-  ctx?: CanvasRenderingContext2D;
-  maximumSize?: number;
-  quality?: number;
+  image: HTMLImageElement
+  canvas?: HTMLCanvasElement
+  ctx?: CanvasRenderingContext2D
+  maximumSize?: number
+  quality?: number
 }): {
-  image: HTMLImageElement;
-  canvas: HTMLCanvasElement;
-  ctx: CanvasRenderingContext2D;
-  maximumSize?: number;
-  quality?: number;
+  image: HTMLImageElement
+  canvas: HTMLCanvasElement
+  ctx: CanvasRenderingContext2D
+  maximumSize?: number
+  quality?: number
 } {
-  const image: HTMLImageElement = args.image;
+  const image: HTMLImageElement = args.image
   const canvas: HTMLCanvasElement =
-    args.canvas || document.createElement('canvas');
+    args.canvas || document.createElement('canvas')
   const ctx: CanvasRenderingContext2D =
     args.ctx ||
     canvas.getContext('2d') ||
     (() => {
-      throw new Error('not supported');
-    })();
-  let maximumSize = args.maximumSize;
-  let quality = args.quality;
+      throw new Error('not supported')
+    })()
+  let maximumSize = args.maximumSize
+  let quality = args.quality
   if (!maximumSize && !quality) {
-    maximumSize = 768 * KB; // 768KB
-    quality = 0.8;
+    maximumSize = 768 * KB // 768KB
+    quality = 0.8
   }
   return {
     image,
@@ -317,56 +317,56 @@ function populateCompressArgs(args: {
     ctx,
     maximumSize,
     quality,
-  };
+  }
 }
 
 export function compressImageToBase64(args: {
-  image: HTMLImageElement;
-  canvas?: HTMLCanvasElement;
-  ctx?: CanvasRenderingContext2D;
-  mimeType?: string;
-  maximumLength?: number;
-  quality?: number;
+  image: HTMLImageElement
+  canvas?: HTMLCanvasElement
+  ctx?: CanvasRenderingContext2D
+  mimeType?: string
+  maximumLength?: number
+  quality?: number
 }): base64 {
   const { image, canvas, ctx, maximumSize, quality } = populateCompressArgs({
     ...args,
     maximumSize: args.maximumLength,
-  });
-  canvas.width = image.width;
-  canvas.height = image.height;
-  ctx.drawImage(image, 0, 0);
-  let mimeType: string;
-  let dataURL: string;
+  })
+  canvas.width = image.width
+  canvas.height = image.height
+  ctx.drawImage(image, 0, 0)
+  let mimeType: string
+  let dataURL: string
   if (args.mimeType) {
-    mimeType = args.mimeType;
-    dataURL = canvas.toDataURL(mimeType, quality);
+    mimeType = args.mimeType
+    dataURL = canvas.toDataURL(mimeType, quality)
   } else {
-    const png = canvas.toDataURL('image/png', quality);
-    const jpeg = canvas.toDataURL('image/jpeg', quality);
+    const png = canvas.toDataURL('image/png', quality)
+    const jpeg = canvas.toDataURL('image/jpeg', quality)
     if (jpeg < png) {
-      mimeType = 'image/jpeg';
-      dataURL = jpeg;
+      mimeType = 'image/jpeg'
+      dataURL = jpeg
     } else {
-      mimeType = 'image/png';
-      dataURL = png;
+      mimeType = 'image/png'
+      dataURL = png
     }
   }
   if (!maximumSize) {
-    return dataURL;
+    return dataURL
   }
   for (; dataURL.length > maximumSize; ) {
-    const ratio = Math.sqrt(maximumSize / dataURL.length);
-    const new_width = Math.round(canvas.width * ratio);
-    const new_height = Math.round(canvas.height * ratio);
+    const ratio = Math.sqrt(maximumSize / dataURL.length)
+    const new_width = Math.round(canvas.width * ratio)
+    const new_height = Math.round(canvas.height * ratio)
     if (new_width === canvas.width && new_height === canvas.height) {
-      break;
+      break
     }
-    canvas.width = new_width;
-    canvas.height = new_height;
-    ctx.drawImage(image, 0, 0, new_width, new_height);
-    dataURL = canvas.toDataURL(mimeType, quality);
+    canvas.width = new_width
+    canvas.height = new_height
+    ctx.drawImage(image, 0, 0, new_width, new_height)
+    dataURL = canvas.toDataURL(mimeType, quality)
   }
-  return dataURL;
+  return dataURL
 }
 
 export function canvasToBlob(
@@ -378,65 +378,65 @@ export function canvasToBlob(
     canvas.toBlob(
       blob => {
         if (blob) {
-          resolve(blob);
+          resolve(blob)
         } else {
-          reject('not supported');
+          reject('not supported')
         }
       },
       mimeType,
       quality,
     ),
-  );
+  )
 }
 
 export async function compressImageToBlob(args: {
-  image: HTMLImageElement;
-  canvas?: HTMLCanvasElement;
-  ctx?: CanvasRenderingContext2D;
-  mimeType?: string;
-  maximumSize?: number;
-  quality?: number;
+  image: HTMLImageElement
+  canvas?: HTMLCanvasElement
+  ctx?: CanvasRenderingContext2D
+  mimeType?: string
+  maximumSize?: number
+  quality?: number
 }): Promise<Blob> {
   const { image, canvas, ctx, maximumSize, quality } = populateCompressArgs(
     args,
-  );
-  canvas.width = image.width;
-  canvas.height = image.height;
-  ctx.drawImage(image, 0, 0);
-  let mimeType: string;
-  let blob: Blob;
+  )
+  canvas.width = image.width
+  canvas.height = image.height
+  ctx.drawImage(image, 0, 0)
+  let mimeType: string
+  let blob: Blob
   if (args.mimeType) {
-    mimeType = args.mimeType;
-    blob = await canvasToBlob(canvas, mimeType, quality);
+    mimeType = args.mimeType
+    blob = await canvasToBlob(canvas, mimeType, quality)
   } else {
     const [png, jpeg] = await Promise.all([
       canvasToBlob(canvas, 'image/png', quality),
       canvasToBlob(canvas, 'image/jpeg', quality),
-    ]);
+    ])
     if (jpeg.size < png.size) {
-      mimeType = 'image/jpeg';
-      blob = jpeg;
+      mimeType = 'image/jpeg'
+      blob = jpeg
     } else {
-      mimeType = 'image/png';
-      blob = png;
+      mimeType = 'image/png'
+      blob = png
     }
   }
   if (!maximumSize) {
-    return blob;
+    return blob
   }
   for (; blob.size > maximumSize; ) {
-    const ratio = Math.sqrt(maximumSize / blob.size);
-    const new_width = Math.round(canvas.width * ratio);
-    const new_height = Math.round(canvas.height * ratio);
+    const ratio = Math.sqrt(maximumSize / blob.size)
+    const new_width = Math.round(canvas.width * ratio)
+    const new_height = Math.round(canvas.height * ratio)
     if (new_width === canvas.width && new_height === canvas.height) {
-      break;
+      break
     }
-    canvas.width = new_width;
-    canvas.height = new_height;
-    ctx.drawImage(image, 0, 0, new_width, new_height);
-    blob = await canvasToBlob(canvas, mimeType, quality);
+    canvas.width = new_width
+    canvas.height = new_height
+    ctx.drawImage(image, 0, 0, new_width, new_height)
+    blob = await canvasToBlob(canvas, mimeType, quality)
   }
-  return blob;
+  return blob
 }
 
 export function toImage(
@@ -444,26 +444,26 @@ export function toImage(
 ): Result<HTMLImageElement> {
   if (typeof image === 'string') {
     // base64
-    return base64ToImage(image);
+    return base64ToImage(image)
   }
   if (image instanceof File) {
-    return fileToBase64String(image).then(base64 => toImage(base64));
+    return fileToBase64String(image).then(base64 => toImage(base64))
   }
   if (image instanceof HTMLImageElement) {
-    return image;
+    return image
   }
-  console.error('unknown image type:', image);
-  throw new TypeError('unknown image type');
+  console.error('unknown image type:', image)
+  throw new TypeError('unknown image type')
 }
 
-const DefaultMaximumMobilePhotoSize = 300 * KB; // 300KB
+const DefaultMaximumMobilePhotoSize = 300 * KB // 300KB
 
 export async function compressMobilePhoto(args: {
-  image: base64 | File | HTMLImageElement;
-  maximumSize?: number;
+  image: base64 | File | HTMLImageElement
+  maximumSize?: number
 }): Promise<base64> {
-  const maximumLength = args.maximumSize || DefaultMaximumMobilePhotoSize;
+  const maximumLength = args.maximumSize || DefaultMaximumMobilePhotoSize
   return then(toImage(args.image), image =>
     compressImageToBase64({ image, maximumLength }),
-  );
+  )
 }

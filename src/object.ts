@@ -1,171 +1,171 @@
-import { replaceArray } from './array';
-import { ApplyUndefinedType } from './assert';
-import { map_any, map_set } from './iterative/map';
-import { getObjectType } from './type';
+import { replaceArray } from './array'
+import { ApplyUndefinedType } from './assert'
+import { map_any, map_set } from './iterative/map'
+import { getObjectType } from './type'
 
 export function isObject(o: any): boolean {
-  return typeof o === 'object';
+  return typeof o === 'object'
 }
 
 export function hasFunction(o: object | any[], name: PropertyKey): boolean {
-  return typeof (o as any)[name] === 'function';
+  return typeof (o as any)[name] === 'function'
 }
 
 export function deepClone<A>(o: A): A {
   if (!isObject(o)) {
-    return o;
+    return o
   }
   if (o instanceof Array) {
-    return ((o.map(deepClone) as any[]) as any) as A;
+    return ((o.map(deepClone) as any[]) as any) as A
   } else {
-    const res = {} as A;
-    Object.keys(o).forEach(x => ((res as any)[x] = deepClone((o as any)[x])));
-    return res;
+    const res = {} as A
+    Object.keys(o).forEach(x => ((res as any)[x] = deepClone((o as any)[x])))
+    return res
   }
 }
 
 export function deepEqual(a: any, b: any): boolean {
   if (a === b) {
-    return true;
+    return true
   }
-  const aType = getObjectType(a);
-  const bType = getObjectType(b);
+  const aType = getObjectType(a)
+  const bType = getObjectType(b)
   if (aType !== bType) {
-    return false;
+    return false
   }
   switch (aType) {
     case 'AsyncFunction':
     case 'Function':
-      return a.toString() === b.toString();
+      return a.toString() === b.toString()
     case 'Array':
       if (a.length !== b.length) {
-        return false;
+        return false
       }
-      return (a as any[]).every((_, i) => deepEqual(a[i], b[i]));
+      return (a as any[]).every((_, i) => deepEqual(a[i], b[i]))
     case 'Uint8Array':
       if (a.length !== b.length) {
-        return false;
+        return false
       }
-      return (a as Uint8Array).every((_, i) => deepEqual(a[i], b[i]));
+      return (a as Uint8Array).every((_, i) => deepEqual(a[i], b[i]))
     case 'Boolean':
     case 'Number':
     case 'String':
-      return a === b;
+      return a === b
     case 'Null':
     case 'Undefined':
-      return true;
+      return true
     case 'Map':
-      const aMap = a as Map<any, any>;
-      const bMap = b as Map<any, any>;
+      const aMap = a as Map<any, any>
+      const bMap = b as Map<any, any>
       for (const key of aMap.keys()) {
         if (!bMap.has(key)) {
-          return false;
+          return false
         }
         if (!deepEqual(aMap.get(key), bMap.get(key))) {
-          return false;
+          return false
         }
       }
-      return true;
+      return true
     case 'Set':
-      const aSet = a as Set<any>;
-      const bSet = b as Set<any>;
+      const aSet = a as Set<any>
+      const bSet = b as Set<any>
       if (aSet.size !== bSet.size) {
-        return false;
+        return false
       }
       for (const value of aSet.values()) {
         if (!bSet.has(value)) {
-          return false;
+          return false
         }
       }
-      return true;
+      return true
     case 'Date':
-      return (a as Date).getTime() === (b as Date).getTime();
+      return (a as Date).getTime() === (b as Date).getTime()
     case 'Object':
-      const aKeys = Object.keys(a);
-      const bKeys = Object.keys(b);
+      const aKeys = Object.keys(a)
+      const bKeys = Object.keys(b)
       if (aKeys.length !== bKeys.length) {
-        return false;
+        return false
       }
-      return aKeys.every(key => deepEqual(a[key], b[key]));
+      return aKeys.every(key => deepEqual(a[key], b[key]))
     default:
-      throw Error('unsupported data type');
+      throw Error('unsupported data type')
   }
 }
 
 export function replaceObject<A>(dest: A, src: A): A {
-  Object.keys(dest).forEach(x => delete (dest as any)[x]);
-  return Object.assign(dest, src);
+  Object.keys(dest).forEach(x => delete (dest as any)[x])
+  return Object.assign(dest, src)
 }
 
-const SafeObject = Symbol.for('SafeObject');
+const SafeObject = Symbol.for('SafeObject')
 export const SafeObjectOptions = {
   throwError: false,
-};
+}
 const safeProxyHandler: ProxyHandler<any> = {
   get: (target, p, receiver) => {
-    let value = Reflect.get(target, p, receiver);
+    let value = Reflect.get(target, p, receiver)
     if (typeof p === 'symbol' || p === 'inspect') {
-      return value;
+      return value
     }
     if (SafeObjectOptions.throwError && !Reflect.has(target, p)) {
       throw new TypeError(
         JSON.stringify(p) + ' is not defined in ' + target.toString(),
-      );
+      )
     }
     if (value === null || value === undefined) {
-      value = createSafeObject();
-      target[p] = value;
-      return value;
+      value = createSafeObject()
+      target[p] = value
+      return value
     }
     if (typeof value === 'object') {
       if (value[SafeObject] === true) {
-        return value;
+        return value
       }
-      value = createSafeObject(value);
-      target[p] = value;
-      return value;
+      value = createSafeObject(value)
+      target[p] = value
+      return value
     } else {
-      return value;
+      return value
     }
   },
-};
+}
 
 /**
  * make a loss object, very forgiving
  * */
 export function createSafeObject(target: object = {}) {
-  (target as any)[SafeObject] = true;
-  return new Proxy(target, safeProxyHandler);
+  (target as any)[SafeObject] = true
+  return new Proxy(target, safeProxyHandler)
 }
 
 export const updateObject = <T, U>(dest: T) => (x: U): T & U =>
-  Object.assign(dest, x);
+  Object.assign(dest, x)
 
 export const isNull = (x: any): boolean =>
-  !(x === null || x === undefined || x === '');
+  !(x === null || x === undefined || x === '')
 
 export function removeNull<A>(o: A): A {
   if (Array.isArray(o)) {
     return o
       .filter(x => !(x === null || x === undefined || x === ''))
-      .map(x => removeNull(x)) as any;
+      .map(x => removeNull(x)) as any
   }
   if (o instanceof Set) {
-    return new Set(removeNull(Array.from(o))) as any;
+    return new Set(removeNull(Array.from(o))) as any
   }
   if (o instanceof Date) {
-    return o;
+    return o
   }
   if (typeof o === 'object' && o !== null) {
-    o = Object.assign({}, o);
+    o = Object.assign({}, o)
     for (const k of Object.keys(o)) {
-      const v = (o as any)[k];
+      const v = (o as any)[k]
       if (v === null || v === undefined || v === '') {
-        delete (o as any)[k];
+        delete (o as any)[k]
       }
     }
   }
-  return o;
+  return o
 }
 
 /**
@@ -191,23 +191,23 @@ export function ensureNonCyclic<A>(
     case 'Function':
     case 'AsyncFunction':
       /* these types can be duplicated */
-      return mapper ? mapper(o) : o;
+      return mapper ? mapper(o) : o
     default:
       /* array, set, map, object */
       if (visited.has(o)) {
         /* duplicated object */
         if (skip) {
-          return placeholder;
+          return placeholder
         }
-        throw new Error('circular structure, duplicated value: ' + o);
+        throw new Error('circular structure, duplicated value: ' + o)
       }
       /* non-duplicated object */
       /* clone the set, to allow sibling duplication */
-      visited = map_set(visited, x => x);
-      visited.add(o);
+      visited = map_set(visited, x => x)
+      visited.add(o)
       return map_any(o, x =>
         ensureNonCyclic(x, skip, placeholder, mapper, visited),
-      );
+      )
   }
 }
 
@@ -216,29 +216,29 @@ export function deleteUndefined(o: ApplyUndefinedType): void {
     replaceArray(
       o,
       o.filter(x => x !== undefined),
-    );
-    o.forEach(x => deleteUndefined(x));
-    return;
+    )
+    o.forEach(x => deleteUndefined(x))
+    return
   }
   if (o instanceof Map) {
     o.forEach((value, key) => {
       if (value === undefined) {
-        o.delete(key);
+        o.delete(key)
       }
-      deleteUndefined(value);
-    });
-    return;
+      deleteUndefined(value)
+    })
+    return
   }
   if (typeof o === 'object') {
     for (const s of Object.keys(o)) {
       if ((o as any)[s] === undefined) {
-        delete (o as any)[s];
-        continue;
+        delete (o as any)[s]
+        continue
       }
-      deleteUndefined((o as any)[s]);
+      deleteUndefined((o as any)[s])
     }
-    return;
+    return
   }
   // e.g. number, string
-  return;
+  return
 }

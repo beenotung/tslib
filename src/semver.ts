@@ -1,19 +1,19 @@
-import { enum_only_string } from './enum';
-import { isNumber } from './lang';
+import { enum_only_string } from './enum'
+import { isNumber } from './lang'
 
 export function to_semver(s: string): number[] {
-  const res = s.split('.').map(x => +x);
+  const res = s.split('.').map(x => +x)
   if (res.length !== 3 || res.find(x => !isNumber(x))) {
-    throw new TypeError('input is not a valid semver string');
+    throw new TypeError('input is not a valid semver string')
   }
-  return res;
+  return res
 }
 
 export function is_semver(s: string): boolean {
   try {
-    return to_semver(s).length === 3;
+    return to_semver(s).length === 3
   } catch (e) {
-    return false;
+    return false
   }
 }
 
@@ -23,14 +23,14 @@ export function is_newer(base: number[], compare: number[]) {
     (compare[0] === base[0] &&
       (compare[1] > base[1] ||
         (compare[1] === base[1] && compare[2] > base[2])))
-  );
+  )
 }
 
 export function is_compatible(base: number[], compare: number[]) {
   return (
     compare[0] === base[0] &&
     ((compare[1] === base[1] && compare[2] <= base[2]) || compare[1] <= base[1])
-  );
+  )
 }
 
 export enum SemverDiffType {
@@ -40,7 +40,7 @@ export enum SemverDiffType {
   newer,
 }
 
-enum_only_string(SemverDiffType);
+enum_only_string(SemverDiffType)
 
 export function getSemverDiffType(
   base: number[],
@@ -52,5 +52,5 @@ export function getSemverDiffType(
     ? SemverDiffType.newer
     : is_compatible(base, compare)
     ? SemverDiffType.compatible
-    : SemverDiffType.breaking;
+    : SemverDiffType.breaking
 }

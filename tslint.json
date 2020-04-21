@@ -17,10 +17,17 @@
     "max-classes-per-file": false,
     "no-namespace": false,
     "align": [
-      true,
+      false,
+      "arguments",
+      "elements",
+      "members",
+      "parameters",
       "statements"
     ],
-    "arrow-parens": false,
+    "arrow-parens": [
+      true,
+      "ban-single-arg-parens"
+    ],
     "jsdoc-format": false,
     "space-before-function-paren": false,
     "no-invalid-this": true,
@@ -97,7 +104,7 @@
     "radix": true,
     "semicolon": [
       true,
-      "always",
+      "never",
       "ignore-interfaces"
     ],
     "triple-equals": true,
@@ -132,7 +139,7 @@
           "functions": "ignore",
           "imports": "always",
           "objects": "always",
-          "typeLiterals": "always"
+          "typeLiterals": "never"
         },
         "singleline": "never"
       }

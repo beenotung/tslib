@@ -1,5 +1,5 @@
 export class IntervalPool {
-  public currentTask: Promise<any> = Promise.resolve();
+  public currentTask: Promise<any> = Promise.resolve()
 
   constructor(public interval: number) {}
 
@@ -9,12 +9,12 @@ export class IntervalPool {
         new Promise<A>((resolve, reject) => {
           setTimeout(() => {
             try {
-              resolve(f());
+              resolve(f())
             } catch (e) {
-              reject(e);
+              reject(e)
             }
-          }, this.interval);
+          }, this.interval)
         }),
-    ));
+    ))
   }
 }

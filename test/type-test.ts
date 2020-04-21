@@ -1,4 +1,4 @@
-import { Drop } from '../src/type';
+import { Drop } from '../src/type'
 
 interface Animal {
   walk(): void
@@ -6,18 +6,19 @@ interface Animal {
   name(): string
 }
 
-type Plant = Drop<Animal, 'walk'>;
+type Plant = Drop<Animal, 'walk'>
 
-let cat = {
-  walk: function() {
-    console.log(this.name(), 'walking');
+const cat = {
+  walk() {
+    // tslint:disable-next-line no-invalid-this
+    console.log(this.name(), 'walking')
   },
-  name: function() {
-    return 'cat';
+  name() {
+    return 'cat'
   },
-} as Animal;
+} as Animal
 
-let catFlower = cat as Plant;
+const catFlower = cat as Plant
 
-cat.walk();
-catFlower.walk();
+cat.walk()
+catFlower.walk()
