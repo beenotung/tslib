@@ -280,6 +280,12 @@ export function range(start: number, end: number, step = 1): number[] {
   return res
 }
 
+export function repeat<T>(x: T, n: number): T[] {
+  const xs = new Array(n)
+  xs.fill(x)
+  return xs
+}
+
 export function filterByKey<A>(src: A[], key: string, keys: string[]): A[] {
   return src.filter(x => keys.indexOf((x as any)[key]) !== -1)
 }
