@@ -20,6 +20,7 @@ import {
   range,
   sum,
   sumByField,
+  zipArray,
 } from '../src/array'
 
 test('getMaxArraySize', t => {
@@ -132,5 +133,17 @@ test('push', t => {
   t.deepEqual(xs, [1, 2, 3, 4])
   pushForward(xs, 0)
   t.deepEqual(xs, [0, 1, 2, 3, 4])
+  t.end()
+})
+
+test('zip', t => {
+  const a = [1, 2, 3]
+  const b = ['apple', 'banana', 'cherry']
+  const c = zipArray(a, b)
+  t.deepEqual(c, [
+    [1, 'apple'],
+    [2, 'banana'],
+    [3, 'cherry'],
+  ])
   t.end()
 })

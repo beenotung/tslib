@@ -353,6 +353,14 @@ export function partitionArrayBy<A>(xs: A[], f: (a: A) => boolean): [A[], A[]] {
   return [true_xs, false_xs]
 }
 
+export function zipArray<A, B>(a: A[], b: B[]): Array<[A, B]> {
+  const res = new Array<[A, B]>(Math.min(a.length, b.length))
+  for (let i = 0; i < res.length; i++) {
+    res[i] = [a[i], b[i]]
+  }
+  return res
+}
+
 /**
  * @description not same as Array.prototype.map!
  * this will not skip uninitialized items
