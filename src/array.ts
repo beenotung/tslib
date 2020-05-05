@@ -280,6 +280,12 @@ export function range(start: number, end: number, step = 1): number[] {
   return res
 }
 
+export function repeat<T>(x: T, n: number): T[] {
+  const xs = new Array(n)
+  xs.fill(x)
+  return xs
+}
+
 export function filterByKey<A>(src: A[], key: string, keys: string[]): A[] {
   return src.filter(x => keys.indexOf((x as any)[key]) !== -1)
 }
@@ -345,6 +351,14 @@ export function partitionArrayBy<A>(xs: A[], f: (a: A) => boolean): [A[], A[]] {
     }
   }
   return [true_xs, false_xs]
+}
+
+export function zipArray<A, B>(a: A[], b: B[]): Array<[A, B]> {
+  const res = new Array<[A, B]>(Math.min(a.length, b.length))
+  for (let i = 0; i < res.length; i++) {
+    res[i] = [a[i], b[i]]
+  }
+  return res
 }
 
 /**
