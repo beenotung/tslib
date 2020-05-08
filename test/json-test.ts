@@ -45,6 +45,30 @@ if (!Array.isArray(json.posts)) {
   process.exit(1)
 }
 
+function compare(x: any) {
+  const s = jsonToString(x)
+  try {
+    const y = JSON.parse(s)
+    if (JSON.stringify(x) !== JSON.stringify(y)) {
+      console.error('failed to encode json value:', x)
+      process.exit(1)
+    }
+  } catch (e) {
+    console.error('failed to parse json string:', { s }, e)
+    process.exit(1)
+  }
+}
+
+console.log('test empty object')
+compare({})
+console.log('test empty array')
+let empty: any[] = new Array(10)
+compare(empty)
+empty = []
+compare(empty)
+empty[10] = 1
+compare(empty)
+
 import { Bar } from 'cli-progress'
 
 function jsonSize(o: any): number {

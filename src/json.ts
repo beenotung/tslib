@@ -15,15 +15,25 @@ export interface JsonArray {
 
 export type JsonValue = JsonPrimitive | JsonObject | JsonArray
 
-export function jsonToString(o: any, visited = new Set()): string {
+type Parent = any[] | object
+
+function jsonToString_helper(
+  o: any,
+  parent: Parent | undefined,
+  visited: Set<any>,
+): string {
   const type = getObjectType(o)
   switch (type) {
     case 'String':
     case 'Number':
     case 'Null':
-    case 'Undefined':
     case 'Boolean':
       return JSON.stringify(o)
+    case 'Undefined':
+      if (Array.isArray(parent)) {
+        return JSON.stringify(null)
+      }
+      throw new Error('unsupported json type: Undefined')
     case 'Array':
     case 'Object': {
       if (visited.has(o)) {
@@ -34,16 +44,24 @@ export function jsonToString(o: any, visited = new Set()): string {
       visited.add(o)
       if (type === 'Array') {
         /* is array */
-        return (
-          '[' + (o as any[]).map(x => jsonToString(x, visited)).join(',') + ']'
-        )
+        // use explicit loop to include empty slots
+        const xs = o as any[]
+        const n = xs.length
+        const acc: string[] = new Array(n)
+        for (let i = 0; i < n; i++) {
+          acc[i] = jsonToString_helper(xs[i], xs, visited)
+        }
+        return '[' + acc.join(',') + ']'
       } else {
         /* is object */
         return (
           '{' +
           Object.keys(o)
             .sort()
-            .map(x => JSON.stringify(x) + ':' + jsonToString(o[x]))
+            .map(
+              x =>
+                JSON.stringify(x) + ':' + jsonToString_helper(o[x], o, visited),
+            )
             .join(',') +
           '}'
         )
@@ -53,6 +71,12 @@ export function jsonToString(o: any, visited = new Set()): string {
       console.error('unsupported data type:', type)
       throw new TypeError('unsupported data type')
   }
+}
+
+export function jsonToString(o: any): string {
+  const visited = new Set()
+  const parent = undefined
+  return jsonToString_helper(o, parent, visited)
 }
 
 // tslint:disable:prefer-for-of
