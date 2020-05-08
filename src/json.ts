@@ -1,4 +1,3 @@
-import { map_set } from './iterative/map'
 import { getObjectType } from './type'
 
 export type JsonPrimitive = string | number | null | boolean
@@ -40,7 +39,7 @@ function jsonToString_helper(
         throw new TypeError('circular structure, duplicated value: ' + o)
       }
       /* clone the set, to allow sibling duplication */
-      visited = map_set(visited, x => x)
+      visited = new Set(visited)
       visited.add(o)
       if (type === 'Array') {
         /* is array */
