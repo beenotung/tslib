@@ -135,10 +135,9 @@ export function csv_to_json(rows: string[][], titles?: string[]) {
   })
 }
 
-export function json_to_csv(xs: any[]): string[][] {
+export function json_to_csv_titles(xs: any[]): string[] {
   const titles: string[] = []
   const titleCache: { [title: string]: boolean } = {}
-  const rows: string[][] = [titles]
 
   /* build title list */
   for (const x of xs) {
@@ -149,7 +148,14 @@ export function json_to_csv(xs: any[]): string[][] {
       }
     }
   }
+  return titles
+}
 
+export function json_to_csv(
+  xs: any[],
+  titles = json_to_csv_titles(xs),
+): string[][] {
+  const rows: string[][] = [titles]
   const n = titles.length
 
   for (const x of xs) {
