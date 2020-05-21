@@ -9,7 +9,7 @@ export function muteObject(target: object) {
     for (const name of Object.getOwnPropertyNames(prototype)) {
       const value = (target as any)[name]
       if (typeof value === 'function') {
-        (target as any)[name] = noop
+        ; (target as any)[name] = noop
       }
     }
     prototype = Object.getPrototypeOf(prototype)

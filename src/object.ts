@@ -134,7 +134,7 @@ const safeProxyHandler: ProxyHandler<any> = {
  * make a loss object, very forgiving
  * */
 export function createSafeObject(target: object = {}) {
-  (target as any)[SafeObject] = true
+  ; (target as any)[SafeObject] = true
   return new Proxy(target, safeProxyHandler)
 }
 

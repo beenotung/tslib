@@ -97,7 +97,7 @@ export async function fileToArrayBuffer(file: File): Promise<ArrayBuffer> {
     if (typeof x === 'string') {
       const xs = new ArrayBuffer(x.length)
       for (let i = 0, n = x.length; i < n; i++) {
-        (xs as any)[i] = x[i]
+        ; (xs as any)[i] = x[i]
       }
       return xs
     } else {
