@@ -113,7 +113,7 @@ export async function downloadFile(
   url: string,
   filename: string = url.substring(url.lastIndexOf('/') + 1).split('?')[0],
 ) {
-  const defer = createDefer()
+  const defer = createDefer<true, ProgressEvent>()
   const xhr = new XMLHttpRequest()
   xhr.responseType = 'blob'
   xhr.onload = function() {
@@ -125,7 +125,7 @@ export async function downloadFile(
     a.click()
     defer.resolve(true)
   }
-  xhr.onerror = e => defer.resolve(e)
+  xhr.onerror = e => defer.reject(e)
   xhr.open('GET', url)
   xhr.send()
   return defer.promise
