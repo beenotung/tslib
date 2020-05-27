@@ -6,7 +6,7 @@ export interface Defer<A, E> {
   reject: (e: E) => Promise<A>
 }
 
-export function createDefer<A, E>(): Defer<A, E> {
+export function createDefer<A = void, E = Error>(): Defer<A, E> {
   const res = {} as Defer<A, E>
   res.promise = new Promise<A>((resolve, reject) => {
     res.resolve = a => {
