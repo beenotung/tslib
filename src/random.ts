@@ -54,6 +54,12 @@ export namespace Random {
     return Math.random() < prob
   }
 
+  export function probablyRun<T>(prop: number, run: () => T): T | undefined {
+    if (nextBool(prop)) {
+      return run()
+    }
+  }
+
   /** @return real number : -1 .. 1 */
   export function nextNP1() {
     return Math.random() * 2 - 1
