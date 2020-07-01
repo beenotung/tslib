@@ -264,10 +264,11 @@ export function valuesToObject<T>(
 ): T {
   const res: any = {}
   if (values.length !== keys.length) {
-    console.warn('length of values and keys mismatch:', {
+    console.error('length of values and keys mismatch:', {
       keys: keys.length,
       values: values.length,
     })
+    throw new Error('invalid values')
   }
   for (let i = 0; i < keys.length; i++) {
     const key = keys[i]
