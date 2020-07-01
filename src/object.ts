@@ -242,3 +242,37 @@ export function deleteUndefined(o: ApplyUndefinedType): void {
   // e.g. number, string
   return
 }
+
+/**
+ * to encode json data in csv-style
+ * i.e. only need to store the keys once for a large collection (e.g. Array / Set)
+ * */
+export function objectToValues<T>(
+  o: T,
+  keys: Array<keyof T> = Object.keys(o).sort() as any[],
+): Array<T[keyof T]> {
+  return keys.map(key => o[key])
+}
+
+/**
+ * to decode json data from csv-style
+ * i.e. populate values and keys to a collection (e.g. Array / Set)
+ * */
+export function valuesToObject<T>(
+  values: Array<T[keyof T]>,
+  keys: Array<keyof T>,
+): T {
+  const res: any = {}
+  if (values.length !== keys.length) {
+    console.warn('length of values and keys mismatch:', {
+      keys: keys.length,
+      values: values.length,
+    })
+  }
+  for (let i = 0; i < keys.length; i++) {
+    const key = keys[i]
+    const value = values[i]
+    res[key] = value
+  }
+  return res
+}
