@@ -20,6 +20,9 @@ export type StartTimerOptions =
   | {
       name: string
       writeStream?: NodeJS.WriteStream
+      // default: 1
+      // e.g. sample 1 over 10 for 10% progress report
+      sampleOver?: number
     }
 
 const defaultWriteStream = () => process.stdout
@@ -27,12 +30,15 @@ const defaultWriteStream = () => process.stdout
 export function startTimer(options: StartTimerOptions) {
   let name: string | undefined
   let writeStream: NodeJS.WriteStream
+  let sampleOver: number
   if (typeof options === 'string') {
     name = options
     writeStream = defaultWriteStream()
+    sampleOver = 1
   } else {
     name = options.name
     writeStream = options.writeStream || defaultWriteStream()
+    sampleOver = options.sampleOver || 1
   }
   let msgLen = 0
   const print = (msg: string) => {
@@ -79,14 +85,17 @@ export function startTimer(options: StartTimerOptions) {
       start()
     },
     progress,
-    setProgress(totalTick: number, initialTick = 0) {
+    setProgress(totalTick: number, initialTick = 0, _sampleOver = sampleOver) {
+      sampleOver = _sampleOver
       total = totalTick
       tick = initialTick
       tickProgress()
     },
     tick() {
       tick++
-      tickProgress()
+      if (sampleOver === 1 || tick % sampleOver === 0) {
+        tickProgress()
+      }
     },
   }
 }

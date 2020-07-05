@@ -15,6 +15,12 @@ async function main() {
   console.log('some extra information')
   timer.next('last task')
   await later(200)
+  timer.next('stress test')
+  const n = 100000000
+  timer.setProgress(n, 0, 1000)
+  for (let i = 0; i < n; i++) {
+    timer.tick()
+  }
   timer.end()
 }
 
