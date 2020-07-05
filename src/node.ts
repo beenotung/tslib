@@ -68,6 +68,9 @@ export function startTimer(options: StartTimerOptions) {
   const progress = (msg: string) => {
     print(msg)
   }
+  const tickProgress = () => {
+    progress(` (${tick}/${total})`)
+  }
   return {
     end,
     next(newName: string) {
@@ -79,10 +82,11 @@ export function startTimer(options: StartTimerOptions) {
     setProgress(totalTick: number, initialTick = 0) {
       total = totalTick
       tick = initialTick
+      tickProgress()
     },
     tick() {
       tick++
-      progress(` (${tick}/${total})`)
+      tickProgress()
     },
   }
 }
