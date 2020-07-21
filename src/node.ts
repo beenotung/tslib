@@ -1,3 +1,6 @@
+
+import { format_time_duration } from './format'
+
 export function catchMain(p: Promise<any>): void {
   p.catch(e => {
     console.error(e)
@@ -23,14 +26,30 @@ export type StartTimerOptions =
       // default: 1
       // e.g. sample 1 over 10 for 10% progress report
       sampleOver?: number
+      // default: false
+      estimateTime?: boolean
     }
 
 const defaultWriteStream = () => process.stdout
+
+export type SetProgressOptions = {
+  totalTick: number
+  initialTick?: number // default zero
+  sampleOver?: number // default previous value
+  estimateTime?: boolean // default false
+}
+export type SetProgress = ((
+  totalTick: number,
+  initialTick?: number,
+  sampleOver?: number,
+) => void) &
+  ((options: SetProgressOptions) => void)
 
 export function startTimer(options: StartTimerOptions) {
   let name: string | undefined
   let writeStream: NodeJS.WriteStream
   let sampleOver: number
+  let estimateTime = false
   if (typeof options === 'string') {
     name = options
     writeStream = defaultWriteStream()
@@ -69,15 +88,71 @@ export function startTimer(options: StartTimerOptions) {
     console.timeEnd(name)
     name = undefined
   }
-  let total = 0
-  let tick = 0
+  let totalTick = 0
+  let currentTick = 0
+  let startTick: number
+  let startTime: number
   const progress = (msg: string) => {
     print(msg)
   }
-  const tickProgress = () => {
-    progress(` (${tick}/${total})`)
+  const tickProgressWithoutEstimateTime = () => {
+    progress(` (${currentTick}/${totalTick})`)
   }
-  return {
+  const tickProgressWithEstimateTime = () => {
+    const tickLeft = totalTick - currentTick
+    const tickedAmount = currentTick - startTick
+    const tickedTime = Date.now() - startTime
+    const tickSpeed = tickedAmount / tickedTime
+    const timeLeft = tickLeft / tickSpeed
+    const timeLeftText = format_time_duration(timeLeft)
+    progress(
+      ` (${currentTick}/${totalTick}, estimated time left: ${timeLeftText})`,
+    )
+  }
+  let tickProgress = estimateTime
+    ? tickProgressWithEstimateTime
+    : tickProgressWithoutEstimateTime
+  const setProgress: SetProgress = (
+    totalTick_or_options: number | SetProgressOptions,
+    _initialTick?: number,
+    _sampleOver?: number,
+  ) => {
+    if (typeof totalTick_or_options === 'object') {
+      const option = totalTick_or_options
+      totalTick = option.totalTick
+      currentTick = option.initialTick || 0
+      sampleOver = option.sampleOver || sampleOver
+      if (typeof option.estimateTime === 'boolean') {
+        estimateTime = option.estimateTime
+        tickProgress = estimateTime
+          ? tickProgressWithEstimateTime
+          : tickProgressWithoutEstimateTime
+      }
+    } else {
+      totalTick = totalTick_or_options
+      currentTick = _initialTick || 0
+      if (_sampleOver) {
+        sampleOver = _sampleOver
+      }
+    }
+    timer.tick = sampleOver === 1 ? tickWithOutSample : tickWithSample
+    if (estimateTime) {
+      startTick = currentTick
+      startTime = Date.now()
+    }
+    tickProgress()
+  }
+  const tickWithOutSample = () => {
+    currentTick++
+    tickProgress()
+  }
+  const tickWithSample = () => {
+    currentTick++
+    if (currentTick % sampleOver === 0) {
+      tickProgress()
+    }
+  }
+  const timer = {
     end,
     next(newName: string) {
       end()
@@ -85,17 +160,8 @@ export function startTimer(options: StartTimerOptions) {
       start()
     },
     progress,
-    setProgress(totalTick: number, initialTick = 0, _sampleOver = sampleOver) {
-      sampleOver = _sampleOver
-      total = totalTick
-      tick = initialTick
-      tickProgress()
-    },
-    tick() {
-      tick++
-      if (sampleOver === 1 || tick % sampleOver === 0) {
-        tickProgress()
-      }
-    },
+    setProgress,
+    tick: sampleOver === 1 ? tickWithOutSample : tickWithSample,
   }
+  return timer
 }
