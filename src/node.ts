@@ -1,4 +1,3 @@
-
 import { format_time_duration } from './format'
 
 export function catchMain(p: Promise<any>): void {
