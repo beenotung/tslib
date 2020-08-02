@@ -141,13 +141,15 @@ export function startTimer(options: StartTimerOptions) {
     }
     tickProgress()
   }
-  const tickWithOutSample = () => {
-    currentTick++
+  const tickWithOutSample = (step = 1) => {
+    currentTick += step
     tickProgress()
   }
-  const tickWithSample = () => {
-    currentTick++
-    if (currentTick % sampleOver === 0) {
+  const tickWithSample = (step = 1) => {
+    const oldMod = currentTick % sampleOver
+    currentTick += step
+    const newMod = currentTick % sampleOver
+    if (newMod === 0 || newMod < oldMod) {
       tickProgress()
     }
   }
