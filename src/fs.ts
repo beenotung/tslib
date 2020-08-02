@@ -162,3 +162,44 @@ export function readJsonFile(file: string): Promise<any> {
 export function readJsonFileSync(file: string): any {
   return JSON.parse(fs.readFileSync(file).toString())
 }
+
+export type IterateFileByLineOptions = {
+  encoding?: BufferEncoding
+  batchSize?: number
+  close?: () => void // teardown when the consumer early return
+}
+
+export function* iterateFileByLine(
+  file: string,
+  options?: IterateFileByLineOptions,
+): Generator<string> {
+  const batchSize = options?.batchSize || 8 * 1024 * 1024
+  const encoding = options?.encoding
+  const buffer = Buffer.alloc(batchSize)
+
+  const fd = fs.openSync(file, 'r')
+  if (options) {
+    options.close = () => fs.closeSync(fd)
+  }
+  let acc = Buffer.alloc(0)
+  for (;;) {
+    const read = fs.readSync(fd, buffer, 0, batchSize, null)
+    if (read === 0) {
+      break
+    }
+    acc = Buffer.concat([acc, buffer], acc.length + read)
+    for (;;) {
+      const idx = acc.indexOf(10)
+      if (idx === -1) {
+        break
+      }
+      const line = acc.slice(0, idx)
+      yield line.toString(encoding)
+      acc = acc.slice(idx + 1)
+    }
+  }
+  if (acc.length > 0) {
+    yield acc.toString(encoding)
+  }
+  fs.closeSync(fd)
+}

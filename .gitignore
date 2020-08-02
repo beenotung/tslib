@@ -56,5 +56,9 @@ www/
 .cache/
 /data/
 
-.last
+# Test files
+res/db.txt
 test.csv
+
+# Temp files
+.last
