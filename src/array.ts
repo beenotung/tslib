@@ -738,3 +738,11 @@ export function pushBackward<T>(xs: T[], x: T) {
   xs[idx + 1] = x
   xs[idx] = t
 }
+
+export function makeArray<T>(n: number, f: (i: number) => T): T[] {
+  const res = new Array<T>(n)
+  for (let i = 0; i < n; i++) {
+    res[i] = f(i)
+  }
+  return res
+}

@@ -7,6 +7,7 @@ import {
   countElement,
   defaultComparator,
   getMaxArraySize,
+  makeArray,
   max,
   maxByField,
   maxByFunc,
@@ -145,5 +146,14 @@ test('zip', t => {
     [2, 'banana'],
     [3, 'cherry'],
   ])
+  t.end()
+})
+
+test('makeArray', t => {
+  const n = 10
+  t.deepEqual(
+    makeArray(n, i => i * 10),
+    new Array(n).fill(0).map((_, i) => i * 10),
+  )
   t.end()
 })
