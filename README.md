@@ -30,3 +30,4 @@ npm install @beenotung/tslib
    - no effect on function of length 0
 
 ## Todo
+- change tests into to adopt jest
