@@ -290,3 +290,14 @@ export function objectGetOrSetDefault<V = any, K extends PropertyKey = string>(
   object[key] = res
   return res
 }
+
+export function objectPick<T, K extends keyof T = keyof T>(
+  object: T,
+  keys: K[],
+): Pick<T, K> {
+  const result = {} as Pick<T, K>
+  for (const key of keys) {
+    result[key] = object[key]
+  }
+  return result
+}

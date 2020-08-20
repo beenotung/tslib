@@ -2,6 +2,7 @@ import test from 'tape'
 import {
   deepEqual,
   objectGetOrSetDefault,
+  objectPick,
   objectToValues,
   valuesToObject,
 } from '../src/object'
@@ -74,5 +75,13 @@ test('objectGetOrSetDefault', t => {
     2,
     'set new value',
   )
+  t.end()
+})
+
+test('objectPick', t => {
+  const user = { name: 'Alice', age: 12 }
+  t.deepEqual(objectPick(user, ['name', 'age']), user, 'pick all props')
+  t.deepEqual(objectPick(user, ['name']), { name: user.name }, 'pick one prop')
+  t.deepEqual(objectPick(user, []), {}, 'pick zero prop')
   t.end()
 })
