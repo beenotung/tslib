@@ -277,3 +277,16 @@ export function valuesToObject<T>(
   }
   return res
 }
+
+export function objectGetOrSetDefault<V = any, K extends PropertyKey = string>(
+  object: Record<K, V>,
+  key: K,
+  f: () => V,
+): V {
+  if (key in object) {
+    return object[key]
+  }
+  const res = f()
+  object[key] = res
+  return res
+}

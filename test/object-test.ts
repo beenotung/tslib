@@ -1,5 +1,10 @@
 import test from 'tape'
-import { deepEqual, objectToValues, valuesToObject } from '../src/object'
+import {
+  deepEqual,
+  objectGetOrSetDefault,
+  objectToValues,
+  valuesToObject,
+} from '../src/object'
 import { getObjectType } from '../src/type'
 
 test('deepEqual', t => {
@@ -48,5 +53,26 @@ test('object values', t => {
   const values = objectToValues(user, keys)
   const res: typeof user = valuesToObject(values, keys)
   t.deepEquals(res, user, `objectToValues -> valuesToObject`)
+  t.end()
+})
+
+test('objectGetOrSetDefault', t => {
+  const object: Record<string, any> = {}
+  const value = { user: 'Alice' }
+  t.equal(
+    objectGetOrSetDefault(object, 'a', () => value),
+    value,
+    'set default value',
+  )
+  t.equal(
+    objectGetOrSetDefault(object, 'a', () => ({ user: 'Bob' })),
+    value,
+    'get existing value',
+  )
+  t.equal(
+    objectGetOrSetDefault(object, 'b', () => 2),
+    2,
+    'set new value',
+  )
   t.end()
 })
