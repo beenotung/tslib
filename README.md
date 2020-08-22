@@ -31,3 +31,7 @@ npm install @beenotung/tslib
 
 ## Todo
 - change tests into to adopt jest
+
+## License
+This is a Free and Open Source Software (FOSS) licensed under
+[BSD-2-Clause](./LICENSE)
