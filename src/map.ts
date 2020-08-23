@@ -42,12 +42,16 @@ export function reduceMap<K, V, A>(
 export function mapGetOrThrow<K, V>(
   map: Map<K, V>,
   key: K,
-  message: string = key + ' not found',
+  message: Error | string = key + ' not found',
 ): V {
   if (map.has(key)) {
     return map.get(key)!
   }
-  throw new Error(message)
+  if (typeof message === 'string') {
+    throw new Error(message)
+  } else {
+    throw message
+  }
 }
 
 export function mapGetOrSetDefault<K, V>(
