@@ -1,7 +1,7 @@
 import { search } from '../src/search'
 
-function test(a, b) {
-  console.log({ a, b, res: search.object_contains(a, b) })
+function test(a: object, b: string | object) {
+  console.log({ a, b, res: search.object_contain_str(a, b) })
 }
 
 test({ user: 'Alice Li' }, 'alice')
