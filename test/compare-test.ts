@@ -1,5 +1,5 @@
 import test from 'tape'
-import { compare, compare_by_keys } from '../src/compare'
+import { compare, compare_by_keys, sort_by_keys } from '../src/compare'
 
 const numbers = [1, 10, 3, 2]
 const sorted = [1, 2, 3, 10]
@@ -10,16 +10,29 @@ test('sort numeric number', t => {
 
 test('sort object array by key', t => {
   t.deepEquals(
-    numbers.map(x => ({ x })).sort(compare_by_keys(['x'])),
+    sort_by_keys(
+      numbers.map(x => ({ x })),
+      ['x'],
+    ),
+    sorted.map(x => ({ x })),
+  )
+  const objects = numbers.map(x => ({ x }))
+  t.deepEquals(
+    objects.sort(
+      compare_by_keys<typeof objects[0]>(['x']),
+    ),
     sorted.map(x => ({ x })),
   )
   t.deepEquals(
-    [
-      { a: 10, b: 10 },
-      { a: 1, b: 1 },
-      { a: 10, b: 1 },
-      { a: 1, b: 10 },
-    ].sort(compare_by_keys(['a', 'b'])),
+    sort_by_keys(
+      [
+        { a: 10, b: 10 },
+        { a: 1, b: 1 },
+        { a: 10, b: 1 },
+        { a: 1, b: 10 },
+      ],
+      ['a', 'b'],
+    ),
     [
       { a: 1, b: 1 },
       { a: 1, b: 10 },
@@ -32,11 +45,11 @@ test('sort object array by key', t => {
 
 test('sort object with non-numeric key', t => {
   const user = {
-      name: 'Alice',
-      age: 20,
-      other_field: true,
-    }
-    // should compile without complaining the boolean field
-  ; [user].sort(compare_by_keys(['name', 'age']))
+    name: 'Alice',
+    age: 20,
+    other_field: true,
+  }
+  // should compile without complaining the boolean field
+  sort_by_keys([user], ['name', 'age'])
   t.end()
 })

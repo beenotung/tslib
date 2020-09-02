@@ -49,3 +49,10 @@ export function compare_by_keys<T extends object, K extends keyof T = keyof T>(
     return 0
   }
 }
+
+export function sort_by_keys<T extends object, K extends keyof T = keyof T>(
+  array: T[],
+  keys: Array<SortKey<K> | K>,
+) {
+  return array.sort(compare_by_keys(keys as any[]))
+}
