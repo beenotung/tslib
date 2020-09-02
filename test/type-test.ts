@@ -8,7 +8,7 @@ interface Animal {
 
 type Plant = Drop<Animal, 'walk'>
 
-const cat = {
+const cat: Animal = {
   walk() {
     // tslint:disable-next-line no-invalid-this
     console.log(this.name(), 'walking')
@@ -16,9 +16,14 @@ const cat = {
   name() {
     return 'cat'
   },
-} as Animal
+}
 
-const catFlower = cat as Plant
+let catFlower: Plant = cat
 
 cat.walk()
-catFlower.walk()
+// catFlower.walk() // want to test walk() should not exist
+
+// instead, test if the plant is completed without walk()
+catFlower = {
+  name: catFlower.name,
+}
