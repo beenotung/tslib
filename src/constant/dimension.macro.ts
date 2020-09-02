@@ -19,16 +19,16 @@ GalaxyNote9 414x846
     .map(xs=>{
       let[name,dimension]=xs
       let [w,h]=dimension.split('x')
-      return `export const ${name}: Dimension = { width: ${w}, height: ${h} };`
+      return `export const ${name}: Dimension = { width: ${w}, height: ${h} }`
     })
     .join('\n')
       ;
 (function() {
   return `
 export type Dimension = {
-  width: number;
-  height: number;
-};
+  width: number
+  height: number
+}
 
 ${code}
 `.trim() + '\n';
