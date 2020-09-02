@@ -14,6 +14,7 @@ if [ $# == 1 ]; then
 else
   echo -n "update type `npm version --help | grep -oh \"\\\[.*]\"`: "; read t
 fi
+npm run format
 npm test
 rm -rf package-lock.json
 npm version "$t"
