@@ -5,7 +5,7 @@ import { TaskPool } from './task/task-pool'
 
 export function createFSPool(concurrentSize: number) {
   const pool = new TaskPool(concurrentSize)
-  const res = fs
+  const res = { ...fs }
   for (const [name, func] of Object.entries(fs)) {
     if (typeof func !== 'function' || name.endsWith('Sync')) {
       continue
