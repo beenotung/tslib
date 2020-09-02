@@ -31,7 +31,7 @@
     "lint": "tslint --project tsconfig.json -c tslint.json",
     "dev": "run-p watch:*",
     "watch:build": "tsc -p . --watch",
-    "watch:lint": "chokidar src/**/*.ts -c \"run-s format lint\" --initial --verbose",
+    "watch:lint": "chokidar src/**/*.ts -c \"run-s lint\" --initial --verbose",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
     "postformat": "tslint --fix -p .",
     "test": "run-s build jest",
