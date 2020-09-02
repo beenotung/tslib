@@ -60,11 +60,11 @@ export class MemorizePool<A> {
     this.getLastMap(args).set(args[0], res)
   }
 
-  public getOrCalc(args: IArguments, f: () => A) {
+  public getOrCalc(args: IArguments, f: () => A): A {
     const map = this.getLastMap(args)
     const last = args[0]
     if (map.has(last)) {
-      return map.get(last)
+      return map.get(last)!
     }
     const res = f()
     map.set(last, res)

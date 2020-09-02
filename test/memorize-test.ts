@@ -28,8 +28,8 @@ function test(name: string, f: () => any, g: () => any, q?: () => any) {
 
 /* Fib number */
 function test1() {
-  const f = (n: number) => (n < 2 ? 1 : f(n - 1) + f(n - 2))
-  const q = memorize((n: number) => (n < 2 ? 1 : q(n - 1) + q(n - 2)))
+  const f = (n: number): number => (n < 2 ? 1 : f(n - 1) + f(n - 2))
+  const q = memorize((n: number): number => (n < 2 ? 1 : q(n - 1) + q(n - 2)))
   const pool = new MemorizePool<number>()
   const g = function(n: number): number {
     return pool.getOrCalc(arguments, () => (n < 2 ? 1 : g(n - 1) + g(n - 2)))
@@ -55,16 +55,17 @@ function test2() {
     return res
   }
   const n = 10
-  const l = level => {
+  const l = (level: number) => {
     console.log('             ', '>>>>', 'level', '=', level, '<<<<')
-    const f = (x): number => (x < 0 ? x : f(heavy(n, level, x - 1)))
+    const f = (x: number): number => (x < 0 ? x : f(heavy(n, level, x - 1)))
+    type F = typeof f
     const pool = new MemorizePool<number>()
-    const g = function(x): number {
+    const g = function(x: number): number {
       return pool.getOrCalc(arguments, () =>
         x < 0 ? x : g(heavy(n, level, x - 1)),
       )
     }
-    const t = f => () => f(10)
+    const t = (f: F) => () => f(10)
     test('deep loop (heavy compute)', t(f), t(g))
   }
   for (let level = 7; level <= 8; level++) {
@@ -74,16 +75,19 @@ function test2() {
 
 /* long arguments */
 function test3() {
+  // @ts-ignore
   const f = (q, w, e, a, s, d, z, x, c) => {
     console.log('>>called<<')
     return q + w + e + a + s + d + z + x + c
   }
+  type F = typeof f
   const pool = new MemorizePool()
+  // @ts-ignore
   const g = function(q, w, e, a, s, d, z, x, c) {
-    const args = arguments
+    const args: any = arguments
     return pool.getOrCalc(arguments, () => f.apply(null, args))
   }
-  const t = f => () => f(1, 2, 3, 4, 5, 6, 7, 8, 9)
+  const t = (f: F) => () => f(1, 2, 3, 4, 5, 6, 7, 8, 9)
   test('long arguments (using pool)', t(f), t(g))
   test('long arguments (using wrapper)', t(f), t(memorize(f)))
 }
