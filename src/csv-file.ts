@@ -9,7 +9,7 @@ import {
   json_to_csv_titles,
   to_csv,
 } from './csv'
-import { stream_lines } from './generator'
+import { stream_lines } from './file-stream'
 
 function wrapLine(s: string): string {
   return s.replace(/\n/g, '\\n')
