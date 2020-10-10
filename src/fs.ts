@@ -165,10 +165,14 @@ export function readJsonFileSync(file: string): any {
 
 export type IterateFileByLineOptions = {
   encoding?: BufferEncoding
-  batchSize?: number
+  batchSize?: number // default is 8MB
   close?: () => void // teardown when the consumer early return
 }
 
+/**
+ * linefeed "\n" is omitted from the yielded value
+ * but "\r" if exists is preserved as is
+ * */
 export function* iterateFileByLine(
   file: string,
   options?: IterateFileByLineOptions,
