@@ -19,7 +19,7 @@ export function* batchGenerator<T>(
 }
 
 export function* iterableToGenerator<T>(iterator: Iterable<T>): Generator<T> {
-  for (let item of iterator) {
+  for (const item of iterator) {
     yield item
   }
 }
