@@ -1,4 +1,3 @@
-import test from 'tape'
 import {
   deepEqual,
   objectGetOrSetDefault,
@@ -7,8 +6,9 @@ import {
   valuesToObject,
 } from '../src/object'
 import { getObjectType } from '../src/type'
+import { t } from './tape-adaptor'
 
-test('deepEqual', t => {
+describe('deepEqual', () => {
   function test(a: any, b: any, answer: boolean) {
     const result = deepEqual(a, b)
     t.true(result === answer, Object.prototype.toString.call(a))
@@ -44,7 +44,7 @@ test('deepEqual', t => {
   t.end()
 })
 
-test('object values', t => {
+describe('object values', () => {
   const user = {
     user_id: 123,
     username: 'Alice',
@@ -57,7 +57,7 @@ test('object values', t => {
   t.end()
 })
 
-test('objectGetOrSetDefault', t => {
+describe('objectGetOrSetDefault', () => {
   const object: Record<string, any> = {}
   const value = { user: 'Alice' }
   t.equal(
@@ -78,7 +78,7 @@ test('objectGetOrSetDefault', t => {
   t.end()
 })
 
-test('objectPick', t => {
+describe('objectPick', () => {
   const user = { name: 'Alice', age: 12 }
   t.deepEqual(objectPick(user, ['name', 'age']), user, 'pick all props')
   t.deepEqual(objectPick(user, ['name']), { name: user.name }, 'pick one prop')

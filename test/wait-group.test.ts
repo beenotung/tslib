@@ -1,14 +1,13 @@
-import test from 'tape'
 import { WaitGroup } from '../src/async/wait-group'
 
-test('wait group', t => {
+test('wait group', done => {
   const wg = new WaitGroup()
 
   function wait(interval: number) {
     const cb = wg.add()
-    console.log('wait for', interval, 'ms')
+    // console.log('wait for', interval, 'ms')
     setTimeout(() => {
-      console.log('waited', interval, 'ms')
+      // console.log('waited', interval, 'ms')
       cb()
     }, interval)
   }
@@ -17,7 +16,7 @@ test('wait group', t => {
   wait(200)
   wait(100)
   wg.waitAll(() => {
-    console.log('all done')
-    t.end()
+    // console.log('all done')
+    done()
   })
 })

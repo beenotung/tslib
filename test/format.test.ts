@@ -1,4 +1,3 @@
-import test from 'tape'
 import {
   format_2_digit,
   format_byte,
@@ -9,13 +8,14 @@ import {
   setLang,
 } from '../src/format'
 import { CENTURY, DAY, MINUTE, SECOND, WEEK } from '../src/time'
+import { t } from './tape-adaptor'
 
-test('format_byte', t => {
+describe('format_byte', () => {
   t.equal(format_byte(412.5 * 1024 * 1024), '412.50 MB', 'format size')
   t.end()
 })
 
-test('format_datetime', t => {
+describe('format_datetime', () => {
   const time = new Date('2019-03-11T03:56:00.000Z').getTime()
   t.equal(
     format_datetime(time),
@@ -33,7 +33,7 @@ test('format_datetime', t => {
   t.end()
 })
 
-test('format_relative_time (default)', t => {
+test('format_relative_time (default)', () => {
   t.equal(format_relative_time(12.5 * MINUTE), '12.5 minutes hence')
   t.equal(format_relative_time(4 * DAY), '4 days hence')
   t.equal(format_relative_time(4 * CENTURY), '4 centuries hence')
@@ -43,17 +43,17 @@ test('format_relative_time (default)', t => {
   t.equal(format_relative_time(-1024 * SECOND), '17.1 minutes ago')
   t.end()
 })
-test('format_relative_time (zh)', t => {
+test('format_relative_time (zh)', () => {
   setLang('zh')
   t.equal(format_relative_time(12.5 * MINUTE), '12.5 分鐘後')
   t.end()
 })
-test('format_relative_time (en)', t => {
+test('format_relative_time (en)', () => {
   setLang('en')
   t.equal(format_relative_time(12.5 * MINUTE), '12.5 minutes hence')
   t.end()
 })
-test('format_long_short_time', t => {
+test('format_long_short_time', () => {
   const now = Date.now()
   t.equal(format_long_short_time(now - 4.5 * DAY), '4 days ago')
   t.equal(format_long_short_time(now + 4.5 * DAY), '4 days hence')
@@ -62,7 +62,7 @@ test('format_long_short_time', t => {
   t.end()
 })
 
-test('format_digit', t => {
+test('format_digit', () => {
   t.equal(format_2_digit(12), '12')
   t.equal(format_2_digit(6), '06')
 

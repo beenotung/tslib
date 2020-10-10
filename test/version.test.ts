@@ -1,7 +1,7 @@
-import test from 'tape'
 import { getSemverDiffType, SemverDiffType, to_semver } from '../src/semver'
+import { t } from './tape-adaptor'
 
-test('semver', t => {
+test('semver', () => {
   t.equal(
     getSemverDiffType(to_semver('1.1.9'), to_semver('1.1.9')),
     SemverDiffType.same,

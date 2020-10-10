@@ -1,5 +1,4 @@
 import { Bar } from 'cli-progress'
-import test from 'tape'
 import {
   binArray,
   cloneArray,
@@ -23,10 +22,11 @@ import {
   sumByField,
   zipArray,
 } from '../src/array'
+import { t } from './tape-adaptor'
 
-test('getMaxArraySize', t => {
+test('getMaxArraySize', () => {
   const MaxArraySize = getMaxArraySize()
-  console.log({ MaxArraySize })
+  // console.log({ MaxArraySize })
   const xss = new Array(MaxArraySize)
   const bar = new Bar({})
   bar.start(MaxArraySize, 0)
@@ -38,19 +38,23 @@ test('getMaxArraySize', t => {
   t.end()
 })
 
-test('cloneArray', t => {
+describe('cloneArray', () => {
   const xs = [1, 3, 2]
   const ys = cloneArray(xs)
 
-  t.deepEquals(xs, ys, 'should clone identical array')
+  test('should clone identical array', () => {
+    expect(xs).toEqual(ys)
+  })
 
-  ys[0]++
-  t.notDeepEqual(xs, ys, 'should not modify original array')
+  test('should not modify original array', () => {
+    ys[0]++
+    expect(ys).not.toEqual(xs)
+  })
 
   t.end()
 })
 
-test('range', t => {
+test('range', () => {
   const xs = range(1, 100)
   t.deepEqual(
     xs,
@@ -59,7 +63,7 @@ test('range', t => {
   t.end()
 })
 
-test('binArray', t => {
+test('binArray', () => {
   const xs = range(1, 100)
   const xss = binArray(xs, 7)
   t.deepEqual(xss.length, 15)
@@ -68,7 +72,7 @@ test('binArray', t => {
   t.end()
 })
 
-test('countArray', t => {
+test('countArray', () => {
   t.equal(
     countArray(range(1, 100), x => x % 2 === 0),
     50,
@@ -76,7 +80,7 @@ test('countArray', t => {
   t.end()
 })
 
-test('array compare', t => {
+describe('array compare', () => {
   const numbers = [1, 3, 2]
   const negativeNumbers = numbers.map(x => -x)
   const objects = numbers.map(x => ({ x }))
@@ -105,14 +109,14 @@ test('array compare', t => {
   t.end()
 })
 
-test('median', t => {
+test('median', () => {
   const xs = [1, 4, 5, 2, 1, 3, 4, 1, 5, 1, 5, 3, 2, 1, 2, 3]
   const x = median(xs)
   t.equal(x, 2.5)
   t.end()
 })
 
-test('counting', t => {
+describe('counting', () => {
   const xs = [
     ...'a'.repeat(2).split(''),
     ...'b'.repeat(3).split(''),
@@ -124,7 +128,7 @@ test('counting', t => {
   t.end()
 })
 
-test('push', t => {
+test('push', () => {
   const xs = [1, 2, 3]
   pushBackward(xs, 4)
   t.deepEqual(xs, [1, 2, 3, 4])
@@ -137,7 +141,7 @@ test('push', t => {
   t.end()
 })
 
-test('zip', t => {
+test('zip', () => {
   const a = [1, 2, 3]
   const b = ['apple', 'banana', 'cherry']
   const c = zipArray(a, b)
@@ -149,7 +153,7 @@ test('zip', t => {
   t.end()
 })
 
-test('makeArray', t => {
+test('makeArray', () => {
   const n = 10
   t.deepEqual(
     makeArray(n, i => i * 10),

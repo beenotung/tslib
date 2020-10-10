@@ -1,14 +1,14 @@
-import test from 'tape'
 import { compare, compare_by_keys, sort_by_keys } from '../src/compare'
+import { t } from './tape-adaptor'
 
 const numbers = [1, 10, 3, 2]
 const sorted = [1, 2, 3, 10]
-test('sort numeric number', t => {
+test('sort numeric number', () => {
   t.deepEquals(numbers.slice().sort(compare), sorted)
   t.end()
 })
 
-test('sort object array by key', t => {
+test('sort object array by key', () => {
   t.deepEquals(
     sort_by_keys(
       numbers.map(x => ({ x })),
@@ -43,7 +43,7 @@ test('sort object array by key', t => {
   t.end()
 })
 
-test('sort object with non-numeric key', t => {
+test('sort object with non-numeric key', () => {
   const user = {
     name: 'Alice',
     age: 20,

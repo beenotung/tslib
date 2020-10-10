@@ -1,7 +1,7 @@
-import test from 'tape'
 import { RingBuffer } from '../src/ring-buffer'
+import { t } from './tape-adaptor'
 
-test('correct boundary', t => {
+test('correct boundary', () => {
   const size = 3
   const xs = new RingBuffer(size)
   for (let x = 0; x < size * 5; x++) {
