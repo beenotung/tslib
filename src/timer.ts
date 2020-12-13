@@ -155,6 +155,7 @@ export function defaultTimerWriteStream(): NodeJS.WriteStream {
   }
   const writeStream: NodeJS.WriteStream = {} as any
   writeStream.write = function() {
+    // tslint:disable-next-line no-console
     console.debug.apply(console, arguments as any)
     return true
   }
