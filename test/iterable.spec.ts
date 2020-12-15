@@ -1,3 +1,4 @@
+import { expect } from './jest-adapter'
 import { mapIterableToArray } from '../src/iterable'
 
 describe('Iterable TestSuit', function() {

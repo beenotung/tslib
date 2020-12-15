@@ -1,4 +1,6 @@
+import { test } from 'mocha'
 import { batchGenerator, iterableToGenerator } from '../src/generator'
+import { expect } from './jest-adapter'
 
 test('batchGenerator', () => {
   let array = new Array(6).fill(0).map((_, i) => i)

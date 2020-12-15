@@ -1,18 +1,19 @@
-/**
- * implement tape functions using jest
- * to aid migrating test from tape into jest
- * */
+import { expect } from 'chai'
 
+/**
+ * implement tape functions using chai
+ * to aid migrating test from tape into mocha
+ * */
 export let t = {
   end: () => {
     // noop
   },
-  true: wrap1(a => expect(a).toBe(true)),
-  equal: wrap2((a, b) => expect(a).toBe(b)),
-  notEqual: wrap2((a, b) => expect(a).not.toBe(b)),
-  deepEqual: wrap2((a, b) => expect(a).toEqual(b)),
-  deepEquals: wrap2((a, b) => expect(a).toEqual(b)),
-  notDeepEqual: wrap2((a, b) => expect(a).not.toEqual(b)),
+  true: wrap1(a => expect(a).true),
+  equal: wrap2((a, b) => expect(a).equals(b)),
+  notEqual: wrap2((a, b) => expect(a).not.equals(b)),
+  deepEqual: wrap2((a, b) => expect(a).deep.equals(b)),
+  deepEquals: wrap2((a, b) => expect(a).deep.equals(b)),
+  notDeepEqual: wrap2((a, b) => expect(a).not.deep.equals(b)),
 }
 
 function wrap1(fn: (a: any) => void) {
@@ -29,7 +30,9 @@ function wrap2(fn: (a: any, b: any) => void) {
 
 function run(name: string | undefined, fn: () => void) {
   if (name) {
-    test(name, fn)
+    it(name, () => {
+      fn()
+    })
   } else {
     fn()
   }
