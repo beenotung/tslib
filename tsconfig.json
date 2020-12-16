@@ -28,8 +28,10 @@
     "node_modules",
     "src/**/*.macro.ts",
     "src/**/*.spec.ts",
+    "src/**/*.test.ts",
     "test/**/*.macro.ts",
-    "test/**/*.spec.ts"
+    "test/**/*.spec.ts",
+    "test/**/*.test.ts"
   ],
   "compileOnSave": false,
   "atom": {
