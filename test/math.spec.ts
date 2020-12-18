@@ -1,6 +1,6 @@
 import { test } from 'mocha'
 import { expect } from 'chai'
-import { numberToFraction, simplifyFraction } from '../src/math'
+import { floor, numberToFraction, round, simplifyFraction } from '../src/math'
 import { Random } from '../src/random'
 
 describe('math.ts TestSuit', () => {
@@ -52,5 +52,17 @@ describe('math.ts TestSuit', () => {
     test_sign([4, 5], 2)
     test_sign([4, 5], 18)
     test_sign([4, 5], -5)
+  })
+  describe('rounding', () => {
+    test('round', () => {
+      expect(round(3.14, 2)).to.equals(3.14)
+      expect(round(3.1415, 2)).to.equals(3.14)
+      expect(round(3.1497, 2)).to.equals(3.15)
+    })
+    test('floor', () => {
+      expect(floor(3.14, 2)).to.equals(3.14)
+      expect(floor(3.1415, 2)).to.equals(3.14)
+      expect(floor(3.1497, 2)).to.equals(3.14)
+    })
   })
 })

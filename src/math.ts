@@ -85,5 +85,10 @@ export let reduceFraction = simplifyFraction
 
 export function round(x: number, numberOfDecimal: number): number {
   const pow = 10 ** numberOfDecimal
+  return Math.round(x * pow) / pow
+}
+
+export function floor(x: number, numberOfDecimal: number): number {
+  const pow = 10 ** numberOfDecimal
   return Math.floor(x * pow) / pow
 }
