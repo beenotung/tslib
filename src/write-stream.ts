@@ -5,7 +5,7 @@ export namespace writeStream {
     stream: WriteStream,
     // string or buffer only?
     chunk: any,
-    encoding?: string,
+    encoding?: BufferEncoding,
   ): Promise<boolean> {
     return new Promise((resolve, reject) => {
       if (encoding) {
