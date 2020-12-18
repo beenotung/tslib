@@ -71,9 +71,19 @@ export function numberToFraction(x: number, error = 1e-12): [number, number] {
   }
 }
 
-export function reduceFraction([a, b]: [number, number]): [number, number] {
+export let factorize = numberToFraction
+
+export function simplifyFraction([a, b]: [number, number]): [number, number] {
   const c = gcd(a, b)
   a /= c
   b /= c
   return b < 0 ? [-a, -b] : [a, b]
+}
+
+/** @deprecated renamed to simplifyFraction() */
+export let reduceFraction = simplifyFraction
+
+export function round(x: number, numberOfDecimal: number): number {
+  const pow = 10 ** numberOfDecimal
+  return Math.floor(x * pow) / pow
 }
