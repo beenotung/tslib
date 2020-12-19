@@ -47,7 +47,7 @@
     "report": "run-s report:update report:open"
   },
   "dependencies": {
-    "cross-fetch": "^3.0.4",
+    "cross-fetch": "^3.0.6",
     "form-data": "^3.0.0",
     "node-localstorage": "^2.1.5",
     "tslib": "^1.10.0"
@@ -76,7 +76,7 @@
     "tape": "^4.10.1",
     "ts-jest": "^26.2.0",
     "ts-mocha": "^8.0.0",
-    "tsc-macro": "^0.0.2",
+    "tsc-macro": "^0.1.2",
     "tslint": "^6.0.0",
     "tslint-config-prettier": "^1.18.0",
     "tslint-eslint-rules": "^5.4.0",
