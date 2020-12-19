@@ -50,11 +50,11 @@ export function startTimer(options: StartTimerOptions) {
     eraseChars(writeStream, msgLen - newMsgLen)
     msgLen = newMsgLen
   }
+  let startTime: number
   const start = () => {
     writeStream.write(new Date().toLocaleString() + ': ' + name)
     print(' ...')
-    // tslint:disable-next-line no-console
-    console.time(name)
+    startTime = Date.now()
   }
   start()
   const end = () => {
@@ -65,14 +65,13 @@ export function startTimer(options: StartTimerOptions) {
     if (writeStream.moveCursor) {
       writeStream.moveCursor(-name.length, 0)
     }
-    // tslint:disable-next-line no-console
-    console.timeEnd(name)
+    const usedTime = Date.now() - startTime
+    writeStream.write(`${name}: ${format_time_duration(usedTime, 2)}\n`)
     name = undefined
   }
   let totalTick = 0
   let currentTick = 0
   let startTick: number
-  let startTime: number
   const progress = (msg: string) => {
     print(msg)
   }
