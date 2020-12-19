@@ -14,10 +14,11 @@ log.txt
 .sourcemaps/
 
 # Node
-node_modules
+node_modules/
 npm-debug.log*
 package-lock.json
 pnpm-lock.yaml
+pnpm-debug.log
 *.tgz
 
 # Yarn
@@ -43,6 +44,7 @@ docs/
 .sass-cache/
 .tmp/
 .versions/
+.nyc_output
 coverage/
 dist/
 tmp/
