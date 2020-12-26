@@ -1,6 +1,7 @@
 import { Bar } from 'cli-progress'
 import { test } from 'mocha'
 import {
+  arrayToObject,
   binArray,
   cloneArray,
   countArray,
@@ -25,6 +26,7 @@ import {
 } from '../src/array'
 import { expect } from './jest-adapter'
 import { t } from './tape-adaptor'
+
 describe('array.ts spec', () => {
   test('getMaxArraySize', () => {
     const MaxArraySize = getMaxArraySize()
@@ -160,6 +162,21 @@ describe('array.ts spec', () => {
     t.deepEqual(
       makeArray(n, i => i * 10),
       new Array(n).fill(0).map((_, i) => i * 10),
+    )
+    t.end()
+  })
+
+  test('arrayToObject', () => {
+    t.deepEqual(
+      arrayToObject(
+        [{ name: 'Alice' }, { name: 'Bob' }, { name: 'Cherry' }],
+        o => o.name,
+      ),
+      {
+        Alice: { name: 'Alice' },
+        Bob: { name: 'Bob' },
+        Cherry: { name: 'Cherry' },
+      },
     )
     t.end()
   })

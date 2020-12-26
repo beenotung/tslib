@@ -746,3 +746,15 @@ export function makeArray<T>(n: number, f: (i: number) => T): T[] {
   }
   return res
 }
+
+export function arrayToObject<T>(
+  xs: T[],
+  keyFn: (x: T, i: number, xs: T[]) => string,
+): Record<string, T> {
+  const o: Record<string, T> = {}
+  xs.forEach((x, i, xs) => {
+    const key = keyFn(x, i, xs)
+    o[key] = x
+  })
+  return o
+}
