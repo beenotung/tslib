@@ -1,12 +1,13 @@
-import { iterateFileByLineWithProgress } from '../src/fs-progress'
+import { iterateFileByLineWithProgressSync } from '../src/fs-progress'
 import { startTimer } from '../src/node'
 
 const timer = startTimer('scan large file by line')
-iterateFileByLineWithProgress({
+iterateFileByLineWithProgressSync({
   file: 'res/db.txt',
   initCallback: totalSize =>
     timer.setProgress({
       totalTick: totalSize,
+      sampleOver: totalSize / 100,
       estimateTime: true,
     }),
   eachLine: ({ line }) => {
