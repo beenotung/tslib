@@ -10,6 +10,7 @@ import {
 import { CENTURY, DAY, MINUTE, SECOND, WEEK } from '../src/time'
 import { t } from './tape-adaptor'
 import { test } from 'mocha'
+import { expect } from 'chai'
 
 describe('format.ts spec', () => {
   describe('format_byte', () => {
@@ -19,19 +20,16 @@ describe('format.ts spec', () => {
 
   describe('format_datetime', () => {
     const time = new Date('2019-03-11T03:56:00.000Z').getTime()
-    t.equal(
-      format_datetime(time),
-      'Mon, Mar 11, 2019, 11:56 AM',
-      'format time (default)',
-    )
-    // node v10
-    t.equal(
-      format_datetime(time, { locales: 'zh-hk' }),
-      'Mon, Mar 11, 2019, 11:56 AM',
-      'format time (zh-hk)',
-    )
-    // node v8
-    // t.equal( format_datetime(time, { locales: 'zh-hk' }), '2019 Mar 11, Mon 11:56 AM','format time (zh-hk)');
+    // node v8: 2019 Mar 11, Mon 11:56 AM
+    // node v10: Mon, Mar 11, 2019, 11:56 AM
+    // node v14: Mon, 11 Mar 2019, 11:56 am | 2019年3月11日週一 上午11:56
+    const str = format_datetime(time)
+    expect(str).to.contains('Mon')
+    expect(str).to.contains('11')
+    expect(str).to.contains('Mar')
+    expect(str).to.contains('2019')
+    expect(str).to.contains('11:56')
+    expect(str.toUpperCase()).to.contains('AM')
     t.end()
   })
 
