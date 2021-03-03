@@ -1,3 +1,7 @@
+/**
+ * timer with progress report and finish-time estimation
+ * */
+
 import { format_time_duration } from './format'
 import { eraseChars } from './node'
 
