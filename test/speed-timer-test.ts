@@ -1,34 +1,36 @@
+import {
+  existsSync,
+  mkdirSync,
+  readFileSync,
+  rmdirSync,
+  unlinkSync,
+  writeFileSync,
+} from 'fs'
+import path from 'path'
 import { createSpeedTimer } from '../src/speed-timer'
 
 const timer = createSpeedTimer()
+timer.start()
+timer.pause()
 
-function createWorker(interval = 0) {
-  let timeout: any
-
-  function start() {
-    timer.tick()
-    timeout = setTimeout(start, interval)
-  }
-
-  function stop() {
-    clearTimeout(timeout)
-  }
-
-  return { start, stop }
+if (!existsSync('tmp')) {
+  mkdirSync('tmp')
 }
 
-const N = 8
-const Timeout = 3 * 1000
-const workers = new Array(N).fill(0).map(() => createWorker())
-
-timer.start()
-workers.forEach(worker => worker.start())
-
-const reportTimer = setInterval(() => timer.report(), 1 * 1000)
-
-setTimeout(() => {
-  clearInterval(reportTimer)
+const N = 100000
+const reportInterval = N / 5
+for (let i = 0; i < N; i++) {
+  const file = path.join('tmp', i + '.tmp')
+  timer.resume()
+  writeFileSync(file, i.toString())
+  readFileSync(file)
+  timer.tick()
   timer.pause()
-  workers.forEach(worker => worker.stop())
-  timer.report()
-}, Timeout)
+  unlinkSync(file)
+  if (i % reportInterval === 0) {
+    timer.report()
+  }
+}
+timer.report()
+
+rmdirSync('tmp')
