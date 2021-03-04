@@ -42,5 +42,12 @@ export function createSpeedTimer(title = 'Speed:') {
     console.log(title, speed.toFixed(2))
   }
 
-  return { start, pause, resume, tick, report }
+  return {
+    start,
+    pause,
+    resume,
+    tick,
+    stats,
+    report,
+  }
 }
