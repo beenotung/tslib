@@ -1,50 +1,41 @@
-import { mapArray } from './array'
-
-let f_name: string
-
-/* tslint:disable:ban-types */
-/**
- * @description may not work after being minify due to scoped name collision
- * */
-export function wrapFunction<F extends Function>(
-  _host_function_: F,
-  n = _host_function_.length,
-  name = _host_function_.name,
+function wrapFunction_defineProperty<F extends Function>(
+  fn: F,
+  length = fn.length,
+  name = fn.name,
 ): F {
-  /* tslint:enable:ban-types */
-  const args = mapArray(new Array(n), (x, i) => 'a' + i).join(',')
-  /* tslint:disable */
-  let newF: F = undefined as any
-  eval(
-    `newF=function ${name}(${args}){return ${f_name}.apply(null,arguments);}`,
-  )
-  return newF as any
-  /* tslint:enable */
+  const f = function() {
+    return fn.apply(null, arguments)
+  }
+  Object.defineProperty(f, 'name', { value: name })
+  Object.defineProperty(f, 'length', { value: length })
+  return f as any
 }
 
-f_name = wrapFunction
-  .toString()
-  .split('(')[1]
-  .split(',')[0]
-
-/* tslint:disable:ban-types */
-/**
- * @description safe under minify, but occur more call stack size
- * */
-export function safeWrapFunction<F extends Function>(
-  _host_function_: F,
-  n = _host_function_.length,
-  name = _host_function_.name,
+function wrapFunction_newFunction_eval<F extends Function>(
+  fn: F,
+  length = fn.length,
+  name = fn.name,
 ): F {
-  /* tslint:enable:ban-types */
-  const args = mapArray(new Array(n), (x, i) => 'a' + i).join(',')
-  /* tslint:disable */
-  return eval(`(function() {
-    return function(f) {
-      return function ${name}(${args}) {
-        return f.apply(null, arguments);
-      };
-    };
-  })()`)(_host_function_)
-  /* tslint:enable */
+  const args = new Array(length).fill(0)
+.map((_, i) => 'a' + (i + 1))
+  const wrapper = eval(`(function wrapper(fn) {
+    return function ${name}(${args}) {
+      return fn.apply(null, arguments)
+    }
+  })`)
+  return wrapper(fn)
 }
+
+// for testing only
+export default {
+  wrapFunction_defineProperty,
+  wrapFunction_newFunction_eval,
+}
+
+export const wrapFunction =
+  'defineProperty' in Object && typeof Object.defineProperty === 'function'
+    ? wrapFunction_defineProperty
+    : wrapFunction_newFunction_eval
+
+/** @deprecated use `wrapFunction` instead */
+export const safeWrapFunction = wrapFunction

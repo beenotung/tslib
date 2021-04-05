@@ -15,7 +15,7 @@ export function collectMap<K, V, A>(
   return res
 }
 
-/**@deprecated renamed to collectMap */
+/** @deprecated renamed to collectMap */
 export const mapMap = collectMap
 
 export function mapToArray<K, V, A>(
@@ -45,6 +45,7 @@ export function mapGetOrThrow<K, V>(
   message: Error | string = key + ' not found',
 ): V {
   if (map.has(key)) {
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     return map.get(key)!
   }
   if (typeof message === 'string') {

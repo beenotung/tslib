@@ -22,11 +22,10 @@ export namespace foreachs {
   }
 
   export function object<A>(x: A, f: ObjectConsumer<A>): void {
-    /* tslint:disable:forin */
+    // eslint-disable-next-line guard-for-in
     for (const k in x) {
       f(x[k], k, x)
     }
-    /* tslint:enable:forin */
   }
 
   export function set<A>(xs: Set<A>, f: SetConsumer<A>): void {

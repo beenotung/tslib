@@ -64,6 +64,7 @@ export class MemorizePool<A> {
     const map = this.getLastMap(args)
     const last = args[0]
     if (map.has(last)) {
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
       return map.get(last)!
     }
     const res = f()

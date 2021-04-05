@@ -2,6 +2,7 @@
 Symbol.storage = Symbol.for('storage')
 
 export function getNodeStore(name: string, quota?: number): Storage {
+  // eslint-disable-next-line @typescript-eslint/no-var-requires
   const { LocalStorage } = require('node-localstorage')
   return typeof quota === 'number'
     ? new LocalStorage(name, quota)

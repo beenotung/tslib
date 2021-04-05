@@ -1,2 +1,2 @@
-/**@deprecated*/
+/** @deprecated*/
 export * from './async/promise'

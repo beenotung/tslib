@@ -10,7 +10,7 @@ export function calcPhi() {
 }
 
 let phi: number
-export let math: { phi: number } = {
+export const math: { phi: number } = {
   get phi(): number {
     return phi || (phi = calcPhi())
   },
@@ -71,7 +71,7 @@ export function numberToFraction(x: number, error = 1e-12): [number, number] {
   }
 }
 
-export let factorize = numberToFraction
+export const factorize = numberToFraction
 
 export function simplifyFraction([a, b]: [number, number]): [number, number] {
   const c = gcd(a, b)
@@ -81,7 +81,7 @@ export function simplifyFraction([a, b]: [number, number]): [number, number] {
 }
 
 /** @deprecated renamed to simplifyFraction() */
-export let reduceFraction = simplifyFraction
+export const reduceFraction = simplifyFraction
 
 export function round(x: number, numberOfDecimal: number): number {
   const pow = 10 ** numberOfDecimal

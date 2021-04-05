@@ -1,4 +1,4 @@
-let sizes = `
+const sizes = `
 UHD 3840x2160
 QHD 2560x1440
 FHD 1920x1080
@@ -17,8 +17,8 @@ GalaxyNote9 414x846
       .filter(s=>s))
     .filter(xs=>xs.length>0)
     .map(xs=>{
-      let[name,dimension]=xs
-      let [w,h]=dimension.split('x')
+      const [name,dimension] = xs
+      const [w,h] = dimension.split('x')
       return `export const ${name}: Dimension = { width: ${w}, height: ${h} }`
     })
     .join('\n')

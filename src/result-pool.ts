@@ -53,7 +53,7 @@ export class NonVoidResultPool {
           this.check()
           return x
         },
-        e => {
+        _e => {
           this.running--
           this.check()
         },

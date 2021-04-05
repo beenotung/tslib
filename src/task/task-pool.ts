@@ -6,7 +6,10 @@ export class TaskPool extends TaskQueue {
 
   constructor(public concurrentSize = 1) {
     super()
-    this.ps = new Array(concurrentSize).fill('').map(() => new TaskQueue())
+    // prettier-ignore
+    this.ps = new Array(concurrentSize)
+      .fill('')
+      .map(() => new TaskQueue())
     this.i = 0
   }
 

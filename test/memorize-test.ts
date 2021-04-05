@@ -31,7 +31,7 @@ function test1() {
   const f = (n: number): number => (n < 2 ? 1 : f(n - 1) + f(n - 2))
   const q = memorize((n: number): number => (n < 2 ? 1 : q(n - 1) + q(n - 2)))
   const pool = new MemorizePool<number>()
-  const g = function(n: number): number {
+  const g = function (n: number): number {
     return pool.getOrCalc(arguments, () => (n < 2 ? 1 : g(n - 1) + g(n - 2)))
   }
   const n = 45
@@ -60,7 +60,7 @@ function test2() {
     const f = (x: number): number => (x < 0 ? x : f(heavy(n, level, x - 1)))
     type F = typeof f
     const pool = new MemorizePool<number>()
-    const g = function(x: number): number {
+    const g = function (x: number): number {
       return pool.getOrCalc(arguments, () =>
         x < 0 ? x : g(heavy(n, level, x - 1)),
       )
@@ -83,7 +83,7 @@ function test3() {
   type F = typeof f
   const pool = new MemorizePool()
   // @ts-ignore
-  const g = function(q, w, e, a, s, d, z, x, c) {
+  const g = function (q, w, e, a, s, d, z, x, c) {
     const args: any = arguments
     return pool.getOrCalc(arguments, () => f.apply(null, args))
   }

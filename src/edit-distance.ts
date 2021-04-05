@@ -44,7 +44,7 @@ export const edit_distance = memorize(
 const edit_distance_clear = edit_distance.clear.bind(edit_distance)
 edit_distance.clear = () => {
   if (typeof (last as any).clear === 'function') {
-    ; (last as any).clear()
+    (last as any).clear()
   }
   pop.clear()
   wrapArray.clear()

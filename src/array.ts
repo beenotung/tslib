@@ -26,7 +26,7 @@ export function replaceArray<A>(dest: A[], src: A[]): A[] {
   return dest
 }
 
-/**@remark side effect
+/** @remark side effect
  * inplace operation
  * @deprecated same as clear
  * */
@@ -124,7 +124,7 @@ export function insert_sorted<A>(
   xs.push(x)
 }
 
-export let defaultComparator: Comparator<any> = <A extends number | string>(
+export const defaultComparator: Comparator<any> = <A extends number | string>(
   a: A,
   b: A,
 ): CompareResult => {
@@ -157,8 +157,8 @@ export function insertSortBy<A>(
   return res
 }
 
-/**@deprecated*/
-export let sortBy = insertSortBy
+/** @deprecated*/
+export const sortBy = insertSortBy
 
 /**
  * @return in-place sorted, original array
@@ -612,8 +612,8 @@ export function shuffledIndices(n: number): number[] {
   return shuffle(range(0, n - 1))
 }
 
-/**@deprecated typo in function name, renamed to shuffledIndices*/
-export let shuffledIndecies = shuffledIndices
+/** @deprecated typo in function name, renamed to shuffledIndices*/
+export const shuffledIndecies = shuffledIndices
 
 /**
  * TODO assign a better name

@@ -1,5 +1,4 @@
-/* tslint:disable:no-unused-variable */
-/* tslint:disable:max-line-length */
+/* eslint-disable @typescript-eslint/no-unused-vars */
 
 /* F<N> */
 export type F1<T1, R> = (t1: T1) => R
@@ -533,6 +532,3 @@ declare function curry<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, R>(
 declare function curry<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, R>(
   f12: F12<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, R>,
 ): CurryF12<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, R>
-
-/* tslint:enable:no-unused-variable */
-/* tslint:enable:max-line-length */

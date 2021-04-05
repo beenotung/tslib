@@ -10,7 +10,7 @@ export function createFSPool(concurrentSize: number) {
     if (typeof func !== 'function' || name.endsWith('Sync')) {
       continue
     }
-    ; (res as any)[name] = function() {
+    (res as any)[name] = function() {
       const args = arguments
       // tslint:disable-next-line:ban-types
       return pool.runTask(() => (func as Function).apply(fs, args))

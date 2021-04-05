@@ -7,9 +7,9 @@ export function createRL(
   return createInterface(options)
 }
 
-export let getRL: () => ReadLine = createLazy(createRL)
+export const getRL: () => ReadLine = createLazy(createRL)
 
-/**@deprecated*/
+/** @deprecated*/
 export let rl: ReadLine
 {
   let isNew = true

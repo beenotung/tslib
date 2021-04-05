@@ -1,9 +1,11 @@
-/* tslint:disable no-empty */
+// eslint-disable-next-line @typescript-eslint/no-empty-function
 function noop() {}
-/* tslint:enable no-empty */
 
 export function clearAllTimer() {
   let i = setInterval(noop)
+  if (typeof i !== 'number') {
+    throw new Error('clearAllTimer does not support node.js')
+  }
   for (; i > 0; i--) {
     clearTimeout(i)
     clearInterval(i)

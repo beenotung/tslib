@@ -362,9 +362,9 @@ export function applyIf<A, B>(
 }
 
 export {
-  /**@deprecated*/
+  /** @deprecated*/
   gen_noop,
-  /**@deprecated*/
+  /** @deprecated*/
   noop,
 } from './noop'
 

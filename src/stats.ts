@@ -13,6 +13,7 @@ export function createAlphaSmoother(alpha: number) {
   }
 
   function next(c: number) {
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     acc = acc! * alpha + c * beta
     return acc
   }

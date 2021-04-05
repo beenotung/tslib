@@ -65,12 +65,11 @@ export namespace Random {
     return Math.random() * 2 - 1
   }
 
-  export function element<A>(xs: A[]): A
-  export function element<A>(s: string): string
-
   /**
    * Nullable
    * */
+  export function element<A>(xs: A[]): A
+  export function element(s: string): string
   export function element<A>(xs: string | A[]): A | string {
     return xs[nextInt(xs.length, 0)]
   }

@@ -41,8 +41,8 @@ export namespace search {
     return false
   }
 
-  /**@deprecated*/
-  export let object_contains = object_contain_str
+  /** @deprecated*/
+  export const object_contains = object_contain_str
 
   export function partialMatch<T>(query: Partial<T>, target: T): boolean {
     const queryType = getObjectType(query)
@@ -71,7 +71,7 @@ export namespace search {
       case 'Map': {
         let matched = false
         const targetMap = (target as any) as Map<any, any>
-        ; ((query as any) as Map<any, any>).forEach((v, k) => {
+        ;((query as any) as Map<any, any>).forEach((v, k) => {
           matched = matched || partialMatch(v, targetMap.get(k))
         })
         return matched

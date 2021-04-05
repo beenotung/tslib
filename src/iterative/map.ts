@@ -9,11 +9,13 @@ export type ObjectMapper<A, B> = (
   object: A,
 ) => B
 export type SetMapper<A, B> = (a: A, xs: Set<A>) => B
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 export type MapValueMapper<AK, AV, BK, BV> = (
   v: AV,
   k: AK,
   xs: Map<AK, AV>,
 ) => BV
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 export type MapKeyMapper<AK, AV, BK, BV> = (v: AV, k: AK, xs: Map<AK, AV>) => BK
 export type NodeListElementMapper<A extends Element, B> = (
   a: A,
@@ -28,11 +30,11 @@ export namespace maps {
 
   export function object<A, B>(x: A, f: ObjectMapper<A, B>): B {
     const y = new (x as any).constructor()
-    /* tslint:disable:forin */
+    // eslint-disable-next-line guard-for-in
     for (const k in x) {
       y[k] = f(x[k], k, x)
     }
-    /* tslint:enable:forin */
+
     return y
   }
 

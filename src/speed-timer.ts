@@ -39,6 +39,7 @@ export function createSpeedTimer(title = 'Speed:') {
   function report() {
     const { passedTime, ticks } = stats()
     const speed = ticks / (passedTime / 1000)
+    // eslint-disable-next-line no-console
     console.log(title, speed.toFixed(2))
   }
 

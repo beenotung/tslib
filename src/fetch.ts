@@ -1,7 +1,7 @@
 import fetch_ from 'cross-fetch'
 import { getWindowOrGlobal } from './runtime'
 
-export let fetch: Window['fetch'] = fetch_
+export const fetch: Window['fetch'] = fetch_
 
 export function polyfillFetch() {
   const win = getWindowOrGlobal() as any

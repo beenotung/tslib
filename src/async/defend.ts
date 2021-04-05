@@ -17,11 +17,13 @@ export async function autoRetryAsync<A>(
   } catch (e) {
     if (retry_delay > 0) {
       const defer = createDefer<A, any>()
-      setTimeout(() => {
-        autoRetryAsync(f, retry_delay)
-          .then(defer.resolve)
-          .catch(defer.reject)
-      }, retry_delay)
+      setTimeout(
+        () =>
+          autoRetryAsync(f, retry_delay)
+            .then(defer.resolve)
+            .catch(defer.reject),
+        retry_delay,
+      )
       return defer.promise
     } else {
       return await autoRetryAsync(f, retry_delay)

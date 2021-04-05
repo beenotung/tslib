@@ -1,6 +1,9 @@
 /**
  * Created by beenotung on 3/8/17.
  */
+
+/* eslint-disable @typescript-eslint/no-unused-vars */
+
 export interface Either<L, R> {
   isLeft: boolean
   isRight: boolean

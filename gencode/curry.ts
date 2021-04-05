@@ -1,74 +1,83 @@
+/* eslint-disable no-console */
+
 function gen(deep: number) {
-  let ss = [];
+  let ss = []
 
   function out(...args: string[]) {
-    ss = ss.concat(...args, '\n');
+    ss = ss.concat(...args, '\n')
   }
 
   function genTs(n: number, offset = 1) {
-    if (n < offset)
-      return '';
-    let ts = 'T' + offset;
-    for (let i = offset + 1; i <= n; i++) {
-      ts += ',T' + i;
+    if (n < offset) {
+      return ''
     }
-    return ts;
+    let ts = 'T' + offset
+    for (let i = offset + 1; i <= n; i++) {
+      ts += ',T' + i
+    }
+
+    return ts
   }
 
   function genVs(n: number, offset = 1) {
-    if (n < offset)
-      return '';
-    let vs = 't' + offset + ': T' + offset;
-    for (let i = offset + 1; i <= n; i++) {
-      vs += ', t' + i + ': T' + i;
+    if (n < offset) {
+      return ''
     }
-    return vs;
+    let vs = 't' + offset + ': T' + offset
+    for (let i = offset + 1; i <= n; i++) {
+      vs += ', t' + i + ': T' + i
+    }
+
+    return vs
   }
 
   function genF(n: number) {
-    let ts = genTs(n);
-    let vs = genVs(n);
+    const ts = genTs(n)
+    const vs = genVs(n)
     out(`export type F${n}<${ts},R> = (${vs}) => R;`)
   }
 
   function genCurryF(n: number) {
-    let ts = genTs(n);
-    let name = `CurryF${n}`;
-    out(`export interface ${name}<${ts},R> extends Function {`);
-    out(`  apply(thisArg:any, argArray:[${ts}]):R;`);
+    const ts = genTs(n)
+    const name = `CurryF${n}`
+    out(`export interface ${name}<${ts},R> extends Function {`)
+    out(`  apply(thisArg:any, argArray:[${ts}]):R;`)
     for (let i = 0; i <= n; i++) {
-      let vs = genVs(i);
+      const vs = genVs(i)
       if (i < n) {
-        let tsr = genTs(n, i + 1) + ',R';
-        out(`  (${vs}):CurryF${n - i}<${tsr}>;`);
+        const tsr = genTs(n, i + 1) + ',R'
+        out(`  (${vs}):CurryF${n - i}<${tsr}>;`)
       } else {
-        out(`  (${vs}):R;`);
+        out(`  (${vs}):R;`)
       }
     }
-    out(`}`);
+    out(`}`)
   }
 
   function genCurry(n: number) {
-    let ts = genTs(n);
-    let t = `<${ts},R>`;
-    out(`declare function curry${t}(f${n}:F${n}${t}):CurryF${n}${t};`);
+    const ts = genTs(n)
+    const t = `<${ts},R>`
+    out(`declare function curry${t}(f${n}:F${n}${t}):CurryF${n}${t};`)
   }
 
-  out('/* F<N> */');
+  out('/* F<N> */')
   for (let i = 1; i <= deep; i++) {
-    genF(i);
+    genF(i)
   }
-  out();
-  out('/* CurryF<> */');
+
+  out()
+  out('/* CurryF<> */')
   for (let i = 1; i <= deep; i++) {
-    genCurryF(i);
+    genCurryF(i)
   }
-  out();
-  out('/* curry() annotation */');
+
+  out()
+  out('/* curry() annotation */')
   for (let i = 1; i <= deep; i++) {
-    genCurry(i);
+    genCurry(i)
   }
-  console.log(ss.join(''));
+
+  console.log(ss.join(''))
 }
 /** increase the number when needed */
-gen(12);
+gen(12)

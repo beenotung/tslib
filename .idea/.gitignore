@@ -1,11 +1,5 @@
-codeStyles
-codeStyleSettings.xml
-dbnavigator.xml
-emacs.xml
-encodings.xml
-inspectionProfiles
-jsTestFinder.xml
-misc.xml
-thriftCompiler.xml
-vcs.xml
-workspace.xml
+*
+!modules.xml
+!*.iml
+!dictionaries/
+!.gitignore

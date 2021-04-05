@@ -7,8 +7,8 @@ import { Obj } from './lang'
 export function checkFetch(url: string): Promise<boolean> {
   const defer = createDefer<boolean, void>()
   fetch(url)
-    .then(x => defer.resolve(true))
-    .catch(x => defer.resolve(false))
+    .then(_res => defer.resolve(true))
+    .catch(_err => defer.resolve(false))
   return defer.promise
 }
 

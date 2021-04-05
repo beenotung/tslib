@@ -93,7 +93,7 @@ const prototype = Object.assign({
     },           self)
     return self
   },
-},                              Array.prototype)
-export let PolyfillArray: PolyfillArrayConstructor = Array as any
+}, Array.prototype)
+export const PolyfillArray: PolyfillArrayConstructor = Array as any
 PolyfillArray.fromArray = PolyfillArray.from
 Object.assign(PolyfillArray.prototype, prototype)

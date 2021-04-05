@@ -36,7 +36,7 @@ function unwrapObjectLine(o: object, titles: string[]): void {
     let value = (o as any)[key]
     if (typeof value === 'string') {
       value = unwrapLine(value)
-      ; (o as any)[key] = value
+      ;(o as any)[key] = value
     }
   }
 }

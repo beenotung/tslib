@@ -51,7 +51,7 @@ export namespace Maybe {
           return fromNullable(a)
         },
         otherwise: _ => fromNullable(a),
-        toEither: <E>(e: E): Either<E, A> => right<E, A>(a),
+        toEither: <E>(_e: E): Either<E, A> => right<E, A>(a),
       }
     } else {
       return Nothing

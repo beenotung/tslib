@@ -1,38 +1,42 @@
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport"
-        content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <meta name="format-detection" content="telephone=no">
-  <meta name="msapplication-tap-highlight" content="no">
-</head>
-<body>
-<script>
-function detectMobilePlatform() {
-   if (typeof navigator === 'undefined' && (typeof window === 'undefined' || typeof window.opera === 'undefined')) {
-      // not browser env
-      return 'unknown';
-    }
-    var userAgent = navigator.userAgent || navigator.vendor || window.opera;
-    if (/windows phone/i.test(userAgent)) {
-      return 'Windows Phone';
-    }
-    if (/android/i.test(userAgent)) {
-      return 'Android';
-    }
-    if (/ipad|iphone|ipod/i.test(userAgent)) {
-      return 'iOS';
-    }
-    return 'unknown';
-}
-var platform = detectMobilePlatform();
-if(platform==='unknown'){
-  document.write('not mobile platform');
-}else {
-  document.write('mobile platform: ' + detectMobilePlatform());
-}
-</script>
-</body>
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no"
+    />
+    <meta name="format-detection" content="telephone=no" />
+    <meta name="msapplication-tap-highlight" content="no" />
+  </head>
+  <body>
+    <script>
+      function detectMobilePlatform() {
+        if (
+          typeof navigator === 'undefined' &&
+          (typeof window === 'undefined' || typeof window.opera === 'undefined')
+        ) {
+          // not browser env
+          return 'unknown'
+        }
+        var userAgent = navigator.userAgent || navigator.vendor || window.opera
+        if (/windows phone/i.test(userAgent)) {
+          return 'Windows Phone'
+        }
+        if (/android/i.test(userAgent)) {
+          return 'Android'
+        }
+        if (/ipad|iphone|ipod/i.test(userAgent)) {
+          return 'iOS'
+        }
+        return 'unknown'
+      }
+      var platform = detectMobilePlatform()
+      if (platform === 'unknown') {
+        document.write('not mobile platform')
+      } else {
+        document.write('mobile platform: ' + detectMobilePlatform())
+      }
+    </script>
+  </body>
 </html>
-

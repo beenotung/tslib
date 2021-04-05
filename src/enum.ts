@@ -130,7 +130,7 @@ export function enum_only_string<E>(e: E) {
     if ((i as any) == +i) {
       /* tslint:enable */
       const s = (e as any)[i]
-      ; (e as any)[s] = s
+      ;(e as any)[s] = s
       delete (e as any)[i]
     }
   })

@@ -54,7 +54,7 @@ export function deepEqual(a: any, b: any): boolean {
     case 'Null':
     case 'Undefined':
       return true
-    case 'Map':
+    case 'Map': {
       const aMap = a as Map<any, any>
       const bMap = b as Map<any, any>
       for (const key of aMap.keys()) {
@@ -66,7 +66,8 @@ export function deepEqual(a: any, b: any): boolean {
         }
       }
       return true
-    case 'Set':
+    }
+    case 'Set': {
       const aSet = a as Set<any>
       const bSet = b as Set<any>
       if (aSet.size !== bSet.size) {
@@ -78,15 +79,17 @@ export function deepEqual(a: any, b: any): boolean {
         }
       }
       return true
+    }
     case 'Date':
       return (a as Date).getTime() === (b as Date).getTime()
-    case 'Object':
+    case 'Object': {
       const aKeys = Object.keys(a)
       const bKeys = Object.keys(b)
       if (aKeys.length !== bKeys.length) {
         return false
       }
       return aKeys.every(key => deepEqual(a[key], b[key]))
+    }
     default:
       throw Error('unsupported data type')
   }
@@ -134,7 +137,7 @@ const safeProxyHandler: ProxyHandler<any> = {
  * make a loss object, very forgiving
  * */
 export function createSafeObject(target: object = {}) {
-  ; (target as any)[SafeObject] = true
+  (target as any)[SafeObject] = true
   return new Proxy(target, safeProxyHandler)
 }
 

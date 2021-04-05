@@ -246,7 +246,8 @@ export function dataURItoMimeType(dataURI: string): string {
  * */
 export function dataURItoBlob(dataURI: string): Blob {
   const [format, payload] = dataURI.split(',')
-  const [mimeType /*, encodeType*/] = format.replace(/^data:/, '').split(';')
+  // const [mimeType, encodeType]
+  const [mimeType] = format.replace(/^data:/, '').split(';')
   let byteString: string
   if (dataURI.startsWith('data:')) {
     byteString = atob(payload)
@@ -261,7 +262,7 @@ export function dataURItoBlob(dataURI: string): Blob {
   return new Blob([buffer], { type: mimeType })
 }
 
-/**@deprecated use compressImageToBase64() compressImageToBlob() instead */
+/** @deprecated use compressImageToBase64() compressImageToBlob() instead */
 export function compressImage(
   image: HTMLImageElement,
   mimeType?: string,

@@ -3,7 +3,7 @@
  * */
 
 import * as fs from 'fs'
-import { IncomingMessage } from 'http'
+import type { IncomingMessage } from 'http'
 import * as http from 'http'
 import * as https from 'https'
 
@@ -11,7 +11,7 @@ import * as https from 'https'
  * reference: https://stackoverflow.com/a/51624229/3156509
  * */
 export const download_file = (url: string, file_path: string) =>
-  new Promise((resolve, reject) => {
+  new Promise<void>((resolve, reject) => {
     const callback = (response: IncomingMessage) =>
       response
         .pipe(fs.createWriteStream(file_path))

@@ -1,5 +1,5 @@
 export type Consumer<A> = (a: A) => void
 export type Supplier<A> = () => A
 
-/**@deprecated*/
+/** @deprecated*/
 export type AsyncSupplier<A> = () => Promise<A>

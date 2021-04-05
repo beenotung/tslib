@@ -14,7 +14,6 @@ export function toJson(o: any, visited: Set<any>): json {
   }
   if (typeof o === 'object') {
     if (visited.has(o)) {
-      // console.log('duplicated visit of:', o);
       return undefined as any
     } else {
       visited.add(o)
@@ -27,9 +26,8 @@ export function toJson(o: any, visited: Set<any>): json {
     case 'boolean':
       return o
   }
-  /* tslint:disable:forin */
+  // eslint-disable-next-line guard-for-in
   for (const k in o) {
-    /* tslint:enable:forin */
     const type = typeof o[k]
     switch (type) {
       case 'string':
@@ -41,7 +39,7 @@ export function toJson(o: any, visited: Set<any>): json {
         break
       case 'undefined':
         break
-      case 'object':
+      case 'object': {
         const v = o[k]
         if (Array.isArray(v)) {
           res[k] = v.map(o => toJson(o, visited))
@@ -52,8 +50,9 @@ export function toJson(o: any, visited: Set<any>): json {
           }
         }
         break
+      }
       default:
-        console.log({ type, k, v: o[k] })
+        console.debug('unknown type of property:', { type, k, v: o[k] })
     }
   }
   return res

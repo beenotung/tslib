@@ -65,7 +65,7 @@ export function displayJSON(o: any, mode: 'raw' | 'table' = 'table'): string {
         return 'null'
       }
       break
-    case 'string':
+    case 'string': {
       const s = o as string
       return s
         .split('\r')
@@ -76,6 +76,7 @@ export function displayJSON(o: any, mode: 'raw' | 'table' = 'table'): string {
         .join(escape_space.repeat(2))
         .split('\t')
         .join(escape_space.repeat(4))
+    }
     case 'number':
       return o.toString()
     default:

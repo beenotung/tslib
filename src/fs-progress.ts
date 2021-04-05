@@ -66,4 +66,4 @@ export async function iterateFileByLineWithProgressAsync(
 }
 
 /** @deprecated use sync/async version explicitly */
-export let iterateFileByLineWithProgress = iterateFileByLineWithProgressSync
+export const iterateFileByLineWithProgress = iterateFileByLineWithProgressSync

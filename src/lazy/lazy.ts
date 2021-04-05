@@ -2,14 +2,15 @@
  * @description this class is not strict type, be ware of the type <A>
  * */
 export class Lazy<A> {
-  private f: () => A
+  private f?: () => A
 
   constructor(f: () => A) {
     this.f = f
   }
 
   public value(): A {
-    const res = this.f()
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    const res = this.f!()
     delete this.f
     this.value = () => res
     return res

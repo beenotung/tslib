@@ -12,8 +12,6 @@ export class RunnerPool {
     await this.lock.acquire(1)
     try {
       return await task()
-    } catch (e) {
-      throw e
     } finally {
       this.lock.release(1)
     }

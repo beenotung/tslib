@@ -24,7 +24,7 @@ export function setFullscreen(element = document.body) {
   if (element.requestFullscreen) {
     element.requestFullscreen()
   } else if ((element as any).webkitRequestFullscreen) {
-    ; (element as any).webkitRequestFullscreen()
+    (element as any).webkitRequestFullscreen()
   } else {
     console.warn('full screen is not supported')
   }
@@ -32,7 +32,7 @@ export function setFullscreen(element = document.body) {
 
 export function exitFullscreen() {
   if ((document as any).webkitExitFullscreen) {
-    ; (document as any).webkitExitFullscreen()
+    (document as any).webkitExitFullscreen()
   } else if (document.exitFullscreen) {
     document.exitFullscreen()
   } else {
@@ -46,10 +46,10 @@ export function htmlCollectionToArray(es: HTMLCollection): Element[] {
 }
 
 /** @deprecated lost type hint */
-export let qa = (x: string, parent = document.body) =>
+export const qa = (x: string, parent = document.body) =>
   parent.querySelectorAll(x)
 /** @deprecated lost type hint */
-export let q = (x: string, parent = document.body) => parent.querySelector(x)
+export const q = (x: string, parent = document.body) => parent.querySelector(x)
 
 export function csv_to_table_element(rows: string[][]): HTMLTableElement {
   /* initialize */

@@ -24,15 +24,18 @@ export function genLogFilename(name = 'log', ext = 'txt') {
 }
 
 function formatLog(args: IArguments) {
+  // eslint-disable-next-line @typescript-eslint/no-var-requires
   const util = require('util')
   return util.format.apply(null, args)
 }
 
 export function wrapConsoleLog(filename = genLogFilename()) {
+  // eslint-disable-next-line @typescript-eslint/no-var-requires
   const fs = require('fs')
   // Or 'w' to truncate the file every time the process starts.
   const logFile = fs.createWriteStream(filename, { flags: 'a' })
 
+  // eslint-disable-next-line no-console
   console.log = function() {
     const text = formatLog(arguments) + '\n'
     logFile.write(text)

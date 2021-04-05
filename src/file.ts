@@ -59,6 +59,7 @@ export function filesForEach(
     files.forEach(f)
   } else {
     for (let i = 0; i < files.length; i++) {
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
       f(files.item(i)!, i, files)
     }
   }
@@ -97,7 +98,7 @@ export async function fileToArrayBuffer(file: File): Promise<ArrayBuffer> {
     if (typeof x === 'string') {
       const xs = new ArrayBuffer(x.length)
       for (let i = 0, n = x.length; i < n; i++) {
-        ; (xs as any)[i] = x[i]
+        (xs as any)[i] = x[i]
       }
       return xs
     } else {
@@ -131,8 +132,8 @@ export async function downloadFile(
   return defer.promise
 }
 
-/**@deprecated*/
-export let saveFile = downloadFile
+/** @deprecated*/
+export const saveFile = downloadFile
 
 /**
  * true: must from camera
@@ -167,7 +168,7 @@ export function selectFile(options: SelectFileOptions = {}): Promise<File[]> {
     input.type = 'file'
     Object.keys(options).forEach(x => ((input as any)[x] = (options as any)[x]))
     // document.body.appendChild(input);
-    input.onchange = e => {
+    input.onchange = _event => {
       if (!input.files) {
         reject('user canceled')
         return

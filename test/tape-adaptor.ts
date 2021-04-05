@@ -4,7 +4,7 @@ import { expect } from 'chai'
  * implement tape functions using chai
  * to aid migrating test from tape into mocha
  * */
-export let t = {
+export const t = {
   end: () => {
     // noop
   },

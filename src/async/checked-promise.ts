@@ -5,8 +5,8 @@ export class CheckedPromise<T> implements Promise<T> {
 
   constructor(
     executor: (
-      resolve: (value?: T | PromiseLike<T>) => void,
-      reject: (reason?: any) => void,
+      resolve: (value: T | PromiseLike<T>) => void,
+      reject: (reason: any) => void,
     ) => void,
   ) {
     this.promise = new Promise<T>(executor).catch(reason => {

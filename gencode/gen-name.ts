@@ -1,4 +1,6 @@
-let names = `
+/* eslint-disable no-console */
+
+const names = `
 Alice
 Bob
 Charlie
@@ -18,12 +20,13 @@ Sybil
 Ted
 Victor
 Wendy
-`.split('\n')
-  .filter(s => s);
+`
+  .split('\n')
+  .filter(s => s)
 console.log(`
 export let allNames = ${JSON.stringify(names)};
 
 export let names = {
   ${names.map(s => `${s}: '${s}'`).join(',')}
 };
-`);
+`)

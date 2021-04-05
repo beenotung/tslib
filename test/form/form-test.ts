@@ -16,10 +16,12 @@ function onError(err: any) {
 async function test(name: string, f: (json: JsonObject) => Promise<string>) {
   console.log(`== ${name} ==`)
   console.log(`=== 200 check ===`)
+  // prettier-ignore
   await f({ data: 'the data' })
     .then(onData)
     .catch(onError)
   console.log(`=== 404 check ===`)
+  // prettier-ignore
   await f({ data: '404 check' })
     .then(onData)
     .catch(onError)

@@ -5,7 +5,7 @@ import {
 } from 'child_process'
 import * as util from 'util'
 
-export let exec = util.promisify(_exec)
+export const exec = util.promisify(_exec)
 
 export function spawn(options: {
   cmd: string
@@ -18,6 +18,7 @@ export function spawn(options: {
   let { cmd, args } = options
   if (!args) {
     args = cmd.split(' ')
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     cmd = args.shift()!
   }
   return new Promise((resolve, reject) => {

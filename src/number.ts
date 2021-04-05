@@ -3,7 +3,7 @@
  */
 import { compare } from './compare'
 
-/**@deprecated*/
+/** @deprecated*/
 export { CompareResult } from './compare'
-/**@deprecated*/
-export let compare_number = compare
+/** @deprecated*/
+export const compare_number = compare

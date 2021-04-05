@@ -6,14 +6,14 @@ import { Random } from '../src/random'
 describe('math.ts TestSuit', () => {
   describe('factorize + simplify', () => {
     function test1(x: number) {
-      let [a, b] = numberToFraction(x)
+      const [a, b] = numberToFraction(x)
       test(`factorize ${x}`, () => {
         expect(a / b, `${x} ${a}/${b}`).to.equals(x)
       })
-      let a2 = a * Random.nextInt(10, -10)
-      let b2 = b * Random.nextInt(5, -5)
+      const a2 = a * Random.nextInt(10, -10)
+      const b2 = b * Random.nextInt(5, -5)
       test(`simplify ${a2}/${b2}`, () => {
-        let [c, d] = simplifyFraction([a2, b2])
+        const [c, d] = simplifyFraction([a2, b2])
         expect(c / d).deep.equals(a2 / b2)
       })
     }
@@ -29,7 +29,7 @@ describe('math.ts TestSuit', () => {
   describe('sign handling in simplification', () => {
     function test_simplify([a, b]: [number, number]) {
       test(`simplify ${a}/${b}`, () => {
-        let [c, d] = simplifyFraction([a, b])
+        const [c, d] = simplifyFraction([a, b])
         expect(c / d).to.equals(a / b)
       })
     }
