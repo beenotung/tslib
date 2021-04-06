@@ -7,13 +7,6 @@ export const copyFile: typeof fs.copyFile.__promisify__ = util.promisify(
   fs.copyFile,
 )
 
-/** @deprecated use native typing instead */
-export type readOptions =
-  | { encoding?: string | null; flag?: string }
-  | string
-  | undefined
-  | null
-
 /**
  * resolve :: Buffer
  * reject :: NodeJS.ErrnoException
@@ -47,7 +40,6 @@ function not<T>(e: true | T): false | T {
   return e === true ? false : e
 }
 
-/** @deprecated*/
 export function exist(filename: string): Promise<boolean> {
   return stat(filename)
     .then(() => true)

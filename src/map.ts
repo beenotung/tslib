@@ -15,9 +15,6 @@ export function collectMap<K, V, A>(
   return res
 }
 
-/** @deprecated renamed to collectMap */
-export const mapMap = collectMap
-
 export function mapToArray<K, V, A>(
   map: Map<K, V>,
   f: (v: V, k: K, map: Map<K, V>) => A,

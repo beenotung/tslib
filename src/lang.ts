@@ -106,16 +106,6 @@ export function caseFunctionLookup<A, B>(
   return caseLookup(cases, target)()
 }
 
-/**
- * @deprecated use compare() or compare_string() instead
- * */
-export function compareString(a: string, b: string): -1 | 0 | 1 {
-  if (a === b) {
-    return 0
-  }
-  return a < b ? -1 : 1
-}
-
 export type deepF<A> = (() => A) | (() => deepF<A>)
 
 export function deepCall<A>(f: deepF<A> | A): A {
@@ -260,13 +250,10 @@ export function isNumber(i: string | number): boolean {
   return Number.isFinite(+i) && i !== ''
 }
 
-/** @deprecated */
-const toString = JSON.stringify.bind(JSON)
-
 export function toNumber(i: string | number): number {
   if (!isNumber(i)) {
     throw new TypeError(
-      `expect number string, but got \`${toString(i)}\` of type ${typeof i}`,
+      `expect number string, but got \`${JSON.stringify(i)}\` of type ${typeof i}`,
     )
   }
   return +i
@@ -360,13 +347,6 @@ export function applyIf<A, B>(
     return f(a)
   }
 }
-
-export {
-  /** @deprecated*/
-  gen_noop,
-  /** @deprecated*/
-  noop,
-} from './noop'
 
 export function cast(o: any): any {
   return o

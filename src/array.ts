@@ -13,9 +13,6 @@ export function clearArray<A>(xs: A[]): A[] {
   return xs.splice(0, xs.length)
 }
 
-/** @deprecated renamed to clearArray */
-export const clear = clearArray
-
 /**
  * inplace replace all element in the array
  * @return the old elements
@@ -26,16 +23,7 @@ export function replaceArray<A>(dest: A[], src: A[]): A[] {
   return dest
 }
 
-/** @remark side effect
- * inplace operation
- * @deprecated same as clear
- * */
-export function takeAll<A>(xs: A[]): A[] {
-  const res = ([] as A[]).concat(xs)
-  clear(xs)
-  return res
-}
-
+/** @deprecated use array.includes instead (available since es2015) */
 export function includes<A>(x: A, xs: A[]): boolean {
   return xs.indexOf(x) !== -1
 }
@@ -146,7 +134,7 @@ export function cloneArray<T>(xs: T[]): T[] {
 
 /**
  * @return new array (not deep cloning elements)
- * @deprecated use clone() and array.sort() explicitly is better
+ * @deprecated use cloneArray() and array.sort() explicitly is better
  * */
 export function insertSortBy<A>(
   xs: A[],
@@ -156,9 +144,6 @@ export function insertSortBy<A>(
   xs.forEach(x => insert_sorted(res, comparator, x))
   return res
 }
-
-/** @deprecated*/
-export const sortBy = insertSortBy
 
 /**
  * @return in-place sorted, original array
@@ -611,9 +596,6 @@ export function shuffledBinArray<T>(
 export function shuffledIndices(n: number): number[] {
   return shuffle(range(0, n - 1))
 }
-
-/** @deprecated typo in function name, renamed to shuffledIndices*/
-export const shuffledIndecies = shuffledIndices
 
 /**
  * TODO assign a better name

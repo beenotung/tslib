@@ -232,8 +232,6 @@ export const concatWithoutDup = curry(<A>(as: A[], bs: A[]): A[] => {
 })
 
 export const fmap = curry(<A, B>(f: CurryF1<A, B>, as: A[]): B[] => as.map(f))
-/** @deprecated*/
-export const map = fmap
 
 /** @deprecated use mapGetOrSetDefault in map.ts */
 export const getOrSetDefault = curry(

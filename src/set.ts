@@ -6,13 +6,6 @@ export function toggleSet<A>(s: Set<A>, a: A) {
   }
 }
 
-/**
- * @deprecated use Array.from(set) instead
- * */
-export function setToArray<A>(s: Set<A>): A[] {
-  return Array.from(s.values())
-}
-
 export function setMinus<A>(a: Set<A>, b: Set<A>): Set<A> {
   const res = new Set<A>()
   a.forEach(x => {

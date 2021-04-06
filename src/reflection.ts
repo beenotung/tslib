@@ -36,6 +36,3 @@ export const wrapFunction =
   'defineProperty' in Object && typeof Object.defineProperty === 'function'
     ? wrapFunction_defineProperty
     : wrapFunction_newFunction_eval
-
-/** @deprecated use `wrapFunction` instead */
-export const safeWrapFunction = wrapFunction

@@ -40,11 +40,6 @@ export function exitFullscreen() {
   }
 }
 
-/** @deprecated */
-export function htmlCollectionToArray(es: HTMLCollection): Element[] {
-  return Array.from(es)
-}
-
 /** @deprecated lost type hint */
 export const qa = (x: string, parent = document.body) =>
   parent.querySelectorAll(x)

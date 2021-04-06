@@ -132,9 +132,6 @@ export async function downloadFile(
   return defer.promise
 }
 
-/** @deprecated*/
-export const saveFile = downloadFile
-
 /**
  * true: must from camera
  * false: must from album

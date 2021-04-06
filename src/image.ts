@@ -262,7 +262,7 @@ export function dataURItoBlob(dataURI: string): Blob {
   return new Blob([buffer], { type: mimeType })
 }
 
-/** @deprecated use compressImageToBase64() compressImageToBlob() instead */
+/** simplified version of compressImageToBase64() / compressImageToBlob() */
 export function compressImage(
   image: HTMLImageElement,
   mimeType?: string,

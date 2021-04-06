@@ -1,6 +1,3 @@
-/** @deprecated moved to file-stream */
-export { stream_lines } from './file-stream'
-
 export function* batchGenerator<T>(
   batchSize: number,
   generator: Generator<T>,

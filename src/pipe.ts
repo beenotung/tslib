@@ -47,9 +47,6 @@ export function peek<A>(f: (a: A) => any): (a: A) => A {
   }
 }
 
-/** @deprecated */
-export const echo = peek
-
 export interface Chain<A> {
   /**
    * a.k.a. peek

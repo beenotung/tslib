@@ -1,6 +1,6 @@
 /**
  * Created by beenotung on 5/18/17.
- * Updated by beenotung on 29/1/19.
+ * Updated by beenotung on 6/4/21.
  * Date format: d/m/y
  */
 if (!Array.isArray) {
@@ -59,8 +59,6 @@ export interface PolyfillArray<T> extends Array<T> {
 
 export interface PolyfillArrayConstructor extends ArrayConstructor {
   /** extended methods */
-  /** @deprecated use from() or of() directly */
-  fromArray<A>(xs: A[]): PolyfillArray<A>
 
   /** from es5 */
   new(arrayLength?: number): PolyfillArray<any>;
@@ -95,5 +93,4 @@ const prototype = Object.assign({
   },
 }, Array.prototype)
 export const PolyfillArray: PolyfillArrayConstructor = Array as any
-PolyfillArray.fromArray = PolyfillArray.from
 Object.assign(PolyfillArray.prototype, prototype)
