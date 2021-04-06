@@ -110,7 +110,7 @@ export class Store implements Storage {
 /**
  * @param storage {Storage} e.g. localStorage
  * */
-export function getStoreKeys(storage:Storage): string[] {
+export function getStoreKeys(storage: Storage): string[] {
   const n = storage.length
   const keys: string[] = new Array(n)
   for (let i = 0; i < n; i++) {

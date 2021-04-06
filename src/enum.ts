@@ -102,7 +102,7 @@ export function enum_is_last<E>(
 }
 
 export function enum_is_in_range<E>(e: E, v: E[keyof E] | keyof E): boolean {
-  return v in e
+  return (v as any) in e
 }
 
 export function enum_not_equals<E1, E2>(e1: E1, e2: E2): boolean {

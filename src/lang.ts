@@ -252,8 +252,9 @@ export function isNumber(i: string | number): boolean {
 
 export function toNumber(i: string | number): number {
   if (!isNumber(i)) {
+    const str = JSON.stringify(i)
     throw new TypeError(
-      `expect number string, but got \`${JSON.stringify(i)}\` of type ${typeof i}`,
+      `expect number string, but got \`${str}\` of type ${typeof i}`,
     )
   }
   return +i
