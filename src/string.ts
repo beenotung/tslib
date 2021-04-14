@@ -160,3 +160,7 @@ export function extract_lines(s: string): string[] {
     .map(s => s.trim())
     .filter(s => s)
 }
+
+export function capitalize(word: string): string {
+  return word[0].toLocaleUpperCase() + word.substring(1).toLocaleLowerCase()
+}

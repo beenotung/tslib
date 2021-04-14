@@ -1,5 +1,6 @@
 import { expect } from 'chai'
 import { test } from 'mocha'
+import { capitalize } from '../src/string'
 import {
   compare_string,
   split_string_num,
@@ -30,5 +31,10 @@ describe('string.ts TestSuit', () => {
     expect(
       ['1', '2', '10', '20', '0', '00'].sort(compare_string),
     ).to.deep.equals(['0', '00', '1', '2', '10', '20'])
+  })
+
+  test('capitalize', () => {
+    expect(capitalize('word')).to.equals('Word')
+    expect(capitalize('WORD')).to.equals('Word')
   })
 })
