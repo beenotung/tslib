@@ -191,6 +191,8 @@ export function csv_to_table_text(
     col_separator?: '  ' | string
     header_line_char?: '-' | string
     show_total?: false | boolean
+    markdown?: false | boolean
+    min_col_width?: number
   },
 ): string {
   if (rows.length === 0) {
@@ -199,6 +201,9 @@ export function csv_to_table_text(
   let col_separator = '  '
   let header_line_char = '-'
   let show_total = false
+  let line_edge_start = ''
+  let line_edge_end = ''
+  let min_col_width = 0
   if (options) {
     if (options.col_separator) {
       col_separator = options.col_separator
@@ -209,6 +214,16 @@ export function csv_to_table_text(
     if (options.show_total) {
       show_total = options.show_total
     }
+    if (options.min_col_width) {
+      min_col_width = options.min_col_width
+    }
+    if (options.markdown) {
+      col_separator = ' | '
+      header_line_char = '-'
+      line_edge_start = '| '
+      line_edge_end = ' |'
+      min_col_width = Math.max(min_col_width, 3)
+    }
   }
   const n = rows[0].length
   const lengths = new Array(n).fill(0)
@@ -216,24 +231,39 @@ export function csv_to_table_text(
     for (let i = 0; i < n; i++) {
       const col = cols[i]
       if (col) {
-        lengths[i] = Math.max(lengths[i], col.length)
+        lengths[i] = Math.max(lengths[i], col.length, min_col_width)
       }
     }
   }
   const titles = rows[0]
   const contents = rows.slice(1)
+
   let acc = ''
+
+  // headers
+  acc += line_edge_start
   acc += titles.map((s, i) => to_width(s, lengths[i], ' ')).join(col_separator)
+  acc += line_edge_end
   acc += '\n'
+
+  // symbol row under headers
+  acc += line_edge_start
   acc += titles
     .map((s, i) => to_width('', lengths[i], header_line_char))
     .join(col_separator)
+  acc += line_edge_end
   acc += '\n'
+
+  // content rows
   acc += contents
-    .map(cols =>
-      cols.map((s, i) => to_width(s, lengths[i], ' ')).join(col_separator),
+    .map(
+      cols =>
+        line_edge_start +
+        cols.map((s, i) => to_width(s, lengths[i], ' ')).join(col_separator) +
+        line_edge_end,
     )
     .join('\n')
+
   if (show_total) {
     acc += '\n'
     acc += '\n'
