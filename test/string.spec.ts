@@ -1,6 +1,6 @@
 import { expect } from 'chai'
 import { test } from 'mocha'
-import { capitalize } from '../src/string'
+import { capitalize, lcfirst, ucfirst } from '../src/string'
 import {
   compare_string,
   split_string_num,
@@ -36,5 +36,10 @@ describe('string.ts TestSuit', () => {
   test('capitalize', () => {
     expect(capitalize('word')).to.equals('Word')
     expect(capitalize('WORD')).to.equals('Word')
+  })
+
+  test('perl-style case switching functions', () => {
+    expect(ucfirst('toString')).to.equals('ToString')
+    expect(lcfirst('ToString')).to.equals('toString')
   })
 })
