@@ -201,3 +201,8 @@ export function* iterateFileByLine(
   }
   fs.closeSync(fd)
 }
+
+export function verboseWriteFileSync(file: string, content: string | Buffer) {
+  fs.writeFileSync(file, content)
+  console.log('saved to', file)
+}
