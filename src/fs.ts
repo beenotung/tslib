@@ -204,5 +204,6 @@ export function* iterateFileByLine(
 
 export function verboseWriteFileSync(file: string, content: string | Buffer) {
   fs.writeFileSync(file, content)
+  // eslint-disable-next-line no-console
   console.log('saved to', file)
 }
