@@ -300,7 +300,9 @@ export function objectPick<T, K extends keyof T = keyof T>(
 ): Pick<T, K> {
   const result = {} as Pick<T, K>
   for (const key of keys) {
-    result[key] = object[key]
+    if (key in object) {
+      result[key] = object[key]
+    }
   }
   return result
 }

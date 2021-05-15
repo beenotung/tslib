@@ -83,5 +83,10 @@ describe('objectPick', () => {
   t.deepEqual(objectPick(user, ['name', 'age']), user, 'pick all props')
   t.deepEqual(objectPick(user, ['name']), { name: user.name }, 'pick one prop')
   t.deepEqual(objectPick(user, []), {}, 'pick zero prop')
+  t.deepEqual(
+    objectPick(user as any, ['name', 'gender']),
+    { name: user.name },
+    'pick non-existing fields',
+  )
   t.end()
 })
