@@ -126,6 +126,13 @@ export function startTimer(options: StartTimerOptions) {
     }
     tickProgress()
   }
+  const setEstimateProgress = (totalTick: number, sampleRate = 1 / 100) => {
+    setProgress({
+      totalTick: totalTick,
+      estimateTime: true,
+      sampleOver: totalTick * sampleRate,
+    })
+  }
   const tickWithOutSample = (step = 1) => {
     currentTick += step
     tickProgress()
@@ -147,6 +154,7 @@ export function startTimer(options: StartTimerOptions) {
     },
     progress,
     setProgress,
+    setEstimateProgress,
     tick: sampleOver === 1 ? tickWithOutSample : tickWithSample,
   }
   return timer
