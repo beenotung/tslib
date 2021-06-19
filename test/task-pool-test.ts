@@ -10,7 +10,7 @@ for (let i = 0; i < 10; i++) {
           console.log('begin', i)
           await later(1000)
           console.log(' end ', i)
-          resolve()
+          resolve(void 0)
         }),
     )
     .then(c => (c ? console.log(c) : c))
