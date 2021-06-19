@@ -30,6 +30,8 @@ export type SetProgress = ((
 ) => void) &
   ((options: SetProgressOptions) => void)
 
+export type Timer = ReturnType<typeof startTimer>
+
 export function startTimer(options: StartTimerOptions) {
   let name: string | undefined
   let writeStream: NodeJS.WriteStream
