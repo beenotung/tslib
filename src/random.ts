@@ -97,7 +97,7 @@ export namespace Random {
 
   export function nextBuffer(n: number) {
     // tslint:disable:no-bitwise
-    const res = new Buffer(n)
+    const res = Buffer.alloc(n)
     for (let i = 0; i < n; i++) {
       res[i] = (Math.random() * 256) >>> 0
     }
