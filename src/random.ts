@@ -71,7 +71,8 @@ export namespace Random {
   export function element<A>(xs: A[]): A
   export function element(s: string): string
   export function element<A>(xs: string | A[]): A | string {
-    return xs[nextInt(xs.length, 0)]
+    const idx = Math.floor(Math.random() * xs.length)
+    return xs[idx]
   }
 
   export function nextDate(
