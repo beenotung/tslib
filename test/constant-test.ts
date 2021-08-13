@@ -1,6 +1,6 @@
-import { constant } from '../dist/constant/all'
-import { ionic } from '../dist/constant/ionic'
-import { notification } from '../dist/constant/notification'
+import { constant } from '../src/constant/all'
+import { ionic } from '../src/constant/ionic'
+import { notification } from '../src/constant/notification'
 
 console.log({ ionic: ionic.constant })
 console.log({ notification: notification.constant })
