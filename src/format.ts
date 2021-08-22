@@ -94,7 +94,10 @@ export function format_byte(n_byte: number, n_decimal = 2): string {
 
 export function format_datetime(
   time: number,
-  options: { locales?: string; empty?: string } = {},
+  options: {
+    locales?: string
+    empty?: string // default '-'
+  } & Intl.DateTimeFormatOptions = {},
 ) {
   if (!time) {
     return options.empty || '-'
@@ -108,6 +111,7 @@ export function format_datetime(
     hour: '2-digit',
     hour12: true,
     minute: '2-digit',
+    ...options,
   })
 }
 
@@ -133,24 +137,14 @@ export function format_long_short_time(
     threshold?: number // default WEEK
     locales?: string
     empty?: string
-  },
+  } & Intl.DateTimeFormatOptions,
 ) {
   // if within 1-week, format relative time, else format absolute time
   const diff = time - Date.now()
   if (Math.abs(diff) < (options?.threshold || WEEK)) {
     return format_relative_time(roundTime(diff))
   }
-  return format_datetime(time)
-  /*
-  return new Intl.DateTimeFormat('zh-HK', {
-    month: 'short',
-    day: 'numeric',
-    hour: 'numeric',
-    minute: 'numeric',
-    year: 'numeric',
-    // hour12: true,
-  }).format(new Date());
-  */
+  return format_datetime(time, options)
 }
 
 export function format_time_duration(delta: number, digit = 1): string {
