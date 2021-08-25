@@ -169,6 +169,7 @@ export function selectFile(options: SelectFileOptions = {}): Promise<File[]> {
     input.onchange = _event => {
       if (!input.files) {
         reject('user canceled')
+        document.body.removeChild(input)
         return
       }
       const nFile = input.files.length
