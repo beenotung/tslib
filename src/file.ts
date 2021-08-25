@@ -163,8 +163,9 @@ export function selectFile(options: SelectFileOptions = {}): Promise<File[]> {
     }
     const input = document.createElement('input')
     input.type = 'file'
+    input.style.display = 'none'
     Object.keys(options).forEach(x => ((input as any)[x] = (options as any)[x]))
-    // document.body.appendChild(input);
+    document.body.appendChild(input) // for iOS compatibility
     input.onchange = _event => {
       if (!input.files) {
         reject('user canceled')
@@ -179,8 +180,8 @@ export function selectFile(options: SelectFileOptions = {}): Promise<File[]> {
           files[i] = input.files.item(i) as File
         }
         resolve(files)
-        // document.body.removeChild(input);
       }
+      document.body.removeChild(input)
     }
     input.click()
   })
