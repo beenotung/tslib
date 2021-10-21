@@ -71,7 +71,8 @@ export namespace Random {
   export function element<A>(xs: A[]): A
   export function element(s: string): string
   export function element<A>(xs: string | A[]): A | string {
-    return xs[nextInt(xs.length, 0)]
+    const idx = Math.floor(Math.random() * xs.length)
+    return xs[idx]
   }
 
   export function nextDate(
@@ -97,7 +98,7 @@ export namespace Random {
 
   export function nextBuffer(n: number) {
     // tslint:disable:no-bitwise
-    const res = new Buffer(n)
+    const res = Buffer.alloc(n)
     for (let i = 0; i < n; i++) {
       res[i] = (Math.random() * 256) >>> 0
     }
