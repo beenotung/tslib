@@ -12,7 +12,8 @@ hash pnpm 2>/dev/null && pnpm i --prefer-offline || npm i
 if [ $# == 1 ]; then
   t=$1
 else
-  echo -n "update type `npm version --help | grep -oh \"\\\[.*]\"`: "; read t
+  npm version --help | grep -oh "\[.*]" | grep patch  | grep minor | xargs -I {} echo -n "{}: "
+  read t
 fi
 npm run format
 npm test
