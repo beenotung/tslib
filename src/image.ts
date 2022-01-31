@@ -1,4 +1,3 @@
-import { enum_only_string } from './enum'
 import { fileToBase64String } from './file'
 import { Result, then } from './result'
 import { KB } from './size'
@@ -104,14 +103,13 @@ export async function getWidthHeightFromBase64(data: string): Promise<ISize> {
   }
 }
 
-export enum ResizeType {
+export const ResizeTypes = {
   /* with-in the given area, maybe smaller  */
-  with_in,
+  with_in: 'with_in' as const,
   /* at least as large as the given area, maybe larger */
-  at_least,
+  at_least: 'at_least' as const,
 }
-
-enum_only_string(ResizeType)
+export type ResizeType = keyof typeof ResizeTypes
 
 export function resizeWithRatio(
   oriSize: ISize,
@@ -122,10 +120,10 @@ export function resizeWithRatio(
   const heightRate = targetSize.height / oriSize.height
   let rate: number
   switch (mode) {
-    case ResizeType.with_in:
+    case ResizeTypes.with_in:
       rate = Math.min(widthRate, heightRate)
       break
-    case ResizeType.at_least:
+    case ResizeTypes.at_least:
       rate = Math.max(widthRate, heightRate)
       break
     default:
