@@ -4,7 +4,6 @@
 
 import { createDefer, Defer } from './async/defer'
 import { arrayBufferToString } from './blob'
-import { mapI } from './lang'
 
 /**
  * @ref https://www.iana.org/assignments/media-types/media-types.xhtml
@@ -88,7 +87,12 @@ export async function fileToBinaryString(file: File): Promise<string> {
 
 export async function fileToArray(file: File): Promise<number[]> {
   const s = await fileToBinaryString(file)
-  return mapI(i => s.charCodeAt(i), s.length)
+  const n = s.length
+  const res = new Array<number>(n)
+  for (let i = 0; i < n; i++) {
+    res[i] = s.charCodeAt(i)
+  }
+  return res
 }
 
 export async function fileToArrayBuffer(file: File): Promise<ArrayBuffer> {
