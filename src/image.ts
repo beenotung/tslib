@@ -233,7 +233,7 @@ export function dataURItoMimeType(dataURI: string): string {
   if (idx === -1) {
     throw new Error('data uri prefix not found')
   }
-  const prefix = dataURI.substr(0, idx)
+  const prefix = dataURI.substring(0, idx)
   const [mimeType] = prefix.replace(/^data:/, '').split(';')
   return mimeType
 }

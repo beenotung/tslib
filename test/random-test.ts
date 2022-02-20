@@ -40,7 +40,7 @@ function testProbability() {
     let i = 0
     for (;;) {
       i++
-      // let s = Math.random().toString(36).substr(2);
+      // let s = Math.random().toString(36).substring(2);
       const s = Random.nextString(length, pool)
       if (!xs[s]) {
         xs[s] = true

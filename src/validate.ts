@@ -45,14 +45,14 @@ export function to_full_hk_mobile_phone(s: string | number): string {
   if (
     s.length === 8 + 3 &&
     s.startsWith('852') &&
-    is_hk_mobile_phone_prefix(s.substr(3))
+    is_hk_mobile_phone_prefix(s.substring(3))
   ) {
     return '+' + s
   }
   if (
     s.length === 8 + 4 &&
     s.startsWith('+852') &&
-    is_hk_mobile_phone_prefix(s.substr(4))
+    is_hk_mobile_phone_prefix(s.substring(4))
   ) {
     return s
   }
