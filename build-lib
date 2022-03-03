@@ -3,6 +3,10 @@ set -e
 hash pnpm 2>/dev/null && pnpm i --prefer-offline || npm i
 npm run build
 node ./mk-package.js > dist/package.json
-cp README.md LICENSE dist/
+cp \
+  README.md \
+  LICENSE \
+  .npmignore \
+  dist/
 #find src -type f -name '*.ts' | awk '{print "cp",$1,$1}' | sed 's/.ts src/.ts dist/' | sh
 echo "done build-lib."
