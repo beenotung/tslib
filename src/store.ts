@@ -1,5 +1,4 @@
-/// <reference types="./global" />
-Symbol.storage = Symbol.for('storage')
+export const storageSymbol = Symbol.for('storage')
 
 export function getNodeStore(name: string, quota?: number): Storage {
   // eslint-disable-next-line @typescript-eslint/no-var-requires
@@ -27,7 +26,7 @@ export function proxyStore<
   Store extends IStore<getItemResult, setItemResult> = IStore<
     getItemResult,
     setItemResult
-  >
+  >,
 >(store: Store) {
   return new Proxy(store, {
     get(target: Store, p: PropertyKey, receiver: any): any {
@@ -52,22 +51,22 @@ export function proxyStore<
 }
 
 export class Store implements Storage {
-  [Symbol.storage]: Storage
+  [storageSymbol]: Storage
 
   private constructor(storage: Storage) {
-    this[Symbol.storage] = storage
+    this[storageSymbol] = storage
   }
 
   get length(): number {
-    return this[Symbol.storage].length
+    return this[storageSymbol].length
   }
 
   clear(): void {
-    return this[Symbol.storage].clear()
+    return this[storageSymbol].clear()
   }
 
   getItem(key: string): string | null {
-    return this[Symbol.storage].getItem(key)
+    return this[storageSymbol].getItem(key)
   }
 
   getObject<T>(key: string): T | null {
@@ -76,7 +75,7 @@ export class Store implements Storage {
   }
 
   key(index: number): string | null {
-    const value = this[Symbol.storage].key(index)
+    const value = this[storageSymbol].key(index)
     return value === undefined ? null : value
   }
 
@@ -90,11 +89,11 @@ export class Store implements Storage {
   }
 
   removeItem(key: string): void {
-    return this[Symbol.storage].removeItem(key)
+    return this[storageSymbol].removeItem(key)
   }
 
   setItem(key: string, value: string): void {
-    return this[Symbol.storage].setItem(key, value)
+    return this[storageSymbol].setItem(key, value)
   }
 
   setObject(key: string, value: any): void {
