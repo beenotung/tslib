@@ -52,7 +52,7 @@ function partial<A extends Function, R>(
     }
     return result
   }
-  return (next as any) as A | R
+  return next as any as A | R
 }
 
 /* tslint:enable:ban-types */

@@ -52,7 +52,7 @@ export namespace maps {
     const ys = new Map<BK, BV>()
     xs.forEach((av, ak) => {
       const bv = valueMapper(av, ak, xs)
-      const bk = keyMapper ? keyMapper(av, ak, xs) : ((ak as any) as BK)
+      const bk = keyMapper ? keyMapper(av, ak, xs) : (ak as any as BK)
       ys.set(bk, bv)
     })
     return ys

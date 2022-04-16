@@ -23,15 +23,13 @@ export const apply = curry(
 export const prop = curry(<A>(name: ObjKey, o: Obj<A>): A => o[name])
 
 /** cannot represent recursive type, o must eventually contains type A */
-export const deepProp = curry(
-  <A>(name: ObjKey, o: Obj<A> | any): A => {
-    if (o[name] !== void 0) {
-      return o[name]
-    } else {
-      return (name as string).split('.').reduce((acc, c) => acc[c], o as any)
-    }
-  },
-)
+export const deepProp = curry(<A>(name: ObjKey, o: Obj<A> | any): A => {
+  if (o[name] !== void 0) {
+    return o[name]
+  } else {
+    return (name as string).split('.').reduce((acc, c) => acc[c], o as any)
+  }
+})
 
 /**
  * @remark side effect
@@ -39,12 +37,10 @@ export const deepProp = curry(
  *
  * setProp :: a -> k -> {k:a} -> {k:a}
  * */
-export const setProp = curry(
-  <A>(a: A, k: ObjKey, o: Obj<A>): Obj<A> => {
-    o[k] = a
-    return o
-  },
-)
+export const setProp = curry(<A>(a: A, k: ObjKey, o: Obj<A>): Obj<A> => {
+  o[k] = a
+  return o
+})
 export const length = curry(<A>(x: ArrayLike<A>): number => x.length)
 export const filter = curry(<A>(f: CurryF1<A, boolean>, xs: A[]): A[] =>
   xs.filter(f),
@@ -56,18 +52,23 @@ export const compose = curry(
  * flip :: (a->b) -> (b->a)
  * */
 export const flip = curry(
-  <A, B, C>(f: CurryF2<A, B, C>) => (b: B) => (a: A): C => f(a, b),
+  <A, B, C>(f: CurryF2<A, B, C>) =>
+    (b: B) =>
+    (a: A): C =>
+      f(a, b),
 )
 /**
  * lift :: a -> b -> a
  * */
 export const lift = curry(<A, B>(a: A, _b?: B): A => a)
-export const lift_noarg = curry(<A>(a: A) => (): A => a)
-export const liftError = curry(
-  <E extends Error, A, B>(e: E, _b: B): A => {
-    throw e
-  },
+export const lift_noarg = curry(
+  <A>(a: A) =>
+    (): A =>
+      a,
 )
+export const liftError = curry(<E extends Error, A, B>(e: E, _b: B): A => {
+  throw e
+})
 export const liftError_noarg = curry(<E extends Error, A>(e: E) => (): A => {
   throw e
 })
@@ -234,15 +235,13 @@ export const concatWithoutDup = curry(<A>(as: A[], bs: A[]): A[] => {
 export const fmap = curry(<A, B>(f: CurryF1<A, B>, as: A[]): B[] => as.map(f))
 
 /** @deprecated use mapGetOrSetDefault in map.ts */
-export const getOrSetDefault = curry(
-  <K, V>(v: V, k: K, m: Map<K, V>): V => {
-    if (m.has(k)) {
-      return m.get(k) as V
-    }
-    m.set(k, v)
-    return v
-  },
-)
+export const getOrSetDefault = curry(<K, V>(v: V, k: K, m: Map<K, V>): V => {
+  if (m.has(k)) {
+    return m.get(k) as V
+  }
+  m.set(k, v)
+  return v
+})
 
 /**
  * groupBy :: (a->k) , [a] -> Map k [a]
@@ -258,27 +257,23 @@ export function groupBy<A, K>(f: Mapper<A, K>, xs: A[]): Map<K, A[]> {
 /**
  * foldl :: (b->a->b) -> b -> [a] -> b
  * */
-export const foldl = curry(
-  <A, B>(f: F2<B, A, B>, acc: B, xs: A[]): B => {
-    for (let i = 0, n = xs.length; i < n; i++) {
-      acc = f(acc, xs[i])
-    }
-    return acc
-  },
-)
-export const foldl1 = curry(
-  <A>(f: F2<A, A, A>, xs: A[]): A => {
-    const n = xs.length
-    if (n === 0) {
-      throw new TypeError('xs should be non-empty ArrayLike<*>')
-    }
-    let acc = xs[0]
-    for (let i = 1; i < n; i++) {
-      acc = f(acc, xs[i])
-    }
-    return acc
-  },
-)
+export const foldl = curry(<A, B>(f: F2<B, A, B>, acc: B, xs: A[]): B => {
+  for (let i = 0, n = xs.length; i < n; i++) {
+    acc = f(acc, xs[i])
+  }
+  return acc
+})
+export const foldl1 = curry(<A>(f: F2<A, A, A>, xs: A[]): A => {
+  const n = xs.length
+  if (n === 0) {
+    throw new TypeError('xs should be non-empty ArrayLike<*>')
+  }
+  let acc = xs[0]
+  for (let i = 1; i < n; i++) {
+    acc = f(acc, xs[i])
+  }
+  return acc
+})
 /**
  * concat :: [a] -> [a] -> [a]
  * */

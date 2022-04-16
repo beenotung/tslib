@@ -54,14 +54,12 @@ export function postMultipartFormData<T>(
   const formData = new FormData()
   jsonToFormData(json, formData)
   return fetch(url, { method: 'POST', body: formData as any }).then(res =>
-    decodeResponse(res).then(
-      (data): PostFormResponse<T> => {
-        return {
-          status: res.status,
-          statusText: res.statusText,
-          data: data as any,
-        }
-      },
-    ),
+    decodeResponse(res).then((data): PostFormResponse<T> => {
+      return {
+        status: res.status,
+        statusText: res.statusText,
+        data: data as any,
+      }
+    }),
   )
 }

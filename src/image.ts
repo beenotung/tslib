@@ -396,9 +396,8 @@ export async function compressImageToBlob(args: {
   maximumSize?: number
   quality?: number
 }): Promise<Blob> {
-  const { image, canvas, ctx, maximumSize, quality } = populateCompressArgs(
-    args,
-  )
+  const { image, canvas, ctx, maximumSize, quality } =
+    populateCompressArgs(args)
   canvas.width = image.width
   canvas.height = image.height
   ctx.drawImage(image, 0, 0)

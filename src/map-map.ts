@@ -36,7 +36,7 @@ export class MapMap<K, V> {
       return this.m.get(k) as any
     }
     const res = new MapMap<any, any>()
-    this.m.set(k, (res as any) as V)
+    this.m.set(k, res as any as V)
     return res as any
   }
 
@@ -68,7 +68,7 @@ export class SimpleMapMap<K extends PropertyKey, V> {
       return this.o[k as string] as any
     }
     const res = new SimpleMapMap<K, V>()
-    this.o[k as string] = (res as any) as V
+    this.o[k as string] = res as any as V
     return res as any
   }
 

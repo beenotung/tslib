@@ -60,18 +60,18 @@ export namespace search {
       case 'String':
         return query === target
       case 'Array':
-        return ((target as any) as any[]).some(
-          t => ((query as any) as any[]).indexOf(t) !== -1,
+        return (target as any as any[]).some(
+          t => (query as any as any[]).indexOf(t) !== -1,
         )
       case 'Set':
         return partialMatch(
-          Array.from((query as any) as Set<any>),
-          Array.from((target as any) as Set<any>),
+          Array.from(query as any as Set<any>),
+          Array.from(target as any as Set<any>),
         )
       case 'Map': {
         let matched = false
-        const targetMap = (target as any) as Map<any, any>
-        ;((query as any) as Map<any, any>).forEach((v, k) => {
+        const targetMap = target as any as Map<any, any>
+        ;(query as any as Map<any, any>).forEach((v, k) => {
           matched = matched || partialMatch(v, targetMap.get(k))
         })
         return matched
