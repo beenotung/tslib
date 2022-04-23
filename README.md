@@ -1,8 +1,9 @@
 # tslib
 
-[![npm Package Version](https://img.shields.io/npm/v/@beenotung/tslib.svg?maxAge=3600)](https://www.npmjs.com/package/@beenotung/tslib)
-
 utils library in Typescript
+
+[![npm Package Version](https://img.shields.io/npm/v/@beenotung/tslib)](https://www.npmjs.com/package/@beenotung/tslib)
+[![npm Package Version](https://img.shields.io/npm/dm/@beenotung/tslib)](https://www.npmtrends.com/@beenotung/tslib)
 
 ## Why tslib
 
