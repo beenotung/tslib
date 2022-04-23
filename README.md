@@ -37,7 +37,7 @@ npm install @beenotung/tslib
 
 ## Todo
 
-- change tests into to adopt jest
+- increase test coverage
 
 ## License
 
