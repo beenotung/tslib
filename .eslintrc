@@ -38,6 +38,6 @@
       "error",
       { "anonymous": "never", "named": "never" }
     ],
-    "newline-per-chained-call": ["error", { "ignoreChainWithDepth": 2 }]
+    "newline-per-chained-call": ["error", { "ignoreChainWithDepth": 3 }]
   }
 }

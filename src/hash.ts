@@ -1,11 +1,5 @@
-import { createHash } from 'crypto'
+import { BinaryLike, createHash } from 'crypto'
 
-export function hash(
-  content: Buffer | string,
-  algorithm = 'sha256',
-): string | Buffer {
-  const stream = createHash(algorithm)
-  stream.write(content)
-  stream.end()
-  return stream.read()
+export function hash(content: BinaryLike, algorithm = 'sha256'): Buffer {
+  return createHash(algorithm).update(content).digest()
 }

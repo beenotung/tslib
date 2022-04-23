@@ -233,7 +233,7 @@ export function dataURItoMimeType(dataURI: string): string {
   if (idx === -1) {
     throw new Error('data uri prefix not found')
   }
-  const prefix = dataURI.substr(0, idx)
+  const prefix = dataURI.substring(0, idx)
   const [mimeType] = prefix.replace(/^data:/, '').split(';')
   return mimeType
 }
@@ -396,9 +396,8 @@ export async function compressImageToBlob(args: {
   maximumSize?: number
   quality?: number
 }): Promise<Blob> {
-  const { image, canvas, ctx, maximumSize, quality } = populateCompressArgs(
-    args,
-  )
+  const { image, canvas, ctx, maximumSize, quality } =
+    populateCompressArgs(args)
   canvas.width = image.width
   canvas.height = image.height
   ctx.drawImage(image, 0, 0)

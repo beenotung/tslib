@@ -4,9 +4,11 @@ import { readdir, readFile, rename, unlink, writeFile } from './fs'
 import { proxyStore } from './store'
 import { new_counter } from './uuid'
 
-Symbol.counter = Symbol.for('counter')
-Symbol.dirpath = Symbol.for('dirpath')
-Symbol.asyncStoreSetItemResults = Symbol.for('asyncStoreSetItemResults')
+export const counterSymbol = Symbol.for('counter')
+export const dirpathSymbol = Symbol.for('dirpath')
+export const asyncStoreSetItemResultsSymbol = Symbol.for(
+  'asyncStoreSetItemResults',
+)
 
 export type AsyncStoreSetItemResult = Promise<void> & {
   hasCancel: boolean
@@ -15,9 +17,9 @@ export type AsyncStoreSetItemResult = Promise<void> & {
 }
 
 export class AsyncStore {
-  private [Symbol.counter] = new_counter()
-  private [Symbol.dirpath]: string
-  private [Symbol.asyncStoreSetItemResults] = new Map<
+  private [counterSymbol] = new_counter()
+  private [dirpathSymbol]: string
+  private [asyncStoreSetItemResultsSymbol] = new Map<
     string,
     AsyncStoreSetItemResult
   >()
@@ -26,12 +28,12 @@ export class AsyncStore {
     if (!fs.existsSync(dirpath)) {
       fs.mkdirSync(dirpath)
     }
-    this[Symbol.dirpath] = dirpath
+    this[dirpathSymbol] = dirpath
   }
 
   async clear(): Promise<void> {
-    const fs = await readdir(this[Symbol.dirpath])
-    await Promise.all(fs.map(f => unlink(path.join(this[Symbol.dirpath], f))))
+    const fs = await readdir(this[dirpathSymbol])
+    await Promise.all(fs.map(f => unlink(path.join(this[dirpathSymbol], f))))
   }
 
   async getItem(key: string): Promise<string | null> {
@@ -44,7 +46,7 @@ export class AsyncStore {
   }
 
   async key(index: number): Promise<string | null> {
-    return readdir(this[Symbol.dirpath]).then(fs => {
+    return readdir(this[dirpathSymbol]).then(fs => {
       if (index < fs.length) {
         return this.getItem(encodeURIComponent(fs[index]))
       } else {
@@ -54,13 +56,13 @@ export class AsyncStore {
   }
 
   async keys(): Promise<string[]> {
-    return readdir(this[Symbol.dirpath]).then(fs =>
+    return readdir(this[dirpathSymbol]).then(fs =>
       fs.map(f => decodeURIComponent(f)),
     )
   }
 
   async length(): Promise<number> {
-    return readdir(this[Symbol.dirpath]).then(fs => fs.length)
+    return readdir(this[dirpathSymbol]).then(fs => fs.length)
   }
 
   async removeItem(key: string): Promise<void> {
@@ -68,9 +70,8 @@ export class AsyncStore {
   }
 
   setItem(key: string, value: string): AsyncStoreSetItemResult {
-    const tasks: Map<string, AsyncStoreSetItemResult> = this[
-      Symbol.asyncStoreSetItemResults
-    ]
+    const tasks: Map<string, AsyncStoreSetItemResult> =
+      this[asyncStoreSetItemResultsSymbol]
     if (tasks.has(key)) {
       const task = tasks.get(key)
       if (task && !task.hasDone) {
@@ -80,7 +81,7 @@ export class AsyncStore {
 
     const filepath = this.keyToPath(key)
     const tmpfile =
-      filepath + '.' + Date.now() + '.' + this[Symbol.counter].next()
+      filepath + '.' + Date.now() + '.' + this[counterSymbol].next()
     const status = {
       hasCancel: false,
       hasDone: false,
@@ -118,7 +119,7 @@ export class AsyncStore {
   }
 
   private keyToPath(key: string) {
-    return path.join(this[Symbol.dirpath], encodeURIComponent(key))
+    return path.join(this[dirpathSymbol], encodeURIComponent(key))
   }
 
   static create(dirpath: string): AsyncStore {

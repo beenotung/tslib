@@ -20,20 +20,18 @@ export type PipeArg<A, B> = [(a: A) => B, A[]] | [(a: A) => B]
  * pipe :: PipeArg p => [p] -> a -> *
  *   - don't have to be of same type (like chain)
  * */
-export const pipe = curry(
-  <A, B>(ps: Array<PipeArg<A, B>>, acc: A): B => {
-    for (const p of ps) {
-      if (p.length === 2) {
-        // has extra args
-        acc = (((p[0] as (...xs: A[]) => B)(acc, ...p[1]) as B) as any) as A
-      } else {
-        // no extra args
-        acc = ((p[0](acc) as B) as any) as A
-      }
+export const pipe = curry(<A, B>(ps: Array<PipeArg<A, B>>, acc: A): B => {
+  for (const p of ps) {
+    if (p.length === 2) {
+      // has extra args
+      acc = (p[0] as (...xs: A[]) => B)(acc, ...p[1]) as B as any as A
+    } else {
+      // no extra args
+      acc = p[0](acc) as B as any as A
     }
-    return ((acc as A) as any) as B
-  },
-)
+  }
+  return acc as A as any as B
+})
 
 /**
  * non-curried version of echoF in functional.ts

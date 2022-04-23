@@ -4,9 +4,9 @@ export const GB = 1024 * MB
 
 export const byteUnits = {
   B: 1,
-  KB: 1024,
-  MB: 1024 * 1024,
-  GB: 1024 * 1024 * 1024,
+  KB,
+  MB,
+  GB,
 }
 export type BytesUnit = keyof typeof byteUnits
 

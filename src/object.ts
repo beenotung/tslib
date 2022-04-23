@@ -16,7 +16,7 @@ export function deepClone<A>(o: A): A {
     return o
   }
   if (o instanceof Array) {
-    return ((o.map(deepClone) as any[]) as any) as A
+    return o.map(deepClone) as any[] as any as A
   } else {
     const res = {} as A
     Object.keys(o).forEach(x => ((res as any)[x] = deepClone((o as any)[x])))
@@ -141,8 +141,10 @@ export function createSafeObject(target: object = {}) {
   return new Proxy(target, safeProxyHandler)
 }
 
-export const updateObject = <T, U>(dest: T) => (x: U): T & U =>
-  Object.assign(dest, x)
+export const updateObject =
+  <T, U>(dest: T) =>
+  (x: U): T & U =>
+    Object.assign(dest, x)
 
 export const isNull = (x: any): boolean =>
   !(x === null || x === undefined || x === '')

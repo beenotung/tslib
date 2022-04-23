@@ -16,8 +16,7 @@ function wrapFunction_newFunction_eval<F extends Function>(
   length = fn.length,
   name = fn.name,
 ): F {
-  const args = new Array(length).fill(0)
-.map((_, i) => 'a' + (i + 1))
+  const args = new Array(length).fill(0).map((_, i) => 'a' + (i + 1))
   const wrapper = eval(`(function wrapper(fn) {
     return function ${name}(${args}) {
       return fn.apply(null, arguments)

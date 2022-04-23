@@ -52,7 +52,7 @@ export function left<L, R>(l: L): Either<L, R> {
     mmap: <L2, R2>(fl: (l: L) => L2, fr: (r: R) => R2): Either<L2, R2> =>
       left<L2, R2>(fl(l)),
     mapLeft: <L2>(f: (l: L) => L2) => left<L2, R>(f(l)),
-    mapRight: <R2>(f: (r: R) => R2) => (res as Either<L, any>) as Either<L, R2>,
+    mapRight: <R2>(f: (r: R) => R2) => res as Either<L, any> as Either<L, R2>,
     bindLeft: <L2>(f: (l: L) => Either<L2, R>) => f(l),
     bindRight: <R2>(f: (r: R) => Either<L, R2>) => res as Either<L, any>,
   }
