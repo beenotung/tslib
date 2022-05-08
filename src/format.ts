@@ -1,5 +1,5 @@
 /**
- * Created by beenotung on 3/9/17.
+ * Created by beenotung on 2017 Mar 9th.
  */
 
 import { isEngChar, to_plural } from './en'
