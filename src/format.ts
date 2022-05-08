@@ -128,7 +128,7 @@ export function format_datetime(
 
 const roundUnits = time_units_en.map(([unit]) => unit).sort((a, b) => b - a)
 
-export function roundTimeDiff(timeDiff: number): number {
+export function round_time_diff(timeDiff: number): number {
   const absDiff = Math.abs(timeDiff)
   for (const unit of roundUnits) {
     if (absDiff > unit) {
@@ -151,7 +151,7 @@ export function format_long_short_time(
   // if within 1-week, format relative time, else format absolute time
   const diff = time - Date.now()
   if (Math.abs(diff) < (options?.threshold || WEEK)) {
-    return format_relative_time(roundTimeDiff(diff))
+    return format_relative_time(round_time_diff(diff))
   }
   return format_datetime(time, options)
 }
