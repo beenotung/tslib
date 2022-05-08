@@ -160,13 +160,16 @@ export function format_time_duration(delta: number, digit = 1): string {
   const diff = Math.abs(delta)
   const res = (n: number, unit: string): string => {
     const p = Math.pow(10, digit)
-    n = Math.round(n * p) / p
+    n = Math.floor(n * p) / p
     if (n > 1) {
       unit = to_plural(unit)
     }
     return n + ' ' + unit
   }
   for (const [size, unit] of time_units) {
+    if (diff === size) {
+      return '1 ' + unit
+    }
     if (diff > size) {
       return res(diff / size, unit)
     }
