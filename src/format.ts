@@ -146,12 +146,13 @@ export function format_long_short_time(
   time: number,
   options?: {
     threshold?: number // default WEEK
+    format_duration_digit?: number
   } & FormatDateTimeOptions,
 ) {
   // if within 1-week, format relative time, else format absolute time
   const diff = time - Date.now()
   if (Math.abs(diff) < (options?.threshold || WEEK)) {
-    return format_relative_time(round_time_diff(diff))
+    return format_relative_time(diff, options?.format_duration_digit)
   }
   return format_datetime(time, options)
 }

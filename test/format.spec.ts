@@ -60,10 +60,14 @@ describe('format.ts spec', () => {
   })
   test('format_long_short_time', () => {
     const now = Date.now()
-    t.equal(format_long_short_time(now - 4.5 * DAY), '4 days ago')
-    t.equal(format_long_short_time(now + 4.5 * DAY), '4 days hence')
-    t.notEqual(format_long_short_time(now - 4.5 * WEEK), '4 weeks ago')
-    t.notEqual(format_long_short_time(now + 4.5 * WEEK), '4 weeks hence')
+    t.equal(format_long_short_time(now - 4.5 * DAY), '4.5 days ago')
+    t.equal(format_long_short_time(now + 4.5 * DAY), '4.5 days hence')
+    t.notEqual(format_long_short_time(now - 4.5 * WEEK), '4.5 weeks ago')
+    t.notEqual(format_long_short_time(now + 4.5 * WEEK), '4.5 weeks hence')
+    t.notEqual(
+      format_long_short_time(now + 4.5 * WEEK, { format_duration_digit: 0 }),
+      '4 weeks hence',
+    )
     t.end()
   })
 
