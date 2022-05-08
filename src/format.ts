@@ -47,7 +47,7 @@ const word_en = {
   ago: 'ago',
 }
 const word_zh = {
-  instantly: '頃刻',
+  instantly: '即時',
   'just now': '剛剛',
   hence: '後',
   ago: '前',
