@@ -2,6 +2,7 @@
  * Created by beenotung on 2017 Mar 9th.
  */
 
+import { TimezoneDate } from 'timezone-date.ts'
 import { isEngChar, to_plural } from './en'
 import { getEnvLocale } from './locale'
 import {
@@ -92,18 +93,28 @@ export function format_byte(n_byte: number, n_decimal = 2): string {
   )
 }
 
+export type FormatDateTimeOptions = {
+  locales?: string
+  empty?: string // default '-'
+  timezoneOffset?: number
+} & Intl.DateTimeFormatOptions
+
 export function format_datetime(
   time: number,
-  options: {
-    locales?: string
-    empty?: string // default '-'
-  } & Intl.DateTimeFormatOptions = {},
+  options: FormatDateTimeOptions = {},
 ) {
   if (!time) {
     return options.empty || '-'
   }
   const locales = options.locales || getEnvLocale() || locale
-  return new Date(time).toLocaleString(locales, {
+  let date: TimezoneDate | Date
+  if (options.timezoneOffset !== undefined) {
+    const date_ = (date = new TimezoneDate(time))
+    date_.setTimezoneOffset(options.timezoneOffset)
+  } else {
+    date = new Date(time)
+  }
+  return date.toLocaleString(locales, {
     weekday: 'short',
     year: 'numeric',
     month: 'short',
@@ -135,9 +146,7 @@ export function format_long_short_time(
   time: number,
   options?: {
     threshold?: number // default WEEK
-    locales?: string
-    empty?: string
-  } & Intl.DateTimeFormatOptions,
+  } & FormatDateTimeOptions,
 ) {
   // if within 1-week, format relative time, else format absolute time
   const diff = time - Date.now()
