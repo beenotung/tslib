@@ -1,5 +1,5 @@
 import { expect } from 'chai'
-import { csv_to_json, from_csv, to_csv } from '../src/csv'
+import { csv_to_json, from_csv, to_csv, json_to_csv } from '../src/csv'
 
 describe('csv.ts TestSuit', () => {
   it('should parse basic rows', () => {
@@ -33,22 +33,30 @@ a,b
     let json = csv_to_json(rows)
     expect(json).to.deep.equals([{ a: '', b: '2' }])
   })
-  it('should parse value of multiple line', () => {
-    let text = `
+  describe('multiple line handling', () => {
+    let sampleText = `
 "a","b"
 ,"line1
 line2
 line3"
 `.trim()
-    let rows = from_csv(text)
-    let json = csv_to_json(rows)
-    expect(json).to.deep.equals([
+    let sampleJSON = [
       {
         a: '',
         b: `line1
 line2
 line3`,
       },
-    ])
+    ]
+    it('should parse value of multiple line', () => {
+      let rows = from_csv(sampleText)
+      let json = csv_to_json(rows)
+      expect(json).to.deep.equals(sampleJSON)
+    })
+    it('should encode value of multiple line', () => {
+      let rows = json_to_csv(sampleJSON)
+      let text = to_csv(rows)
+      expect(text).to.equals(`a,b\r\n"","line1\nline2\nline3"\r\n`)
+    })
   })
 })
