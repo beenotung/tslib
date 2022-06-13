@@ -19,7 +19,7 @@ function is_enum_key(x: any) {
 export function enum_i2s<E>(e: E, i: keyof E): E[keyof E] {
   const res = e[i]
   if (res === void 0) {
-    throw new TypeError(`Invalid index '${i}' in enum`)
+    throw new TypeError(`Invalid index '${String(i)}' in enum`)
   }
   return ensureString(res as any)
 }
