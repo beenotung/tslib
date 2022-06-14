@@ -56,7 +56,7 @@ line3`,
     it('should encode value of multiple line', () => {
       let rows = json_to_csv(sampleJSON)
       let text = to_csv(rows)
-      expect(text).to.equals(`a,b\r\n"","line1\nline2\nline3"\r\n`)
+      expect(text).to.equals(`a,b\r\n,"line1\nline2\nline3"\r\n`)
     })
   })
 })

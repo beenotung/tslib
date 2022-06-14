@@ -84,7 +84,6 @@ export function to_csv(
         res.push(separator)
       }
       if (
-        col &&
         col.indexOf('\n') === -1 &&
         col.indexOf(delimiter) === -1 &&
         col.indexOf(separator) === -1
