@@ -3,12 +3,7 @@ export type Result<T> = T | Promise<T>
 const PromiseString = Promise.resolve().toString()
 
 export function isPromise(x: any): boolean {
-  return (
-    x &&
-    typeof x === 'object' &&
-    typeof x.toString === 'function' &&
-    x.toString() === PromiseString
-  )
+  return String(x) === PromiseString
 }
 
 export function then<T, R>(
