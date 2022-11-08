@@ -215,25 +215,34 @@ const nFuncs = [] as Array<F1<Function, Function>>
 
 export function genFunction(n: number, f: Function): Function {
   if (n < 1) {
-    return function fun0() {
+    return function func0() {
       return f.apply(null, arguments)
     }
   }
-  if (!nFuncs[n]) {
-    let args = 'a0'
-    for (let i = 1; i < n; i++) {
-      args += ', a' + i
-    }
-    const code = `nFuncs[${n}] = function(f){
-  return function fun${n}(${args}){
-    return f.apply(null, arguments);
-  };
+  let genFunc = nFuncs[n]
+  if (!genFunc) {
+    /* tslint:disable:ban-types */
+    genFunc = function(f: Function) {
+      const func = function() {
+        return f.apply(null, arguments)
+      }
+      Object.defineProperty(func, 'name', { value: 'func' + n })
+      Object.defineProperty(func, 'length', { value: n })
+
+      let args = 'a0'
+      for (let i = 1; i < n; i++) {
+        args += ', a' + i
+      }
+      const code = `function func${n}(${args}) {
+  return f.apply(null, arguments);
 }`
-    /* tslint:disable:no-eval */
-    eval(code)
-    /* tslint:enable:no-eval */
+      func.toString = () => code
+
+      return func
+    }
+    nFuncs[n] = genFunc
   }
-  return nFuncs[n](f)
+  return genFunc(f)
 }
 
 /* tslint:enable:ban-types */
