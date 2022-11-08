@@ -12,9 +12,6 @@ export function curry<A extends Function>(f: Function): A {
   const arity = f.length
   const res = arity === 0 ? f : partial(f, arity, [])
   return res as A
-  // return typeof f === 'function' && f.length > 0
-  //   ? partial(f, f.length, [])
-  //   : f;
 }
 
 export const id = curry(<A>(x: A) => x)
