@@ -459,9 +459,10 @@ const DefaultMaximumMobilePhotoSize = 300 * KB // 300KB
 export async function compressMobilePhoto(args: {
   image: base64 | File | HTMLImageElement
   maximumSize?: number
+  quality?: number
 }): Promise<base64> {
   const maximumLength = args.maximumSize || DefaultMaximumMobilePhotoSize
   return then(toImage(args.image), image =>
-    compressImageToBase64({ image, maximumLength }),
+    compressImageToBase64({ image, maximumLength, quality: args.quality }),
   )
 }
