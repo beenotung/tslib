@@ -5,7 +5,7 @@ import { isDefined } from './lang'
  * <A> must be object.
  * For string, number e.t.c use Set instead
  * */
-export class HashedArray<A> {
+export class HashedArray<A extends object> {
   public mapper: (a: A) => PropertyKey
   public array: A[]
   public o: { [key: string]: A }
@@ -89,7 +89,7 @@ export class HashedArray<A> {
     return this.update(x, key)
   }
 
-  public static from<A>(xs: A[]): HashedArray<A> {
+  public static from<A extends object>(xs: A[]): HashedArray<A> {
     const res = new HashedArray<A>()
     xs.forEach(x => res.insert(x))
     return res

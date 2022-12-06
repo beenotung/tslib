@@ -11,7 +11,7 @@ export function hasFunction(o: object | any[], name: PropertyKey): boolean {
   return typeof (o as any)[name] === 'function'
 }
 
-export function deepClone<A>(o: A): A {
+export function deepClone<A extends object>(o: A): A {
   if (!isObject(o)) {
     return o
   }
@@ -95,7 +95,7 @@ export function deepEqual(a: any, b: any): boolean {
   }
 }
 
-export function replaceObject<A>(dest: A, src: A): A {
+export function replaceObject<A extends object>(dest: A, src: A): A {
   Object.keys(dest).forEach(x => delete (dest as any)[x])
   return Object.assign(dest, src)
 }
@@ -137,12 +137,12 @@ const safeProxyHandler: ProxyHandler<any> = {
  * make a loss object, very forgiving
  * */
 export function createSafeObject(target: object = {}) {
-  (target as any)[SafeObject] = true
+  ;(target as any)[SafeObject] = true
   return new Proxy(target, safeProxyHandler)
 }
 
 export const updateObject =
-  <T, U>(dest: T) =>
+  <T extends object, U extends object>(dest: T) =>
   (x: U): T & U =>
     Object.assign(dest, x)
 
@@ -163,7 +163,7 @@ export function removeNull<A>(o: A): A {
   }
   if (typeof o === 'object' && o !== null) {
     o = Object.assign({}, o)
-    for (const k of Object.keys(o)) {
+    for (const k of Object.keys(o as unknown as object)) {
       const v = (o as any)[k]
       if (v === null || v === undefined || v === '') {
         delete (o as any)[k]
@@ -252,7 +252,7 @@ export function deleteUndefined(o: ApplyUndefinedType): void {
  * to encode json data in csv-style
  * i.e. only need to store the keys once for a large collection (e.g. Array / Set)
  * */
-export function objectToValues<T>(
+export function objectToValues<T extends object>(
   o: T,
   keys: Array<keyof T> = Object.keys(o).sort() as any[],
 ): Array<T[keyof T]> {

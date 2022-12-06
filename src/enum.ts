@@ -114,7 +114,7 @@ export function enum_not_equals<E1, E2>(e1: E1, e2: E2): boolean {
  *
  * @return original (modified) enum
  * */
-export function enum_set_string<E>(e: E): E {
+export function enum_set_string<E extends object>(e: E): E {
   Object.keys(e)
     .filter(is_enum_key)
     .forEach(s => ((e as any)[s] = (e as any)[(e as any)[s]]))
@@ -124,7 +124,7 @@ export function enum_set_string<E>(e: E): E {
 /**
  * inplace update
  * */
-export function enum_only_string<E>(e: E) {
+export function enum_only_string<E extends object>(e: E) {
   Object.keys(e).forEach(i => {
     /* tslint:disable */
     if ((i as any) == +i) {

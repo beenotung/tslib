@@ -23,6 +23,6 @@ export function bindMethods<A extends Obj<Function | any>>(o: A): A {
 /**
  * cast object to class with class methods
  * */
-export function withMethod<A>(c: Type<A>, o: A): A {
+export function withMethod<A extends object>(c: Type<A>, o: A): A {
   return Object.assign(new c(), o)
 }
