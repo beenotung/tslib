@@ -16,6 +16,10 @@ export interface FormArray {
 
 export type FormValue = FormPrimitive | FormObject | FormArray
 
+/**
+ * @description also support files in { [field: string]: File[] | File }
+ * One use-case is for FileFieldsInterceptor in nest-client
+ */
 export function jsonToFormData(
   json: FormObject,
   formData: FormData = new FormData(),
@@ -29,16 +33,36 @@ export function jsonToFormData(
         formData.append(key, value.toString())
         break
       default:
-        if (typeof File !== 'undefined' && value instanceof File) {
+        if (isFile(value)) {
           formData.append(key, value)
         } else if (Array.isArray(value)) {
           value.forEach(value => formData.append(key, value))
-        } else {
-          formData.append(key, JSON.stringify(value))
+        } else if (value) {
+          let hasFile = false
+          for (const [key, val] of Object.entries(value)) {
+            if (isFile(val)) {
+              hasFile = true
+              formData.append(key, val)
+            } else if (Array.isArray(val)) {
+              for (const v of val) {
+                if (isFile(v)) {
+                  hasFile = true
+                  formData.append(key, v)
+                }
+              }
+            }
+          }
+          if (!hasFile) {
+            formData.append(key, JSON.stringify(value))
+          }
         }
     }
   })
   return formData
+}
+
+function isFile(value: unknown) {
+  return typeof File !== 'undefined' && value instanceof File
 }
 
 export interface PostFormResponse<T> {
