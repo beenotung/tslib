@@ -260,6 +260,21 @@ export function dataURItoBlob(dataURI: string): Blob {
   return new Blob([buffer], { type: mimeType })
 }
 
+export function dataURItoFile(dataURI: string, originalFile?: File): File {
+  let blob = dataURItoBlob(dataURI)
+  let filename = removeExtname(originalFile?.name || 'image')
+  let ext = blob.type.split('/').pop()
+  filename += '.' + ext
+  return new File([blob], filename, {
+    type: blob.type,
+    lastModified: originalFile?.lastModified || Date.now(),
+  })
+}
+
+function removeExtname(filename: string): string {
+  return filename.replace(/\.(jpg|jpeg|png|gif|bmp|webp)$/i, '')
+}
+
 /** simplified version of compressImageToBase64() / compressImageToBlob() */
 export function compressImage(
   image: HTMLImageElement,
