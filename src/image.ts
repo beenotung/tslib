@@ -261,9 +261,9 @@ export function dataURItoBlob(dataURI: string): Blob {
 }
 
 export function dataURItoFile(dataURI: string, originalFile?: File): File {
-  let blob = dataURItoBlob(dataURI)
+  const blob = dataURItoBlob(dataURI)
   let filename = removeExtname(originalFile?.name || 'image')
-  let ext = blob.type.split('/').pop()
+  const ext = blob.type.split('/').pop()
   filename += '.' + ext
   return new File([blob], filename, {
     type: blob.type,
