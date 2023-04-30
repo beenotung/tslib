@@ -51,6 +51,7 @@ export function escapeRegExp(str: string): string {
   return str.replace(/([.*+?^=!:${}()|\[\]\/\\])/g, '\\$1')
 }
 
+/** @deprecated use String.replaceAll() instead (available since 2020) */
 export function strReplaceAll(
   str: string,
   find: string,

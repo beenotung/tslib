@@ -11,13 +11,13 @@
     "skipLibCheck": true,
     "downlevelIteration": false,
     "importHelpers": true,
+    "incremental": true,
     "lib": [
-      "dom",
-      "es2018"
+      "es2021"
     ],
     "module": "commonjs",
     "moduleResolution": "node",
-    "target": "es2015",
+    "target": "es2021",
     "outDir": "dist"
   },
   "include": [

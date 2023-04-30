@@ -1,5 +1,3 @@
-import { PolyfillMap } from './polyfill-map'
-
 /**
  * map of value or map, aka nested map
  *
@@ -12,11 +10,7 @@ export class MapMap<K, V> {
   private m: Map<K, V>
 
   constructor() {
-    if (typeof Map === 'function') {
-      this.m = new Map<K, V>()
-    } else {
-      this.m = new PolyfillMap<K, V>()
-    }
+    this.m = new Map<K, V>()
   }
 
   public has(k: K): boolean {
