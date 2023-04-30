@@ -77,11 +77,11 @@ export function is_non_empty_string(s: string): boolean {
 }
 
 export function str_dos2unix(s: string): string {
-  return strReplaceAll(s, '\r\n', '\n')
+  return s.replace(/\r\n/g, '\n')
 }
 
 export function str_unix2dos(s: string): string {
-  return strReplaceAll(s, '\n', '\r\n')
+  return s.replace(/\n/g, '\r\n')
 }
 
 export function str_minus(a: string, b: string): string {
