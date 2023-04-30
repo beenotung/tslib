@@ -9,8 +9,3 @@ export function unwrapSupplierOrData<A>(x: SupplierOrData<A>): A {
   }
   return x
 }
-
-/**
- * to escape tslint:ban-types on Function
- * */
-export type LossFunction = (...args: any[]) => any
