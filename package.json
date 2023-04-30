@@ -48,8 +48,6 @@
     "report": "run-s report:update report:open"
   },
   "dependencies": {
-    "cross-fetch": "^3.1.5",
-    "form-data": "^4.0.0",
     "node-localstorage": "^2.2.1",
     "timezone-date.ts": "^2.0.1",
     "tslib": "^2.4.0"

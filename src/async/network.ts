@@ -1,5 +1,3 @@
-import { fetch } from '../fetch'
-
 export function fetch_no_cache(url: string, method = 'GET'): Promise<Response> {
   const req: Request | string =
     typeof Request === 'function' ? new Request(url) : url

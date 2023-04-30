@@ -1,8 +1,6 @@
-import FormData from 'form-data'
-import { fetch } from './fetch'
 import { decodeResponse } from './response'
 
-export type FormPrimitive = string | number | boolean | null | File
+export type FormPrimitive = string | number | boolean | File
 
 export interface FormObject {
   [key: string]: FormValue
@@ -34,7 +32,7 @@ export function jsonToFormData(
         break
       default:
         if (isFile(value)) {
-          formData.append(key, value)
+          formData.append(key, value as File)
         } else if (Array.isArray(value)) {
           value.forEach(value => formData.append(key, value))
         } else if (value) {

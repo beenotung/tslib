@@ -1,5 +1,5 @@
 // run php -S 127.0.0.1:3000 first
-import { checkedFetch, fetch } from '../../src/fetch'
+import { checkedFetch } from '../../src/fetch'
 
 import { jsonToFormData, postMultipartFormData } from '../../src/form'
 import { JsonObject } from '../../src/json'

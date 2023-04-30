@@ -1,13 +1,3 @@
-import fetch_ from 'cross-fetch'
-import { getWindowOrGlobal } from './runtime'
-
-export const fetch: Window['fetch'] = fetch_
-
-export function polyfillFetch() {
-  const win = getWindowOrGlobal() as any
-  win.fetch = win.fetch || fetch
-}
-
 /**
  * check if the status code is 2xx
  * */
