@@ -1,8 +1,11 @@
 // run php -S 127.0.0.1:3000 first
 import { checkedFetch } from '../../src/fetch'
 
-import { jsonToFormData, postMultipartFormData } from '../../src/form'
-import { JsonObject } from '../../src/json'
+import {
+  FormObject,
+  jsonToFormData,
+  postMultipartFormData,
+} from '../../src/form'
 import { is2xxResponse } from '../../src/response'
 
 function onData(data: any) {
@@ -13,7 +16,7 @@ function onError(err: any) {
   console.error('error:', err)
 }
 
-async function test(name: string, f: (json: JsonObject) => Promise<string>) {
+async function test(name: string, f: (json: FormObject) => Promise<string>) {
   console.log(`== ${name} ==`)
   console.log(`=== 200 check ===`)
   // prettier-ignore
