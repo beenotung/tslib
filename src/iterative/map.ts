@@ -1,4 +1,3 @@
-import '../polyfill-array'
 import { getObjectType } from '../type'
 
 export type Mapper<A, B> = (a: A) => B
