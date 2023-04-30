@@ -1,7 +1,5 @@
 import { memorize, MemorizePool } from '../src/memorize'
 
-// tslint:disable
-
 function time(f: () => any, name: string = f.name) {
   console.log('timing', name)
   const start = Date.now()
@@ -95,5 +93,3 @@ function test3() {
 test1()
 test2()
 test3()
-
-// tslint:enable

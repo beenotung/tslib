@@ -1,13 +1,10 @@
 declare let $: any
 
 // TODO better type def
-/* tslint:disable:ban-types */
 export interface JQuery {
   DataTable: Function
   dataTable: Function
 }
-
-/* tslint:enable:ban-types */
 
 export interface DataTableOption {
   lengthOptions: number[]

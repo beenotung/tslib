@@ -78,7 +78,6 @@ export function jsonToString(o: any): string {
   return jsonToString_helper(o, parent, visited)
 }
 
-// tslint:disable:prefer-for-of
 interface JsonValues {
   values: any[]
   arrays: number[]
@@ -147,8 +146,6 @@ export function valuesToJson(jsonValues: JsonValues): any {
   }
   return decode(0)
 }
-
-// tslint:enable:prefer-for-of
 
 export function jsonToValuesString(value: any): string {
   return jsonToString(jsonToValues(value))

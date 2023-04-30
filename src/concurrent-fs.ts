@@ -12,7 +12,6 @@ export function createFSPool(concurrentSize: number) {
     }
     (res as any)[name] = function() {
       const args = arguments
-      // tslint:disable-next-line:ban-types
       return pool.runTask(() => (func as Function).apply(fs, args))
     }
   }

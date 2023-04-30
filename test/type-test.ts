@@ -10,7 +10,6 @@ type Plant = Drop<Animal, 'walk'>
 
 const cat: Animal = {
   walk() {
-    // tslint:disable-next-line no-invalid-this
     console.log(this.name(), 'walking')
   },
   name() {

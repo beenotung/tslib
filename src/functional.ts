@@ -168,14 +168,12 @@ export const mult = defineSymbolF('*', (a: number, b: number): number => b * a)
 defineSymbolF('/', (a: number, b: number): number => b / a)
 export const rem = defineSymbolF('%', (a: number, b: number): number => b % a)
 export const div = curry((a: number, b: number): number => Math.floor(b / a))
-/* tslint:disable no-bitwise */
 export const quot = curry((a: number, b: number): number => (b / a) | 0)
 /** faster */
 export const quotMod = curry((a: number, b: number): [number, number] => [
   (b / a) | 0,
   b % a,
 ])
-/* tslint:enable no-bitwise */
 /* slower */
 export const divMod = curry((a: number, b: number): [number, number] => {
   const d = Math.floor(b / a)

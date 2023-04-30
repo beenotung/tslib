@@ -81,14 +81,11 @@ export async function ifNullFAsync<A>(
   return defer.promise
 }
 
-/* tslint:disable:ban-types */
 export function bindFunction(f: Function): Function {
   const res = f.bind(f)
   res.prototype = f.prototype
   return res
 }
-
-/* tslint:enable:ban-types */
 
 export function caseLookup<A, B>(cases: Array<[A, B]>, target: A): B {
   const xss = cases.filter(xs => xs[0] === target)
@@ -210,7 +207,6 @@ export function copyToArray<A>(
   return dest
 }
 
-/* tslint:disable:ban-types */
 const nFuncs = [] as Array<F1<Function, Function>>
 
 export function genFunction(n: number, f: Function): Function {
@@ -221,7 +217,6 @@ export function genFunction(n: number, f: Function): Function {
   }
   let genFunc = nFuncs[n]
   if (!genFunc) {
-    /* tslint:disable:ban-types */
     genFunc = function(f: Function) {
       const func = function() {
         return f.apply(null, arguments)
@@ -244,8 +239,6 @@ export function genFunction(n: number, f: Function): Function {
   }
   return genFunc(f)
 }
-
-/* tslint:enable:ban-types */
 
 export function isDefined(a: any): boolean {
   return a !== null && a !== void 0
@@ -336,10 +329,7 @@ export function chainObject<A>(a: A): ChainObject<A> {
   return res
 }
 
-/* tslint:disable:ban-types */
 export type Type<A> = new (...args: any[]) => A
-
-/* tslint:enable:ban-types */
 
 export function _if(f: () => any): (b: boolean) => void {
   return b => {

@@ -77,9 +77,7 @@ export function createUnit<M extends Monad<A>, A>(
     f: (a: A, ...args: any[]) => Monad<B>,
   ): Unit<Monad<B>, B> => {
     prototype[name] = function(): Monad<B> {
-      /* tslint:disable:no-invalid-this */
       const monad = this as Monad<A>
-      /* tslint:enable:no-invalid-this */
       return monad.bind(f, arguments)
     }
     return unit as Unit<any, any>
@@ -90,9 +88,7 @@ export function createUnit<M extends Monad<A>, A>(
     f: (a: A, ...args: any[]) => Monad<B> | B,
   ): Unit<M, A> => {
     prototype[name] = function(): Monad<B> {
-      /* tslint:disable:no-invalid-this */
       const monad = this as Monad<A>
-      /* tslint:enable:no-invalid-this */
       return monad.bind((a, args) => {
         const b = f(a, ...args)
         if ((b as Monad<B>).is_monad) {

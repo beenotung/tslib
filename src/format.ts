@@ -39,7 +39,6 @@ const time_units_zh: Array<[number, string]> = [
   [MINUTE, '分鐘'],
   [SECOND, '秒'],
 ]
-/* tslint:disable:quotemark */
 const word_en = {
   instantly: 'instantly',
   'just now': 'just now',
@@ -52,7 +51,6 @@ const word_zh = {
   hence: '後',
   ago: '前',
 }
-/* tslint:enable:quotemark */
 let word = word_en
 
 let time_units: Array<[number, string]> = time_units_en

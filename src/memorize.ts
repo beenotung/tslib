@@ -1,7 +1,6 @@
 import { MapMap } from './map-map'
 import { wrapFunction } from './reflection'
 
-/* tslint:disable:ban-types */
 /**
  * @description support any arguments length, any data type arguments
  *   do not works for self-recursive functions
@@ -18,7 +17,6 @@ import { wrapFunction } from './reflection'
  *
  * */
 export function memorize<F extends Function>(f: F): F & { clear: () => void } {
-  /* tslint:enable:ban-types */
   /* length => ...args */
   const cache = new MapMap<number, MapMap<any, any>>()
   return Object.assign(

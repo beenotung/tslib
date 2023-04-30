@@ -1,16 +1,11 @@
 import { ensureNumber, ensureString } from './strict-type'
 
-/* tslint:disable:ban-types */
 export type Enum<E> =
   | ({ [value: number]: keyof E } & { [key: string]: E })
   | Object
 
-/* tslint:enable:ban-types */
-
 function is_enum_key(x: any) {
-  /* tslint:disable */
   return x != +x
-  /* tslint:enable */
 }
 
 /**
@@ -126,9 +121,7 @@ export function enum_set_string<E extends object>(e: E): E {
  * */
 export function enum_only_string<E extends object>(e: E) {
   Object.keys(e).forEach(i => {
-    /* tslint:disable */
     if ((i as any) == +i) {
-      /* tslint:enable */
       const s = (e as any)[i]
       ;(e as any)[s] = s
       delete (e as any)[i]

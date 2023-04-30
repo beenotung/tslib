@@ -1,4 +1,3 @@
-// tslint:disable:no-bitwise
 export function combinations<T>(xs: T[]): T[][] {
   const xss: T[][] = []
   const listLen = xs.length
@@ -14,4 +13,3 @@ export function combinations<T>(xs: T[]): T[][] {
   }
   return xss
 }
-// tslint:enable:no-bitwise
