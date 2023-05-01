@@ -5,14 +5,14 @@ export function getWindow(): Window {
   return window
 }
 
-export function getGlobal(): NodeJS.Global {
+export function getGlobal(): typeof globalThis {
   if (typeof global === 'undefined') {
     throw new Error('Not running in NodeJS runtime')
   }
   return global
 }
 
-export function getWindowOrGlobal(): Window | NodeJS.Global {
+export function getWindowOrGlobal(): Window | typeof globalThis {
   if (typeof global !== 'undefined') {
     return global
   }
