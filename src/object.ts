@@ -296,7 +296,7 @@ export function objectGetOrSetDefault<V = any, K extends PropertyKey = string>(
   return res
 }
 
-export function objectPick<T, K extends keyof T = keyof T>(
+export function objectPick<T extends object, K extends keyof T = keyof T>(
   object: T,
   keys: K[],
 ): Pick<T, K> {

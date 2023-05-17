@@ -96,7 +96,10 @@ export function enum_is_last<E>(
   }
 }
 
-export function enum_is_in_range<E>(e: E, v: E[keyof E] | keyof E): boolean {
+export function enum_is_in_range<E extends object>(
+  e: E,
+  v: E[keyof E] | keyof E,
+): boolean {
   return (v as any) in e
 }
 
