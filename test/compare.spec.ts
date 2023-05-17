@@ -20,7 +20,7 @@ describe('compare.ts spec', () => {
     )
     const objects = numbers.map(x => ({ x }))
     t.deepEquals(
-      objects.sort(compare_by_keys<typeof objects[0]>(['x'])),
+      objects.sort(compare_by_keys<(typeof objects)[0]>(['x'])),
       sorted.map(x => ({ x })),
     )
     t.deepEquals(

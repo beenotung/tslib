@@ -568,7 +568,7 @@ export function mode<T>(xs: T[]): T | undefined {
   if (counts.length === 0) {
     return undefined
   }
-  type t = typeof counts[number]
+  type t = (typeof counts)[number]
   const maxCount = maxByField(counts as [t, ...t[]], 1)
   return maxCount ? maxCount[0] : undefined
 }
