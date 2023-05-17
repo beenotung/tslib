@@ -11,5 +11,6 @@
   ],
   "semi": false,
   "arrowParens": "avoid",
+  "quoteProps": "consistent",
   "trailingComma": "all"
 }

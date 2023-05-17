@@ -40,16 +40,16 @@ const time_units_zh: Array<[number, string]> = [
   [SECOND, '秒'],
 ]
 const word_en = {
-  instantly: 'instantly',
+  'instantly': 'instantly',
   'just now': 'just now',
-  hence: 'hence',
-  ago: 'ago',
+  'hence': 'hence',
+  'ago': 'ago',
 }
 const word_zh = {
-  instantly: '即時',
+  'instantly': '即時',
   'just now': '剛剛',
-  hence: '後',
-  ago: '前',
+  'hence': '後',
+  'ago': '前',
 }
 let word = word_en
 
