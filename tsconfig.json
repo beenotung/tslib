@@ -14,11 +14,11 @@
     "incremental": true,
     "lib": [
       "dom",
-      "es2021"
+      "es2022"
     ],
     "module": "commonjs",
     "moduleResolution": "node",
-    "target": "es2021",
+    "target": "es2022",
     "outDir": "dist"
   },
   "include": [
