@@ -1,7 +1,6 @@
 /**
  * Created by beenotung on 4/23/17.
  */
-import { compare } from './compare'
 
 export function fromLocaleString(str: string): number {
   const num = +str.replaceAll(',', '')
@@ -10,8 +9,3 @@ export function fromLocaleString(str: string): number {
   }
   throw new Error('failed to parse locale string into number')
 }
-
-/** @deprecated*/
-export { CompareResult } from './compare'
-/** @deprecated*/
-export const compare_number = compare

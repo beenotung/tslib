@@ -18,19 +18,3 @@ export function createDefer<A = void, E = Error>(): Defer<A, E> {
   })
   return res
 }
-
-/**
- * @deprecated this approach cannot resolve promise without value
- */
-export async function resolveDefer<A, E>(
-  defer: Defer<A, E>,
-  a: A,
-  f: () => E | Promise<E>,
-) {
-  if (a != undefined && a != null) {
-    defer.resolve(a)
-  } else {
-    defer.reject(await f())
-  }
-  return defer.promise
-}

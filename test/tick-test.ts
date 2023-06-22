@@ -1,5 +1,5 @@
 import { later } from '../src/async/wait'
-import { startTimer } from '../src/node'
+import { startTimer } from '../src/timer'
 import { Random } from '../src/random'
 
 async function main() {

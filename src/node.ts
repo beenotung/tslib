@@ -14,11 +14,3 @@ export function eraseChars(writeStream: NodeJS.WriteStream, n: number) {
     writeStream.moveCursor(-n, 0)
   }
 }
-
-/** @deprecated moved to timer.ts */
-export {
-  SetProgress,
-  SetProgressOptions,
-  startTimer,
-  StartTimerOptions,
-} from './timer'

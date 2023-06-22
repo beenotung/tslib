@@ -9,21 +9,6 @@ export function createRL(
 
 export const getRL: () => ReadLine = createLazy(createRL)
 
-/** @deprecated*/
-export let rl: ReadLine
-{
-  let isNew = true
-  rl = new Proxy({} as ReadLine, {
-    get: (target, p) => {
-      if (isNew) {
-        isNew = false
-        Object.assign(target, getRL())
-      }
-      return (target as any)[p]
-    },
-  })
-}
-
 export namespace IO {
   /**
    * @description lineNum start from 0

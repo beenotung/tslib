@@ -51,15 +51,6 @@ export function escapeRegExp(str: string): string {
   return str.replace(/([.*+?^=!:${}()|\[\]\/\\])/g, '\\$1')
 }
 
-/** @deprecated use String.replaceAll() instead (available since 2020) */
-export function strReplaceAll(
-  str: string,
-  find: string,
-  replace: string,
-): string {
-  return str.replace(new RegExp(escapeRegExp(find), 'g'), replace)
-}
-
 export function string_nbyte(s: string): number {
   return encodeURI(s).split(/%..|./).length - 1
 }

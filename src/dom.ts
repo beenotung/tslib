@@ -40,12 +40,6 @@ export function exitFullscreen() {
   }
 }
 
-/** @deprecated lost type hint */
-export const qa = (x: string, parent = document.body) =>
-  parent.querySelectorAll(x)
-/** @deprecated lost type hint */
-export const q = (x: string, parent = document.body) => parent.querySelector(x)
-
 export function csv_to_table_element(rows: string[][]): HTMLTableElement {
   /* initialize */
   const table = document.createElement('table')

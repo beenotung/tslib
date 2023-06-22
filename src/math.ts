@@ -80,9 +80,6 @@ export function simplifyFraction([a, b]: [number, number]): [number, number] {
   return b < 0 ? [-a, -b] : [a, b]
 }
 
-/** @deprecated renamed to simplifyFraction() */
-export const reduceFraction = simplifyFraction
-
 export function round(x: number, numberOfDecimal: number): number {
   const pow = 10 ** numberOfDecimal
   return Math.round(x * pow) / pow

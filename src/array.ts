@@ -23,11 +23,6 @@ export function replaceArray<A>(dest: A[], src: A[]): A[] {
   return dest
 }
 
-/** @deprecated use array.includes instead (available since es2015) */
-export function includes<A>(x: A, xs: A[]): boolean {
-  return xs.indexOf(x) !== -1
-}
-
 /**
  * only use `===` to compare
  * @warning slow
@@ -130,19 +125,6 @@ export const defaultComparator: Comparator<any> = <A extends number | string>(
  * */
 export function cloneArray<T>(xs: T[]): T[] {
   return xs.slice()
-}
-
-/**
- * @return new array (not deep cloning elements)
- * @deprecated use cloneArray() and array.sort() explicitly is better
- * */
-export function insertSortBy<A>(
-  xs: A[],
-  comparator: (a: A, b: A) => CompareResult,
-): A[] {
-  const res: A[] = new Array(xs.length)
-  xs.forEach(x => insert_sorted(res, comparator, x))
-  return res
 }
 
 /**

@@ -1,6 +1,3 @@
-/** @deprecated import from counter instead */
-export { Counter, new_counter } from './counter'
-
 /**
  * https://en.wikipedia.org/wiki/Universally_unique_identifier
  */

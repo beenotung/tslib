@@ -13,7 +13,7 @@ export namespace search {
     }
   }
 
-  export function object_contain_str(
+  export function object_contains_str(
     base: string | object,
     query: string | object,
     caseInsensitive = true,
@@ -33,16 +33,13 @@ export namespace search {
       } else if (v === query) {
         return true
       } else if (Array.isArray(v)) {
-        if (v.some(base => object_contain_str(base, query, caseInsensitive))) {
+        if (v.some(base => object_contains_str(base, query, caseInsensitive))) {
           return true
         }
       }
     }
     return false
   }
-
-  /** @deprecated*/
-  export const object_contains = object_contain_str
 
   export function partialMatch<T>(query: Partial<T>, target: T): boolean {
     const queryType = getObjectType(query)

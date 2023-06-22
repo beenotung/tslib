@@ -4,7 +4,7 @@ import { search } from '../src/search'
 describe('search.ts spec', () => {
   it('Test search', () => {
     function test(a: object, b: string | object, expected: boolean) {
-      expect(search.object_contain_str(a, b)).to.equals(expected)
+      expect(search.object_contains_str(a, b)).to.equals(expected)
     }
 
     test({ user: 'Alice Li' }, 'alice', true)

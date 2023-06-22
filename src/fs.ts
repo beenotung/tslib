@@ -58,9 +58,6 @@ export function hasDirectory(filename: string): Promise<boolean> {
     .catch(e => not(isNoFileError(e)))
 }
 
-/** @deprecated moved to write-stream.ts */
-export { writeStream } from './write-stream'
-
 export async function scanRecursively(args: {
   entryPath: string
   onFile?: (filename: string, basename: string) => Result<void>

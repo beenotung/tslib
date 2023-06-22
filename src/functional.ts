@@ -232,15 +232,6 @@ export const concatWithoutDup = curry(<A>(as: A[], bs: A[]): A[] => {
 
 export const fmap = curry(<A, B>(f: CurryF1<A, B>, as: A[]): B[] => as.map(f))
 
-/** @deprecated use mapGetOrSetDefault in map.ts */
-export const getOrSetDefault = curry(<K, V>(v: V, k: K, m: Map<K, V>): V => {
-  if (m.has(k)) {
-    return m.get(k) as V
-  }
-  m.set(k, v)
-  return v
-})
-
 /**
  * groupBy :: (a->k) , [a] -> Map k [a]
  * */
@@ -321,12 +312,16 @@ export const groupByAll = curry(
     const res = new Map<K, A[]>()
     for (const xs of xss) {
       for (const x of xs) {
-        getOrSetDefault([], f(x), res).push(x)
+        mapGetOrSetDefault(res, f(x), newArray).push(x)
       }
     }
     return res
   },
 )
+
+function newArray() {
+  return []
+}
 
 /**
  * @remark side effect
