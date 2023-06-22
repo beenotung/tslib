@@ -298,17 +298,20 @@ export const pushAll = curry(<A>(as: A[], bs: A[]) => as.push(...bs))
  * */
 export const mergeObjs = curry(<A>(xs: A[]): A => Object.assign({}, ...xs))
 
-// /**
-//  * mergeAll :: (a=>) -> [a] -> [a] -> [a]
-//  * */
-// export const mergeAll = curry((f, as, bs) => {
-//   as = groupBy(f, as);
-//   bs = groupBy(f, bs);
-//   const res = [];
-//   forEach(xs => pushAll(res), as);
-//   forEach(xs => pushAll(res), bs);
-//   return res;
-// });
+/**
+ * mergeAll :: (a=>) -> [a] -> [a] -> [a]
+ * */
+export const mergeAll = curry(
+  <A, K>(f: Mapper<A, K>, as: A[], bs: A[]): A[] => {
+    const map = new Map<K, A>()
+    for (const xs of [as, bs]) {
+      for (const x of xs) {
+        map.set(f(x), x)
+      }
+    }
+    return Array.from(map.values())
+  },
+)
 
 /**
  * groupByAll :: (a->k) -> [[a]] -> Map k [a]
