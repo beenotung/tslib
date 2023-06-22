@@ -4,7 +4,7 @@
 import { compare } from './compare'
 
 export function fromLocaleString(str: string): number {
-  let num = +str.replaceAll(',', '')
+  const num = +str.replaceAll(',', '')
   if (num.toLocaleString() === str) {
     return num
   }
