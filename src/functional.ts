@@ -261,6 +261,7 @@ export const foldl = curry(<A, B>(f: F2<B, A, B>, acc: B, xs: A[]): B => {
   }
   return acc
 })
+
 export const foldl1 = curry(<A>(f: F2<A, A, A>, xs: A[]): A => {
   const n = xs.length
   if (n === 0) {
@@ -272,19 +273,23 @@ export const foldl1 = curry(<A>(f: F2<A, A, A>, xs: A[]): A => {
   }
   return acc
 })
+
 /**
  * concat :: [a] -> [a] -> [a]
  * */
 export const concat = curry(<A>(as: A[], bs: A[]): A[] => as.concat(bs))
+
 /**
  * concatAll :: [[a]] -> [a]
  * */
 export const concatAll: <A>(ass: A[][]) => A[] = foldl(concat, [])
+
 /**
  * @remark side effect to as
  * as -> bs -> __update as__
  * */
 export const pushAll = curry(<A>(as: A[], bs: A[]) => as.push(...bs))
+
 /**
  * merge array of plain objects
  *   do not support merging functions
@@ -292,6 +297,7 @@ export const pushAll = curry(<A>(as: A[], bs: A[]) => as.push(...bs))
  * merge :: [a|b] -> a & b
  * */
 export const mergeObjs = curry(<A>(xs: A[]): A => Object.assign({}, ...xs))
+
 // /**
 //  * mergeAll :: (a=>) -> [a] -> [a] -> [a]
 //  * */
@@ -303,6 +309,7 @@ export const mergeObjs = curry(<A>(xs: A[]): A => Object.assign({}, ...xs))
 //   forEach(xs => pushAll(res), bs);
 //   return res;
 // });
+
 /**
  * groupByAll :: (a->k) -> [[a]] -> Map k [a]
  * */
