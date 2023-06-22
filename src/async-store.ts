@@ -2,7 +2,7 @@ import * as fs from 'fs'
 import * as path from 'path'
 import { readdir, readFile, rename, unlink, writeFile } from './fs'
 import { proxyStore } from './store'
-import { new_counter } from './uuid'
+import { new_counter } from './counter'
 
 export const counterSymbol = Symbol.for('counter')
 export const dirpathSymbol = Symbol.for('dirpath')

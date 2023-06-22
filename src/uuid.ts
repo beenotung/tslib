@@ -1,3 +1,6 @@
+/** @deprecated import from counter instead */
+export { Counter, new_counter } from './counter'
+
 /**
  * https://en.wikipedia.org/wiki/Universally_unique_identifier
  */
@@ -12,15 +15,3 @@ export function is_uuid(s: string): boolean {
     ss[4].length === 12
   )
 }
-
-export interface Counter {
-  next(): number
-}
-
-export function new_counter(init = 0): Counter {
-  return {
-    next: () => ++init,
-  }
-}
-
-export const Counter = new_counter(1)
