@@ -15,7 +15,17 @@ input.onchange = () => {
     return
   }
   filesForEach(files, file => {
-    compressMobilePhoto({ image: file }).then(base64 => {
+    compressMobilePhoto({
+      image: file,
+      quality: 0.5,
+      // mimeType: 'image/webp',
+    }).then(base64 => {
+      const newSize = (base64.length - base64.indexOf(',') - 1) / (4 / 3)
+      console.log(file, {
+        original: file.size.toLocaleString(),
+        new: newSize.toLocaleString(),
+        format: base64.match(/(.*),/)?.[1],
+      })
       const image = document.createElement('img')
       image.src = base64
       image.style.maxWidth = '100%'

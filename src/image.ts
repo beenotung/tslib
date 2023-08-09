@@ -355,25 +355,37 @@ export function compressImageToBase64(args: {
     mimeType = args.mimeType
     dataURL = canvas.toDataURL(mimeType, quality)
   } else {
-    const png = canvas.toDataURL('image/png', quality)
-    const jpeg = canvas.toDataURL('image/jpeg', quality)
-    if (jpeg < png) {
-      mimeType = 'image/jpeg'
-      dataURL = jpeg
-    } else {
-      mimeType = 'image/png'
-      dataURL = png
-    }
+    const min = ['image/png', 'image/jpeg', 'image/webp']
+      .map(mimeType => {
+        const base64 = canvas.toDataURL(mimeType, quality)
+        const size = base64ToSize(base64)
+        return { mimeType, base64, size }
+      })
+      .sort((a, b) => a.size - b.size)[0]
+    mimeType = min.mimeType
+    dataURL = min.base64
   }
   if (!maximumSize) {
     return dataURL
   }
-  for (; dataURL.length > maximumSize; ) {
-    const ratio = Math.sqrt(maximumSize / dataURL.length)
-    const new_width = Math.round(canvas.width * ratio)
-    const new_height = Math.round(canvas.height * ratio)
-    if (new_width === canvas.width && new_height === canvas.height) {
+  const w_h_ratio = canvas.width / canvas.height
+  for (;;) {
+    const binSize = base64ToSize(dataURL)
+    if (binSize <= maximumSize || canvas.width == 0 || canvas.height == 0) {
       break
+    }
+    const ratio = Math.sqrt(maximumSize / dataURL.length)
+    let new_width = Math.round(canvas.width * ratio)
+    let new_height = Math.round(new_width / w_h_ratio)
+    if (new_width === canvas.width && new_height === canvas.height) {
+      if (new_width > new_height) {
+        new_width--
+      } else if (new_height > new_width) {
+        new_height--
+      } else {
+        new_width--
+        new_height--
+      }
     }
     canvas.width = new_width
     canvas.height = new_height
@@ -471,13 +483,37 @@ export function toImage(
 
 const DefaultMaximumMobilePhotoSize = 300 * KB // 300KB
 
+const base64Overhead = 4 / 3
+
+function base64ToSize(base64: string): number {
+  return (base64.length - base64.indexOf(',') - 1) / base64Overhead
+}
+
 export async function compressMobilePhoto(args: {
   image: base64 | File | HTMLImageElement
   maximumSize?: number
+  mimeType?: string
   quality?: number
 }): Promise<base64> {
   const maximumLength = args.maximumSize || DefaultMaximumMobilePhotoSize
-  return then(toImage(args.image), image =>
-    compressImageToBase64({ image, maximumLength, quality: args.quality }),
-  )
+  const originalSize =
+    args.image instanceof File
+      ? args.image.size
+      : typeof args.image === 'string'
+      ? base64ToSize(args.image)
+      : null
+  return then(toImage(args.image), image => {
+    const base64 = compressImageToBase64({
+      image,
+      maximumLength,
+      mimeType: args.mimeType,
+      quality: args.quality,
+    })
+    const newSize = base64ToSize(base64)
+    if (originalSize && originalSize <= newSize) {
+      if (typeof args.image === 'string') return args.image
+      if (args.image instanceof File) return fileToBase64String(args.image)
+    }
+    return base64
+  })
 }
