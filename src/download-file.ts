@@ -37,7 +37,6 @@ export const download_file = (url: string, file_path: string) =>
           .once('error', error => reject(error))
       )
     } else {
-      console.error('unknown protocol on url:', url)
-      throw new Error('unknown protocol')
+      reject(new Error('unknown protocol, url: ' + url))
     }
   })
