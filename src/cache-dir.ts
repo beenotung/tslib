@@ -33,17 +33,17 @@ export class CacheDir {
     fn: () => string | Buffer
     as?: 'string' | 'buffer'
   }): string | Buffer {
-    let file = join(this.dir, args.filename)
+    const file = join(this.dir, args.filename)
     try {
-      let stats = statSync(file)
-      let passedTime = Date.now() - stats.mtimeMs
+      const stats = statSync(file)
+      const passedTime = Date.now() - stats.mtimeMs
       if (passedTime < this.expireInterval) {
         return readFileSync(file)
       }
     } catch (error) {
       // file not exists or name clash with directory
     }
-    let result = args.fn()
+    const result = args.fn()
     writeFileSync(file, result)
     return result
   }
@@ -63,17 +63,17 @@ export class CacheDir {
     fn: () => Promise<string | Buffer>
     as?: 'string' | 'buffer'
   }): Promise<string | Buffer> {
-    let file = join(this.dir, args.filename)
+    const file = join(this.dir, args.filename)
     try {
-      let stats = await stat(file)
-      let passedTime = Date.now() - stats.mtimeMs
+      const stats = await stat(file)
+      const passedTime = Date.now() - stats.mtimeMs
       if (passedTime < this.expireInterval) {
         return await readFile(file)
       }
     } catch (error) {
       // file not exists or name clash with directory
     }
-    let result = await args.fn()
+    const result = await args.fn()
     writeFile(file, result)
     return result
   }
