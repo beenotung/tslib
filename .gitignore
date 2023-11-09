@@ -57,7 +57,6 @@ plugins/ios.json
 www/
 .cache/
 /data/
-.parcel-cache/
 
 # Test files
 res/db.txt
