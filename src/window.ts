@@ -11,4 +11,4 @@ export function getWindowProp(key: string): any {
  * @alias getWindowProp
  * @deprecated due to typo in function name
  */
-export let getWindownProp = getWindowProp
+export const getWindownProp = getWindowProp
