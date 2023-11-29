@@ -292,9 +292,13 @@ export function compressImage(
   if (mimeType) {
     return canvas.toDataURL(mimeType, quality)
   }
-  const png = canvas.toDataURL('image/png', quality)
-  const jpeg = canvas.toDataURL('image/jpeg', quality)
-  return jpeg.length < png.length ? jpeg : png
+  const all = [
+    canvas.toDataURL('image/png', quality),
+    canvas.toDataURL('image/jpeg', quality),
+    canvas.toDataURL('image/webp', quality),
+  ]
+  const min = all.sort((a, b) => a.length - b.length)[0]
+  return min
 }
 
 function populateCompressArgs(args: {
@@ -434,17 +438,13 @@ export async function compressImageToBlob(args: {
     mimeType = args.mimeType
     blob = await canvasToBlob(canvas, mimeType, quality)
   } else {
-    const [png, jpeg] = await Promise.all([
+    const all = await Promise.all([
       canvasToBlob(canvas, 'image/png', quality),
       canvasToBlob(canvas, 'image/jpeg', quality),
+      canvasToBlob(canvas, 'image/webp', quality),
     ])
-    if (jpeg.size < png.size) {
-      mimeType = 'image/jpeg'
-      blob = jpeg
-    } else {
-      mimeType = 'image/png'
-      blob = png
-    }
+    blob = all.sort((a, b) => a.size - b.size)[0]
+    mimeType = blob.type
   }
   if (!maximumSize) {
     return blob
