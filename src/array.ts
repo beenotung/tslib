@@ -329,6 +329,8 @@ export function zipArray<A, B>(a: A[], b: B[]): Array<[A, B]> {
 }
 
 /**
+ * @deprecated use Array.from() instead
+ *
  * @description not same as Array.prototype.map!
  * this will not skip uninitialized items
  *
