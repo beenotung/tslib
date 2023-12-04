@@ -1,5 +1,3 @@
-import { eraseChars } from './node'
-
 /** @default 'to-be-replaced' */
 type Mode = 'to-be-replaced' | 'do-not-replace'
 
@@ -23,7 +21,7 @@ export class ProgressCli {
   write(message: string, mode?: Mode) {
     this.writeStream.write(message)
     if (mode != 'do-not-replace') {
-      let index = message.lastIndexOf('\n')
+      const index = message.lastIndexOf('\n')
       if (index == -1) {
         this.lastMessageLength += message.length
       } else {
@@ -38,12 +36,12 @@ export class ProgressCli {
   }
 
   update(message: string) {
-    let { writeStream, lastMessageLength } = this
-    let newMessageLength = message.length
+    const { writeStream, lastMessageLength } = this
+    const newMessageLength = message.length
     if (writeStream.moveCursor) {
       writeStream.moveCursor(-lastMessageLength, 0)
       writeStream.write(message)
-      let excessMessageLength = lastMessageLength - newMessageLength
+      const excessMessageLength = lastMessageLength - newMessageLength
       if (excessMessageLength > 0) {
         writeStream.write(this.replaceChar.repeat(excessMessageLength))
         writeStream.moveCursor(-excessMessageLength, 0)
