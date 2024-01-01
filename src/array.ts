@@ -328,27 +328,6 @@ export function zipArray<A, B>(a: A[], b: B[]): Array<[A, B]> {
   return res
 }
 
-/**
- * @deprecated use Array.from() instead
- *
- * @description not same as Array.prototype.map!
- * this will not skip uninitialized items
- *
- * Compare:
- *   new Array(3).map(x=>1) ~~> [<3 empty items>]
- *   map(new Array(3),x=>1) ~~> [ 1, 1, 1 ]
- * */
-export function mapArray<A, B>(
-  xs: A[],
-  f: (a: A, i: number, xs: A[]) => B,
-): B[] {
-  const res = new Array<B>(xs.length)
-  for (let i = xs.length - 1; i >= 0; i--) {
-    res[i] = f(xs[i], i, xs)
-  }
-  return res
-}
-
 export function countArray<A>(
   xs: A[],
   f: (a: A, i: number, xs: A[]) => boolean,
