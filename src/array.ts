@@ -239,13 +239,16 @@ export function removeByKey<A>(
 /**
  * including end
  * */
-export function range(start: number, end: number, step = 1): number[] {
+export function arrayFromRange(start: number, end: number, step = 1): number[] {
   const res = []
   for (let i = start; i <= end; i += step) {
     res.push(i)
   }
   return res
 }
+
+/** @deprecated renamed to arrayFromRange */
+export let range = arrayFromRange
 
 export function repeat<T>(x: T, n: number): T[] {
   const xs = new Array(n)
@@ -257,6 +260,7 @@ export function filterByKey<A>(src: A[], key: string, keys: string[]): A[] {
   return src.filter(x => keys.indexOf((x as any)[key]) !== -1)
 }
 
+/** @deprecated use Array.from(xs) instead */
 export function toArray<A>(xs: ArrayLike<A>): A[] {
   // return mapI(i => xs[i], xs.length);
   return Array.prototype.concat.apply([], xs as any[])
