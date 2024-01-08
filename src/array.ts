@@ -248,7 +248,7 @@ export function arrayFromRange(start: number, end: number, step = 1): number[] {
 }
 
 /** @deprecated renamed to arrayFromRange */
-export let range = arrayFromRange
+export const range = arrayFromRange
 
 export function repeat<T>(x: T, n: number): T[] {
   const xs = new Array(n)
