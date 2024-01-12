@@ -239,13 +239,16 @@ export function removeByKey<A>(
 /**
  * including end
  * */
-export function range(start: number, end: number, step = 1): number[] {
+export function arrayFromRange(start: number, end: number, step = 1): number[] {
   const res = []
   for (let i = start; i <= end; i += step) {
     res.push(i)
   }
   return res
 }
+
+/** @deprecated renamed to arrayFromRange */
+export const range = arrayFromRange
 
 export function repeat<T>(x: T, n: number): T[] {
   const xs = new Array(n)
@@ -257,6 +260,7 @@ export function filterByKey<A>(src: A[], key: string, keys: string[]): A[] {
   return src.filter(x => keys.indexOf((x as any)[key]) !== -1)
 }
 
+/** @deprecated use Array.from(xs) instead */
 export function toArray<A>(xs: ArrayLike<A>): A[] {
   // return mapI(i => xs[i], xs.length);
   return Array.prototype.concat.apply([], xs as any[])
@@ -324,27 +328,6 @@ export function zipArray<A, B>(a: A[], b: B[]): Array<[A, B]> {
   const res = new Array<[A, B]>(Math.min(a.length, b.length))
   for (let i = 0; i < res.length; i++) {
     res[i] = [a[i], b[i]]
-  }
-  return res
-}
-
-/**
- * @deprecated use Array.from() instead
- *
- * @description not same as Array.prototype.map!
- * this will not skip uninitialized items
- *
- * Compare:
- *   new Array(3).map(x=>1) ~~> [<3 empty items>]
- *   map(new Array(3),x=>1) ~~> [ 1, 1, 1 ]
- * */
-export function mapArray<A, B>(
-  xs: A[],
-  f: (a: A, i: number, xs: A[]) => B,
-): B[] {
-  const res = new Array<B>(xs.length)
-  for (let i = xs.length - 1; i >= 0; i--) {
-    res[i] = f(xs[i], i, xs)
   }
   return res
 }
