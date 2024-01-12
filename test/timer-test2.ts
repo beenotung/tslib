@@ -1,5 +1,5 @@
 import { later } from '../src/async/wait'
-import { startTimer } from '../src/node'
+import { startTimer } from '../src/timer'
 
 async function main() {
   const timer = startTimer('first task')
