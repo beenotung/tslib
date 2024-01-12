@@ -4,7 +4,7 @@ type Mode = 'to-be-replaced' | 'do-not-replace'
 type Options = {
   /** @default process.stderr */
   out?: NodeJS.WriteStream
-  /** @default ' '' */
+  /** @default ' ' */
   replaceChar?: string
 }
 
