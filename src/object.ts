@@ -1,5 +1,5 @@
 import { replaceArray } from './array'
-import { ApplyUndefinedType } from './assert'
+import type { ApplyUndefinedType } from './assert'
 import { map_any, map_set } from './iterative/map'
 import { getObjectType } from './type'
 
