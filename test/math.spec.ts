@@ -1,6 +1,14 @@
 import { test } from 'mocha'
 import { expect } from 'chai'
-import { floor, numberToFraction, round, simplifyFraction } from '../src/math'
+import {
+  Range,
+  RangeResult,
+  compareRange,
+  floor,
+  numberToFraction,
+  round,
+  simplifyFraction,
+} from '../src/math'
 import { Random } from '../src/random'
 
 describe('math.ts TestSuit', () => {
@@ -64,5 +72,35 @@ describe('math.ts TestSuit', () => {
       expect(floor(3.1415, 2)).to.equals(3.14)
       expect(floor(3.1497, 2)).to.equals(3.14)
     })
+  })
+  describe('compare range', () => {
+    /*
+    A:      5-----10
+    B:     4-6   9-11
+    B:        7-8
+    B:    3---------12
+    B: 1-2           13-14
+    */
+    let a: Range = { lower: 5, upper: 10 }
+    function test_case(b: Range, expected: RangeResult) {
+      test(expected.desc, () => {
+        expect(compareRange(a, b)).to.deep.equals(expected)
+      })
+    }
+    test_case({ lower: 7, upper: 8 }, { overlap: 8 - 7, desc: 'a contains b' })
+    test_case(
+      { lower: 3, upper: 12 },
+      { overlap: 10 - 5, desc: 'b contains a' },
+    )
+    test_case(
+      { lower: 4, upper: 6 },
+      { overlap: 6 - 5, desc: "b contains a's lower" },
+    )
+    test_case(
+      { lower: 9, upper: 11 },
+      { overlap: 6 - 5, desc: "b contains a's upper" },
+    )
+    test_case({ lower: 1, upper: 2 }, { overlap: -1, desc: 'b < a' })
+    test_case({ lower: 13, upper: 14 }, { overlap: -1, desc: 'a < b' })
   })
 })

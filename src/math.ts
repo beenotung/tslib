@@ -89,3 +89,51 @@ export function floor(x: number, numberOfDecimal: number): number {
   const pow = 10 ** numberOfDecimal
   return Math.floor(x * pow) / pow
 }
+
+/* can be left-right or top-bottom */
+export type Range = {
+  lower: number
+  upper: number
+}
+
+export type RangeResult = ReturnType<typeof compareRange>
+
+export function compareRange(a: Range, b: Range) {
+  if (a.lower <= b.lower && b.upper <= a.upper) {
+    return {
+      overlap: b.upper - b.lower,
+      desc: 'a contains b',
+    } as const
+  }
+  if (b.lower <= a.lower && a.upper <= b.upper) {
+    return {
+      overlap: a.upper - a.lower,
+      desc: 'b contains a',
+    } as const
+  }
+  if (b.lower <= a.lower && a.lower <= b.upper) {
+    return {
+      overlap: b.upper - a.lower,
+      desc: "b contains a's lower",
+    } as const
+  }
+  if (b.lower <= a.upper && a.upper <= b.upper) {
+    return {
+      overlap: a.upper - b.lower,
+      desc: "b contains a's upper",
+    } as const
+  }
+  if (b.upper < a.lower) {
+    return {
+      overlap: -1,
+      desc: 'b < a',
+    } as const
+  }
+  if (a.upper < b.lower) {
+    return {
+      overlap: -1,
+      desc: 'a < b',
+    } as const
+  }
+  throw new Error('Invalid range')
+}

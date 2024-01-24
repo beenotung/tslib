@@ -157,6 +157,9 @@ export function format_long_short_time(
 
 export function format_time_duration(delta: number, digit = 1): string {
   const diff = Math.abs(delta)
+  if (!Number.isFinite(diff) || Number.isNaN(diff)) {
+    return String(delta)
+  }
   const res = (n: number, unit: string): string => {
     const p = Math.pow(10, digit)
     n = Math.floor(n * p) / p
