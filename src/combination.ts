@@ -28,4 +28,4 @@ export function n_combinations<T>(n: number, xs: T[]): T[][] {
 }
 
 /** @deprecated renamed to `any_combinations` */
-export let combinations = any_combinations
+export const combinations = any_combinations
