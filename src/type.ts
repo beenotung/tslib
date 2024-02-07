@@ -1,4 +1,5 @@
 /**
+ * @deprecated use `Omit` instead, it is now supported by built-in type
  * opposite of Pick
  *
  * From T, pick a set of properties whose keys are not in the union K
