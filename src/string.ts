@@ -157,12 +157,12 @@ export function capitalize(word: string): string {
   return word[0].toLocaleUpperCase() + word.substring(1).toLocaleLowerCase()
 }
 
-// using perl naming conversion
+/** @description using perl naming conversion */
 export function lcfirst(word: string): string {
   return word[0].toLocaleLowerCase() + word.substring(1)
 }
 
-// using perl naming conversion
+/** @description using perl naming conversion */
 export function ucfirst(word: string): string {
   return word[0].toLocaleUpperCase() + word.substring(1)
 }
