@@ -169,7 +169,7 @@ export function ucfirst(word: string): string {
 
 /** @description aware of unicode, e.g. emoji */
 export function first_char(text: string): string | null {
-  for (let char of text) {
+  for (const char of text) {
     return char
   }
   return null
@@ -178,7 +178,7 @@ export function first_char(text: string): string | null {
 /** @description aware of unicode, e.g. emoji */
 export function last_char(text: string): string | null {
   let last = null
-  for (let char of text) {
+  for (const char of text) {
     last = char
   }
   return last
