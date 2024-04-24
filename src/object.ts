@@ -1,5 +1,5 @@
 import { replaceArray } from './array'
-import { ApplyUndefinedType } from './assert'
+import type { ApplyUndefinedType } from './assert'
 import { map_any, map_set } from './iterative/map'
 import { getObjectType } from './type'
 
@@ -307,4 +307,16 @@ export function objectPick<T extends object, K extends keyof T = keyof T>(
     }
   }
   return result
+}
+
+export function incObject<K extends PropertyKey>(
+  object: Record<K, number>,
+  key: K,
+): void {
+  const count = object[key]
+  if (count) {
+    object[key] = count + 1
+  } else {
+    object[key] = 1
+  }
 }

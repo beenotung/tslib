@@ -157,12 +157,39 @@ export function capitalize(word: string): string {
   return word[0].toLocaleUpperCase() + word.substring(1).toLocaleLowerCase()
 }
 
-// using perl naming conversion
+/** @description using perl naming conversion */
 export function lcfirst(word: string): string {
   return word[0].toLocaleLowerCase() + word.substring(1)
 }
 
-// using perl naming conversion
+/** @description using perl naming conversion */
 export function ucfirst(word: string): string {
   return word[0].toLocaleUpperCase() + word.substring(1)
+}
+
+/** @description aware of unicode, e.g. emoji */
+export function first_char(text: string): string | null {
+  for (const char of text) {
+    return char
+  }
+  return null
+}
+
+/** @description aware of unicode, e.g. emoji */
+export function last_char(text: string): string | null {
+  let last = null
+  for (const char of text) {
+    last = char
+  }
+  return last
+}
+
+export function is_ascii_char(char: null | string): boolean {
+  return char != null && char.length == 1 && char.charCodeAt(0) < 256
+}
+
+export function concat_words(start: string, end: string) {
+  return is_ascii_char(first_char(end)) || is_ascii_char(last_char(start))
+    ? start.trimEnd() + ' ' + end.trimStart()
+    : start + end
 }
