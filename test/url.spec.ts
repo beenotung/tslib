@@ -33,6 +33,7 @@ describe('url.ts TestSuit', () => {
       expect(isIP('http://127.0.0.1')).to.be.true
       expect(isIP('https://127.0.0.1')).to.be.true
       expect(isIP('ftp://127.0.0.1')).to.be.true
+      expect(isIP('ipfs://127.0.0.1')).to.be.true
       expect(isIP('http://example.net')).to.be.false
     })
     it('should remove tailing pathname', () => {

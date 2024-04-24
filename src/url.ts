@@ -1,9 +1,14 @@
-export function parseURLSearchParams(
+export function parseURLSearchParams<T extends object>(
+  /**
+   *  @example "http://localhost:4200/profile?id=123&tab=posts"
+   *  @example "?id=123&tab=posts"
+   *  @example "id=123&tab=posts"
+   * */
   search = location.search,
   options?: {
     parse?: 'json'
   },
-) {
+): T {
   if (search.startsWith('http://') || search.startsWith('https://')) {
     search = search.replace(/.*\?/, '')
   }
@@ -13,7 +18,7 @@ export function parseURLSearchParams(
   if (search.includes('%')) {
     search = decodeURIComponent(search)
   }
-  const params = {} as Record<string, string>
+  const params = {} as Record<string, unknown>
   search.split('&').forEach(s => {
     let [key, value] = s.split('=')
     if (options?.parse === 'json') {
@@ -30,11 +35,21 @@ export function parseURLSearchParams(
     }
     params[key] = value
   })
-  return params
+  return params as T
 }
 
 // IPv6 format reference: https://www.ietf.org/rfc/rfc2732.txt
-export function isIP(url: string): boolean {
+export function isIP(
+  /**
+   * @example "http://192.168.1.109:8100/profile" -> true
+   * @example "ipfs://192.168.1.109:8080" -> true
+   * @example "192.168.1.109:8100" -> true
+   * @example "192.168.1.109" -> true
+   * @example "::192.168.1.109" -> true
+   * @example "example.net" -> false
+   */
+  url: string,
+): boolean {
   // e.g. "http://", "https://", "ftp://"
   let index = url.indexOf('://')
   if (index != -1) {
