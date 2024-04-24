@@ -4,22 +4,22 @@ export function parseURLSearchParams<T extends object>(
    *  @example "?id=123&tab=posts"
    *  @example "id=123&tab=posts"
    * */
-  search = location.search,
+  url = location.search,
   options?: {
     parse?: 'json'
   },
 ): T {
-  if (search.startsWith('http://') || search.startsWith('https://')) {
-    search = search.replace(/.*\?/, '')
+  if (url.startsWith('http://') || url.startsWith('https://')) {
+    url = url.replace(/.*\?/, '')
   }
-  if (search.startsWith('?')) {
-    search = search.substring(1)
+  if (url.startsWith('?')) {
+    url = url.substring(1)
   }
-  if (search.includes('%')) {
-    search = decodeURIComponent(search)
+  if (url.includes('%')) {
+    url = decodeURIComponent(url)
   }
   const params = {} as Record<string, unknown>
-  search.split('&').forEach(s => {
+  url.split('&').forEach(s => {
     let [key, value] = s.split('=')
     if (options?.parse === 'json') {
       try {
