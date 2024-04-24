@@ -63,7 +63,7 @@ export function isIP(
   }
 
   // e.g. "[2001:0000:130F:0000:0000:09C0:876A:130B]:8100"
-  let match = url.match(/\[(.*?)\]/)
+  const match = url.match(/\[(.*?)\]/)
   if (match) {
     url = match[1]
   }
@@ -100,7 +100,7 @@ export function isIP(
 }
 
 function isHex(part: string): boolean {
-  for (let char of part) {
+  for (const char of part) {
     if ('0' <= char && char <= '9') continue
     if ('a' <= char && char <= 'f') continue
     if ('A' <= char && char <= 'F') continue
