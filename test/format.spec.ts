@@ -7,7 +7,7 @@ import {
   format_relative_time,
   setLang,
 } from '../src/format'
-import { CENTURY, DAY, MINUTE, SECOND, WEEK } from '../src/time'
+import { CENTURY, DAY, HOUR, MINUTE, SECOND, WEEK } from '../src/time'
 import { t } from './tape-adaptor'
 import { test } from 'mocha'
 import { expect } from 'chai'
@@ -19,7 +19,11 @@ describe('format.ts spec', () => {
   })
 
   describe('format_datetime', () => {
-    const time = new Date('2019-03-11T03:56:00.000Z').getTime()
+    let time = new Date('2019-03-11T03:56:00.000Z').getTime()
+    {
+      // adjust for timezone different
+      time += (8 - -new Date().getTimezoneOffset() / 60) * HOUR
+    }
     // node v8: 2019 Mar 11, Mon 11:56 AM
     // node v10: Mon, Mar 11, 2019, 11:56 AM
     // node v14: Mon, 11 Mar 2019, 11:56 am | 2019年3月11日週一 上午11:56
