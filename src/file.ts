@@ -138,7 +138,9 @@ export async function downloadFile(
 
 /**
  * true: must from camera
+ *
  * false: must from album
+ *
  * undefined: both camera and album are allowed
  * */
 export type CaptureOption = true | false | undefined
@@ -193,14 +195,14 @@ export function selectFile(options: SelectFileOptions = {}): Promise<File[]> {
 }
 
 /**
- * must from album
- * <input type="file" accept="image/*">
+ * must from album:
+ * `<input type="file" accept="image/*">`
  *
- * must from camera
- * <input type="file" accept="image/*" capture="">
+ * must from camera:
+ * `<input type="file" accept="image/*" capture="">`
  *
- * both album and camera
- * <input type="file" accept="image/*;capture=camera">
+ * both album and camera:
+ * `<input type="file" accept="image/*;capture=camera">`
  * */
 export function selectImage(options: SelectFileOptions = {}): Promise<File[]> {
   options.accept = options.accept || 'image/*'
