@@ -1,5 +1,6 @@
 import { TaskQueue } from './task-queue'
 
+/** @description concurrent task queue */
 export class TaskPool extends TaskQueue {
   ps: TaskQueue[]
   i: number
