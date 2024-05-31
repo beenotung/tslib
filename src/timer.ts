@@ -23,6 +23,8 @@ export type SetProgressOptions = {
   sampleOver?: number
   /** @default false */
   estimateTime?: boolean
+  /** @default previous value */
+  sampleTimeInterval?: number
 }
 export type SetProgress = ((
   totalTick: number,
@@ -41,14 +43,17 @@ export function startTimer(options: StartTimerOptions) {
   let writeStream: NodeJS.WriteStream
   let sampleOver: number
   let estimateTime = false
+  let sampleTimeInterval: number
   if (typeof options === 'string') {
     name = options
     writeStream = defaultTimerWriteStream()
     sampleOver = 1
+    sampleTimeInterval = 5000
   } else {
     name = options.name
     writeStream = options.writeStream || defaultTimerWriteStream()
     sampleOver = options.sampleOver || 1
+    sampleTimeInterval = options.sampleTimeInterval ?? 5000
   }
   let msgLen = 0
   const print = (msg: string) => {
@@ -82,6 +87,7 @@ export function startTimer(options: StartTimerOptions) {
   let totalTick = 0
   let currentTick = 0
   let startTick: number
+  let lastSampleTime = 0
   const progress = (msg: string) => {
     print(msg)
   }
@@ -143,11 +149,23 @@ export function startTimer(options: StartTimerOptions) {
     currentTick += step
     tickProgress()
   }
+  const updateByInterval = () => {
+    const now = Date.now()
+    const passed = now - lastSampleTime
+    if (passed >= sampleTimeInterval) {
+      lastSampleTime = now
+      return true
+    }
+  }
   const tickWithSample = (step = 1) => {
     const oldMod = currentTick % sampleOver
     currentTick += step
     const newMod = currentTick % sampleOver
-    if (newMod === 0 || newMod < oldMod) {
+    if (
+      newMod === 0 ||
+      newMod < oldMod ||
+      (sampleTimeInterval > 0 && updateByInterval())
+    ) {
       tickProgress()
     }
   }
@@ -157,6 +175,15 @@ export function startTimer(options: StartTimerOptions) {
       end()
       name = newName
       start()
+    },
+    get sampleTimeInterval(): number {
+      return sampleTimeInterval
+    },
+    set sampleTimeInterval(
+      /** @description set zero or negative limit to disable update by interval */
+      value: number,
+    ) {
+      sampleTimeInterval = value
     },
     progress,
     setProgress,
