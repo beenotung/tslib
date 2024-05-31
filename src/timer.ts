@@ -1,7 +1,3 @@
-/**
- * timer with progress report and finish-time estimation
- * */
-
 import { format_time_duration } from './format'
 import { eraseChars } from './node'
 
@@ -10,18 +6,23 @@ export type StartTimerOptions =
   | {
       name: string
       writeStream?: NodeJS.WriteStream
-      // default: 1
-      // e.g. sample 1 over 10 for 10% progress report
+      /** @default 1 */
+      /** @example sample 1 over 10 for 10% progress report */
       sampleOver?: number
-      // default: false
+      /** @default false */
       estimateTime?: boolean
+      /** @default 5000 */
+      sampleTimeInterval?: number
     }
 
 export type SetProgressOptions = {
   totalTick: number
-  initialTick?: number // default zero
-  sampleOver?: number // default previous value
-  estimateTime?: boolean // default false
+  /** @default 0 */
+  initialTick?: number
+  /** @default previous value */
+  sampleOver?: number
+  /** @default false */
+  estimateTime?: boolean
 }
 export type SetProgress = ((
   totalTick: number,
@@ -32,6 +33,9 @@ export type SetProgress = ((
 
 export type Timer = ReturnType<typeof startTimer>
 
+/**
+ * @description create timer with progress report and finish-time estimation
+ * */
 export function startTimer(options: StartTimerOptions) {
   let name: string | undefined
   let writeStream: NodeJS.WriteStream
