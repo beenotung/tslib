@@ -122,11 +122,12 @@ export namespace Random {
     return res
   }
 
-  export function nextString(
-    n: number,
-    /** @default visibleLetters */
-    pool = visibleLetters,
-  ) {
+  /**
+   * @param {number} n length of string to be generated
+   * @param {string} pool candidate characters, defaults to visibleLetters
+   * @returns string random generated characters, possible to have repeating characters
+   */
+  export function nextString(n: number, pool = visibleLetters) {
     let s = ''
     for (; s.length < n; ) {
       s += element(pool)
