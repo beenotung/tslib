@@ -13,22 +13,30 @@ export function genStringRange(start: number, end: number): string {
   return s
 }
 
+/** @description from '0' to '9' */
 export const digits = genStringRange(48, 48 + 10)
+/** @description from 'A' to 'Z' */
 export const upperCaseLetters = genStringRange(65, 65 + 26)
+/** @description from 'a' to 'z' */
 export const lowerCaseLetters = genStringRange(65 + 32, 65 + 32 + 26)
-/** visible characters only in ascii range */
+/** @description visible characters only in ascii range */
 export const visibleLetters = genStringRange(32, 127)
-/** base58btc format, removed '0OIl' and '+/' */
+/** @description base58btc format, removed '0OIl' and '+/' */
 export const base58Letters =
   '123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz'
 export const symbolLetters = str_minus(
   visibleLetters,
   digits + upperCaseLetters + lowerCaseLetters,
 )
+/** @description upperCaseLetters + lowerCaseLetters + digits */
 export const alphabetNumLetters = upperCaseLetters + lowerCaseLetters + digits
 
 export namespace Random {
-  /** @return number : lower <= value < upper */
+  /**
+   * @param {number} upper defaults to Number.MAX_SAFE_INTEGER
+   * @param {number} lower defaults to 0
+   * @returns {number} integer, lower <= value < upper
+   */
   export function nextInt(
     upper: number = Number.MAX_SAFE_INTEGER,
     lower = 0,
@@ -36,6 +44,12 @@ export namespace Random {
     return Math.floor(Math.random() * (upper - lower) + lower)
   }
 
+  /**
+   * @param {number} upper defaults to Number.MAX_VALUE
+   * @param {number} lower defaults to 0
+   * @param {number} decimal defaults to 2
+   * @returns {number} integer or float, lower <= value < upper
+   */
   export function nextFloat(
     upper: number = Number.MAX_VALUE,
     lower = 0,
@@ -50,6 +64,10 @@ export namespace Random {
     return a + b / p
   }
 
+  /**
+   * @param {number} prob defaults to 0.5
+   * @returns {boolean} boolean with prob chance being true
+   */
   export function nextBool(prob = 0.5): boolean {
     return Math.random() < prob
   }
@@ -60,7 +78,7 @@ export namespace Random {
     }
   }
 
-  /** @return real number : -1 .. 1 */
+  /** @returns real number : -1 .. 1 */
   export function nextNP1() {
     return Math.random() * 2 - 1
   }
@@ -104,7 +122,11 @@ export namespace Random {
     return res
   }
 
-  export function nextString(n: number, pool = visibleLetters) {
+  export function nextString(
+    n: number,
+    /** @default visibleLetters */
+    pool = visibleLetters,
+  ) {
     let s = ''
     for (; s.length < n; ) {
       s += element(pool)
