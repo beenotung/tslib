@@ -84,11 +84,19 @@ export namespace Random {
   }
 
   /**
-   * Nullable
+   * @description random pick one element from array or string
+   * @throws Error if given empty array or empty string
    * */
   export function element<A>(xs: A[]): A
   export function element(s: string): string
   export function element<A>(xs: string | A[]): A | string {
+    if (xs.length == 0) {
+      throw new Error(
+        typeof xs == 'string'
+          ? 'cannot random pick from empty string'
+          : 'cannot random pick from empty array',
+      )
+    }
     const idx = Math.floor(Math.random() * xs.length)
     return xs[idx]
   }
