@@ -2,6 +2,7 @@
 set -e
 hash pnpm 2>/dev/null && pnpm i --prefer-offline || npm i
 npm run build
+rm dist/*.tsbuildinfo
 node ./mk-package.js > dist/package.json
 cp \
   README.md \
