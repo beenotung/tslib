@@ -54,6 +54,9 @@ export async function later(ms?: number) {
   return new Promise(resolve => setTimeout(resolve, ms))
 }
 
+/** @alias `later(ms?)` */
+export const sleep = later
+
 export async function runLater<A>(f: () => A, ms?: number): Promise<A> {
   return new Promise<A>((resolve, reject) => {
     setTimeout(() => {
