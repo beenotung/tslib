@@ -34,7 +34,7 @@ export function memorize<F extends Function>(
         }
         const res = f.apply(null, arguments)
         if (res instanceof Promise) {
-          res.catch(error => {
+          res.catch(_error => {
             map.delete(last)
           })
         }
@@ -47,7 +47,7 @@ export function memorize<F extends Function>(
     {
       clear: () => cache.clear(),
       cache,
-      remove: function(...args: any[]) {
+      remove: function(..._args: any[]) {
         let map = cache.getMap(arguments.length)
         for (let i = arguments.length - 1; i > 0; i--) {
           map = map.getMap(arguments[i])
