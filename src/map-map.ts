@@ -25,6 +25,13 @@ export class MapMap<K, V> {
     return this.m.set(k, v)
   }
 
+  /**
+   * @returns true if an element in the Map existed and has been removed, or false if the element does not exist.
+   */
+  public delete(k: K): boolean {
+    return this.m.delete(k)
+  }
+
   public getMap(k: K): (V | undefined) & MapMap<any, any> {
     if (this.m.has(k)) {
       return this.m.get(k) as any
