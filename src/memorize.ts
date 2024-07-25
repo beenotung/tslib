@@ -23,7 +23,7 @@ export function memorize<F extends Function>(
   const cache = new MapMap<number, MapMap<any, any>>()
   return Object.assign(
     wrapFunction<F>(
-      function () {
+      function() {
         let map = cache.getMap(arguments.length)
         for (let i = arguments.length - 1; i > 0; i--) {
           map = map.getMap(arguments[i])
@@ -47,7 +47,7 @@ export function memorize<F extends Function>(
     {
       clear: () => cache.clear(),
       cache,
-      remove: function (...args: any[]) {
+      remove: function(...args: any[]) {
         let map = cache.getMap(arguments.length)
         for (let i = arguments.length - 1; i > 0; i--) {
           map = map.getMap(arguments[i])

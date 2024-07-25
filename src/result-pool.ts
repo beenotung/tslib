@@ -38,7 +38,10 @@ export class NonVoidResultPool {
   private fs: RingBuffer<() => void> = new RingBuffer(getMaxArraySize())
   private running = 0
 
-  constructor(public poolSize: number, public logError = true) {}
+  constructor(
+    public poolSize: number,
+    public logError = true,
+  ) {}
 
   /**
    * @description error will be ignored

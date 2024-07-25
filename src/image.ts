@@ -500,8 +500,8 @@ export async function compressMobilePhoto(args: {
     args.image instanceof File
       ? args.image.size
       : typeof args.image === 'string'
-      ? base64ToSize(args.image)
-      : null
+        ? base64ToSize(args.image)
+        : null
   return then(toImage(args.image), image => {
     const base64 = compressImageToBase64({
       image,

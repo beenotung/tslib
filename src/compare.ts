@@ -21,8 +21,8 @@ export function compare<A extends Comparable>(a: A, b: A): CompareResult {
   return a < b
     ? CompareResult.Smaller
     : a > b
-    ? CompareResult.Larger
-    : CompareResult.Equal
+      ? CompareResult.Larger
+      : CompareResult.Equal
 }
 
 export type SortKey<K> = {

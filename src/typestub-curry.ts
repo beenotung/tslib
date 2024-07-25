@@ -231,10 +231,16 @@ export interface CurryF9<T1, T2, T3, T4, T5, T6, T7, T8, T9, R>
 
   (t1: T1, t2: T2, t3: T3, t4: T4, t5: T5, t6: T6, t7: T7): CurryF2<T8, T9, R>
 
-  (t1: T1, t2: T2, t3: T3, t4: T4, t5: T5, t6: T6, t7: T7, t8: T8): CurryF1<
-    T9,
-    R
-  >
+  (
+    t1: T1,
+    t2: T2,
+    t3: T3,
+    t4: T4,
+    t5: T5,
+    t6: T6,
+    t7: T7,
+    t8: T8,
+  ): CurryF1<T9, R>
 
   (t1: T1, t2: T2, t3: T3, t4: T4, t5: T5, t6: T6, t7: T7, t8: T8, t9: T9): R
 }
@@ -257,18 +263,26 @@ export interface CurryF10<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, R>
 
   (t1: T1, t2: T2, t3: T3, t4: T4, t5: T5, t6: T6): CurryF4<T7, T8, T9, T10, R>
 
-  (t1: T1, t2: T2, t3: T3, t4: T4, t5: T5, t6: T6, t7: T7): CurryF3<
-    T8,
-    T9,
-    T10,
-    R
-  >
+  (
+    t1: T1,
+    t2: T2,
+    t3: T3,
+    t4: T4,
+    t5: T5,
+    t6: T6,
+    t7: T7,
+  ): CurryF3<T8, T9, T10, R>
 
-  (t1: T1, t2: T2, t3: T3, t4: T4, t5: T5, t6: T6, t7: T7, t8: T8): CurryF2<
-    T9,
-    T10,
-    R
-  >
+  (
+    t1: T1,
+    t2: T2,
+    t3: T3,
+    t4: T4,
+    t5: T5,
+    t6: T6,
+    t7: T7,
+    t8: T8,
+  ): CurryF2<T9, T10, R>
 
   (
     t1: T1,
@@ -315,29 +329,35 @@ export interface CurryF11<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, R>
 
   (t1: T1, t2: T2, t3: T3, t4: T4, t5: T5): CurryF6<T6, T7, T8, T9, T10, T11, R>
 
-  (t1: T1, t2: T2, t3: T3, t4: T4, t5: T5, t6: T6): CurryF5<
-    T7,
-    T8,
-    T9,
-    T10,
-    T11,
-    R
-  >
+  (
+    t1: T1,
+    t2: T2,
+    t3: T3,
+    t4: T4,
+    t5: T5,
+    t6: T6,
+  ): CurryF5<T7, T8, T9, T10, T11, R>
 
-  (t1: T1, t2: T2, t3: T3, t4: T4, t5: T5, t6: T6, t7: T7): CurryF4<
-    T8,
-    T9,
-    T10,
-    T11,
-    R
-  >
+  (
+    t1: T1,
+    t2: T2,
+    t3: T3,
+    t4: T4,
+    t5: T5,
+    t6: T6,
+    t7: T7,
+  ): CurryF4<T8, T9, T10, T11, R>
 
-  (t1: T1, t2: T2, t3: T3, t4: T4, t5: T5, t6: T6, t7: T7, t8: T8): CurryF3<
-    T9,
-    T10,
-    T11,
-    R
-  >
+  (
+    t1: T1,
+    t2: T2,
+    t3: T3,
+    t4: T4,
+    t5: T5,
+    t6: T6,
+    t7: T7,
+    t8: T8,
+  ): CurryF3<T9, T10, T11, R>
 
   (
     t1: T1,
@@ -394,55 +414,50 @@ export interface CurryF12<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, R>
 
   (t1: T1, t2: T2, t3: T3): CurryF9<T4, T5, T6, T7, T8, T9, T10, T11, T12, R>
 
-  (t1: T1, t2: T2, t3: T3, t4: T4): CurryF8<
-    T5,
-    T6,
-    T7,
-    T8,
-    T9,
-    T10,
-    T11,
-    T12,
-    R
-  >
+  (
+    t1: T1,
+    t2: T2,
+    t3: T3,
+    t4: T4,
+  ): CurryF8<T5, T6, T7, T8, T9, T10, T11, T12, R>
 
-  (t1: T1, t2: T2, t3: T3, t4: T4, t5: T5): CurryF7<
-    T6,
-    T7,
-    T8,
-    T9,
-    T10,
-    T11,
-    T12,
-    R
-  >
+  (
+    t1: T1,
+    t2: T2,
+    t3: T3,
+    t4: T4,
+    t5: T5,
+  ): CurryF7<T6, T7, T8, T9, T10, T11, T12, R>
 
-  (t1: T1, t2: T2, t3: T3, t4: T4, t5: T5, t6: T6): CurryF6<
-    T7,
-    T8,
-    T9,
-    T10,
-    T11,
-    T12,
-    R
-  >
+  (
+    t1: T1,
+    t2: T2,
+    t3: T3,
+    t4: T4,
+    t5: T5,
+    t6: T6,
+  ): CurryF6<T7, T8, T9, T10, T11, T12, R>
 
-  (t1: T1, t2: T2, t3: T3, t4: T4, t5: T5, t6: T6, t7: T7): CurryF5<
-    T8,
-    T9,
-    T10,
-    T11,
-    T12,
-    R
-  >
+  (
+    t1: T1,
+    t2: T2,
+    t3: T3,
+    t4: T4,
+    t5: T5,
+    t6: T6,
+    t7: T7,
+  ): CurryF5<T8, T9, T10, T11, T12, R>
 
-  (t1: T1, t2: T2, t3: T3, t4: T4, t5: T5, t6: T6, t7: T7, t8: T8): CurryF4<
-    T9,
-    T10,
-    T11,
-    T12,
-    R
-  >
+  (
+    t1: T1,
+    t2: T2,
+    t3: T3,
+    t4: T4,
+    t5: T5,
+    t6: T6,
+    t7: T7,
+    t8: T8,
+  ): CurryF4<T9, T10, T11, T12, R>
 
   (
     t1: T1,

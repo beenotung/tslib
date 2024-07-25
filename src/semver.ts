@@ -49,8 +49,8 @@ export function getSemverDiffType(
   return base.join('.') === compare.join('.')
     ? SemverDiffType.same
     : is_newer(base, compare)
-    ? SemverDiffType.newer
-    : is_compatible(base, compare)
-    ? SemverDiffType.compatible
-    : SemverDiffType.breaking
+      ? SemverDiffType.newer
+      : is_compatible(base, compare)
+        ? SemverDiffType.compatible
+        : SemverDiffType.breaking
 }
