@@ -20,12 +20,14 @@ import {
   pushBackward,
   pushForward,
   range,
+  standard_score,
   sum,
   sumByField,
   zipArray,
 } from '../src/array'
 import { expect } from './jest-adapter'
 import { t } from './tape-adaptor'
+import { deepEqual } from '../src/object'
 
 describe('array.ts spec', () => {
   test('getMaxArraySize', () => {
@@ -118,6 +120,12 @@ describe('array.ts spec', () => {
     const x = median(xs)
     t.equal(x, 2.5)
     t.end()
+  })
+
+  test('standard score', () => {
+    let dataset = [3, 4, 5, 6, 7, 8, 9]
+    let z_score = standard_score(dataset)
+    t.deepEqual(z_score, [-1.5, -1, -0.5, 0, 0.5, 1, 1.5])
   })
 
   describe('counting', () => {

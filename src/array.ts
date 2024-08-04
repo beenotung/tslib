@@ -389,6 +389,39 @@ export function sum(xs: number[]): number {
   return acc
 }
 
+export function average(xs: number[]): number {
+  return sum(xs) / xs.length
+}
+
+export const mean = average
+
+export function standard_deviation(
+  xs: number[],
+  mean: number = average(xs),
+): number {
+  let acc = 0
+  const n = xs.length
+  for (let i = 0; i < n; i++) {
+    const diff = xs[i] - mean
+    acc += diff * diff
+  }
+  acc /= n
+  return Math.sqrt(acc)
+}
+
+export function standard_score(xs: number[]): number[] {
+  const n = xs.length
+  const result: number[] = new Array(n)
+  const mean = average(xs)
+  const sd = standard_deviation(xs, mean)
+  for (let i = 0; i < n; i++) {
+    result[i] = (xs[i] - mean) / sd
+  }
+  return result
+}
+
+export const z_score = standard_score
+
 export function sumByFunc<T>(xs: T[], mapper: (x: T) => number) {
   let acc = 0
   const n = xs.length
