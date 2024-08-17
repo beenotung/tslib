@@ -29,7 +29,51 @@ export function imageToBase64(
   return imageToCanvas(img, width, height).toDataURL()
 }
 
+export async function convertHeicFile(file: File) {
+  // eslint-disable-next-line @typescript-eslint/no-var-requires
+  const heic2any = require('heic2any')
+  const blob = await heic2any({ blob: file })
+  const blobs = Array.isArray(blob) ? (blob as Blob[]) : [blob]
+  const type = blobs[0].type
+  let filename = file.name
+  {
+    const ext = type.split('/')[1].split(';')[0]
+    const parts = filename.split('.')
+    parts.pop()
+    parts.push(ext)
+    filename = parts.join('.')
+  }
+  file = new File(blobs, filename, { type, lastModified: file.lastModified })
+  return file
+}
+
+/** @alias convertHeicFile */
+export const convertHeifFile = convertHeicFile
+
+function is_heic2any_installed() {
+  try {
+    // eslint-disable-next-line @typescript-eslint/no-var-requires
+    require('heic2any')
+    return true
+  } catch (error) {
+    // heic2any is not installed
+    return false
+  }
+}
+
 export async function base64ToImage(data: string): Promise<HTMLImageElement> {
+  if (
+    data.startsWith('data:image/heic') ||
+    data.startsWith('data:image/heif')
+  ) {
+    if (is_heic2any_installed()) {
+      const res = await fetch(data)
+      const blob = await res.blob()
+      const file = new File([blob], 'image.heic', { type: 'image/heic' })
+      return toImage(file)
+    }
+    console.warn('heic2any is not installed, skip format conversion')
+  }
   return new Promise<HTMLImageElement>((resolve, reject) => {
     const image = new Image()
     image.onload = () => resolve(image)
@@ -472,6 +516,12 @@ export function toImage(
     return base64ToImage(image)
   }
   if (image instanceof File) {
+    if (image.type == 'image/heic' || image.type == 'image/heif') {
+      if (is_heic2any_installed()) {
+        return convertHeicFile(image).then(file => toImage(file))
+      }
+      console.warn('heic2any is not installed, skip format conversion')
+    }
     return fileToBase64String(image).then(base64 => toImage(base64))
   }
   if (image instanceof HTMLImageElement) {
