@@ -17,10 +17,10 @@
     "type": "git",
     "url": "git+https://github.com/beenotung/tslib.git"
   },
+  "homepage": "https://github.com/beenotung/tslib#readme",
   "bugs": {
     "url": "https://github.com/beenotung/tslib/issues"
   },
-  "homepage": "https://github.com/beenotung/tslib#readme",
   "scripts": {
     "clean": "rimraf dist",
     "expand-macro": "tsc-macro",
