@@ -30,8 +30,14 @@ export function imageToBase64(
 }
 
 export async function convertHeicFile(file: File) {
-  // eslint-disable-next-line @typescript-eslint/no-var-requires
-  const heic2any = require('heic2any')
+  let heic2any
+  try {
+    // eslint-disable-next-line @typescript-eslint/no-var-requires
+    heic2any = require('heic2any')
+  } catch (error) {
+    // explicitly try-catch around the require to avoid bundle-time error
+    throw new Error('optional dependency "heic2any" is not installed')
+  }
   const blob = await heic2any({ blob: file })
   const blobs = Array.isArray(blob) ? (blob as Blob[]) : [blob]
   const type = blobs[0].type
