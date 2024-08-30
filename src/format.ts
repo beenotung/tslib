@@ -79,6 +79,9 @@ function concatWords(a: string, b: string): string {
 }
 
 export function format_byte(n_byte: number, n_decimal = 2): string {
+  if (Number.isNaN(n_byte)) {
+    return '-'
+  }
   let acc = n_byte
   for (const size_unit of size_units) {
     if (acc < 1024) {
