@@ -10,6 +10,7 @@ import {
   DAY,
   DECADE,
   HOUR,
+  MILLISECOND,
   MINUTE,
   MONTH,
   SECOND,
@@ -18,6 +19,18 @@ import {
 } from './time'
 
 const size_units = ['B', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB']
+const time_units_short: Array<[number, string]> = [
+  [CENTURY, 'century'],
+  [DECADE, 'decade'],
+  [YEAR, 'yr'],
+  [MONTH, 'mo'],
+  [WEEK, 'wk'],
+  [DAY, 'd'],
+  [HOUR, 'hr'],
+  [MINUTE, 'min'],
+  [SECOND, 's'],
+  [MILLISECOND, 'ms'],
+]
 const time_units_en: Array<[number, string]> = [
   [CENTURY, 'century'],
   [DECADE, 'decade'],
@@ -28,6 +41,7 @@ const time_units_en: Array<[number, string]> = [
   [HOUR, 'hour'],
   [MINUTE, 'minute'],
   [SECOND, 'second'],
+  [MILLISECOND, 'millisecond'],
 ]
 const time_units_zh: Array<[number, string]> = [
   [CENTURY, '世紀'],
@@ -38,6 +52,7 @@ const time_units_zh: Array<[number, string]> = [
   [HOUR, '小時'],
   [MINUTE, '分鐘'],
   [SECOND, '秒'],
+  [MILLISECOND, '毫秒'],
 ]
 const word_en = {
   'instantly': 'instantly',
@@ -58,13 +73,14 @@ let locale = getEnvLocale() || 'en'
 
 export function setLang(
   lang: 'en' | 'en-US' | 'en-GK' | 'zh' | 'zh-HK' | 'zh-TW',
+  flag?: 'simple',
 ) {
   locale = lang
   if (lang.includes('zh')) {
     time_units = time_units_zh
     word = word_zh
   } else {
-    time_units = time_units_en
+    time_units = flag == 'simple' ? time_units_short : time_units_en
     word = word_en
   }
 }
