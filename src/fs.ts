@@ -154,6 +154,28 @@ export function readJsonFileSync(file: string): any {
   return JSON.parse(fs.readFileSync(file).toString())
 }
 
+export function writeJsonFile(
+  file: string,
+  value: any,
+  options?: { format?: boolean },
+): Promise<any> {
+  let text = options?.format
+    ? JSON.stringify(value, null, 2)
+    : JSON.stringify(value)
+  return writeFile(file, text)
+}
+
+export function writeJsonFileSync(
+  file: string,
+  value: any,
+  options?: { format?: boolean },
+): any {
+  let text = options?.format
+    ? JSON.stringify(value, null, 2)
+    : JSON.stringify(value)
+  return fs.writeFileSync(file, text)
+}
+
 export type IterateFileByLineOptions = {
   encoding?: BufferEncoding
   batchSize?: number // default is 8MB
