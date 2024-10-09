@@ -159,7 +159,7 @@ export function writeJsonFile(
   value: any,
   options?: { format?: boolean },
 ): Promise<any> {
-  let text = options?.format
+  const text = options?.format
     ? JSON.stringify(value, null, 2)
     : JSON.stringify(value)
   return writeFile(file, text)
@@ -170,7 +170,7 @@ export function writeJsonFileSync(
   value: any,
   options?: { format?: boolean },
 ): any {
-  let text = options?.format
+  const text = options?.format
     ? JSON.stringify(value, null, 2)
     : JSON.stringify(value)
   return fs.writeFileSync(file, text)
