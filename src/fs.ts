@@ -200,3 +200,44 @@ export function verboseWriteFileSync(file: string, content: string | Buffer) {
   // eslint-disable-next-line no-console
   console.log('saved to', file)
 }
+
+/**
+ * @description skip metadata files, e.g. .DS_Store
+ */
+export function getDirFilenamesSync(dir: string): string[] {
+  const filenames = fs.readdirSync(dir)
+  return filenames.filter(filename => !isMetadataFilename(filename))
+}
+
+/**
+ * @description skip metadata files, e.g. .DS_Store
+ */
+export async function getDirFilenames(dir: string): Promise<string[]> {
+  const filenames = await readdir(dir)
+  return filenames.filter(filename => !isMetadataFilename(filename))
+}
+
+/**
+ * @description check for metadata files, e.g. .DS_Store, *.swp, *.swo, .~lock.*#, *.ext~
+ */
+export function isMetadataFilename(filename: string): boolean {
+  switch (filename) {
+    case '.DS_Store':
+      return true
+  }
+
+  const ext = path.extname(filename)
+  switch (ext) {
+    case '.swp':
+    case '.swo':
+    case '.orig':
+      return true
+  }
+
+  // libreoffice lock file
+  if (filename.startsWith('.~lock.') && filename.endsWith('#')) {
+    return true
+  }
+
+  return false
+}
