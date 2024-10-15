@@ -2,6 +2,7 @@ import * as path from 'path'
 import * as fs from './fs'
 import { Result } from './result'
 import { TaskPool } from './task/task-pool'
+import { lstat, readdir, stat } from 'fs/promises'
 
 export function createFSPool(concurrentSize: number) {
   const pool = new TaskPool(concurrentSize)
@@ -15,7 +16,6 @@ export function createFSPool(concurrentSize: number) {
       return pool.runTask(() => (func as Function).apply(fs, args))
     }
   }
-  const { lstat, readdir, stat } = res
   res.scanRecursively = async function scanRecursively(args: {
     entryPath: string
     onFile?: (filename: string, basename: string) => Result<void>

@@ -1,6 +1,6 @@
 import * as fs from 'fs'
 import * as path from 'path'
-import { readdir, readFile, rename, unlink, writeFile } from './fs'
+import { readdir, readFile, rename, unlink, writeFile } from 'fs/promises'
 import { proxyStore } from './store'
 import { new_counter } from './counter'
 
