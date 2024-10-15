@@ -3,7 +3,7 @@ import * as path from 'path'
 import { Result } from './result'
 import { lstat, readFile, readdir, stat, writeFile } from 'fs/promises'
 
-function isNoFileError(e: any): true | Promise<any> {
+function isNoFileError<E extends { code?: string }>(e: E): true | Promise<E> {
   if (e.code === 'ENOENT') {
     return true
   }
@@ -120,11 +120,11 @@ export function scanRecursivelySync(args: {
   }
 }
 
-export function readJsonFile(file: string): Promise<any> {
+export function readJsonFile(file: string) {
   return readFile(file).then(buffer => JSON.parse(buffer.toString()))
 }
 
-export function readJsonFileSync(file: string): any {
+export function readJsonFileSync(file: string) {
   return JSON.parse(fs.readFileSync(file).toString())
 }
 
@@ -132,7 +132,7 @@ export function writeJsonFile(
   file: string,
   value: any,
   options?: { format?: boolean },
-): Promise<any> {
+) {
   const text = options?.format
     ? JSON.stringify(value, null, 2)
     : JSON.stringify(value)
@@ -143,7 +143,7 @@ export function writeJsonFileSync(
   file: string,
   value: any,
   options?: { format?: boolean },
-): any {
+) {
   const text = options?.format
     ? JSON.stringify(value, null, 2)
     : JSON.stringify(value)
