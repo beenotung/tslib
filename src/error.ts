@@ -11,4 +11,8 @@ export class HttpError extends Error {
   ) {
     super(message)
   }
+
+  toString() {
+    return `HttpError(${this.status}): ${this.message}`
+  }
 }
