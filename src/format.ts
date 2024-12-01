@@ -46,7 +46,7 @@ const time_units_en: Array<[number, string]> = [
 const time_units_zh: Array<[number, string]> = [
   [CENTURY, '世紀'],
   [YEAR, '年'],
-  [MONTH, '月'],
+  [MONTH, '個月'],
   [WEEK, '週'],
   [DAY, '日'],
   [HOUR, '小時'],
