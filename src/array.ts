@@ -397,6 +397,7 @@ export const mean = average
 
 export function standard_deviation(
   xs: number[],
+  mode: 'sample' | 'population' = 'sample',
   mean: number = average(xs),
 ): number {
   let acc = 0
@@ -405,15 +406,22 @@ export function standard_deviation(
     const diff = xs[i] - mean
     acc += diff * diff
   }
-  acc /= n
+  if (mode === 'sample') {
+    acc /= n - 1
+  } else {
+    acc /= n
+  }
   return Math.sqrt(acc)
 }
 
-export function standard_score(xs: number[]): number[] {
+export function standard_score(
+  xs: number[],
+  mode: 'sample' | 'population' = 'sample',
+): number[] {
   const n = xs.length
   const result: number[] = new Array(n)
   const mean = average(xs)
-  const sd = standard_deviation(xs, mean)
+  const sd = standard_deviation(xs, mode, mean)
   for (let i = 0; i < n; i++) {
     result[i] = (xs[i] - mean) / sd
   }
