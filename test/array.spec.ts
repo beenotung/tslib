@@ -124,7 +124,7 @@ describe('array.ts spec', () => {
 
   test('standard score', () => {
     let dataset = [3, 4, 5, 6, 7, 8, 9]
-    let z_score = standard_score(dataset)
+    let z_score = standard_score(dataset, 'population')
     t.deepEqual(z_score, [-1.5, -1, -0.5, 0, 0.5, 1, 1.5])
   })
 
