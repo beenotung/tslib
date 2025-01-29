@@ -62,9 +62,9 @@ export class BufferedCli {
     let extra = 0
 
     if (!output.endsWith('\n')) {
-      const currentLastLine = output.split('\n').pop()!
-      const lastLastLine = last.output.split('\n').pop()!
-      extra = lastLastLine.length - currentLastLine.length
+      const currentTail = getTailLength(output)
+      const lastTail = getTailLength(last.output)
+      extra = lastTail - currentTail
       if (extra > 0) {
         output += ' '.repeat(extra)
       }
@@ -84,5 +84,14 @@ export class BufferedCli {
     if (!lastBuffer.endsWith('\n')) {
       out.write('\n')
     }
+  }
+}
+
+function getTailLength(text: string): number {
+  const index = text.lastIndexOf('\n')
+  if (index === -1) {
+    return text.length
+  } else {
+    return text.length - index - 1
   }
 }
