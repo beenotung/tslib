@@ -59,4 +59,23 @@ line3`,
       expect(text).to.equals(`a,b\r\n,"line1\nline2\nline3"\r\n`)
     })
   })
+  describe('unescaped quote', () => {
+    let text = `
+1546,S" SUM,10/10/2019
+1550,"SAER",8/10/2019
+`.trim()
+    let rows: string[][]
+    it('should not get stuck', () => {
+      rows = from_csv(text)
+    })
+    it('should not merge value until next quote', () => {
+      expect(rows).to.have.lengthOf(2)
+      expect(rows[0]).to.have.lengthOf(3)
+      expect(rows[1]).to.have.lengthOf(3)
+      expect(rows[1]).to.deep.equals(['1550', 'SAER', '8/10/2019'])
+    })
+    it('should parse value with unescaped quote', () => {
+      expect(rows[0]).to.deep.equals(['1546', 'S" SUM', '10/10/2019'])
+    })
+  })
 })

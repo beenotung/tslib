@@ -34,8 +34,8 @@ export function from_csv(
         cols = []
         break
       default:
-        if (c === delimiter) {
-          for (;;) {
+        if (col.length === 0 && c === delimiter) {
+          for (; i < n; ) {
             const c = s[i]
             i++
             if (c === delimiter) {
