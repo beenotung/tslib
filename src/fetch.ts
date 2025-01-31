@@ -42,12 +42,16 @@ function parseRetryAfter(retryAfter: string | null): number | null {
 
 export async function fetch_json(
   input: RequestInfo | URL,
-  init?: RequestInit,
-  options?: {
+  init: RequestInit = {},
+  options: {
     maxRetryCount?: number
     defaultRetryAfterInterval?: number
-  },
+  } = {},
 ) {
+  init.headers = new Headers(init.headers)
+  if (!init.headers.has('accept')) {
+    init.headers.set('accept', 'application/json')
+  }
   let res: Response
   for (let retryCount = 0; ; retryCount++) {
     res = await fetch(input, init)
@@ -56,10 +60,10 @@ export async function fetch_json(
     }
     const retryAfter =
       parseRetryAfter(res.headers.get('retry-after')) ||
-      options?.defaultRetryAfterInterval
+      options.defaultRetryAfterInterval
     if (
       !retryAfter ||
-      (options?.maxRetryCount && retryCount > options.maxRetryCount)
+      (options.maxRetryCount && retryCount > options.maxRetryCount)
     ) {
       throw new HttpError(res.status, res.statusText || 'Too Many Requests')
     }
