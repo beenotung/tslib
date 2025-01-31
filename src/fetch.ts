@@ -22,7 +22,7 @@ export function checkedFetch<T>({
   })
 }
 
-function parseRetryAfter(retryAfter: string | null): number | null {
+export function parseRetryAfter(retryAfter: string | null): number | null {
   if (!retryAfter) {
     return null
   }
