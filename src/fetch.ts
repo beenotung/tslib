@@ -22,8 +22,49 @@ export function checkedFetch<T>({
   })
 }
 
-export async function fetch_json(input: RequestInfo | URL, init?: RequestInit) {
-  const res = await fetch(input, init)
+function parseRetryAfter(retryAfter: string | null): number | null {
+  if (!retryAfter) {
+    return null
+  }
+
+  const seconds = +retryAfter
+  if (seconds) {
+    return seconds * 1000
+  }
+
+  const target = new Date(retryAfter).getTime()
+  if (target) {
+    return target - Date.now()
+  }
+
+  return null
+}
+
+export async function fetch_json(
+  input: RequestInfo | URL,
+  init?: RequestInit,
+  options?: {
+    maxRetryCount?: number
+    defaultRetryAfterInterval?: number
+  },
+) {
+  let res: Response
+  for (let retryCount = 0; ; retryCount++) {
+    res = await fetch(input, init)
+    if (res.status != 429) {
+      break
+    }
+    const retryAfter =
+      parseRetryAfter(res.headers.get('retry-after')) ||
+      options?.defaultRetryAfterInterval
+    if (
+      !retryAfter ||
+      (options?.maxRetryCount && retryCount > options.maxRetryCount)
+    ) {
+      throw new HttpError(res.status, res.statusText || 'Too Many Requests')
+    }
+    await new Promise(resolve => setTimeout(resolve, retryAfter))
+  }
   const contentType = res.headers.get('content-type')?.split(';')[0]
   if (contentType?.includes('json')) {
     return res.json()
