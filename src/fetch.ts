@@ -49,8 +49,8 @@ export async function fetch_json(
   } = {},
 ) {
   init.headers = new Headers(init.headers)
-  if (!init.headers.has('accept')) {
-    init.headers.set('accept', 'application/json')
+  if (!init.headers.has('Accept')) {
+    init.headers.set('Accept', 'application/json')
   }
   let res: Response
   for (let retryCount = 0; ; retryCount++) {
@@ -59,7 +59,7 @@ export async function fetch_json(
       break
     }
     const retryAfter =
-      parseRetryAfter(res.headers.get('retry-after')) ||
+      parseRetryAfter(res.headers.get('Retry-After')) ||
       options.defaultRetryAfterInterval
     if (
       !retryAfter ||
@@ -69,7 +69,7 @@ export async function fetch_json(
     }
     await new Promise(resolve => setTimeout(resolve, retryAfter))
   }
-  const contentType = res.headers.get('content-type')?.split(';')[0]
+  const contentType = res.headers.get('Content-Type')?.split(';')[0]
   if (contentType?.includes('json')) {
     return res.json()
   }
