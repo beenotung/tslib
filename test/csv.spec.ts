@@ -78,12 +78,33 @@ line3`,
       expect(rows[0]).to.deep.equals(['1546', 'S" SUM', '10/10/2019'])
     })
   })
-  describe('tailing empty value', () => {
+  describe('implicit tailing empty value', () => {
     let text = `
 a,b,c
 a1,b1,c1
 a2,b2,
 a3,b3,
+`
+    let json: any[]
+    it('should parse without error', () => {
+      let rows = from_csv(text)
+      json = csv_to_json(rows)
+      expect(json).to.have.lengthOf(3)
+      expect(json[0]).to.deep.equals({ a: 'a1', b: 'b1', c: 'c1' })
+    })
+    it('should parse non-last empty value', () => {
+      expect(json[1]).to.deep.equals({ a: 'a2', b: 'b2', c: '' })
+    })
+    it('should parse last empty value', () => {
+      expect(json[2]).to.deep.equals({ a: 'a3', b: 'b3', c: '' })
+    })
+  })
+  describe('explicit tailing empty value', () => {
+    let text = `
+a,b,c
+a1,b1,c1
+a2,b2,""
+a3,b3,""
 `
     let json: any[]
     it('should parse without error', () => {
