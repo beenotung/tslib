@@ -57,9 +57,10 @@ export function from_csv(
         col += c
     }
   }
-  if (s[n - 1] !== '\n') {
+  const last_char = s[n - 1]
+  if (last_char !== '\n') {
     // not terminated by new line, auto feed a newline
-    if (col.length > 0) {
+    if (col.length > 0 || last_char === separator) {
       cols.push(col)
     }
     if (cols.length > 0) {
