@@ -120,4 +120,30 @@ a3,b3,""
       expect(json[2]).to.deep.equals({ a: 'a3', b: 'b3', c: '' })
     })
   })
+  describe('value with newline', () => {
+    let rows = [
+      ['batch_id', 'question_id', 'question', 'question_time'],
+      ['1', '2', 'line 1\nline2', '12:30'],
+      ['3', '4', 'line 3\nline4', '12:31'],
+    ]
+    let text: string
+    it('should serialize into 3 rows in csv', () => {
+      text = to_csv(rows)
+      expect(text).to.equals(
+        'batch_id,question_id,question,question_time\r\n1,2,"line 1\nline2",12:30\r\n3,4,"line 3\nline4",12:31\r\n',
+      )
+    })
+    it('should parse quoted value with newline', () => {
+      let rows = from_csv(text)
+      expect(rows).to.have.lengthOf(3)
+      expect(rows[0]).to.deep.equals([
+        'batch_id',
+        'question_id',
+        'question',
+        'question_time',
+      ])
+      expect(rows[1]).to.deep.equals(['1', '2', 'line 1\nline2', '12:30'])
+      expect(rows[2]).to.deep.equals(['3', '4', 'line 3\nline4', '12:31'])
+    })
+  })
 })
