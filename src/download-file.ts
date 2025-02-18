@@ -5,6 +5,7 @@
 import { createWriteStream } from 'fs'
 import { Readable } from 'stream'
 import { finished } from 'stream/promises'
+import { fetch_with_retry, FetchWithRetryOptions } from './fetch'
 
 export type Options = {
   url: string
@@ -23,16 +24,22 @@ export async function download_file(
   file: string,
   onProgress?: (progress: Progress) => void,
 ): Promise<void>
-export async function download_file(options: Options): Promise<void>
 export async function download_file(
-  arg1: string | Options,
+  options: Options & FetchWithRetryOptions,
+): Promise<void>
+export async function download_file(
+  arg1: string | (Options & FetchWithRetryOptions),
   arg2?: string,
   arg3?: (progress: Progress) => void,
 ): Promise<void> {
   const url = typeof arg1 === 'string' ? arg1 : arg1.url
   const file = typeof arg1 === 'string' ? arg2! : arg1.file
   const onProgress = typeof arg1 === 'string' ? arg3 : arg1.onProgress
-  const res = await fetch(url)
+  const res = await fetch_with_retry(
+    url,
+    {},
+    typeof arg1 === 'string' ? undefined : arg1,
+  )
   if (!(200 <= res.status && res.status <= 299)) {
     throw res
   }
@@ -45,6 +52,9 @@ export async function download_file(
   }
 
   const total = Number(res.headers.get('content-length')) || undefined
+  if (!total) {
+    console.log('headers:', res.headers)
+  }
   let current = 0
   const stream = createWriteStream(file)
   for await (const chunk of res.body as any) {

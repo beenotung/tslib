@@ -1,6 +1,12 @@
 import { download_file } from '../src/download-file'
 
-download_file('http://localhost:8080/package.json', 'out.json')
+let url = 'http://localhost:8080/package.json'
+let file = 'out.json'
+
+url = 'http://localhost:5500/pnpm-lock.yaml'
+file = 'out.yaml'
+
+download_file(url, file, progress => console.log(progress))
   .catch(err => {
     console.error('failed to download_file, error:', err)
   })

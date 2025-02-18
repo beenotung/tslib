@@ -40,23 +40,20 @@ export function parseRetryAfter(retryAfter: string | null): number | null {
   return null
 }
 
-export async function fetch_json(
+export type FetchWithRetryOptions = {
+  maxRetryCount?: number
+  defaultRetryAfterInterval?: number
+}
+
+export async function fetch_with_retry(
   input: RequestInfo | URL,
   init: RequestInit = {},
-  options: {
-    maxRetryCount?: number
-    defaultRetryAfterInterval?: number
-  } = {},
+  options: FetchWithRetryOptions = {},
 ) {
-  init.headers = new Headers(init.headers)
-  if (!init.headers.has('Accept')) {
-    init.headers.set('Accept', 'application/json')
-  }
-  let res: Response
   for (let retryCount = 0; ; retryCount++) {
-    res = await fetch(input, init)
+    const res = await fetch(input, init)
     if (res.status != 429) {
-      break
+      return res
     }
     const retryAfter =
       parseRetryAfter(res.headers.get('Retry-After')) ||
@@ -69,6 +66,18 @@ export async function fetch_json(
     }
     await new Promise(resolve => setTimeout(resolve, retryAfter))
   }
+}
+
+export async function fetch_json(
+  input: RequestInfo | URL,
+  init: RequestInit = {},
+  options?: FetchWithRetryOptions,
+) {
+  init.headers = new Headers(init.headers)
+  if (!init.headers.has('Accept')) {
+    init.headers.set('Accept', 'application/json')
+  }
+  const res: Response = await fetch_with_retry(input, init, options)
   const contentType = res.headers.get('Content-Type')?.split(';')[0]
   if (contentType?.includes('json')) {
     return res.json()
