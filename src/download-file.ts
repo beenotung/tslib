@@ -33,8 +33,13 @@ export async function download_file(
   arg3?: (progress: Progress) => void,
 ): Promise<void> {
   const url = typeof arg1 === 'string' ? arg1 : arg1.url
-  const file = typeof arg1 === 'string' ? arg2! : arg1.file
+  const file = typeof arg1 === 'string' ? arg2 : arg1.file
   const onProgress = typeof arg1 === 'string' ? arg3 : arg1.onProgress
+
+  if (!file) {
+    throw new Error('missing file in arguments')
+  }
+
   const res = await fetch_with_retry(
     url,
     {},
@@ -52,9 +57,6 @@ export async function download_file(
   }
 
   const total = Number(res.headers.get('content-length')) || undefined
-  if (!total) {
-    console.log('headers:', res.headers)
-  }
   let current = 0
   const stream = createWriteStream(file)
   for await (const chunk of res.body as any) {
