@@ -45,6 +45,25 @@ export type FetchWithRetryOptions = {
   defaultRetryAfterInterval?: number
 }
 
+export const fetch_retry_status_codes = [
+  // 429: Too Many Requests
+  429,
+  // 502: Bad Gateway
+  502,
+  // 503: Service Unavailable
+  503,
+  // 504: Gateway Timeout
+  504,
+  // 521: Web Server is Down (cloudflare)
+  521,
+  // 522: Connection Timed Out (cloudflare)
+  522,
+  // 523: Origin is unreachable (cloudflare)
+  523,
+  // 524: A Timeout Occurred (cloudflare)
+  524,
+]
+
 export async function fetch_with_retry(
   input: RequestInfo | URL,
   init: RequestInit = {},
@@ -52,7 +71,7 @@ export async function fetch_with_retry(
 ) {
   for (let retryCount = 0; ; retryCount++) {
     const res = await fetch(input, init)
-    if (res.status != 429) {
+    if (!fetch_retry_status_codes.includes(res.status)) {
       return res
     }
     const retryAfter =
