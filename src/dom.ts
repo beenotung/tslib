@@ -72,11 +72,19 @@ export function csv_to_table_element(rows: string[][]): HTMLTableElement {
   return table
 }
 
-export function copyToClipboard(text: string): void {
-  const input = document.createElement('input')
-  document.body.append(input)
-  input.value = text
-  input.select()
-  document.execCommand('copy')
-  input.remove()
+/** @throws {Error} if copy to clipboard is not supported */
+export async function copyToClipboard(text: string): Promise<void> {
+  try {
+    await navigator.clipboard.writeText(text)
+  } catch (error) {
+    const input = document.createElement('input')
+    document.body.append(input)
+    input.value = text
+    input.select()
+    const supported = document.execCommand('copy')
+    input.remove()
+    if (!supported) {
+      throw new Error('copy to clipboard is not supported')
+    }
+  }
 }
