@@ -86,5 +86,10 @@
     "ts-node": "^10.9.2",
     "tsc-macro": "^1.0.1",
     "typescript": "^5.5.4"
+  },
+  "pnpm": {
+    "onlyBuiltDependencies": [
+      "esbuild"
+    ]
   }
 }
