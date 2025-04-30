@@ -1,5 +1,6 @@
 import { format_time_duration } from './format'
 import { eraseChars } from './node'
+import { countFractionDigits } from './number'
 
 export type StartTimerOptions =
   | string
@@ -92,7 +93,7 @@ export function startTimer(options: StartTimerOptions) {
     print(msg)
   }
   const tickProgressWithoutEstimateTime = () => {
-    progress(` (${currentTick}/${totalTick})`)
+    progress(` (${formatProgress(currentTick, totalTick)})`)
   }
   const tickProgressWithEstimateTime = () => {
     const tickLeft = totalTick - currentTick
@@ -102,7 +103,7 @@ export function startTimer(options: StartTimerOptions) {
     const timeLeft = tickLeft / tickSpeed
     const timeLeftText = format_time_duration(timeLeft)
     progress(
-      ` (${currentTick}/${totalTick}, estimated time left: ${timeLeftText})`,
+      ` (${formatProgress(currentTick, totalTick)}, estimated time left: ${timeLeftText})`,
     )
   }
   let tickProgress = estimateTime
@@ -198,9 +199,34 @@ export function defaultTimerWriteStream(): NodeJS.WriteStream {
     return process.stdout
   }
   const writeStream: NodeJS.WriteStream = {} as any
-  writeStream.write = function() {
+  writeStream.write = function () {
     console.debug.apply(console, arguments as any)
     return true
   }
   return writeStream
+}
+
+function formatProgress(current: number, total: number): string {
+  let value = current / total
+
+  let new_current = current
+  let new_total = total
+
+  if (!Number.isInteger(current) && countFractionDigits(current) > 2) {
+    new_current = +current.toFixed(2)
+  }
+  if (!Number.isInteger(total) && countFractionDigits(total) > 2) {
+    new_total = +total.toFixed(2)
+  }
+
+  let new_value = new_current / new_total
+
+  if (value != new_value) {
+    let error = Math.abs(value - new_value)
+    if (error < 0.01) {
+      return `${new_current}/${new_total}`
+    }
+  }
+
+  return `${current}/${total}`
 }
