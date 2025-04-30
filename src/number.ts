@@ -9,3 +9,15 @@ export function fromLocaleString(str: string): number {
   }
   throw new Error('failed to parse locale string into number')
 }
+
+export function countFractionDigits(num: number): number {
+  let str = num.toString()
+  if (str.includes('e')) {
+    str = str.split('e')[0]
+  }
+  let dotIndex = str.indexOf('.')
+  if (dotIndex === -1) {
+    return 0
+  }
+  return str.length - dotIndex - 1
+}
