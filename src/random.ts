@@ -54,14 +54,16 @@ export namespace Random {
     upper: number = Number.MAX_VALUE,
     lower = 0,
     decimal = 2,
-  ) {
-    const a = nextInt(upper, lower)
-    const b = nextInt(Math.pow(10, decimal))
-    if (b === 0) {
-      return a
+  ): number {
+    const range = upper - lower
+    const value_random = Math.random() * range + lower
+    const value_int = Math.floor(value_random)
+    if (value_random == value_int) {
+      return value_random
     }
-    const p = Math.pow(10, Math.ceil(Math.log10(b)))
-    return a + b / p
+    const value_decimal = value_random - value_int
+    const value_decimal_str = value_decimal.toString().slice(2, 2 + decimal)
+    return +(value_int + '.' + value_decimal_str)
   }
 
   /**
