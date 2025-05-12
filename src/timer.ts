@@ -199,7 +199,7 @@ export function defaultTimerWriteStream(): NodeJS.WriteStream {
     return process.stdout
   }
   const writeStream: NodeJS.WriteStream = {} as any
-  writeStream.write = function () {
+  writeStream.write = function() {
     console.debug.apply(console, arguments as any)
     return true
   }
@@ -207,7 +207,7 @@ export function defaultTimerWriteStream(): NodeJS.WriteStream {
 }
 
 function formatProgress(current: number, total: number): string {
-  let value = current / total
+  const value = current / total
 
   let new_current = current
   let new_total = total
@@ -219,10 +219,10 @@ function formatProgress(current: number, total: number): string {
     new_total = +total.toFixed(2)
   }
 
-  let new_value = new_current / new_total
+  const new_value = new_current / new_total
 
   if (value != new_value) {
-    let error = Math.abs(value - new_value)
+    const error = Math.abs(value - new_value)
     if (error < 0.01) {
       return `${new_current}/${new_total}`
     }

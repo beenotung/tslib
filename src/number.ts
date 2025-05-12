@@ -15,7 +15,7 @@ export function countFractionDigits(num: number): number {
   if (str.includes('e')) {
     str = str.split('e')[0]
   }
-  let dotIndex = str.indexOf('.')
+  const dotIndex = str.indexOf('.')
   if (dotIndex === -1) {
     return 0
   }
