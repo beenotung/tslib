@@ -21,7 +21,7 @@ export function spawn(options: {
     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     cmd = args.shift()!
   }
-  return new Promise((resolve, reject) => {
+  return new Promise<number | null>((resolve, reject) => {
     const child = _spawn(cmd, args, options.options)
     child.stdout.setEncoding('utf8')
     child.stdout.on(
@@ -49,4 +49,31 @@ export function spawn(options: {
       }
     })
   })
+}
+
+/**
+ * spawn a child process and return the stdout and stderr in promise
+ *
+ * the console is not used to output the stdout and stderr
+ */
+export async function spawnAndWait(options: {
+  cmd: string
+  args: string[]
+  options?: SpawnOptionsWithoutStdio
+}) {
+  let stdout = ''
+  let stderr = ''
+  let error = null
+  const code = await spawn({
+    cmd: options.cmd,
+    args: options.args,
+    options: options.options,
+    on_stdout: chunk => (stdout += chunk),
+    on_stderr: chunk => (stderr += chunk),
+    on_error: err => (error = err),
+  })
+  if (error) {
+    throw error
+  }
+  return { code, stdout, stderr }
 }
