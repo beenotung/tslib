@@ -22,6 +22,7 @@
     "url": "https://github.com/beenotung/tslib/issues"
   },
   "scripts": {
+    "web": "esbuild --watch --bundle test/web/index.ts --outfile=test/web/bundle.js",
     "clean": "rimraf dist",
     "expand-macro": "tsc-macro",
     "gen-index": "gen-index",
