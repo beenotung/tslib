@@ -1,5 +1,11 @@
 import { filesForEach } from '../src/file'
-import { compressMobilePhoto, rotateImage } from '../src/image'
+import {
+  compressMobilePhoto,
+  flipImage,
+  flipImageX,
+  flipImageY,
+  rotateImage,
+} from '../src/image'
 
 const meta = document.createElement('meta')
 meta.name = 'viewport'
@@ -31,7 +37,8 @@ input.onchange = () => {
       image.style.maxWidth = '100%'
       image.style.outline = '1px solid red'
       image.onclick = () => {
-        let canvas = rotateImage(image)
+        let canvas = flipImage(image, 'horizontal')
+        // let canvas = rotateImage(image)
         image.src = canvas.toDataURL()
       }
       document.body.appendChild(image)

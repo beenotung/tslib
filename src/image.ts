@@ -270,8 +270,29 @@ export function rotateImage(image: HTMLImageElement) {
   return transformCentered(image, true, ctx => ctx.rotate(0.5 * Math.PI))
 }
 
-export function flipImage(image: HTMLImageElement) {
+export function flipImage(
+  image: HTMLImageElement,
+  direction?: 'X' | 'Y' | 'horizontal' | 'vertical',
+) {
+  switch (direction) {
+    case undefined:
+    case 'X':
+    case 'horizontal':
+      return flipImageX(image)
+    case 'Y':
+    case 'vertical':
+      return flipImageY(image)
+    default:
+      throw new Error('unsupported direction: ' + direction)
+  }
+}
+
+export function flipImageX(image: HTMLImageElement) {
   return transformCentered(image, false, ctx => ctx.scale(-1, 1))
+}
+
+export function flipImageY(image: HTMLImageElement) {
+  return transformCentered(image, false, ctx => ctx.scale(1, -1))
 }
 
 /**
