@@ -252,15 +252,22 @@ export function transformCentered(
   f: (ctx: CanvasRenderingContext2D) => void,
 ) {
   const canvas = document.createElement('canvas') as HTMLCanvasElement
-  canvas.width = flipXY ? image.height : image.width
-  canvas.height = flipXY ? image.width : image.height
+  const imageWidth = image.naturalWidth || image.width
+  const imageHeight = image.naturalHeight || image.height
+  if (flipXY) {
+    canvas.width = imageHeight
+    canvas.height = imageWidth
+  } else {
+    canvas.width = imageWidth
+    canvas.height = imageHeight
+  }
   const ctx = canvas.getContext('2d')
   if (ctx === null) {
     throw new Error('not supported')
   }
   ctx.translate(canvas.width * 0.5, canvas.height * 0.5)
   f(ctx)
-  ctx.translate(-image.width * 0.5, -image.height * 0.5)
+  ctx.translate(-imageWidth * 0.5, -imageHeight * 0.5)
   ctx.drawImage(image, 0, 0)
   // return canvas.toDataURL();
   return canvas
