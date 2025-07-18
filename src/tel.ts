@@ -321,7 +321,7 @@ export function format_cn_mobile_phone(tel: string | number): string {
 export function format_tel_with_pattern(tel: string, pattern: string): string {
   tel = to_tel_digits(tel)
   if (!tel) return tel
-  let expectedLength = pattern.replaceAll(' ', '').length
+  const expectedLength = pattern.replaceAll(' ', '').length
   if (tel.length != expectedLength) {
     throw new Error(
       `invalid length, expect length ${expectedLength} but got length ${tel.length}`,
@@ -331,8 +331,8 @@ export function format_tel_with_pattern(tel: string, pattern: string): string {
   return pattern
     .split(' ')
     .map(pattern => {
-      let length = pattern.length
-      let part = tel.slice(offset, offset + length)
+      const length = pattern.length
+      const part = tel.slice(offset, offset + length)
       offset += length
       return part
     })
