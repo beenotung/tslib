@@ -12,7 +12,7 @@ export function is_mobile_phone(tel: number | string): boolean {
  * - SG (Singapore)
  * - AU (Australia)
  * - CN (China Mainland)
- * - MC (Macau)
+ * - MO (Macau)
  *
  * @returns the full tel number with country code, or empty string if not valid
  */
@@ -22,7 +22,7 @@ export function to_full_mobile_phone(tel: string | number): string {
     to_full_sg_mobile_phone(tel) ||
     to_full_au_mobile_phone(tel) ||
     to_full_cn_mobile_phone(tel) ||
-    to_full_mc_mobile_phone(tel) ||
+    to_full_mo_mobile_phone(tel) ||
     ''
   )
 }
@@ -33,7 +33,7 @@ export function to_full_mobile_phone(tel: string | number): string {
  * - SG: +65 xxxx yyyy
  * - AU: +61 4xx xxx xxx
  * - CN: +86 1nn xxxx xxxx
- * - MC: +853 xxxx yyyy
+ * - MO: +853 xxxx yyyy
  */
 export function format_mobile_phone(tel: string | number): string {
   tel = to_full_mobile_phone(tel)
@@ -51,7 +51,7 @@ export function format_mobile_phone(tel: string | number): string {
     return format_cn_mobile_phone(tel)
   }
   if (tel.startsWith('+853')) {
-    return format_mc_mobile_phone(tel)
+    return format_mo_mobile_phone(tel)
   }
   throw new Error(`not supported mobile phone number: ${tel}`)
 }
@@ -325,7 +325,7 @@ export function format_cn_mobile_phone(tel: string | number): string {
  * starts with 6
  * news: https://en.wikipedia.org/wiki/Telephone_numbers_in_Macau
  * */
-export function is_mc_mobile_phone_prefix(tel: string): boolean {
+export function is_mo_mobile_phone_prefix(tel: string): boolean {
   tel = tel.replace(/^\+853/, '').trim()
   switch (tel[0]) {
     case '6':
@@ -338,8 +338,8 @@ export function is_mc_mobile_phone_prefix(tel: string): boolean {
 /**
  * with/without +853 prefix
  * */
-export function is_mc_mobile_phone(tel: number | string): boolean {
-  return to_full_mc_mobile_phone(tel) !== ''
+export function is_mo_mobile_phone(tel: number | string): boolean {
+  return to_full_mo_mobile_phone(tel) !== ''
 }
 
 /**
@@ -348,22 +348,22 @@ export function is_mc_mobile_phone(tel: number | string): boolean {
  * @return +853xxxxyyyy if valid
  *         empty string if not valid
  * */
-export function to_full_mc_mobile_phone(tel: string | number): string {
+export function to_full_mo_mobile_phone(tel: string | number): string {
   tel = to_tel_digits(tel)
-  if (tel.length === 8 && is_mc_mobile_phone_prefix(tel)) {
+  if (tel.length === 8 && is_mo_mobile_phone_prefix(tel)) {
     return '+853' + tel
   }
   if (
     tel.length === 8 + 3 &&
     tel.startsWith('853') &&
-    is_mc_mobile_phone_prefix(tel.substring(3))
+    is_mo_mobile_phone_prefix(tel.substring(3))
   ) {
     return '+' + tel
   }
   if (
     tel.length === 8 + 4 &&
     tel.startsWith('+853') &&
-    is_mc_mobile_phone_prefix(tel.substring(4))
+    is_mo_mobile_phone_prefix(tel.substring(4))
   ) {
     return tel
   }
@@ -373,8 +373,8 @@ export function to_full_mc_mobile_phone(tel: string | number): string {
 /**
  * @returns +853 xxxx yyyy if valid
  */
-export function format_mc_mobile_phone(tel: string | number): string {
-  tel = to_full_mc_mobile_phone(tel)
+export function format_mo_mobile_phone(tel: string | number): string {
+  tel = to_full_mo_mobile_phone(tel)
   if (!tel) return tel
   return format_tel_with_pattern(tel, '+853 xxxx yyyy')
 }
