@@ -23,7 +23,7 @@ export class ProgressCli {
     if (mode != 'do-not-replace') {
       const index = message.lastIndexOf('\n')
       if (index == -1) {
-        this.lastMessageLength += message.length
+        this.lastMessageLength += message.length + countFullWidthChars(message);
       } else {
         this.lastMessageLength = message.length - index
       }
@@ -37,7 +37,7 @@ export class ProgressCli {
 
   update(message: string) {
     const { writeStream, lastMessageLength } = this
-    const newMessageLength = message.length
+    const newMessageLength = message.length + countFullWidthChars(message);
     if (writeStream.moveCursor) {
       writeStream.moveCursor(-lastMessageLength, 0)
       writeStream.write(message)
@@ -56,4 +56,21 @@ export class ProgressCli {
     this.writeStream.write('\n')
     this.lastMessageLength = 0
   }
+}
+
+function countFullWidthChars(str: string): number {
+  let count = 0;
+  for (const char of str) {
+    const code = char.charCodeAt(0);
+    // Full-width characters range
+    if (
+      (code >= 0xFF00 && code <= 0xFFEF) ||  // Full-width ASCII & punctuations
+      (code >= 0x4E00 && code <= 0x9FFF) ||  // Chinese characters
+      (code >= 0x3000 && code <= 0x303F) ||  // Chinese punctuations & full-width space
+      (code >= 0x3040 && code <= 0x30FF)     // Japanese kana
+    ) {
+      count++;
+    }
+  }
+  return count;
 }
