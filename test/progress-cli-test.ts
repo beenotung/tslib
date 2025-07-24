@@ -29,4 +29,22 @@ async function main() {
   cli.nextLine()
   cli.writeln('done.')
 }
-main().catch(e => console.error(e))
+// main().catch(e => console.error(e))
+
+async function main2() {
+  process.stdout.write('>')
+  let cli = new ProgressCli()
+
+  // test emoji
+  // cli.write('👩‍💻')
+  // cli.update('.')
+
+  // cli.write('[1/2] 😀 天下')
+
+  // test chinese
+  cli.write('[1/2] 天下')
+  cli.update('[2/2] en')
+
+  cli.nextLine()
+}
+main2().catch(e => console.error(e))
