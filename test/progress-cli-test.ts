@@ -1,12 +1,12 @@
 import { later } from '../src/async/wait'
 import { ProgressCli } from '../src/progress-cli'
 
-async function main() {
+let interval = 1000
+
+async function main1() {
   let out = process.stderr
   let replaceChar = '='
   let cli = new ProgressCli({ out, replaceChar })
-
-  let interval = 1000
 
   cli.write('progress: ', 'do-not-replace')
 
@@ -29,22 +29,35 @@ async function main() {
   cli.nextLine()
   cli.writeln('done.')
 }
-// main().catch(e => console.error(e))
 
 async function main2() {
   process.stdout.write('>')
   let cli = new ProgressCli()
 
   // test emoji
-  // cli.write('👩‍💻')
-  // cli.update('.')
-
-  // cli.write('[1/2] 😀 天下')
+  await later(interval)
+  cli.write('👩‍💻')
+  await later(interval)
+  cli.update('.')
+  await later(interval)
 
   // test chinese
-  cli.write('[1/2] 天下')
-  cli.update('[2/2] en')
+  // cli.write('[1/2] 天下')
+  // await cli.update('[2/2] en')
+
+  // //test both
+  // cli.write('[1/2] 😀 天下')
+  // await cli.update('[2/2] en')
+
+  // // test combining characters
+  // cli.write('[1/2] zh\u0300')
+  // await cli.update('[2/2] en')
 
   cli.nextLine()
 }
-main2().catch(e => console.error(e))
+
+async function main() {
+  await main1()
+  await main2()
+}
+main().catch(e => console.error(e))
