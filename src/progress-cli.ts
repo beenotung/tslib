@@ -1,3 +1,5 @@
+import { countFullWidthChars } from './char'
+
 /** @default 'to-be-replaced' */
 type Mode = 'to-be-replaced' | 'do-not-replace'
 
@@ -23,9 +25,10 @@ export class ProgressCli {
     if (mode != 'do-not-replace') {
       const index = message.lastIndexOf('\n')
       if (index == -1) {
-        this.lastMessageLength += message.length
+        this.lastMessageLength += message.length + countFullWidthChars(message)
       } else {
-        this.lastMessageLength = message.length - index
+        this.lastMessageLength =
+          message.length - index + countFullWidthChars(message.slice(index + 1))
       }
     }
   }
@@ -37,7 +40,7 @@ export class ProgressCli {
 
   update(message: string) {
     const { writeStream, lastMessageLength } = this
-    const newMessageLength = message.length
+    const newMessageLength = message.length + countFullWidthChars(message)
     if (writeStream.moveCursor) {
       writeStream.moveCursor(-lastMessageLength, 0)
       writeStream.write(message)
