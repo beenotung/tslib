@@ -1,9 +1,3 @@
-export class NotImplError extends Error {}
-
-export function not_impl(): any {
-  throw new NotImplError()
-}
-
 export class HttpError extends Error {
   public status: number
   public statusCode: number
@@ -17,4 +11,14 @@ export class HttpError extends Error {
   toString() {
     return `HttpError(${this.status}): ${this.message}`
   }
+}
+
+export class NotImplError extends HttpError {
+  constructor() {
+    super(501, 'Not Implemented')
+  }
+}
+
+export function not_impl(): any {
+  throw new NotImplError()
 }
