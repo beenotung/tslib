@@ -5,11 +5,13 @@ export function not_impl(): any {
 }
 
 export class HttpError extends Error {
-  constructor(
-    public status: number,
-    message: string,
-  ) {
+  public status: number
+  public statusCode: number
+
+  constructor(statusCode: number, message: string) {
     super(message)
+    this.statusCode = statusCode
+    this.status = statusCode
   }
 
   toString() {
