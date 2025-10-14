@@ -48,3 +48,25 @@ export function urlEncode(o: object): string {
     .map(([k, v]) => escape(k) + '=' + escape(v))
     .join('&')
 }
+
+export function decodeUTF16BE(buffer: Buffer): string {
+  swapBytes(buffer)
+  return buffer.toString('utf16le')
+}
+
+export function encodeUTF16BE(text: string): Buffer {
+  let buffer = Buffer.from(text, 'utf-16le')
+  swapBytes(buffer)
+  return buffer
+}
+
+/**
+ * convert between BE (big endian) and LE (little endian)
+ */
+export function swapBytes(buffer: Buffer) {
+  for (let i = 0; i < buffer.length; i += 2) {
+    let tmp = buffer[i]
+    buffer[i] = buffer[i + 1]
+    buffer[i + 1] = tmp
+  }
+}
