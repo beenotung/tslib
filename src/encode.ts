@@ -55,7 +55,7 @@ export function decodeUTF16BE(buffer: Buffer): string {
 }
 
 export function encodeUTF16BE(text: string): Buffer {
-  let buffer = Buffer.from(text, 'utf-16le')
+  const buffer = Buffer.from(text, 'utf-16le')
   swapBytes(buffer)
   return buffer
 }
@@ -65,7 +65,7 @@ export function encodeUTF16BE(text: string): Buffer {
  */
 export function swapBytes(buffer: Buffer) {
   for (let i = 0; i < buffer.length; i += 2) {
-    let tmp = buffer[i]
+    const tmp = buffer[i]
     buffer[i] = buffer[i + 1]
     buffer[i + 1] = tmp
   }
