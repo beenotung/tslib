@@ -1,6 +1,7 @@
 import { format_time_duration } from './format'
 import { eraseChars } from './node'
 import { countFractionDigits } from './number'
+import { countFullWidthChars } from './char'
 
 export type StartTimerOptions =
   | string
@@ -62,7 +63,7 @@ export function startTimer(options: StartTimerOptions) {
       writeStream.moveCursor(-msgLen, 0)
     }
     writeStream.write(msg)
-    const newMsgLen = msg.length
+    const newMsgLen = msg.length + countFullWidthChars(msg)
     eraseChars(writeStream, msgLen - newMsgLen)
     msgLen = newMsgLen
   }
@@ -79,7 +80,8 @@ export function startTimer(options: StartTimerOptions) {
     }
     print('')
     if (writeStream.moveCursor) {
-      writeStream.moveCursor(-name.length, 0)
+      const nameLen = name.length + countFullWidthChars(name)
+      writeStream.moveCursor(-nameLen, 0)
     }
     const usedTime = Date.now() - startTime
     writeStream.write(`${name}: ${format_time_duration(usedTime, 2)}\n`)
