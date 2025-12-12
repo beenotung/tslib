@@ -10,6 +10,7 @@ import {
   to_full_ae_mobile_phone,
   to_full_in_mobile_phone,
   to_full_jp_mobile_phone,
+  to_full_vn_mobile_phone,
   format_mobile_phone,
 } from '../src/tel'
 
@@ -197,6 +198,64 @@ describe('tel.ts TestSuit', () => {
         expect(format_mobile_phone('+819012345678')).to.equal(
           '+81 90 1234 5678',
         )
+      })
+    })
+
+    describe('Vietnam', () => {
+      describe('to_full_vn_mobile_phone', () => {
+        test('with country code +84 and leading 0 (09x)', () => {
+          expect(to_full_vn_mobile_phone('+84 091 234 5678')).to.equal(
+            '+84912345678',
+          )
+        })
+        test('with country code +84 and leading 0 (08x)', () => {
+          expect(to_full_vn_mobile_phone('+84 081 234 5678')).to.equal(
+            '+84812345678',
+          )
+        })
+        test('with country code +84 and leading 0 (07x)', () => {
+          expect(to_full_vn_mobile_phone('+84 071 234 5678')).to.equal(
+            '+84712345678',
+          )
+        })
+        test('with country code +84 and leading 0 (03x)', () => {
+          expect(to_full_vn_mobile_phone('+84 031 234 5678')).to.equal(
+            '+84312345678',
+          )
+        })
+        test('with country code +84 and leading 0 (05x)', () => {
+          expect(to_full_vn_mobile_phone('+84 051 234 5678')).to.equal(
+            '+84512345678',
+          )
+        })
+        test('with country code +84 without leading 0 (already in internal format)', () => {
+          expect(to_full_vn_mobile_phone('+84 91 234 5678')).to.equal(
+            '+84912345678',
+          )
+        })
+        test('with country code 84 without + and leading 0', () => {
+          expect(to_full_vn_mobile_phone('84 091 234 5678')).to.equal(
+            '+84912345678',
+          )
+        })
+        test('with local format with leading 0', () => {
+          expect(to_full_vn_mobile_phone('091 234 5678')).to.equal(
+            '+84912345678',
+          )
+        })
+        test('with local format without leading 0', () => {
+          expect(to_full_vn_mobile_phone('912345678')).to.equal('+84912345678')
+        })
+        test('invalid prefix', () => {
+          expect(to_full_vn_mobile_phone('021 234 5678')).to.equal('')
+        })
+      })
+      describe('format_vn_mobile_phone', () => {
+        test('formats internal format to display format', () => {
+          expect(format_mobile_phone('+84912345678')).to.equal(
+            '+84 91 234 5678',
+          )
+        })
       })
     })
 
