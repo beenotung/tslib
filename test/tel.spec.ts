@@ -1,6 +1,6 @@
 import { expect } from 'chai'
 import { test } from 'mocha'
-import { format_tel_with_pattern } from '../src/tel'
+import { format_tel_with_pattern, to_full_hk_mobile_phone } from '../src/tel'
 
 describe('tel.ts TestSuit', () => {
   describe('format_tel_with_pattern', () => {
@@ -31,6 +31,21 @@ describe('tel.ts TestSuit', () => {
       expect(
         format_tel_with_pattern('+852-9876-5432', '+852 xxxx yyyy'),
       ).to.equal('+852 9876 5432')
+    })
+  })
+  describe('varies country phone numbers', () => {
+    describe('Hong Kong', () => {
+      test('with country code', () => {
+        expect(to_full_hk_mobile_phone('+852 9876 5432')).to.equal(
+          '+85298765432',
+        )
+      })
+      test('without country code mobile tel', () => {
+        expect(to_full_hk_mobile_phone('9876 5432')).to.equal('+85298765432')
+      })
+      test('without country code non-mobile tel', () => {
+        expect(to_full_hk_mobile_phone('2345 6789')).to.equal('')
+      })
     })
   })
 })
