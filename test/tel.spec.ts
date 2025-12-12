@@ -147,7 +147,7 @@ describe('tel.ts TestSuit', () => {
         expect(to_full_in_mobile_phone('51234 56789')).to.equal('')
       })
       test('format mobile phone', () => {
-        expect(format_mobile_phone('9876543210')).to.equal('+91 98765 43210')
+        expect(format_mobile_phone('+919876543210')).to.equal('+91 98765 43210')
       })
     })
 
@@ -194,7 +194,9 @@ describe('tel.ts TestSuit', () => {
         expect(to_full_jp_mobile_phone('060 1234 5678')).to.equal('')
       })
       test('format mobile phone', () => {
-        expect(format_mobile_phone('09012345678')).to.equal('+81 90 1234 5678')
+        expect(format_mobile_phone('+819012345678')).to.equal(
+          '+81 90 1234 5678',
+        )
       })
     })
 
