@@ -4,6 +4,10 @@ import {
   format_tel_with_pattern,
   to_full_hk_mobile_phone,
   to_full_sg_mobile_phone,
+  to_full_au_mobile_phone,
+  to_full_cn_mobile_phone,
+  to_full_mo_mobile_phone,
+  to_full_ae_mobile_phone,
   to_full_in_mobile_phone,
   format_mobile_phone,
 } from '../src/tel'
@@ -65,6 +69,67 @@ describe('tel.ts TestSuit', () => {
         expect(to_full_sg_mobile_phone('6123 4567')).to.equal('')
       })
     })
+
+    describe('Australia', () => {
+      test('with country code', () => {
+        expect(to_full_au_mobile_phone('+61 412 345 678')).to.equal(
+          '+61412345678',
+        )
+      })
+      test('with local format', () => {
+        expect(to_full_au_mobile_phone('0412 345 678')).to.equal('+61412345678')
+      })
+      test('invalid landline', () => {
+        expect(to_full_au_mobile_phone('0212 345 678')).to.equal('')
+      })
+    })
+
+    describe('China', () => {
+      test('with country code', () => {
+        expect(to_full_cn_mobile_phone('+86 138 1234 5678')).to.equal(
+          '+8613812345678',
+        )
+      })
+      test('without country code mobile tel', () => {
+        expect(to_full_cn_mobile_phone('138 1234 5678')).to.equal(
+          '+8613812345678',
+        )
+      })
+      test('invalid prefix', () => {
+        expect(to_full_cn_mobile_phone('128 1234 5678')).to.equal('')
+      })
+    })
+
+    describe('Macau', () => {
+      test('with country code', () => {
+        expect(to_full_mo_mobile_phone('+853 6123 4567')).to.equal(
+          '+85361234567',
+        )
+      })
+      test('without country code mobile tel', () => {
+        expect(to_full_mo_mobile_phone('6123 4567')).to.equal('+85361234567')
+      })
+      test('invalid prefix', () => {
+        expect(to_full_mo_mobile_phone('5123 4567')).to.equal('')
+      })
+    })
+
+    describe('UAE/Dubai', () => {
+      test('with country code', () => {
+        expect(to_full_ae_mobile_phone('+971 50 123 4567')).to.equal(
+          '+971501234567',
+        )
+      })
+      test('with local format (05x)', () => {
+        expect(to_full_ae_mobile_phone('050 123 4567')).to.equal(
+          '+971501234567',
+        )
+      })
+      test('invalid prefix', () => {
+        expect(to_full_ae_mobile_phone('040 123 4567')).to.equal('')
+      })
+    })
+
     describe('India', () => {
       test('with country code', () => {
         expect(to_full_in_mobile_phone('+91 98765 43210')).to.equal(
