@@ -4,6 +4,8 @@ import {
   format_tel_with_pattern,
   to_full_hk_mobile_phone,
   to_full_sg_mobile_phone,
+  to_full_in_mobile_phone,
+  format_mobile_phone,
 } from '../src/tel'
 
 describe('tel.ts TestSuit', () => {
@@ -63,5 +65,25 @@ describe('tel.ts TestSuit', () => {
         expect(to_full_sg_mobile_phone('6123 4567')).to.equal('')
       })
     })
+    describe('India', () => {
+      test('with country code', () => {
+        expect(to_full_in_mobile_phone('+91 98765 43210')).to.equal(
+          '+919876543210',
+        )
+      })
+      test('without country code mobile tel', () => {
+        expect(to_full_in_mobile_phone('98765 43210')).to.equal('+919876543210')
+      })
+      test('with 6 prefix', () => {
+        expect(to_full_in_mobile_phone('61234 56789')).to.equal('+916123456789')
+      })
+      test('invalid prefix', () => {
+        expect(to_full_in_mobile_phone('51234 56789')).to.equal('')
+      })
+      test('format mobile phone', () => {
+        expect(format_mobile_phone('9876543210')).to.equal('+91 98765 43210')
+      })
+    })
+
   })
 })

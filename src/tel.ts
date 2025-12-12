@@ -15,6 +15,7 @@ export function is_mobile_phone(tel: number | string): boolean {
  * - MO (Macau)
  * - AE (UAE/Dubai)
  * - TH (Thailand)
+ * - IN (India)
  *
  * @returns the full tel number with country code, or empty string if not valid
  */
@@ -27,6 +28,7 @@ export function to_full_mobile_phone(tel: string | number): string {
     to_full_mo_mobile_phone(tel) ||
     to_full_ae_mobile_phone(tel) ||
     to_full_th_mobile_phone(tel) ||
+    to_full_in_mobile_phone(tel) ||
     ''
   )
 }
@@ -40,6 +42,7 @@ export function to_full_mobile_phone(tel: string | number): string {
  * - MO: +853 xxxx yyyy
  * - AE: +971 5x xxx xxxx (accepts both local 05x xxx xxxx and international formats)
  * - TH: +66 8x xxx xxxx
+ * - IN: +91 xxxxx xxxxx
  */
 export function format_mobile_phone(tel: string | number): string {
   tel = to_full_mobile_phone(tel)
@@ -64,6 +67,9 @@ export function format_mobile_phone(tel: string | number): string {
   }
   if (tel.startsWith('+66')) {
     return format_th_mobile_phone(tel)
+  }
+  if (tel.startsWith('+91')) {
+    return format_in_mobile_phone(tel)
   }
   throw new Error(`not supported mobile phone number: ${tel}`)
 }
@@ -562,6 +568,73 @@ export function format_th_mobile_phone(tel: string | number): string {
   // This works for all prefixes: 06x, 08x, 09x
   // Thailand international format includes the leading 0 (10 digits total after +66)
   return format_tel_with_pattern(tel, '+66 8xx xxx xxxx')
+}
+
+/** ******************************
+ * India mobile phone number *
+ *********************************/
+
+/**
+ * starts with 9, 8, 7, or 6
+ * Mobile numbers (including pagers) on GSM, WCDMA, LTE and NR networks start with either 9, 8, 7 or 6
+ * reference: https://en.wikipedia.org/wiki/Mobile_telephone_numbering_in_India
+ */
+export function is_in_mobile_phone_prefix(tel: string): boolean {
+  tel = tel.replace(/^\+91/, '').trim()
+  if (tel.length < 1) return false
+  const firstDigit = tel[0]
+  return ['9', '8', '7', '6'].includes(firstDigit)
+}
+
+/**
+ * with/without +91 prefix
+ */
+export function is_in_mobile_phone(tel: number | string): boolean {
+  return to_full_in_mobile_phone(tel) !== ''
+}
+
+/**
+ * very forgiving
+ *
+ * @returns +91xxxxxxxxxx if valid (10 digits after country code)
+ *          empty string if not valid
+ */
+export function to_full_in_mobile_phone(tel: string | number): string {
+  tel = to_tel_digits(tel)
+
+  // 10 digits (local format)
+  if (tel.length === 10 && is_in_mobile_phone_prefix(tel)) {
+    return '+91' + tel
+  }
+
+  // 10 digits with country code 91 (without +)
+  if (
+    tel.length === 10 + 2 &&
+    tel.startsWith('91') &&
+    is_in_mobile_phone_prefix(tel.substring(2))
+  ) {
+    return '+' + tel
+  }
+
+  // 10 digits with country code +91
+  if (
+    tel.length === 10 + 3 &&
+    tel.startsWith('+91') &&
+    is_in_mobile_phone_prefix(tel.substring(3))
+  ) {
+    return tel
+  }
+
+  return ''
+}
+
+/**
+ * @returns +91 xxxxx xxxxx if valid
+ */
+export function format_in_mobile_phone(tel: string | number): string {
+  tel = to_full_in_mobile_phone(tel)
+  if (!tel) return tel
+  return format_tel_with_pattern(tel, '+91 xxxxx xxxxx')
 }
 
 /** *****************
