@@ -1,6 +1,10 @@
 import { expect } from 'chai'
 import { test } from 'mocha'
-import { format_tel_with_pattern, to_full_hk_mobile_phone } from '../src/tel'
+import {
+  format_tel_with_pattern,
+  to_full_hk_mobile_phone,
+  to_full_sg_mobile_phone,
+} from '../src/tel'
 
 describe('tel.ts TestSuit', () => {
   describe('format_tel_with_pattern', () => {
@@ -45,6 +49,18 @@ describe('tel.ts TestSuit', () => {
       })
       test('without country code non-mobile tel', () => {
         expect(to_full_hk_mobile_phone('2345 6789')).to.equal('')
+      })
+    })
+
+    describe('Singapore', () => {
+      test('with country code', () => {
+        expect(to_full_sg_mobile_phone('+65 8123 4567')).to.equal('+6581234567')
+      })
+      test('without country code mobile tel', () => {
+        expect(to_full_sg_mobile_phone('8123 4567')).to.equal('+6581234567')
+      })
+      test('without country code non-mobile tel', () => {
+        expect(to_full_sg_mobile_phone('6123 4567')).to.equal('')
       })
     })
   })
