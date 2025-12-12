@@ -597,7 +597,7 @@ export function format_tel_with_pattern(tel: string, pattern: string): string {
  *
  * preserve only digits and +
  */
-function to_tel_digits(tel: string | number): string {
+export function to_tel_digits(tel: string | number): string {
   if (typeof tel === 'number') {
     tel = tel.toString()
   }
