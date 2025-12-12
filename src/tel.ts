@@ -272,7 +272,7 @@ export function format_au_mobile_phone(tel: string | number): string {
  *****************************/
 
 /**
- * starts with 1, second digit is 3,4, 5, 6, 7, 8
+ * starts with 1, second digit is 3, 4, 5, 6, 7, 8, or 9
  * reference: https://en.wikipedia.org/wiki/Telephone_numbers_in_China
  */
 export function is_cn_mobile_phone_prefix(tel: string) {
