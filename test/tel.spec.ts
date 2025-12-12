@@ -9,6 +9,7 @@ import {
   to_full_mo_mobile_phone,
   to_full_ae_mobile_phone,
   to_full_in_mobile_phone,
+  to_full_jp_mobile_phone,
   format_mobile_phone,
 } from '../src/tel'
 
@@ -147,6 +148,53 @@ describe('tel.ts TestSuit', () => {
       })
       test('format mobile phone', () => {
         expect(format_mobile_phone('9876543210')).to.equal('+91 98765 43210')
+      })
+    })
+
+    describe('Japan', () => {
+      test('with country code +81 (090)', () => {
+        expect(to_full_jp_mobile_phone('+81 90 1234 5678')).to.equal(
+          '+819012345678',
+        )
+      })
+      test('with country code +81 (080)', () => {
+        expect(to_full_jp_mobile_phone('+81 80 1234 5678')).to.equal(
+          '+818012345678',
+        )
+      })
+      test('with country code +81 (070)', () => {
+        expect(to_full_jp_mobile_phone('+81 70 1234 5678')).to.equal(
+          '+817012345678',
+        )
+      })
+      test('with country code 81 without + (090)', () => {
+        expect(to_full_jp_mobile_phone('81 90 1234 5678')).to.equal(
+          '+819012345678',
+        )
+      })
+      test('with local format with leading 0 (090)', () => {
+        expect(to_full_jp_mobile_phone('090 1234 5678')).to.equal(
+          '+819012345678',
+        )
+      })
+      test('with local format without leading 0', () => {
+        expect(to_full_jp_mobile_phone('9012345678')).to.equal('+819012345678')
+      })
+      test('with country code 81 and leading 0 (090)', () => {
+        expect(to_full_jp_mobile_phone('8109012345678')).to.equal(
+          '+819012345678',
+        )
+      })
+      test('with country code +81 and leading 0 (090)', () => {
+        expect(to_full_jp_mobile_phone('+8109012345678')).to.equal(
+          '+819012345678',
+        )
+      })
+      test('invalid prefix', () => {
+        expect(to_full_jp_mobile_phone('060 1234 5678')).to.equal('')
+      })
+      test('format mobile phone', () => {
+        expect(format_mobile_phone('09012345678')).to.equal('+81 90 1234 5678')
       })
     })
 
