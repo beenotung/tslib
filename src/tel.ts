@@ -14,6 +14,7 @@ export function is_mobile_phone(tel: number | string): boolean {
  * - CN (China Mainland)
  * - MO (Macau)
  * - AE (UAE/Dubai)
+ * - TH (Thailand)
  *
  * @returns the full tel number with country code, or empty string if not valid
  */
@@ -25,6 +26,7 @@ export function to_full_mobile_phone(tel: string | number): string {
     to_full_cn_mobile_phone(tel) ||
     to_full_mo_mobile_phone(tel) ||
     to_full_ae_mobile_phone(tel) ||
+    to_full_th_mobile_phone(tel) ||
     ''
   )
 }
@@ -37,6 +39,7 @@ export function to_full_mobile_phone(tel: string | number): string {
  * - CN: +86 1nn xxxx xxxx
  * - MO: +853 xxxx yyyy
  * - AE: +971 5x xxx xxxx (accepts both local 05x xxx xxxx and international formats)
+ * - TH: +66 8x xxx xxxx
  */
 export function format_mobile_phone(tel: string | number): string {
   tel = to_full_mobile_phone(tel)
@@ -58,6 +61,9 @@ export function format_mobile_phone(tel: string | number): string {
   }
   if (tel.startsWith('+971')) {
     return format_ae_mobile_phone(tel)
+  }
+  if (tel.startsWith('+66')) {
+    return format_th_mobile_phone(tel)
   }
   throw new Error(`not supported mobile phone number: ${tel}`)
 }
@@ -466,6 +472,96 @@ export function format_ae_mobile_phone(tel: string | number): string {
   tel = to_full_ae_mobile_phone(tel)
   if (!tel) return tel
   return format_tel_with_pattern(tel, '+971 5x xxx xxxx')
+}
+
+/** ******************************
+ * Thailand mobile phone number *
+ *********************************/
+
+/**
+ * starts with 06, 08, or 09 (two-digit prefix)
+ * Mobile prefixes: 06x (060-068), 08x (080-089), 09x (090-099)
+ * reference: https://en.wikipedia.org/wiki/Telephone_numbers_in_Thailand
+ */
+export function is_th_mobile_phone_prefix(tel: string): boolean {
+  tel = tel.replace(/^\+66/, '').trim()
+  // Remove leading 0 if present
+  if (tel.startsWith('0')) {
+    tel = tel.substring(1)
+  }
+  // After removing leading 0, should start with 06, 08, or 09 (two-digit prefix)
+  if (tel.length < 2) return false
+  const prefix = tel.substring(0, 2)
+  return prefix === '06' || prefix === '08' || prefix === '09'
+}
+
+/**
+ * with/without +66 prefix
+ */
+export function is_th_mobile_phone(tel: number | string): boolean {
+  return to_full_th_mobile_phone(tel) !== ''
+}
+
+/**
+ * very forgiving
+ *
+ * @returns +66xxxxxxxxx if valid (9 digits after country code)
+ *          empty string if not valid
+ */
+export function to_full_th_mobile_phone(tel: string | number): string {
+  tel = to_tel_digits(tel)
+
+  // 9 digits with country code +66
+  if (
+    tel.length === 9 + 3 &&
+    tel.startsWith('+66') &&
+    is_th_mobile_phone_prefix(tel.substring(3))
+  ) {
+    return tel
+  }
+
+  // 9 digits with country code 66 (without +)
+  if (
+    tel.length === 9 + 2 &&
+    tel.startsWith('66') &&
+    is_th_mobile_phone_prefix(tel.substring(2))
+  ) {
+    return '+' + tel
+  }
+
+  // 10 digits starting with 08, 09, or 06 (local format with leading 0)
+  if (
+    tel.length === 10 &&
+    tel.startsWith('0') &&
+    (tel.startsWith('08') || tel.startsWith('09') || tel.startsWith('06'))
+  ) {
+    // Keep the leading 0 in international format: +66 08...
+    return '+66' + tel
+  }
+
+  // 9 digits starting with 8, 9, or 6 (international format without leading 0)
+  if (
+    tel.length === 9 &&
+    (tel.startsWith('8') || tel.startsWith('9') || tel.startsWith('6'))
+  ) {
+    // Add leading 0 for formatting: 8... -> +66 08...
+    return '+66' + '0' + tel
+  }
+
+  return ''
+}
+
+/**
+ * @returns +66 8-1234-5678 if valid (format: +66 prefix-xxx-xxxx)
+ * Supports all mobile prefixes: 06x, 08x, 09x
+ */
+export function format_th_mobile_phone(tel: string | number): string {
+  tel = to_full_th_mobile_phone(tel)
+  if (!tel) return tel
+  // Format: +66 08 123 4567 (includes leading 0, 2-digit prefix, 3 digits, 4 digits)
+  // This works for all prefixes: 06x, 08x, 09x
+  // Thailand international format includes the leading 0 (10 digits total after +66)
+  return format_tel_with_pattern(tel, '+66 8xx xxx xxxx')
 }
 
 /** *****************
