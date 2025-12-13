@@ -529,7 +529,17 @@ export function is_th_mobile_phone(tel: number | string): boolean {
 export function to_full_th_mobile_phone(tel: string | number): string {
   tel = to_tel_digits(tel)
 
-  // 9 digits with country code +66
+  // Country code +66: 10 digits with leading 0, or 9 digits without leading 0
+  // Examples: +66 081 234 5678 (with 0) or +66 81 234 5678 (without 0)
+  // Result: +66 81 234 5678 (always 9 digits after +66, NO leading 0)
+  if (
+    tel.length === 10 + 3 &&
+    tel.startsWith('+66') &&
+    tel.substring(3).startsWith('0') &&
+    is_th_mobile_phone_prefix(tel.substring(3))
+  ) {
+    return '+66' + tel.substring(4)
+  }
   if (
     tel.length === 9 + 3 &&
     tel.startsWith('+66') &&
@@ -538,7 +548,17 @@ export function to_full_th_mobile_phone(tel: string | number): string {
     return tel
   }
 
-  // 9 digits with country code 66 (without +)
+  // Country code 66 (without +): 10 digits with leading 0, or 9 digits without leading 0
+  // Examples: 66 081 234 5678 (with 0) or 66 81 234 5678 (without 0)
+  // Result: +66 81 234 5678 (always 9 digits after +66, NO leading 0)
+  if (
+    tel.length === 10 + 2 &&
+    tel.startsWith('66') &&
+    tel.substring(2).startsWith('0') &&
+    is_th_mobile_phone_prefix(tel.substring(2))
+  ) {
+    return '+66' + tel.substring(3)
+  }
   if (
     tel.length === 9 + 2 &&
     tel.startsWith('66') &&
@@ -547,39 +567,37 @@ export function to_full_th_mobile_phone(tel: string | number): string {
     return '+' + tel
   }
 
-  // 10 digits starting with 08, 09, or 06 (local format with leading 0)
+  // Local format: 10 digits with leading 0, or 9 digits without leading 0
+  // Examples: 081 234 5678 (with 0) or 81 234 5678 (without 0)
+  // Result: +66 81 234 5678 (always 9 digits after +66, NO leading 0)
   if (
     tel.length === 10 &&
     tel.startsWith('0') &&
-    (tel.startsWith('08') || tel.startsWith('09') || tel.startsWith('06'))
+    is_th_mobile_phone_prefix(tel)
   ) {
-    // Keep the leading 0 in international format: +66 08...
-    return '+66' + tel
+    return '+66' + tel.substring(1)
   }
-
-  // 9 digits starting with 8, 9, or 6 (international format without leading 0)
-  if (
-    tel.length === 9 &&
-    (tel.startsWith('8') || tel.startsWith('9') || tel.startsWith('6'))
-  ) {
-    // Add leading 0 for formatting: 8... -> +66 08...
-    return '+66' + '0' + tel
+  if (tel.length === 9 && is_th_mobile_phone_prefix(tel)) {
+    return '+66' + tel
   }
 
   return ''
 }
 
 /**
- * @returns +66 8-1234-5678 if valid (format: +66 prefix-xxx-xxxx)
- * Supports all mobile prefixes: 06x, 08x, 09x
+ * @returns +66 AA BBB BBBB if valid
  */
 export function format_th_mobile_phone(tel: string | number): string {
   tel = to_full_th_mobile_phone(tel)
   if (!tel) return tel
-  // Format: +66 08 123 4567 (includes leading 0, 2-digit prefix, 3 digits, 4 digits)
-  // This works for all prefixes: 06x, 08x, 09x
-  // Thailand international format includes the leading 0 (10 digits total after +66)
-  return format_tel_with_pattern(tel, '+66 8xx xxx xxxx')
+
+  // Remove leading zero if present (legacy support)
+  const digits = to_tel_digits(tel).replace('+66', '')
+  if (digits.length === 10 && digits.startsWith('0')) {
+    tel = '+66' + digits.substring(1)
+  }
+
+  return format_tel_with_pattern(tel, '+66 AA BBB BBBB')
 }
 
 /** ******************************
