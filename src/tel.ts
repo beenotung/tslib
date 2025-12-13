@@ -30,10 +30,10 @@ export function to_full_mobile_phone(tel: string | number): string {
     to_full_cn_mobile_phone(tel) ||
     to_full_mo_mobile_phone(tel) ||
     to_full_ae_mobile_phone(tel) ||
+    to_full_vn_mobile_phone(tel) ||
     to_full_th_mobile_phone(tel) ||
     to_full_in_mobile_phone(tel) ||
     to_full_jp_mobile_phone(tel) ||
-    to_full_vn_mobile_phone(tel) ||
     to_full_id_mobile_phone(tel) ||
     ''
   )
