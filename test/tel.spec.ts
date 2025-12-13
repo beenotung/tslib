@@ -12,6 +12,7 @@ import {
   to_full_in_mobile_phone,
   to_full_jp_mobile_phone,
   to_full_vn_mobile_phone,
+  to_full_id_mobile_phone,
   format_mobile_phone,
 } from '../src/tel'
 
@@ -297,6 +298,47 @@ describe('tel.ts TestSuit', () => {
             '+84 91 234 5678',
           )
         })
+      })
+    })
+
+    describe('Indonesia', () => {
+      test('with country code (10 digits)', () => {
+        expect(to_full_id_mobile_phone('+62 812 3456 789')).to.equal(
+          '+628123456789',
+        )
+      })
+      test('with country code (11 digits)', () => {
+        expect(to_full_id_mobile_phone('+62 812 3456 7890')).to.equal(
+          '+6281234567890',
+        )
+      })
+      test('with country code (9 digits)', () => {
+        expect(to_full_id_mobile_phone('+62 812 345 678')).to.equal(
+          '+62812345678',
+        )
+      })
+      test('with local format (08x)', () => {
+        expect(to_full_id_mobile_phone('0812 3456 789')).to.equal(
+          '+628123456789',
+        )
+        // Should not include leading 0 in result
+        expect(to_full_id_mobile_phone('08123456789')).to.equal('+628123456789')
+      })
+      test('without leading 0', () => {
+        expect(to_full_id_mobile_phone('8123456789')).to.equal('+628123456789')
+      })
+      test('invalid prefix', () => {
+        expect(to_full_id_mobile_phone('0712 3456 789')).to.equal('')
+      })
+      test('format mobile phone (10 digits)', () => {
+        expect(format_mobile_phone('+628123456789')).to.equal(
+          '+62 812 3456 789',
+        )
+      })
+      test('format mobile phone (11 digits)', () => {
+        expect(format_mobile_phone('+6281234567890')).to.equal(
+          '+62 812 3456 7890',
+        )
       })
     })
 
