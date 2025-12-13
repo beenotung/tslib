@@ -52,7 +52,7 @@ export function write_csv_file(
     skip_titles?: boolean
   },
 ) {
-  return new Promise<any>((resolve, reject) => {
+  return new Promise<void>((resolve, reject) => {
     let stream: fs.WriteStream | undefined
     try {
       stream = fs.createWriteStream(filename)
