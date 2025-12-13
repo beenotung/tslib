@@ -113,7 +113,6 @@ export class CachedObjectStore implements Store {
       for (
         ;
         this[cacheSizeSymbol] > this[maxCacheSizeSymbol] && caches.length > 0;
-
       ) {
         const [key, cache] = caches.pop() as [string, CacheItem<any>]
         this[cacheSizeSymbol] -= cache.data.size
