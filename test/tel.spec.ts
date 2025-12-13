@@ -15,6 +15,7 @@ import {
   to_full_id_mobile_phone,
   to_full_my_mobile_phone,
   format_mobile_phone,
+  is_mobile_phone,
 } from '../src/tel'
 
 describe('tel.ts TestSuit', () => {
@@ -378,5 +379,67 @@ describe('tel.ts TestSuit', () => {
       })
     })
 
+    describe('auto detect country code in to_full_mobile_phone', () => {
+      test('detects Hong Kong', () => {
+        expect(is_mobile_phone('98765432')).to.be.true
+        expect(format_mobile_phone('98765432')).to.equal('+852 9876 5432')
+      })
+      test('detects Thailand', () => {
+        expect(is_mobile_phone('0612345678')).to.be.true
+        expect(format_mobile_phone('0612345678')).to.equal('+66 61 234 5678')
+      })
+      test('detects India', () => {
+        expect(is_mobile_phone('9876543210')).to.be.true
+        expect(format_mobile_phone('9876543210')).to.equal('+91 98765 43210')
+      })
+      test('detects Japan', () => {
+        expect(is_mobile_phone('09012345678')).to.be.true
+        expect(format_mobile_phone('09012345678')).to.equal('+81 90 1234 5678')
+      })
+      test('detects Vietnam', () => {
+        expect(is_mobile_phone('0712345678')).to.be.true
+        expect(format_mobile_phone('0712345678')).to.equal('+84 71 234 5678')
+      })
+      test('detects Indonesia', () => {
+        expect(is_mobile_phone('08123456789')).to.be.true
+        expect(format_mobile_phone('08123456789')).to.equal('+62 812 3456 789')
+      })
+      test('detects Malaysia', () => {
+        expect(is_mobile_phone('0123456789')).to.be.true
+        expect(format_mobile_phone('0123456789')).to.equal('+60 12 345 6789')
+      })
+      test('detects Australia', () => {
+        expect(is_mobile_phone('0412345678')).to.be.true
+        expect(format_mobile_phone('0412345678')).to.equal('+61 412 345 678')
+      })
+      test('detects China', () => {
+        expect(is_mobile_phone('13812345678')).to.be.true
+        expect(format_mobile_phone('13812345678')).to.equal('+86 138 1234 5678')
+      })
+      test('detects UAE', () => {
+        expect(is_mobile_phone('501234567')).to.be.true
+        expect(format_mobile_phone('501234567')).to.equal('+971 50 123 4567')
+      })
+      test('Singapore (conflict with Hong Kong without country code)', () => {
+        // Without country code, 8-digit numbers are detected as HK (checked first)
+        expect(is_mobile_phone('81234567')).to.be.true
+        expect(format_mobile_phone('81234567')).to.equal('+852 8123 4567')
+        // With country code, it correctly detects as Singapore
+        expect(is_mobile_phone('+6581234567')).to.be.true
+        expect(format_mobile_phone('+6581234567')).to.equal('+65 8123 4567')
+      })
+      test('Macau (conflict with Hong Kong without country code)', () => {
+        // Without country code, 8-digit numbers are detected as HK (checked first)
+        expect(is_mobile_phone('66123456')).to.be.true
+        expect(format_mobile_phone('66123456')).to.equal('+852 6612 3456')
+        // With country code, it correctly detects as Macau
+        expect(is_mobile_phone('+85366123456')).to.be.true
+        expect(format_mobile_phone('+85366123456')).to.equal('+853 6612 3456')
+      })
+      test('returns false for invalid number', () => {
+        expect(is_mobile_phone('1234567890')).to.be.false
+        expect(format_mobile_phone('1234567890')).to.equal('')
+      })
+    })
   })
 })
