@@ -8,6 +8,7 @@ import {
   to_full_cn_mobile_phone,
   to_full_mo_mobile_phone,
   to_full_ae_mobile_phone,
+  to_full_th_mobile_phone,
   to_full_in_mobile_phone,
   to_full_jp_mobile_phone,
   to_full_vn_mobile_phone,
@@ -129,6 +130,46 @@ describe('tel.ts TestSuit', () => {
       })
       test('invalid prefix', () => {
         expect(to_full_ae_mobile_phone('040 123 4567')).to.equal('')
+      })
+    })
+
+    describe('Thailand', () => {
+      test('with country code +66 (08x, 10 digits)', () => {
+        expect(to_full_th_mobile_phone('+66 081 234 5678')).to.equal(
+          '+66812345678',
+        )
+      })
+      test('with country code +66 (09x, 10 digits)', () => {
+        expect(to_full_th_mobile_phone('+66 091 234 5678')).to.equal(
+          '+66912345678',
+        )
+      })
+      test('with country code +66 (06x, 10 digits)', () => {
+        expect(to_full_th_mobile_phone('+66 061 234 5678')).to.equal(
+          '+66612345678',
+        )
+      })
+      test('with country code +66 (08x, 9 digits, already in internal format)', () => {
+        expect(to_full_th_mobile_phone('+66 81 234 5678')).to.equal(
+          '+66812345678',
+        )
+      })
+      test('with country code 66 without + (08x, 10 digits)', () => {
+        expect(to_full_th_mobile_phone('66 081 234 5678')).to.equal(
+          '+66812345678',
+        )
+      })
+      test('with local format (08x)', () => {
+        expect(to_full_th_mobile_phone('081 234 5678')).to.equal('+66812345678')
+      })
+      test('without leading 0 (08x)', () => {
+        expect(to_full_th_mobile_phone('812345678')).to.equal('+66812345678')
+      })
+      test('invalid prefix', () => {
+        expect(to_full_th_mobile_phone('071 234 5678')).to.equal('')
+      })
+      test('format mobile phone', () => {
+        expect(format_mobile_phone('+66812345678')).to.equal('+66 81 234 5678')
       })
     })
 
