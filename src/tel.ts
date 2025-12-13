@@ -515,14 +515,19 @@ export function format_ae_mobile_phone(tel: string | number): string {
  */
 export function is_th_mobile_phone_prefix(tel: string): boolean {
   tel = tel.replace(/^\+66/, '').trim()
-  // Remove leading 0 if present
-  if (tel.startsWith('0')) {
-    tel = tel.substring(1)
+  // Check prefix with leading 0 (local format: 081 234 5678)
+  if (tel.startsWith('0') && tel.length >= 3) {
+    const firstTwo = tel.substring(0, 2)
+    // Valid prefixes: 06, 08, 09
+    return firstTwo === '06' || firstTwo === '08' || firstTwo === '09'
   }
-  // After removing leading 0, should start with 06, 08, or 09 (two-digit prefix)
-  if (tel.length < 2) return false
-  const prefix = tel.substring(0, 2)
-  return prefix === '06' || prefix === '08' || prefix === '09'
+  // Check prefix without leading 0 (internal format: 81 234 5678)
+  // Should start with 6, 8, or 9 (first digit of mobile prefixes)
+  if (tel.length >= 1) {
+    const firstDigit = tel[0]
+    return firstDigit === '6' || firstDigit === '8' || firstDigit === '9'
+  }
+  return false
 }
 
 /**
