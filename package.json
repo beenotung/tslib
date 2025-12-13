@@ -39,7 +39,7 @@
     "format:eslint": "eslint . --ext .ts --fix",
     "test": "run-s build mocha test:ts",
     "test:ts": "ts-node test/index.ts",
-    "mocha": "ts-mocha \"{src,test}/**/*.spec.ts\"",
+    "mocha": "NODE_OPTIONS='--no-experimental-strip-types' ts-mocha \"{src,test}/**/*.spec.ts\"",
     "commit": "run-s format test git:commit",
     "git:commit": "git commit $@",
     "prepublishOnly": "npm run build",
