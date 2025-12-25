@@ -100,4 +100,3 @@ export function format_fr_mobile_phone(tel: string | number): string {
   if (!tel) return tel
   return format_tel_with_pattern(tel, '+33 x xx xx xx xx')
 }
-

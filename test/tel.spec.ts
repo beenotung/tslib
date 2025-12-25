@@ -431,7 +431,9 @@ describe('tel.ts TestSuit', () => {
         )
       })
       test('with local format', () => {
-        expect(to_full_ch_mobile_phone('079 123 45 67')).to.equal('+41791234567')
+        expect(to_full_ch_mobile_phone('079 123 45 67')).to.equal(
+          '+41791234567',
+        )
       })
       test('invalid prefix', () => {
         expect(to_full_ch_mobile_phone('021 123 45 67')).to.equal('')
@@ -461,7 +463,9 @@ describe('tel.ts TestSuit', () => {
         expect(to_full_fr_mobile_phone('01 12 34 56 78')).to.equal('')
       })
       test('format mobile phone', () => {
-        expect(format_mobile_phone('+33612345678')).to.equal('+33 6 12 34 56 78')
+        expect(format_mobile_phone('+33612345678')).to.equal(
+          '+33 6 12 34 56 78',
+        )
       })
     })
 
@@ -493,13 +497,17 @@ describe('tel.ts TestSuit', () => {
         )
       })
       test('with local format', () => {
-        expect(to_full_it_mobile_phone('0312 3456789')).to.equal('+393123456789')
+        expect(to_full_it_mobile_phone('0312 3456789')).to.equal(
+          '+393123456789',
+        )
       })
       test('invalid prefix', () => {
         expect(to_full_it_mobile_phone('021 3456789')).to.equal('')
       })
       test('format mobile phone', () => {
-        expect(format_mobile_phone('+393123456789')).to.equal('+39 312 345 6789')
+        expect(format_mobile_phone('+393123456789')).to.equal(
+          '+39 312 345 6789',
+        )
       })
     })
 
@@ -547,7 +555,9 @@ describe('tel.ts TestSuit', () => {
         )
       })
       test('with local format', () => {
-        expect(to_full_be_mobile_phone('0471 23 45 67')).to.equal('+32471234567')
+        expect(to_full_be_mobile_phone('0471 23 45 67')).to.equal(
+          '+32471234567',
+        )
       })
       test('invalid prefix', () => {
         expect(to_full_be_mobile_phone('021 23 45 67')).to.equal('')
@@ -564,13 +574,17 @@ describe('tel.ts TestSuit', () => {
         )
       })
       test('with local format', () => {
-        expect(to_full_at_mobile_phone('0660 12345678')).to.equal('+4366012345678')
+        expect(to_full_at_mobile_phone('0660 12345678')).to.equal(
+          '+4366012345678',
+        )
       })
       test('invalid prefix', () => {
         expect(to_full_at_mobile_phone('01 12345678')).to.equal('')
       })
       test('format mobile phone', () => {
-        expect(format_mobile_phone('+4366012345678')).to.equal('+43 660 1234 5678')
+        expect(format_mobile_phone('+4366012345678')).to.equal(
+          '+43 660 1234 5678',
+        )
       })
     })
 
@@ -647,13 +661,19 @@ describe('tel.ts TestSuit', () => {
         expect(format_mobile_phone('0712345678')).to.equal('+84 71 234 5678')
         // With country code, it correctly detects as France
         expect(is_mobile_phone('+33612345678')).to.be.true
-        expect(format_mobile_phone('+33612345678')).to.equal('+33 6 12 34 56 78')
+        expect(format_mobile_phone('+33612345678')).to.equal(
+          '+33 6 12 34 56 78',
+        )
         expect(is_mobile_phone('+33712345678')).to.be.true
-        expect(format_mobile_phone('+33712345678')).to.equal('+33 7 12 34 56 78')
+        expect(format_mobile_phone('+33712345678')).to.equal(
+          '+33 7 12 34 56 78',
+        )
       })
       test('detects Germany', () => {
         expect(is_mobile_phone('015112345678')).to.be.true
-        expect(format_mobile_phone('015112345678')).to.equal('+49 151 1234 5678')
+        expect(format_mobile_phone('015112345678')).to.equal(
+          '+49 151 1234 5678',
+        )
       })
       test('detects Spain', () => {
         expect(is_mobile_phone('612345678')).to.be.true

@@ -75,7 +75,10 @@ export function to_full_it_mobile_phone(tel: string | number): string {
   // Result: +39 312 3456789 (no leading 0)
   if (tel.startsWith('+39')) {
     const afterCountryCode = tel.substring(3)
-    if (afterCountryCode.startsWith('0') && is_it_mobile_phone_prefix(afterCountryCode)) {
+    if (
+      afterCountryCode.startsWith('0') &&
+      is_it_mobile_phone_prefix(afterCountryCode)
+    ) {
       const withoutZero = afterCountryCode.substring(1)
       if (withoutZero.length >= 9 && withoutZero.length <= 10) {
         return '+39' + withoutZero
@@ -98,4 +101,3 @@ export function format_it_mobile_phone(tel: string | number): string {
   if (!tel) return tel
   return format_tel_with_pattern(tel, '+39 3xx xxx xxxx')
 }
-

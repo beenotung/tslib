@@ -99,4 +99,3 @@ export function format_ch_mobile_phone(tel: string | number): string {
   if (!tel) return tel
   return format_tel_with_pattern(tel, '+41 7x xxx xx xx')
 }
-

@@ -81,4 +81,3 @@ export function format_es_mobile_phone(tel: string | number): string {
   if (!tel) return tel
   return format_tel_with_pattern(tel, '+34 xxx xxx xxx')
 }
-

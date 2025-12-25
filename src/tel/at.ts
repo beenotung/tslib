@@ -82,7 +82,10 @@ export function to_full_at_mobile_phone(tel: string | number): string {
   // Result: +43 660 12345678 (no leading 0)
   if (tel.startsWith('+43')) {
     const afterCountryCode = tel.substring(3)
-    if (afterCountryCode.startsWith('0') && is_at_mobile_phone_prefix(afterCountryCode)) {
+    if (
+      afterCountryCode.startsWith('0') &&
+      is_at_mobile_phone_prefix(afterCountryCode)
+    ) {
       const withoutZero = afterCountryCode.substring(1)
       if (withoutZero.length >= 10 && withoutZero.length <= 12) {
         return '+43' + withoutZero

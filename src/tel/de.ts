@@ -77,7 +77,10 @@ export function to_full_de_mobile_phone(tel: string | number): string {
   // Result: +49 151 12345678 (no leading 0)
   if (tel.startsWith('+49')) {
     const afterCountryCode = tel.substring(3)
-    if (afterCountryCode.startsWith('0') && is_de_mobile_phone_prefix(afterCountryCode)) {
+    if (
+      afterCountryCode.startsWith('0') &&
+      is_de_mobile_phone_prefix(afterCountryCode)
+    ) {
       const withoutZero = afterCountryCode.substring(1)
       if (withoutZero.length >= 10 && withoutZero.length <= 11) {
         return '+49' + withoutZero
