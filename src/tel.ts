@@ -14,6 +14,7 @@ import * as jp from './tel/jp'
 import * as vn from './tel/vn'
 import * as id from './tel/id'
 import * as my from './tel/my'
+import * as us from './tel/us'
 
 // export all region-specific functions
 export * from './tel/hk'
@@ -28,6 +29,7 @@ export * from './tel/jp'
 export * from './tel/vn'
 export * from './tel/id'
 export * from './tel/my'
+export * from './tel/us'
 
 /** ********************************
  * Combined for multiple countries *
@@ -51,6 +53,7 @@ export function is_mobile_phone(tel: number | string): boolean {
  * - VN (Vietnam)
  * - ID (Indonesia)
  * - MY (Malaysia)
+ * - US (United States)
  *
  * @returns the full tel number with country code, or empty string if not valid
  */
@@ -68,6 +71,7 @@ export function to_full_mobile_phone(tel: string | number): string {
     jp.to_full_jp_mobile_phone(tel) ||
     id.to_full_id_mobile_phone(tel) ||
     my.to_full_my_mobile_phone(tel) ||
+    us.to_full_us_mobile_phone(tel) ||
     ''
   )
 }
@@ -86,6 +90,7 @@ export function to_full_mobile_phone(tel: string | number): string {
  * - VN: +84 9xx xxx xxxx
  * - ID: +62 8xx xxx xxx (format varies by length: 9-11 digits)
  * - MY: +60 XX XXX XXXX (format varies by length: 9 or 10 digits)
+ * - US: +1 xxx xxx xxxx
  */
 export function format_mobile_phone(tel: string | number): string {
   tel = to_full_mobile_phone(tel)
@@ -126,6 +131,9 @@ export function format_mobile_phone(tel: string | number): string {
   }
   if (tel.startsWith('+60')) {
     return my.format_my_mobile_phone(tel)
+  }
+  if (tel.startsWith('+1')) {
+    return us.format_us_mobile_phone(tel)
   }
   throw new Error(`not supported mobile phone number: ${tel}`)
 }

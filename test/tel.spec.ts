@@ -14,6 +14,7 @@ import {
   to_full_vn_mobile_phone,
   to_full_id_mobile_phone,
   to_full_my_mobile_phone,
+  to_full_us_mobile_phone,
   format_mobile_phone,
   is_mobile_phone,
 } from '../src/tel'
@@ -379,6 +380,42 @@ describe('tel.ts TestSuit', () => {
       })
     })
 
+    describe('United States', () => {
+      test('with country code', () => {
+        expect(to_full_us_mobile_phone('+1 415 555 1234')).to.equal(
+          '+14155551234',
+        )
+      })
+      test('with country code without +', () => {
+        expect(to_full_us_mobile_phone('1 415 555 1234')).to.equal(
+          '+14155551234',
+        )
+      })
+      test('without country code (local format)', () => {
+        expect(to_full_us_mobile_phone('415 555 1234')).to.equal('+14155551234')
+      })
+      test('with parentheses format', () => {
+        expect(to_full_us_mobile_phone('(415) 555-1234')).to.equal(
+          '+14155551234',
+        )
+      })
+      test('invalid area code (starts with 0)', () => {
+        expect(to_full_us_mobile_phone('015 555 1234')).to.equal('')
+      })
+      test('invalid area code (starts with 1)', () => {
+        expect(to_full_us_mobile_phone('115 555 1234')).to.equal('')
+      })
+      test('invalid exchange code (starts with 0)', () => {
+        expect(to_full_us_mobile_phone('415 055 1234')).to.equal('')
+      })
+      test('invalid exchange code (starts with 1)', () => {
+        expect(to_full_us_mobile_phone('415 155 1234')).to.equal('')
+      })
+      test('format mobile phone', () => {
+        expect(format_mobile_phone('+14155551234')).to.equal('+1 415 555 1234')
+      })
+    })
+
     describe('auto detect country code in to_full_mobile_phone', () => {
       test('detects Hong Kong', () => {
         expect(is_mobile_phone('98765432')).to.be.true
@@ -419,6 +456,10 @@ describe('tel.ts TestSuit', () => {
       test('detects UAE', () => {
         expect(is_mobile_phone('501234567')).to.be.true
         expect(format_mobile_phone('501234567')).to.equal('+971 50 123 4567')
+      })
+      test('detects United States', () => {
+        expect(is_mobile_phone('4155551234')).to.be.true
+        expect(format_mobile_phone('4155551234')).to.equal('+1 415 555 1234')
       })
       test('Singapore (conflict with Hong Kong without country code)', () => {
         // Without country code, 8-digit numbers are detected as HK (checked first)
