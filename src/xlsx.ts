@@ -37,7 +37,7 @@ export async function write_xlsx_file(
 ) {
   const { workbook, XLSX } = await wrap_into_workbook(data)
   await new Promise<void>((resolve, reject) => {
-    XLSX.writeFileAsync(file, workbook, options, function () {
+    XLSX.writeFileAsync(file, workbook, options, function() {
       const error = arguments[0]
       if (error) {
         reject(error)
@@ -61,7 +61,7 @@ async function wrap_workbook(
   XLSX: typeof import('@e965/xlsx'),
 ) {
   function get_default_sheet_name() {
-    let sheet_names = workbook.SheetNames
+    const sheet_names = workbook.SheetNames
     if (sheet_names.length === 1) {
       return sheet_names[0]
     }
