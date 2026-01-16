@@ -55,10 +55,12 @@
     "tslib": "^2.6.3"
   },
   "optionalDependencies": {
+    "@e965/xlsx": "^0.20.3",
     "heic2any": "^0.0.4"
   },
   "devDependencies": {
     "@beenotung/gen-index": "^1.2.1",
+    "@e965/xlsx": "^0.20.3",
     "@types/chai": "^4.3.16",
     "@types/cli-progress": "^3.11.6",
     "@types/mocha": "^10.0.7",
