@@ -91,14 +91,16 @@ export function floor(x: number, numberOfDecimal: number): number {
 }
 
 /* can be left-right or top-bottom */
-export type Range = {
+export type CompareRange = {
   lower: number
   upper: number
 }
+/** @default renamed to `CompareRange` */
+export type Range = CompareRange
 
 export type RangeResult = ReturnType<typeof compareRange>
 
-export function compareRange(a: Range, b: Range) {
+export function compareRange(a: CompareRange, b: CompareRange) {
   if (a.lower <= b.lower && b.upper <= a.upper) {
     return {
       overlap: b.upper - b.lower,
