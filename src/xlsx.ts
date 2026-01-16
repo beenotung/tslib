@@ -8,6 +8,7 @@ import type {
   Sheet2JSONOpts,
   WritingOptions,
 } from '@e965/xlsx'
+export type * from '@e965/xlsx'
 
 export async function write_xlsx_file(
   file: string,

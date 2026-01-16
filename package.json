@@ -25,7 +25,7 @@
     "web": "esbuild --watch --bundle test/web/index.ts --outfile=test/web/bundle.js",
     "clean": "rimraf dist",
     "expand-macro": "tsc-macro",
-    "gen-index": "gen-index",
+    "gen-index": "gen-index && sed -i '/xlsx/d' src/index.ts",
     "tsc": "tsc -p tsconfig.build.json",
     "build": "run-s clean expand-macro gen-index tsc clean-build",
     "clean-build": "rimraf src/index.ts dist/**/*.macro.*",
