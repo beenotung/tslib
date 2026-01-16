@@ -61,6 +61,7 @@ www/
 # Test files
 res/db.txt
 test.csv
+test.xlsx
 
 # Temp files
 .last
