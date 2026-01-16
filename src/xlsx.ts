@@ -60,7 +60,19 @@ async function wrap_workbook(
   workbook: WorkBook,
   XLSX: typeof import('@e965/xlsx'),
 ) {
-  function get_sheet(name: string) {
+  function get_default_sheet_name() {
+    let sheet_names = workbook.SheetNames
+    if (sheet_names.length === 1) {
+      return sheet_names[0]
+    }
+    if (sheet_names.length === 0) {
+      throw new Error('No sheets exist in the workbook')
+    }
+    throw new Error(
+      `Multiple sheets exist in the workbook, please specify the sheet name: ${sheet_names.join(', ')}`,
+    )
+  }
+  function get_sheet(name: string = get_default_sheet_name()) {
     const sheet = workbook.Sheets[name]
     if (!sheet) {
       throw new Error(`Sheet ${name} not found`)
@@ -68,27 +80,28 @@ async function wrap_workbook(
     return sheet
   }
   /** Converts a worksheet object to an array of JSON objects */
-  function get_sheet_as_json(name: string, options?: Sheet2JSONOpts) {
+  function get_sheet_as_json(name?: string, options?: Sheet2JSONOpts) {
     return XLSX.utils.sheet_to_json(get_sheet(name), options)
   }
   /** Generate delimited-separated-values output */
-  function get_sheet_as_csv(name: string, options?: Sheet2CSVOpts) {
+  function get_sheet_as_csv(name?: string, options?: Sheet2CSVOpts) {
     return XLSX.utils.sheet_to_csv(get_sheet(name), options)
   }
   /** Generate UTF16 Formatted Text */
-  function get_sheet_as_text(name: string, options?: Sheet2CSVOpts) {
+  function get_sheet_as_text(name?: string, options?: Sheet2CSVOpts) {
     return XLSX.utils.sheet_to_txt(get_sheet(name), options)
   }
   /** Generate HTML */
-  function get_sheet_as_html(name: string, options?: Sheet2HTMLOpts) {
+  function get_sheet_as_html(name?: string, options?: Sheet2HTMLOpts) {
     return XLSX.utils.sheet_to_html(get_sheet(name), options)
   }
   /** Generate a list of the formulae (with value fallbacks) */
-  function get_sheet_as_formulae(name: string, options?: Sheet2FormulaOpts) {
+  function get_sheet_as_formulae(name?: string, options?: Sheet2FormulaOpts) {
     return XLSX.utils.sheet_to_formulae(get_sheet(name), options)
   }
   return {
     workbook,
+    get_default_sheet_name,
     get_sheet,
     get_sheet_as_json,
     get_sheet_as_csv,
