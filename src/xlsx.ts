@@ -6,14 +6,13 @@ import type {
   Sheet2FormulaOpts,
   Sheet2HTMLOpts,
   Sheet2JSONOpts,
+  WorkBook,
   WritingOptions,
 } from '@e965/xlsx'
 export type * from '@e965/xlsx'
 
-export async function write_xlsx_file(
-  file: string,
+export async function wrap_into_workbook(
   data: object[] | Record<string, object[]>,
-  options: WritingOptions = {},
 ) {
   const XLSX = await import('@e965/xlsx')
 
@@ -28,8 +27,17 @@ export async function write_xlsx_file(
     }
   }
 
+  return wrap_workbook(workbook, XLSX)
+}
+
+export async function write_xlsx_file(
+  file: string,
+  data: object[] | Record<string, object[]>,
+  options: WritingOptions = {},
+) {
+  const { workbook, XLSX } = await wrap_into_workbook(data)
   await new Promise<void>((resolve, reject) => {
-    XLSX.writeFileAsync(file, workbook, options, function() {
+    XLSX.writeFileAsync(file, workbook, options, function () {
       const error = arguments[0]
       if (error) {
         reject(error)
@@ -43,6 +51,15 @@ export async function write_xlsx_file(
 export async function read_xlsx_file(file: string) {
   const XLSX = await import('@e965/xlsx')
   const workbook = XLSX.readFile(file)
+  return wrap_workbook(workbook, XLSX)
+}
+
+export type WrappedWorkbook = Awaited<ReturnType<typeof wrap_workbook>>
+
+async function wrap_workbook(
+  workbook: WorkBook,
+  XLSX: typeof import('@e965/xlsx'),
+) {
   function get_sheet(name: string) {
     const sheet = workbook.Sheets[name]
     if (!sheet) {
@@ -78,5 +95,6 @@ export async function read_xlsx_file(file: string) {
     get_sheet_as_text,
     get_sheet_as_html,
     get_sheet_as_formulae,
+    XLSX,
   }
 }
