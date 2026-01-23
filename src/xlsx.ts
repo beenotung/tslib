@@ -126,6 +126,21 @@ export function get_worksheet_headers(worksheet: WorkSheet) {
   return headers
 }
 
+export function fill_by_headers<T>(args: {
+  rows: Record<string, T>[]
+  headers: string[]
+  default_value?: T
+}) {
+  const { rows, headers } = args
+  const default_value = args.default_value || ('' as T)
+  for (const row of rows) {
+    for (const col of headers) {
+      row[col] ||= default_value
+    }
+  }
+  return rows
+}
+
 function parse_column_range(cell: string) {
   // e.g. 'L5' -> 'L'
   return cell
