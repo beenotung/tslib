@@ -7,6 +7,7 @@ import type {
   Sheet2HTMLOpts,
   Sheet2JSONOpts,
   WorkBook,
+  WorkSheet,
   WritingOptions,
 } from '@e965/xlsx'
 export type * from '@e965/xlsx'
@@ -110,4 +111,29 @@ async function wrap_workbook(
     get_sheet_as_formulae,
     XLSX,
   }
+}
+
+export function get_worksheet_headers(worksheet: WorkSheet) {
+  const headers = []
+  for (const key of Object.keys(worksheet)) {
+    const col = parse_column_range(key)
+    const row = key.slice(col.length)
+    if (row != '1') continue
+    const cell = worksheet[key]
+    const value = cell.v
+    headers.push({ col, value })
+  }
+  return headers
+}
+
+function parse_column_range(cell: string) {
+  // e.g. 'L5' -> 'L'
+  return cell
+    .split('')
+    .filter(c => !is_digit(c))
+    .join('')
+}
+
+function is_digit(c: string) {
+  return c >= '0' && c <= '9'
 }
