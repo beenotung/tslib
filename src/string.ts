@@ -193,3 +193,51 @@ export function concat_words(start: string, end: string) {
     ? start.trimEnd() + ' ' + end.trimStart()
     : start + end
 }
+
+/**
+ * @description Normalize Unicode representation to NFC (Canonical Composition).
+ * Preserves case for case-sensitive comparisons.
+ *
+ * The same visible character can have multiple Unicode representations:
+ * - 'Amélie' with é as single code point (\u00e9)
+ * - 'Amélie' with é + combining accent (\u0065\u0301)
+ *
+ * NFC normalization condenses these variants into a single canonical form,
+ * useful for storing normalized text and matching in later searches.
+ *
+ * Source: https://stackoverflow.com/a/63013732/3156509
+ *
+ * @example
+ * 'Amélie' (composed) vs 'Amélie' (decomposed) -> same NFC output
+ * 'CAFÉ' -> 'CAFÉ' (case preserved)
+ */
+export function normalizeUnicode(text: string): string {
+  return text.normalize('NFC')
+}
+
+/**
+ * @description Remove accent marks (diacritics) from text.
+ * Uses NFD normalization to decompose characters, then removes combining marks.
+ *
+ * @example
+ * 'Café' -> 'Cafe'
+ * 'résumé' -> 'resume'
+ * 'Amélie' -> 'Amelie'
+ * 'München' -> 'Munchen'
+ * 'naïve' -> 'naive'
+ */
+export function removeAccents(text: string): string {
+  return text.normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+}
+
+/**
+ * @description Normalize text for search: NFC normalize, lowercase, remove accents, trim.
+ *
+ * @example
+ * 'Café' -> 'cafe'
+ * 'résumé' -> 'resume'
+ * 'Amélie' -> 'amelie'
+ */
+export function normalizeForSearch(text: string): string {
+  return removeAccents(normalizeUnicode(text).toLowerCase()).trim()
+}

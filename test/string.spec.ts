@@ -7,6 +7,9 @@ import {
   is_ascii_char,
   last_char,
   lcfirst,
+  normalizeForSearch,
+  normalizeUnicode,
+  removeAccents,
   strToCapWords,
   ucfirst,
 } from '../src/string'
@@ -81,5 +84,52 @@ describe('string.ts TestSuit', () => {
     expect(concat_words('apple!', 'tree.')).to.equals('apple! tree.')
     expect(concat_words(emoji, emoji)).to.equals(emoji + emoji)
     expect(concat_words('預約', '體驗班')).to.equals('預約體驗班')
+  })
+
+  test('normalizeUnicode', () => {
+    // Preserves case
+    expect(normalizeUnicode('HELLO')).to.equals('HELLO')
+    expect(normalizeUnicode('Café')).to.equals('Café')
+
+    // Unicode equivalence (same visual character, different representations)
+    const name1 = '\u0041\u006d\u00e9\u006c\u0069\u0065' // é as single code point
+    const name2 = '\u0041\u006d\u0065\u0301\u006c\u0069\u0065' // e + combining accent
+    expect(name1).not.to.equals(name2) // Different before normalization
+    expect(normalizeUnicode(name1)).to.equals(normalizeUnicode(name2)) // Same after NFC
+  })
+
+  test('removeAccents', () => {
+    // Preserves case
+    expect(removeAccents('Café')).to.equals('Cafe')
+    expect(removeAccents('CAFÉ')).to.equals('CAFE')
+
+    // Removes various accents
+    expect(removeAccents('résumé')).to.equals('resume')
+    expect(removeAccents('Amélie')).to.equals('Amelie')
+    expect(removeAccents('München')).to.equals('Munchen')
+    expect(removeAccents('naïve')).to.equals('naive')
+  })
+
+  test('normalizeForSearch', () => {
+    // Basic accent removal + lowercase
+    expect(normalizeForSearch('Café')).to.equals('cafe')
+    expect(normalizeForSearch('résumé')).to.equals('resume')
+    expect(normalizeForSearch('Amélie')).to.equals('amelie')
+    expect(normalizeForSearch('München')).to.equals('munchen')
+    expect(normalizeForSearch('naïve')).to.equals('naive')
+
+    // Case normalization
+    expect(normalizeForSearch('HELLO')).to.equals('hello')
+    expect(normalizeForSearch('HeLLo WoRLD')).to.equals('hello world')
+
+    // Trimming
+    expect(normalizeForSearch('  hello  ')).to.equals('hello')
+
+    // Unicode equivalence (same visual character, different representations)
+    const name1 = '\u0041\u006d\u00e9\u006c\u0069\u0065' // é as single code point
+    const name2 = '\u0041\u006d\u0065\u0301\u006c\u0069\u0065' // e + combining accent
+    expect(name1).not.to.equals(name2) // Different before normalization
+    expect(normalizeForSearch(name1)).to.equals(normalizeForSearch(name2)) // Same after normalization
+    expect(normalizeForSearch(name1)).to.equals('amelie')
   })
 })
