@@ -18,27 +18,28 @@ export class SpawnError extends Error {
   }
 }
 
-export function spawn(options: {
+/**
+ * Won't throw error, the error handling should be done in callback and if-throw style.
+ * Use spawnAndWait if you want error handling in try-catch style.
+ */
+export async function spawn(options: {
   cmd: string
   args?: string[]
   options?: SpawnOptionsWithoutStdio
   on_stdout?: (chunk: any) => void
   on_stderr?: (chunk: any) => void
   on_error?: (error: any) => void
-}) {
+}): Promise<number | null> {
   let { cmd, args } = options
   if (!args) {
     args = cmd.split(' ')
     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     cmd = args.shift()!
   }
-  let stdout = ''
-  let stderr = ''
-  return new Promise<number | null>((resolve, reject) => {
+  const code = await new Promise<number | null>(resolve => {
     const child = _spawn(cmd, args, options.options)
     child.stdout.setEncoding('utf8')
     child.stdout.on('data', data => {
-      stdout += data.toString()
       if (options.on_stdout) {
         options.on_stdout(data)
       } else {
@@ -47,7 +48,6 @@ export function spawn(options: {
     })
     child.stderr.setEncoding('utf8')
     child.stderr.on('data', data => {
-      stderr += data.toString()
       if (options.on_stderr) {
         options.on_stderr(data)
       } else {
@@ -55,32 +55,26 @@ export function spawn(options: {
       }
     })
     child.on('error', err => {
-      const error = new SpawnError(stdout, stderr)
-      error.processError = err
       if (options.on_error) {
-        options.on_error(error)
+        options.on_error(err)
+      } else {
+        console.error(err)
       }
-      reject(error)
+      resolve(null)
     })
     child.on('close', code => {
-      if (code) {
-        const error = new SpawnError(stdout, stderr)
-        error.code = code
-        if (options.on_error) {
-          options.on_error(error)
-        }
-        reject(error)
-      } else {
-        resolve(code)
-      }
+      resolve(code)
     })
   })
+  return code
 }
 
 /**
  * spawn a child process and return the stdout and stderr in promise
  *
  * the console is not used to output the stdout and stderr
+ *
+ * the error stack is preserved (avoided lost in native event loop)
  */
 export async function spawnAndWait(options: {
   cmd: string
@@ -98,8 +92,15 @@ export async function spawnAndWait(options: {
     on_stderr: chunk => (stderr += chunk),
     on_error: err => (error = err),
   })
-  if (error) {
-    throw error
+  if (error || code) {
+    const spawnError = new SpawnError(stdout, stderr)
+    if (error) {
+      spawnError.processError = error
+    }
+    if (code) {
+      spawnError.code = code
+    }
+    throw spawnError
   }
   return { code, stdout, stderr }
 }
