@@ -1,4 +1,4 @@
-import { getMaxArraySize } from './array'
+const maxArraySize = 2 ** 32 - 1
 
 export class RingBuffer<T> {
   private readonly xs: T[]
@@ -6,7 +6,7 @@ export class RingBuffer<T> {
   private end = 0
   private count = 0
 
-  constructor(public readonly size: number = getMaxArraySize()) {
+  constructor(public readonly size: number = maxArraySize) {
     this.xs = new Array(size)
     this.end = size - 1
   }

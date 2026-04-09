@@ -1,9 +1,10 @@
-import { getMaxArraySize } from './array'
 import { Result, then, thenF } from './result'
 import { RingBuffer } from './ring-buffer'
 
+const maxArraySize = 2 ** 32 - 1
+
 export class VoidResultPool {
-  private fs: RingBuffer<() => Result<void>> = new RingBuffer(getMaxArraySize())
+  private fs: RingBuffer<() => Result<void>> = new RingBuffer(maxArraySize)
   private running = 0
 
   constructor(public poolSize: number) {}
@@ -35,7 +36,7 @@ export class VoidResultPool {
 }
 
 export class NonVoidResultPool {
-  private fs: RingBuffer<() => void> = new RingBuffer(getMaxArraySize())
+  private fs: RingBuffer<() => void> = new RingBuffer(maxArraySize)
   private running = 0
 
   constructor(
