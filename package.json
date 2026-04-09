@@ -49,7 +49,6 @@
     "report": "run-s report:update report:open"
   },
   "dependencies": {
-    "cache-dir.ts": "^1.1.0",
     "node-localstorage": "^3.0.5",
     "timezone-date.ts": "^2.1.0",
     "tslib": "^2.8.1"
