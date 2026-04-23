@@ -45,3 +45,30 @@ export async function runFinally<A>(p: Promise<A>, cb: () => void): Promise<A> {
     cb()
   }
 }
+
+/**
+ * @description only supported in NodeJS runtime, will throw error in browser runtime
+ */
+export function getPromiseState(
+  p: Promise<unknown>,
+): 'pending' | 'fulfilled' | 'rejected' {
+  if (typeof require === 'undefined') {
+    throw new Error('only supported in NodeJS runtime')
+  }
+  let util = require('util')
+  // Promise { <pending> }
+  // Promise { 'the value' }
+  // Promise { <rejected> 'the reason' }
+  let text = util.inspect(p)
+  if (!(text.startsWith('Promise {') && text.endsWith(' }'))) {
+    throw new Error('not a promise')
+  }
+  text = text.slice('Promise {'.length, -' }'.length).trim()
+  if (text === '<pending>') {
+    return 'pending'
+  }
+  if (text.startsWith('<rejected>')) {
+    return 'rejected'
+  }
+  return 'fulfilled'
+}
