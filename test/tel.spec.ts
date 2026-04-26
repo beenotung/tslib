@@ -23,8 +23,12 @@ import {
   to_full_nl_mobile_phone,
   to_full_be_mobile_phone,
   to_full_at_mobile_phone,
+  to_full_se_mobile_phone,
+  to_full_mobile_phone,
   format_mobile_phone,
   is_mobile_phone,
+  is_se_mobile_nsn,
+  is_se_mobile_phone_prefix,
 } from '../src/tel'
 
 describe('tel.ts TestSuit', () => {
@@ -588,6 +592,67 @@ describe('tel.ts TestSuit', () => {
       })
     })
 
+    describe('Sweden', () => {
+      test('with country code (no trunk zero)', () => {
+        expect(to_full_se_mobile_phone('+46 70 123 45 67')).to.equal(
+          '+46701234567',
+        )
+      })
+      test('with country code and trunk zero', () => {
+        expect(to_full_se_mobile_phone('+46 070 123 45 67')).to.equal(
+          '+46701234567',
+        )
+      })
+      test('with local format', () => {
+        expect(to_full_se_mobile_phone('070 123 45 67')).to.equal(
+          '+46701234567',
+        )
+      })
+      test('to_full_mobile_phone: same 070 local is not Sweden (registry: JP first)', () => {
+        expect(to_full_mobile_phone('070 123 45 67')).to.equal('+810701234567')
+      })
+      test('with country code digits only (no +)', () => {
+        expect(to_full_se_mobile_phone('46701234567')).to.equal('+46701234567')
+      })
+      test('invalid prefix (landline 08, NSN 8… after 0 removed)', () => {
+        expect(to_full_se_mobile_phone('08 123 45 67')).to.equal('')
+        expect(to_full_se_mobile_phone('+46 8 12 34 56 78')).to.equal('')
+        expect(is_se_mobile_phone_prefix('08 123 45 67')).to.be.false
+        expect(is_se_mobile_phone_prefix('+46 8 12 34 56 78')).to.be.false
+      })
+      test('format mobile phone', () => {
+        expect(format_mobile_phone('+46701234567')).to.equal('+46 70 123 45 67')
+      })
+      test('non-07x mobile: 0252, 0376, 0673, 710', () => {
+        expect(to_full_se_mobile_phone('0252 12 345')).to.equal('+4625212345')
+        expect(to_full_se_mobile_phone('+46 376 1234')).to.equal('+463761234')
+        expect(to_full_se_mobile_phone('0673 12 345')).to.equal('+4667312345')
+        expect(to_full_se_mobile_phone('+46 710 1234 5678')).to.equal(
+          '+4671012345678',
+        )
+      })
+      test('reject landline: geographic 031, 040, 02 (fixed line, not mobile)', () => {
+        expect(to_full_se_mobile_phone('031 12 34 56')).to.equal('')
+        expect(to_full_se_mobile_phone('040 12 34 56')).to.equal('')
+        expect(to_full_se_mobile_phone('02 12 34 56 78')).to.equal('')
+        expect(is_se_mobile_phone_prefix('031 12 34 56')).to.be.false
+        expect(is_se_mobile_phone_prefix('040 12 34 56')).to.be.false
+        expect(is_se_mobile_nsn('31123456')).to.be.false
+        expect(is_se_mobile_nsn('40123456')).to.be.false
+        expect(is_se_mobile_nsn('81234567')).to.be.false
+      })
+      test('is_se_mobile_phone_prefix: mobile NDCs only (hint, not full validation)', () => {
+        expect(is_se_mobile_phone_prefix('070 123 45 67')).to.be.true
+        expect(is_se_mobile_phone_prefix('+46 70 1')).to.be.true
+        expect(is_se_mobile_phone_prefix('0252 12 345')).to.be.true
+      })
+      test('is_se_mobile_nsn: GSM vs excluded 07x', () => {
+        expect(is_se_mobile_nsn('701234567')).to.be.true
+        expect(is_se_mobile_nsn('721234567')).to.be.true
+        expect(is_se_mobile_nsn('712345678')).to.be.false
+      })
+    })
+
     describe('auto detect country code in to_full_mobile_phone', () => {
       test('detects Hong Kong', () => {
         expect(is_mobile_phone('98765432')).to.be.true
@@ -597,9 +662,9 @@ describe('tel.ts TestSuit', () => {
         // Thailand has unique 06x prefix (though conflicts with NL/FR), checked before NL/FR
         expect(is_mobile_phone('0612345678')).to.be.true
         expect(format_mobile_phone('0612345678')).to.equal('+66 61 234 5678')
-        // 0812345678 conflicts with Vietnam, but Vietnam checked first (has unique 03x/05x)
+        // 08x/09x: Thailand is before broad Vietnam in registry; use +84 for Vietnam
         expect(is_mobile_phone('0812345678')).to.be.true
-        expect(format_mobile_phone('0812345678')).to.equal('+84 81 234 5678')
+        expect(format_mobile_phone('0812345678')).to.equal('+66 81 234 5678')
       })
       test('detects India', () => {
         expect(is_mobile_phone('9876543210')).to.be.true
@@ -609,13 +674,11 @@ describe('tel.ts TestSuit', () => {
         expect(is_mobile_phone('09012345678')).to.be.true
         expect(format_mobile_phone('09012345678')).to.equal('+81 90 1234 5678')
       })
-      test('detects Vietnam', () => {
-        // Vietnam has unique 08x/09x/03x/05x prefixes, so 0812345678 is unambiguous
-        expect(is_mobile_phone('0812345678')).to.be.true
-        expect(format_mobile_phone('0812345678')).to.equal('+84 81 234 5678')
-        // 0712345678 conflicts with Switzerland/France, but Vietnam checked first
-        expect(is_mobile_phone('0712345678')).to.be.true
-        expect(format_mobile_phone('0712345678')).to.equal('+84 71 234 5678')
+      test('Vietnam: +84 in input (bare 10-digit local overlaps other handlers first)', () => {
+        // 10-digit 09/08/05/03 locals overlap TH, ID, IT, AE, etc. before +84;
+        // E.164 +84 is unambiguous in the first-pass + scan
+        expect(is_mobile_phone('+84912345678')).to.be.true
+        expect(format_mobile_phone('+84912345678')).to.equal('+84 91 234 5678')
       })
       test('detects Indonesia', () => {
         expect(is_mobile_phone('08123456789')).to.be.true
@@ -642,23 +705,22 @@ describe('tel.ts TestSuit', () => {
         expect(is_mobile_phone('4155551234')).to.be.true
         expect(format_mobile_phone('4155551234')).to.equal('+1 415 555 1234')
       })
-      test('Switzerland (conflict with Vietnam without country code)', () => {
-        // Without country code, 10-digit numbers starting with 07 are detected as Vietnam (checked first)
-        // Vietnam has unique 08x/09x/03x/05x prefixes, so 0791234567 conflicts
+      test('Switzerland before Vietnam: bare 10-digit 07x; +84 for VN', () => {
+        // Without country code, 10-digit 07x matches Switzerland before broad Vietnam
         expect(is_mobile_phone('0791234567')).to.be.true
-        expect(format_mobile_phone('0791234567')).to.equal('+84 79 123 4567')
-        // With country code, it correctly detects as Switzerland
-        expect(is_mobile_phone('+41791234567')).to.be.true
-        expect(format_mobile_phone('+41791234567')).to.equal('+41 79 123 45 67')
+        expect(format_mobile_phone('0791234567')).to.equal('+41 79 123 45 67')
+        // With country code, Vietnam
+        expect(is_mobile_phone('+84791234567')).to.be.true
+        expect(format_mobile_phone('+84791234567')).to.equal('+84 79 123 4567')
       })
-      test('France (conflict with Thailand/Switzerland without country code)', () => {
+      test('Thailand, Switzerland, France: bare 06 to TH, bare 07x to CH; +33 for FR', () => {
         // Without country code, 10-digit numbers starting with 06 are detected as Thailand (checked first)
         // Thailand has unique 08x/09x prefixes, so 0612345678 conflicts
         expect(is_mobile_phone('0612345678')).to.be.true
         expect(format_mobile_phone('0612345678')).to.equal('+66 61 234 5678')
-        // 07x numbers are detected as Vietnam (checked before Switzerland/France)
+        // 07x: Switzerland before France and before Vietnam
         expect(is_mobile_phone('0712345678')).to.be.true
-        expect(format_mobile_phone('0712345678')).to.equal('+84 71 234 5678')
+        expect(format_mobile_phone('0712345678')).to.equal('+41 71 234 56 78')
         // With country code, it correctly detects as France
         expect(is_mobile_phone('+33612345678')).to.be.true
         expect(format_mobile_phone('+33612345678')).to.equal(
@@ -711,6 +773,14 @@ describe('tel.ts TestSuit', () => {
         // With country code, it correctly detects as Macau
         expect(is_mobile_phone('+85366123456')).to.be.true
         expect(format_mobile_phone('+85366123456')).to.equal('+853 6612 3456')
+      })
+      test('Switzerland before Sweden: bare 07x; +46 for SE (not VN without +84)', () => {
+        // 10-digit 07x: CH before SE/VN; use +46 for unambiguous Sweden
+        expect(is_mobile_phone('0712345678')).to.be.true
+        expect(format_mobile_phone('0712345678')).to.equal('+41 71 234 56 78')
+        // 072… is whitelisted mobile (071… is not); +46 makes Sweden unambiguous
+        expect(is_mobile_phone('+46721234567')).to.be.true
+        expect(format_mobile_phone('+46721234567')).to.equal('+46 72 123 45 67')
       })
       test('returns false for invalid number', () => {
         expect(is_mobile_phone('1234567890')).to.be.false

@@ -20,6 +20,7 @@ import * as es_tel from './es'
 import * as nl_tel from './nl'
 import * as be_tel from './be'
 import * as at_tel from './at'
+import * as se_tel from './se'
 
 /** *****************
  * Registry Pattern *
@@ -92,11 +93,6 @@ tel_handlers.push({
   format: es_tel.format_es_mobile_phone,
 }) // 9 digits, no leading 0 - unique pattern
 tel_handlers.push({
-  country_code: '+84',
-  to_full: vn_tel.to_full_vn_mobile_phone,
-  format: vn_tel.format_vn_mobile_phone,
-}) // Has unique 03x/05x prefixes
-tel_handlers.push({
   country_code: '+66',
   to_full: th_tel.to_full_th_mobile_phone,
   format: th_tel.format_th_mobile_phone,
@@ -136,6 +132,16 @@ tel_handlers.push({
   to_full: at_tel.to_full_at_mobile_phone,
   format: at_tel.format_at_mobile_phone,
 })
+tel_handlers.push({
+  country_code: '+46',
+  to_full: se_tel.to_full_se_mobile_phone,
+  format: se_tel.format_se_mobile_phone,
+})
+tel_handlers.push({
+  country_code: '+84',
+  to_full: vn_tel.to_full_vn_mobile_phone,
+  format: vn_tel.format_vn_mobile_phone,
+}) // Broad (03/05/07/08/09) — after stricter / narrower handlers
 tel_handlers.push({
   country_code: '+31',
   to_full: nl_tel.to_full_nl_mobile_phone,

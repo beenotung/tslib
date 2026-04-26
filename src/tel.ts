@@ -25,6 +25,7 @@ export * from './tel/es'
 export * from './tel/nl'
 export * from './tel/be'
 export * from './tel/at'
+export * from './tel/se'
 
 /** ********************************
  * Combined for multiple countries *
@@ -57,6 +58,7 @@ export function is_mobile_phone(tel: number | string): boolean {
  * - NL (Netherlands)
  * - BE (Belgium)
  * - AT (Austria)
+ * - SE (Sweden)
  *
  * Note: Some numbers without country codes are ambiguous and may match multiple countries.
  * Countries with more unique prefixes are checked first to minimize conflicts.
@@ -112,6 +114,7 @@ export function to_full_mobile_phone(tel: string | number): string {
  * - NL: +31 6 xxxx xxxx
  * - BE: +32 4xx xx xx xx
  * - AT: +43 6xx xxx xxxx (variable length)
+ * - SE: +46 xx xxx xx xx (variable length; mobile only, not landline)
  */
 export function format_mobile_phone(tel: string | number): string {
   tel = to_full_mobile_phone(tel)
