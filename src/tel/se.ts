@@ -87,7 +87,7 @@ export function is_se_mobile_phone_prefix(tel: string): boolean {
   if (t.startsWith('0')) t = t.substring(1)
   if (t.startsWith('0')) t = t.substring(1)
   if (!t || t[0] === '8') return false
-  for (let p of SE_MOBILE_NDC_PREFIXES) {
+  for (const p of SE_MOBILE_NDC_PREFIXES) {
     if (t.startsWith(p)) return true
   }
   return false

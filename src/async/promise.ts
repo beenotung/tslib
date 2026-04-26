@@ -55,7 +55,7 @@ export function getPromiseState(
   if (typeof require === 'undefined') {
     throw new Error('only supported in NodeJS runtime')
   }
-  let util = require('util')
+  const util = require('util')
   // Promise { <pending> }
   // Promise { 'the value' }
   // Promise { <rejected> 'the reason' }
