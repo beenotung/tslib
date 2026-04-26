@@ -5,15 +5,9 @@ import { format_tel_with_pattern, to_tel_digits } from './utils'
  *********************************/
 
 /**
- * **Mobile (cellular) only** — this module does **not** treat Swedish **fixed/landline**
- * numbers (geographic 02/03/04/05/06…, national 08/010…, etc.) as valid.
- * Validation is a **mobile whitelist** in `is_se_mobile_nsn`, not a “Swedish number” detector.
- *
- * Whitelisted (examples):
- * - **Main mobile (GSM) — national 070, 072, 073, 076, 079** (9-digit NSN after +46: `7[02369]`
- *   plus 7 subscriber digits, i.e. not 071, 074, 075, 077, 078 in this branch).
- * - 0252, 0254, 0376, 0673-0676 (certain mobile or mobile-like NDCs)
- * - 0710, 0719 (M2M / longer NSN, etc. — heuristics, see PTS for authoritative data)
+ * Mobile (cellular) only, not landline. Main GSM: 070, 072, 073, 076, 079; also 252, 254, 376,
+ * 673-676, 710, 719 (see is_se_mobile_nsn). Rejects 08, geographic codes, and other non-mobile.
+ * Format: E.164 +46 with NSN without trunk 0; display pattern varies by NSN length.
  * Reference: https://en.wikipedia.org/wiki/Telephone_numbers_in_Sweden
  */
 
@@ -36,11 +30,11 @@ const SE_MOBILE_NDC_PREFIXES = [
 ] as const
 
 /**
- * E.164 NSN after +46, no leading trunk 0, digits only. Returns null if not parseable
- * as a Swedish number fragment.
+ * National significant number (after +46/46/0), digits only, no leading trunk 0. Input must
+ * be from to_tel_digits. Returns null if not a parseable fragment.
  */
 function extract_se_nsn(tel: string): string | null {
-  let d = to_tel_digits(tel)
+  let d = tel
   if (d.startsWith('+46')) {
     d = d.substring(3)
   } else if (d.startsWith('46') && d.length > 2) {
@@ -56,9 +50,8 @@ function extract_se_nsn(tel: string): string | null {
 }
 
 /**
- * @returns true only if `nsn` (digits, no trunk 0) is a **whitelisted mobile** NSN.
- * All fixed/landline and non-mobile NDCs are **rejected** (e.g. NSN `8…` for 08 Stockholm;
- * geographic 31…, 40…, 18…, etc. never match the whitelist).
+ * @returns true if nsn (digits, no trunk 0) is a whitelisted mobile range; false for landline
+ * and other NDCs (e.g. 8… for 08, geographic 31…, 40…)
  */
 export function is_se_mobile_nsn(nsn: string): boolean {
   if (!/^\d{6,12}$/.test(nsn)) return false
@@ -75,10 +68,8 @@ export function is_se_mobile_nsn(nsn: string): boolean {
 }
 
 /**
- * With/without +46: true if the string **can** start a whitelisted **mobile** NDC (not fixed line).
- * For definitive validation (full number, not landline), use `is_se_mobile_nsn` after
- * `extract` via `to_full_se_mobile_phone` or parse NSN the same way as `to_full_se_mobile_phone`.
- * Rejects leading national `8…` (08 fixed line when 0 is stripped).
+ * Short prefix check only. True if the number can start a mobile NDC; false for 08/landline
+ * (leading 8 after stripping 0). Use to_full_se_mobile_phone or is_se_mobile_nsn for full match.
  */
 export function is_se_mobile_phone_prefix(tel: string): boolean {
   let t = to_tel_digits(tel)
@@ -93,14 +84,26 @@ export function is_se_mobile_phone_prefix(tel: string): boolean {
   return false
 }
 
+/**
+ * with/without +46 prefix
+ */
 export function is_se_mobile_phone(tel: number | string): boolean {
   return to_full_se_mobile_phone(tel) !== ''
 }
 
 /**
- * @returns +46 + NSN if valid Swedish **mobile** only (excludes 08, geographic, etc.)
+ * very forgiving
+ *
+ * @returns +46 plus NSN if valid (variable length, NO leading 0 after country code in internal form)
+ *          empty string if not valid
+ *
+ * Format notes:
+ * - Local: 070 123 45 67 (or other mobile NDCs; may include trunk 0)
+ * - Internal: +46 70 123 45 67 (see is_se_mobile_nsn; not landline)
+ * - Display: format_se_mobile_phone
  */
 export function to_full_se_mobile_phone(tel: string | number): string {
+  tel = to_tel_digits(tel)
   const nsn = extract_se_nsn(tel)
   if (!nsn || !is_se_mobile_nsn(nsn)) return ''
   return '+46' + nsn
@@ -132,7 +135,7 @@ function format_se_ns_to_display(nsn: string, full: string): string {
 }
 
 /**
- * @returns display string for a valid Swedish mobile (variable length)
+ * @returns +46 xx xxx xx xx if valid (or other layout; variable length)
  */
 export function format_se_mobile_phone(tel: string | number): string {
   const full = to_full_se_mobile_phone(tel)
