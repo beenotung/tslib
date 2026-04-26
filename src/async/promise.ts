@@ -55,6 +55,7 @@ export function getPromiseState(
   if (typeof require === 'undefined') {
     throw new Error('only supported in NodeJS runtime')
   }
+  // eslint-disable-next-line @typescript-eslint/no-var-requires
   const util = require('util')
   // Promise { <pending> }
   // Promise { 'the value' }
