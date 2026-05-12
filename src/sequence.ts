@@ -29,3 +29,48 @@ export function create_sequence_mean(
     },
   }
 }
+
+export function create_sequence_standard_deviation(
+  options: {
+    initial?: {
+      sum_of_squares: number
+      mean: number
+      count: number
+    }
+  } = {},
+) {
+  let count = options.initial?.count ?? 0
+  let mean = options.initial?.mean ?? 0
+  let sum_of_squares = options.initial?.sum_of_squares ?? 0
+
+  function next(currentValue: number): void {
+    count++
+    let delta_old = currentValue - mean
+    mean += delta_old / count
+    let delta_new = currentValue - mean
+    sum_of_squares += delta_old * delta_new
+  }
+
+  return {
+    next,
+    get count() {
+      return count
+    },
+    get mean() {
+      return mean
+    },
+    get sum_of_squares() {
+      return sum_of_squares
+    },
+    get_variance(mode: 'sample' | 'population' = 'sample') {
+      if (mode === 'sample') {
+        return sum_of_squares / (count - 1)
+      } else {
+        return sum_of_squares / count
+      }
+    },
+    get_standard_deviation(mode: 'sample' | 'population' = 'sample') {
+      return Math.sqrt(this.get_variance(mode))
+    },
+  }
+}
