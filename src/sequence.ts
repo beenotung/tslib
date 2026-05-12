@@ -11,7 +11,7 @@ export function create_sequence_mean(
     }
   } = {},
 ) {
-  let sum = options.initial?.sum ?? 0
+  const sum = options.initial?.sum ?? 0
   let count = options.initial?.count ?? 0
   let mean = count === 0 ? 0 : sum / count
 
@@ -45,9 +45,9 @@ export function create_sequence_standard_deviation(
 
   function next(currentValue: number): void {
     count++
-    let delta_old = currentValue - mean
+    const delta_old = currentValue - mean
     mean += delta_old / count
-    let delta_new = currentValue - mean
+    const delta_new = currentValue - mean
     sum_of_squares += delta_old * delta_new
   }
 
