@@ -35,9 +35,10 @@ npm install @beenotung/tslib
   - breaking variety function (those who expect to accept variant length of arguments)
   - no effect on function of length 0
 
-## Todo
+## Tasks
 
-- increase test coverage
+Work items are tracked as markdown files in [`tasks/`](./tasks/), listed in [`tasks/_index.md`](./tasks/_index.md).
+When a task is done, move its file to [`tasks/done/`](./tasks/done/) and remove its entry from the index.
 
 ## License
 
