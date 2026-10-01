@@ -102,7 +102,7 @@ across runs, but treat absolute figures as indicative.
 ## Related findings
 
 The `src/csv.ts` findings found while investigating were split into
-[fix-csv-findings.md](../fix-csv-findings.md). The `from_csv` `trim()` behaviour
+[fix-csv-findings.md](./fix-csv-findings.md). The `from_csv` `trim()` behaviour
 is not a bug (by design) — see that file.
 
 ## Status
@@ -111,4 +111,4 @@ is not a bug (by design) — see that file.
 - [x] implement `from_tsv` / `to_tsv` + `TAB` in `src/tsv.ts`
 - [x] add `test/tsv.spec.ts`
 - [x] move this file to `tasks/done/` (findings split into
-      [fix-csv-findings.md](../fix-csv-findings.md))
+      [fix-csv-findings.md](./fix-csv-findings.md))
