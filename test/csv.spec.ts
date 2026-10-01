@@ -1,5 +1,11 @@
 import { expect } from 'chai'
-import { csv_to_json, from_csv, to_csv, json_to_csv } from '../src/csv'
+import {
+  csv_to_json,
+  from_csv,
+  to_csv,
+  json_to_csv,
+  regular_csv,
+} from '../src/csv'
 
 describe('csv.ts TestSuit', () => {
   it('should parse basic rows', () => {
@@ -144,6 +150,33 @@ a3,b3,""
       ])
       expect(rows[1]).to.deep.equals(['1', '2', 'line 1\nline2', '12:30'])
       expect(rows[2]).to.deep.equals(['3', '4', 'line 3\nline4', '12:31'])
+    })
+  })
+  describe('to_csv edge cases', () => {
+    it('should treat an undefined cell as an empty field', () => {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      expect(to_csv([['1', undefined as any]])).to.equals('1,\r\n')
+    })
+    it('should coerce a non-string cell to a string', () => {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      expect(to_csv([['1', 42 as any, true as any]])).to.equals('1,42,true\r\n')
+    })
+    it('should quote and round-trip a field with a lone carriage return', () => {
+      let text = to_csv([['a\rb']])
+      expect(text).to.equals('"a\rb"\r\n')
+      expect(from_csv(text)).to.deep.equals([['a\rb']])
+    })
+  })
+  describe('regular_csv', () => {
+    it('should pad rows to the same number of columns', () => {
+      let rows: string[][] = [['a', 'b', 'c'], ['1']]
+      regular_csv(rows)
+      expect(rows[1]).to.deep.equals(['1', '', ''])
+    })
+    it('should insert ending commas via to_csv', () => {
+      let rows: string[][] = [['a', 'b', 'c'], ['1']]
+      regular_csv(rows)
+      expect(to_csv(rows)).to.equals('a,b,c\r\n1,,\r\n')
     })
   })
 })

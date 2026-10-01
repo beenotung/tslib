@@ -85,15 +85,17 @@ export function to_csv(
       } else {
         res.push(separator)
       }
+      const cell = String(col ?? '')
       if (
-        col.indexOf('\n') === -1 &&
-        col.indexOf(delimiter) === -1 &&
-        col.indexOf(separator) === -1
+        cell.indexOf('\n') === -1 &&
+        cell.indexOf('\r') === -1 &&
+        cell.indexOf(delimiter) === -1 &&
+        cell.indexOf(separator) === -1
       ) {
-        res.push(col)
+        res.push(cell)
       } else {
         res.push(delimiter)
-        for (const c of col || '') {
+        for (const c of cell) {
           if (c === delimiter) {
             res.push(delimiter, delimiter)
           } else {
@@ -117,7 +119,7 @@ export function regular_csv(rows: string[][]): void {
   rows.forEach(cols => (maxCol = Math.max(maxCol, cols.length)))
   rows.forEach(cols => {
     for (let i = cols.length; i < maxCol; i++) {
-      cols.push()
+      cols.push('')
     }
   })
 }
