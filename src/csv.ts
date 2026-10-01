@@ -7,7 +7,8 @@ export function from_csv(
   separator = COMMA,
   delimiter = DOUBLE_QUOTE,
 ): string[][] {
-  // to remove control char if got from network
+  // by design: strip leading/trailing whitespace and stray control chars
+  // (e.g. a trailing CRLF or BOM pasted in from network input)
   s = s.trim()
   const rows: string[][] = []
   let cols: string[] = []
