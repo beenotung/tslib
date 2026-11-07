@@ -7,7 +7,7 @@ format from RFC 4180 CSV — not merely CSV with a tab delimiter.
 
 `from_csv` / `to_csv` take a `separator` argument, so passing `'\t'` looks like
 TSV but is actually a **quoted-tab dialect**: it keeps RFC 4180 quoting/escaping
-(a quoted field may contain a tab or a newline). That is *not* the registered
+(a quoted field may contain a tab or a newline). That is _not_ the registered
 `text/tab-separated-values` format.
 
 The IANA TSV registration is line-oriented and has **no escaping**:
@@ -53,8 +53,8 @@ TSV.
     round-trip
   - `from_tsv` stays strict (no options): any substitution must be undone by the
     caller before parsing
-- Why a separate module (not a branch in `csv.ts`): strict TSV is a *different
-  algorithm* (no quoting, tabs/newlines unrepresentable), and branching would
+- Why a separate module (not a branch in `csv.ts`): strict TSV is a _different
+  algorithm_ (no quoting, tabs/newlines unrepresentable), and branching would
   overload `separator` from "field separator" into "which format spec to
   follow" — and break the clean `from_csv`/`to_csv` inverse. A separate file also
   matches the repo's one-format-per-file pattern (`csv.ts`, `xlsx.ts`).
@@ -66,7 +66,7 @@ TSV.
 `to_tsv` uses `field.split(sep).join(repl)` for both substitutions. Reasons, in
 priority order:
 
-1. **Literal replacement (correctness).** A *string* passed to `replaceAll` is
+1. **Literal replacement (correctness).** A _string_ passed to `replaceAll` is
    not literal — `$&`, `` $` ``, `$'`, `$$` are expanded (`"a\tb"` +
    `replaceAll("\t", "$&")` keeps the real tab, silently producing invalid TSV).
    The `tab`/`newline` values are user-supplied, so `$` can appear. `split/join`

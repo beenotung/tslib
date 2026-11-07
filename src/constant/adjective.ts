@@ -21,7 +21,7 @@ export interface Adjective {
   tags: AdjectiveTag[]
 }
 
-export let adjectives: Adjective[] = [
+export const adjectives: Adjective[] = [
   { word: 'admiring', tags: ['positive', 'personality', 'mild'] },
   { word: 'adoring', tags: ['positive', 'emotion', 'strong'] },
   { word: 'affectionate', tags: ['positive', 'emotion', 'mild'] },
@@ -150,11 +150,11 @@ export function filterAdjectives(args: {
   mode?: AdjectiveFilterMode
   not?: boolean
 }): Adjective[] {
-  let { tags, mode = 'and', not = false } = args
-  let match_mode =
+  const { tags, mode = 'and', not = false } = args
+  const match_mode =
     mode === 'and'
       ? (a: Adjective) => tags.every(tag => a.tags.includes(tag))
       : (a: Adjective) => tags.some(tag => a.tags.includes(tag))
-  let match_not = not ? (a: Adjective) => !match_mode(a) : match_mode
+  const match_not = not ? (a: Adjective) => !match_mode(a) : match_mode
   return adjectives.filter(a => match_not(a))
 }

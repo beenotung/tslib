@@ -24,7 +24,10 @@ function is_tw_national_mobile(tel: string): boolean {
  * reference: https://en.wikipedia.org/wiki/Telephone_numbers_in_Taiwan
  */
 export function is_tw_mobile_phone_prefix(tel: string): boolean {
-  tel = tel.replace(/^\+886/, '').replace(/^886/, '').trim()
+  tel = tel
+    .replace(/^\+886/, '')
+    .replace(/^886/, '')
+    .trim()
   return is_tw_local_mobile(tel) || is_tw_national_mobile(tel)
 }
 
