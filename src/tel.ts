@@ -26,6 +26,7 @@ export * from './tel/nl'
 export * from './tel/be'
 export * from './tel/at'
 export * from './tel/se'
+export * from './tel/tw'
 
 /** ********************************
  * Combined for multiple countries *
@@ -59,9 +60,12 @@ export function is_mobile_phone(tel: number | string): boolean {
  * - BE (Belgium)
  * - AT (Austria)
  * - SE (Sweden)
+ * - TW (Taiwan)
  *
  * Note: Some numbers without country codes are ambiguous and may match multiple countries.
  * Countries with more unique prefixes are checked first to minimize conflicts.
+ * Taiwan (090~098) is checked before Thailand/Indonesia/Vietnam, so bare 09x
+ * numbers resolve to TW (Japan's 090 locals are 11 digits, so no collision).
  * For accurate detection, include the country code (e.g., +33 for France).
  *
  * @returns the full tel number with country code, or empty string if not valid
@@ -115,6 +119,7 @@ export function to_full_mobile_phone(tel: string | number): string {
  * - BE: +32 4xx xx xx xx
  * - AT: +43 6xx xxx xxxx (variable length)
  * - SE: +46 xx xxx xx xx (variable length; mobile only, not landline)
+ * - TW: +886 9xx xxx xxx
  */
 export function format_mobile_phone(tel: string | number): string {
   tel = to_full_mobile_phone(tel)

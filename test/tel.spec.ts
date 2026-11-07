@@ -24,6 +24,8 @@ import {
   to_full_be_mobile_phone,
   to_full_at_mobile_phone,
   to_full_se_mobile_phone,
+  to_full_tw_mobile_phone,
+  format_tw_mobile_phone,
   to_full_mobile_phone,
   format_mobile_phone,
   is_mobile_phone,
@@ -250,6 +252,11 @@ describe('tel.ts TestSuit', () => {
       })
       test('invalid prefix', () => {
         expect(to_full_jp_mobile_phone('060 1234 5678')).to.equal('')
+      })
+      test('rejects 10-digit with leading 0 (not a JP local number)', () => {
+        // JP local with leading 0 is 11 digits; 0901234567 is TW-style (10 digits)
+        expect(to_full_jp_mobile_phone('0901234567')).to.equal('')
+        expect(to_full_jp_mobile_phone('0801234567')).to.equal('')
       })
       test('format mobile phone', () => {
         expect(format_mobile_phone('+819012345678')).to.equal(
@@ -592,6 +599,77 @@ describe('tel.ts TestSuit', () => {
       })
     })
 
+    describe('Taiwan', () => {
+      test('with country code +886 (09x)', () => {
+        expect(to_full_tw_mobile_phone('+886 912 345 678')).to.equal(
+          '+886912345678',
+        )
+      })
+      test('with country code +886 without space', () => {
+        expect(to_full_tw_mobile_phone('+886912345678')).to.equal(
+          '+886912345678',
+        )
+      })
+      test('with country code 886 without +', () => {
+        expect(to_full_tw_mobile_phone('886 912 345 678')).to.equal(
+          '+886912345678',
+        )
+      })
+      test('with local format (09x xxxxxxx)', () => {
+        expect(to_full_tw_mobile_phone('0912 345 678')).to.equal(
+          '+886912345678',
+        )
+      })
+      test('with local format without space', () => {
+        expect(to_full_tw_mobile_phone('0912345678')).to.equal('+886912345678')
+      })
+      test('with 098 prefix', () => {
+        expect(to_full_tw_mobile_phone('0988 123 456')).to.equal(
+          '+886988123456',
+        )
+      })
+      test('with 090 prefix (mobile range, traveller prepaid SIM)', () => {
+        expect(to_full_tw_mobile_phone('0901 234 567')).to.equal(
+          '+886901234567',
+        )
+        expect(to_full_tw_mobile_phone('+886 901 234 567')).to.equal(
+          '+886901234567',
+        )
+      })
+      test('with country code +886 and leading 0 (forgiving)', () => {
+        expect(to_full_tw_mobile_phone('+886 0919 929 803')).to.equal(
+          '+886919929803',
+        )
+      })
+      test('with country code 886 without + and leading 0 (forgiving)', () => {
+        expect(to_full_tw_mobile_phone('886 0919 929 803')).to.equal(
+          '+886919929803',
+        )
+      })
+      test('bare national number (9 digits, no leading 0)', () => {
+        expect(to_full_tw_mobile_phone('919929803')).to.equal('+886919929803')
+      })
+      test('invalid prefix (landline 02)', () => {
+        expect(to_full_tw_mobile_phone('021234567')).to.equal('')
+      })
+      test('invalid prefix (04)', () => {
+        expect(to_full_tw_mobile_phone('0412345678')).to.equal('')
+      })
+      test('invalid prefix (099 not allocated)', () => {
+        expect(to_full_tw_mobile_phone('0991234567')).to.equal('')
+      })
+      test('format mobile phone', () => {
+        expect(format_mobile_phone('+886919929803')).to.equal(
+          '+886 919 929 803',
+        )
+      })
+      test('format local mobile phone', () => {
+        expect(format_tw_mobile_phone('0919929803')).to.equal(
+          '+886 919 929 803',
+        )
+      })
+    })
+
     describe('Sweden', () => {
       test('with country code (no trunk zero)', () => {
         expect(to_full_se_mobile_phone('+46 70 123 45 67')).to.equal(
@@ -608,8 +686,10 @@ describe('tel.ts TestSuit', () => {
           '+46701234567',
         )
       })
-      test('to_full_mobile_phone: same 070 local is not Sweden (registry: JP first)', () => {
-        expect(to_full_mobile_phone('070 123 45 67')).to.equal('+810701234567')
+      test('to_full_mobile_phone: same 070 local is not Sweden (registry: CH first)', () => {
+        // JP no longer accepts a 10-digit leading-0 number; CH matches all 07x
+        // before Sweden, so the bare local resolves to CH.
+        expect(to_full_mobile_phone('070 123 45 67')).to.equal('+41701234567')
       })
       test('with country code digits only (no +)', () => {
         expect(to_full_se_mobile_phone('46701234567')).to.equal('+46701234567')
@@ -662,9 +742,22 @@ describe('tel.ts TestSuit', () => {
         // Thailand has unique 06x prefix (though conflicts with NL/FR), checked before NL/FR
         expect(is_mobile_phone('0612345678')).to.be.true
         expect(format_mobile_phone('0612345678')).to.equal('+66 61 234 5678')
-        // 08x/09x: Thailand is before broad Vietnam in registry; use +84 for Vietnam
+        // 08x: Thailand is before broad Vietnam in registry; use +84 for Vietnam
         expect(is_mobile_phone('0812345678')).to.be.true
         expect(format_mobile_phone('0812345678')).to.equal('+66 81 234 5678')
+      })
+      test('detects Taiwan (09x preferred before TH/ID/VN)', () => {
+        expect(is_mobile_phone('0919929803')).to.be.true
+        expect(format_mobile_phone('0919929803')).to.equal('+886 919 929 803')
+        expect(is_mobile_phone('0988123456')).to.be.true
+        expect(format_mobile_phone('0988123456')).to.equal('+886 988 123 456')
+      })
+      test('090: TW for 10-digit, JP for 11-digit', () => {
+        // TW mobile is 10 digits (090+7); JP mobile is 11 digits (090+8)
+        expect(is_mobile_phone('0901234567')).to.be.true
+        expect(format_mobile_phone('0901234567')).to.equal('+886 901 234 567')
+        expect(is_mobile_phone('09012345678')).to.be.true
+        expect(format_mobile_phone('09012345678')).to.equal('+81 90 1234 5678')
       })
       test('detects India', () => {
         expect(is_mobile_phone('9876543210')).to.be.true

@@ -21,6 +21,7 @@ import * as nl_tel from './nl'
 import * as be_tel from './be'
 import * as at_tel from './at'
 import * as se_tel from './se'
+import * as tw_tel from './tw'
 
 /** *****************
  * Registry Pattern *
@@ -93,10 +94,15 @@ tel_handlers.push({
   format: es_tel.format_es_mobile_phone,
 }) // 9 digits, no leading 0 - unique pattern
 tel_handlers.push({
+  country_code: '+886',
+  to_full: tw_tel.to_full_tw_mobile_phone,
+  format: tw_tel.format_tw_mobile_phone,
+}) // Taiwan (090~098): before TH/ID/VN so bare 09x prefers TW
+tel_handlers.push({
   country_code: '+66',
   to_full: th_tel.to_full_th_mobile_phone,
   format: th_tel.format_th_mobile_phone,
-}) // Has unique 08x/09x prefixes
+}) // Has unique 08x/06x prefixes (09x now prefers TW)
 tel_handlers.push({
   country_code: '+61',
   to_full: au_tel.to_full_au_mobile_phone,

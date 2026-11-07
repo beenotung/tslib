@@ -109,7 +109,14 @@ export function to_full_jp_mobile_phone(tel: string | number): string {
 
   // 10 digits starting with 90, 80, or 70 (local format without leading 0)
   // Result: 10 digits after +81
-  if (tel.length === 10 && is_jp_mobile_phone_prefix(tel)) {
+  // Reject a leading 0 here: a 10-digit 09x/08x/07x number is a local number
+  // of another region (e.g. Taiwan's 090...), not a JP number (JP local with
+  // leading 0 is 11 digits, handled above).
+  if (
+    tel.length === 10 &&
+    !tel.startsWith('0') &&
+    is_jp_mobile_phone_prefix(tel)
+  ) {
     return '+81' + tel
   }
 
