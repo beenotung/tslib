@@ -416,6 +416,25 @@ function populateCompressArgs(args: {
   }
 }
 
+/**
+ * Throw when the canvas produced no image data.
+ *
+ * Chromium and WebKit return the string `"data:,"` for a canvas too large to
+ * encode instead of throwing, which would otherwise reach callers as a
+ * "successful" 0-byte image.
+ */
+function assertEncodedImage(
+  dataUrl: string,
+  mimeType: string,
+  canvas: HTMLCanvasElement,
+): void {
+  if (dataUrl.indexOf(',') === -1 || base64ToSize(dataUrl) <= 0) {
+    throw new Error(
+      `canvas returned no image data for ${mimeType} at ${canvas.width}x${canvas.height}`,
+    )
+  }
+}
+
 export function compressImageToBase64(args: {
   image: HTMLImageElement
   canvas?: HTMLCanvasElement
@@ -436,10 +455,12 @@ export function compressImageToBase64(args: {
   if (args.mimeType) {
     mimeType = args.mimeType
     dataURL = canvas.toDataURL(mimeType, quality)
+    assertEncodedImage(dataURL, mimeType, canvas)
   } else {
     const min = ['image/png', 'image/jpeg', 'image/webp']
       .map(mimeType => {
         const base64 = canvas.toDataURL(mimeType, quality)
+        assertEncodedImage(base64, mimeType, canvas)
         const size = base64ToSize(base64)
         return { mimeType, base64, size }
       })
@@ -473,6 +494,7 @@ export function compressImageToBase64(args: {
     canvas.height = new_height
     ctx.drawImage(image, 0, 0, new_width, new_height)
     dataURL = canvas.toDataURL(mimeType, quality)
+    assertEncodedImage(dataURL, mimeType, canvas)
   }
   return dataURL
 }
