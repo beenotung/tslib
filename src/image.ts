@@ -456,7 +456,7 @@ export function compressImageToBase64(args: {
     if (binSize <= maximumSize || canvas.width == 0 || canvas.height == 0) {
       break
     }
-    const ratio = Math.sqrt(maximumSize / dataURL.length)
+    const ratio = Math.sqrt(maximumSize / binSize)
     let new_width = Math.round(canvas.width * ratio)
     let new_height = Math.round(new_width / w_h_ratio)
     if (new_width === canvas.width && new_height === canvas.height) {
